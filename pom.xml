@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015 JBoss Inc
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kie</groupId>
+    <artifactId>kie-parent-with-dependencies</artifactId>
+    <version>6.3.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.optaplanner</groupId>
+  <artifactId>optaplanner-wb</artifactId>
+  <packaging>pom</packaging>
+
+  <name>OptaPlanner Workbench</name>
+  <description>OptaPlanner Workbench</description>
+  <url>http://www.optaplanner.org</url>
+
+  <repositories>
+    <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <scm>
+    <connection>scm:git:git@github.com:droolsjbpm/optaplanner.git</connection>
+    <developerConnection>scm:git:git@github.com:droolsjbpm/optaplanner.git</developerConnection>
+    <url>https://github.com/droolsjbpm/optaplanner</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>https://issues.jboss.org/browse/PLANNER</url>
+  </issueManagement>
+
+  <modules>
+    <module>optaplanner-wb-screens</module>
+    <module>optaplanner-wb-webapp</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <!--Fix translations from Zanata -->
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*_de.properties</include>
+            <include>**/*_es.properties</include>
+            <include>**/*_fr.properties</include>
+            <include>**/*_ja.properties</include>
+            <include>**/*_pt_BR.properties</include>
+            <include>**/*_zh_CN.properties</include>
+          </includes>
+          <excludes>
+            <exclude>**/ErraiApp.properties</exclude>
+          </excludes>
+          <replacements>
+            <replacement>
+              <token>''</token>
+              <value>'</value>
+            </replacement>
+            <replacement>
+              <token>'</token>
+              <value>''</value>
+            </replacement>
+          </replacements>
+        </configuration>
+      </plugin>
+
+      <!-- Zanata - translations -->
+      <plugin>
+        <groupId>org.zanata</groupId>
+        <artifactId>zanata-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>.errai/**</include>
+                <include>.niogit/**</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+</project>
