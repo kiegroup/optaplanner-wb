@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright 2015 JBoss Inc
   ~
@@ -14,25 +15,21 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>optaplanner-wb</artifactId>
     <groupId>org.optaplanner</groupId>
+    <artifactId>optaplanner-wb-domain-editor</artifactId>
     <version>6.3.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>optaplanner-wb-screens</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+  <packaging>jar</packaging>
 
-  <name>OptaPlanner Workbench - Screens</name>
-  <description>OptaPlanner Workbench - Screens</description>
-
-  <modules>
-    <module>optaplanner-wb-domain-editor</module>
-    <module>optaplanner-wb-solver-editor</module>
-  </modules>
+  <name>OptaPlanner Workbench - Domain Editor API</name>
+  <description>OptaPlanner Workbench - Domain API</description>
 
 </project>

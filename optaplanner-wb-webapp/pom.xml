@@ -455,6 +455,22 @@
       <artifactId>optaplanner-wb-solver-editor-backend</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-backend</artifactId>
+    </dependency>
+
     <!-- Models for Guided Decision Table -->
     <dependency>
       <groupId>org.drools</groupId>
@@ -699,6 +715,8 @@
             <!-- optaplanner-wb -->
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-client</compileSourcesArtifact>
+            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-domain-editor-api</compileSourcesArtifact>
+            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-domain-editor-client</compileSourcesArtifact>
 
             <!-- Models for Guided Decision Table -->
             <compileSourcesArtifact>org.drools:drools-workbench-models-commons</compileSourcesArtifact>
