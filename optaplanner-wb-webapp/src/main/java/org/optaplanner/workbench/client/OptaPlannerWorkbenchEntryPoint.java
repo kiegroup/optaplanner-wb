@@ -18,6 +18,7 @@ package org.optaplanner.workbench.client;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import com.google.gwt.animation.client.Animation;
@@ -30,6 +31,7 @@ import org.guvnor.common.services.shared.config.AppConfigService;
 import org.guvnor.common.services.shared.security.KieWorkbenchACL;
 import org.guvnor.common.services.shared.security.KieWorkbenchPolicy;
 import org.guvnor.common.services.shared.security.KieWorkbenchSecurityService;
+import org.guvnor.structure.client.editors.repository.RepositoryPreferences;
 import org.jboss.errai.bus.client.api.BusErrorCallback;
 import org.jboss.errai.bus.client.api.messaging.Message;
 import org.jboss.errai.common.client.api.Caller;
@@ -84,6 +86,8 @@ public class OptaPlannerWorkbenchEntryPoint {
     @Inject
     private Caller<AuthenticationService> authService;
 
+    private RepositoryPreferences repositoryPreferences;
+
     @AfterInitialization
     public void startApp() {
         kieSecurityService.call( new RemoteCallback<String>() {
@@ -95,6 +99,15 @@ public class OptaPlannerWorkbenchEntryPoint {
                 hideLoadingPopup();
             }
         } ).loadPolicy();
+    }
+
+    @Produces
+    public RepositoryPreferences getRepositoryPreferences() {
+        if(repositoryPreferences == null) {
+            repositoryPreferences = new RepositoryPreferences(true);
+        }
+
+        return repositoryPreferences;
     }
 
     private void loadPreferences() {
