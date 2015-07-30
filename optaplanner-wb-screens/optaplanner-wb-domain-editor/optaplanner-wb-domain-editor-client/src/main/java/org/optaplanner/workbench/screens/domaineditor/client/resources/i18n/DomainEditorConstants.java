@@ -25,7 +25,9 @@ import com.google.gwt.i18n.client.Messages;
 public interface DomainEditorConstants
         extends Messages {
 
-    public static final DomainEditorConstants INSTANCE = GWT.create( DomainEditorConstants.class );
+    DomainEditorConstants INSTANCE = GWT.create( DomainEditorConstants.class );
+
+    String planner_domain_screen_name();
 
     String plannerSettingsLabel();
 

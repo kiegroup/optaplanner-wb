@@ -47,6 +47,9 @@ import org.uberfire.client.menu.CustomSplashHelp;
 import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
 import org.uberfire.client.mvp.ActivityManager;
 import org.uberfire.client.mvp.PlaceManager;
+import org.uberfire.client.workbench.docks.UberfireDock;
+import org.uberfire.client.workbench.docks.UberfireDockPosition;
+import org.uberfire.client.workbench.docks.UberfireDocks;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
@@ -84,6 +87,9 @@ public class OptaPlannerWorkbenchEntryPoint {
     @Inject
     private Caller<AuthenticationService> authService;
 
+    @Inject
+    private UberfireDocks uberfireDocks;
+
     @AfterInitialization
     public void startApp() {
         kieSecurityService.call( new RemoteCallback<String>() {
@@ -92,6 +98,7 @@ public class OptaPlannerWorkbenchEntryPoint {
                 kieACL.activatePolicy( policy );
                 loadPreferences();
                 setupMenu();
+                setupDocks();
                 hideLoadingPopup();
             }
         } ).loadPolicy();
@@ -148,6 +155,12 @@ public class OptaPlannerWorkbenchEntryPoint {
                 .build();
 
         menubar.addMenus( menus );
+    }
+
+    private void setupDocks() {
+        uberfireDocks.register(
+                new UberfireDock( UberfireDockPosition.EAST, new DefaultPlaceRequest( "PlannerDomainScreen" ), "AuthoringPerspective" ).withSize( 450 )
+        );
     }
 
     private AbstractWorkbenchPerspectiveActivity getDefaultPerspectiveActivity() {
