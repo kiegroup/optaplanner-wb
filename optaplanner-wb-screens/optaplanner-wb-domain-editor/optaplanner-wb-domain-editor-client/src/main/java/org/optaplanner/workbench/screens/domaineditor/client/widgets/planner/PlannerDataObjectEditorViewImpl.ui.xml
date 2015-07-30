@@ -26,6 +26,12 @@
 
     <style>
 
+      .planner-data-object-editor {
+        min-height: 400px !Important;
+        min-width: 400px !Important;
+        overflow: hidden;
+      }
+
       .textLabel {
         font-size: 14px;
         font-weight: normal;
@@ -40,6 +46,8 @@
 
     </style>
 
+    <div class="well well-small planner-data-object-editor">
+
     <gwt:Label text="{i18n.plannerSettingsLabel}" addStyleNames="textLabel titleLabelPadding" />
 
     <b:RadioButton ui:field="notInPlanningRadioButton" name="entityType" addStyleNames="span3" text="{i18n.notInPlanningLabel}" />
@@ -47,6 +55,8 @@
     <b:RadioButton ui:field="planningEntityRadioButton" name="entityType" addStyleNames="span3" text="{i18n.planningEntityLabel}" />
 
     <b:RadioButton ui:field="planningSolutionRadioButton" name="entityType" addStyleNames="span3" text="{i18n.planningSolutionLabel}" />
+
+    </div>
 
   </gwt:HTMLPanel>
 
