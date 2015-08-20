@@ -17,12 +17,14 @@ package org.optaplanner.workbench.client.perspectives;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.kie.workbench.common.screens.projecteditor.client.menu.ProjectMenu;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcesMenu;
+import org.optaplanner.workbench.client.docks.AuthoringWorkbenchDocks;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.Perspective;
 import org.uberfire.client.annotations.WorkbenchMenu;
@@ -63,18 +65,18 @@ public class AuthoringPerspective {
     @Inject
     private PlaceManager placeManager;
 
+    @Inject
+    private AuthoringWorkbenchDocks docks;
+
+    @PostConstruct
+    public void setup() {
+        docks.setup("AuthoringPerspective", new DefaultPlaceRequest("org.kie.guvnor.explorer"));
+    }
+
     @Perspective
     public PerspectiveDefinition buildPerspective() {
         final PerspectiveDefinitionImpl perspective = new PerspectiveDefinitionImpl( MultiListWorkbenchPanelPresenter.class.getName() );
-        perspective.setName( "Author" );
-
-        final PanelDefinition west = new PanelDefinitionImpl( SimpleWorkbenchPanelPresenter.class.getName() );
-        west.setWidth( 400 );
-        west.setMinWidth( 350 );
-        west.addPart( new PartDefinitionImpl( new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) ) );
-
-        perspective.getRoot().insertChild( CompassPosition.WEST,
-                                           west );
+        perspective.setName("Author");
 
         return perspective;
     }

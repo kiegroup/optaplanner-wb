@@ -98,7 +98,6 @@ public class OptaPlannerWorkbenchEntryPoint {
                 kieACL.activatePolicy( policy );
                 loadPreferences();
                 setupMenu();
-                setupDocks();
                 hideLoadingPopup();
             }
         } ).loadPolicy();
@@ -155,12 +154,6 @@ public class OptaPlannerWorkbenchEntryPoint {
                 .build();
 
         menubar.addMenus( menus );
-    }
-
-    private void setupDocks() {
-        uberfireDocks.register(
-                new UberfireDock( UberfireDockPosition.EAST, new DefaultPlaceRequest( "PlannerDomainScreen" ), "AuthoringPerspective" ).withSize( 450 )
-        );
     }
 
     private AbstractWorkbenchPerspectiveActivity getDefaultPerspectiveActivity() {
