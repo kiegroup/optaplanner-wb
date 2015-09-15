@@ -16,9 +16,6 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import com.github.gwtbootstrap.client.ui.CheckBox;
-import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.client.ui.base.DivWidget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -27,13 +24,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.CheckBox;
+import org.gwtbootstrap3.client.ui.Form;
+import org.gwtbootstrap3.client.ui.TextBox;
 
 public class PlannerDataObjectFieldEditorViewImpl
         extends Composite
         implements PlannerDataObjectFieldEditorView {
 
     interface Binder
-        extends UiBinder<Widget, PlannerDataObjectFieldEditorViewImpl> {
+            extends UiBinder<Widget, PlannerDataObjectFieldEditorViewImpl> {
 
     }
 
@@ -42,7 +42,7 @@ public class PlannerDataObjectFieldEditorViewImpl
     private Presenter presenter;
 
     @UiField
-    DivWidget planningSolutionSettingsPanel;
+    Form planningSolutionSettingsPanel;
 
     @UiField
     CheckBox valueRangeProviderCheckBox;
@@ -54,7 +54,7 @@ public class PlannerDataObjectFieldEditorViewImpl
     CheckBox planningEntityCollectionCheckBox;
 
     @UiField
-    DivWidget planningEntitySettingsPanel;
+    Form planningEntitySettingsPanel;
 
     @UiField
     CheckBox planningVariableCheckBox;
@@ -154,27 +154,27 @@ public class PlannerDataObjectFieldEditorViewImpl
         enableValueRangeProviderRefs( false );
     }
 
-    @UiHandler( "valueRangeProviderCheckBox" )
+    @UiHandler("valueRangeProviderCheckBox")
     void onValueRangeProviderChange( ClickEvent event ) {
         presenter.onValueRangeProviderChange();
     }
 
-    @UiHandler( "valueRangeProviderIdTextBox" )
+    @UiHandler("valueRangeProviderIdTextBox")
     void onValueRangeProviderId( ValueChangeEvent<String> event ) {
         presenter.onValueRangeProviderIdChange();
     }
 
-    @UiHandler( "planningEntityCollectionCheckBox" )
+    @UiHandler("planningEntityCollectionCheckBox")
     void onPlanningEntityCollection( ClickEvent event ) {
         presenter.onPlanningEntityCollectionChange();
     }
 
-    @UiHandler( "planningVariableCheckBox" )
+    @UiHandler("planningVariableCheckBox")
     void onPlanningVariableChange( ClickEvent event ) {
         presenter.onPlanningVariableChange();
     }
 
-    @UiHandler( "valueRangeProviderRefsTextBox" )
+    @UiHandler("valueRangeProviderRefsTextBox")
     void onValueRangeProviderRefs( ValueChangeEvent<String> event ) {
         presenter.onValueRangeProviderRefsChange();
     }

@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import com.github.gwtbootstrap.client.ui.RadioButton;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -24,26 +23,27 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.InlineRadio;
 
 public class PlannerDataObjectEditorViewImpl
         extends Composite
         implements PlannerDataObjectEditorView {
 
     interface Binder
-        extends UiBinder<Widget, PlannerDataObjectEditorViewImpl> {
+            extends UiBinder<Widget, PlannerDataObjectEditorViewImpl> {
 
     }
 
     private static Binder uiBinder = GWT.create( Binder.class );
 
     @UiField
-    RadioButton notInPlanningRadioButton;
+    InlineRadio notInPlanningRadioButton;
 
     @UiField
-    RadioButton planningEntityRadioButton;
+    InlineRadio planningEntityRadioButton;
 
     @UiField
-    RadioButton planningSolutionRadioButton;
+    InlineRadio planningSolutionRadioButton;
 
     private Presenter presenter;
 
@@ -78,17 +78,17 @@ public class PlannerDataObjectEditorViewImpl
         setPlanningSolutionValue( false );
     }
 
-    @UiHandler( "notInPlanningRadioButton" )
+    @UiHandler("notInPlanningRadioButton")
     void onNotInPlanningChange( ClickEvent event ) {
         presenter.onNotInPlanningChange( notInPlanningRadioButton.getValue() );
     }
 
-    @UiHandler( "planningEntityRadioButton" )
+    @UiHandler("planningEntityRadioButton")
     void onPlanningEntityChange( ClickEvent event ) {
         presenter.onPlanningEntityChange( planningEntityRadioButton.getValue() );
     }
 
-    @UiHandler( "planningSolutionRadioButton" )
+    @UiHandler("planningSolutionRadioButton")
     void onPlanningSolutionChange( ClickEvent event ) {
         presenter.onPlanningSolutionChange( planningSolutionRadioButton.getValue() );
     }

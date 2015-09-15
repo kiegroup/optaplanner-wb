@@ -15,10 +15,12 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import com.google.gwt.user.client.ui.RequiresResize;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorView;
 import org.uberfire.client.mvp.UberView;
 
 public interface SolverEditorView extends KieEditorView,
+                                          RequiresResize,
                                           UberView<SolverEditorPresenter> {
 
     void setContent( final String config );

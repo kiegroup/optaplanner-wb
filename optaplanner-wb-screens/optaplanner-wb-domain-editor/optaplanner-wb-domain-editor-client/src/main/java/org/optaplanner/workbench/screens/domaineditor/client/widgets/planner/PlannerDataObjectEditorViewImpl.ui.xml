@@ -16,48 +16,23 @@
   -->
 
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:gwt="urn:import:com.google.gwt.user.client.ui"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-    >
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui">
 
   <ui:with field="i18n" type="org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants"/>
 
-  <gwt:HTMLPanel>
-
-    <style>
-
-      .planner-data-object-editor {
-        min-height: 400px !Important;
-        min-width: 400px !Important;
-        overflow: hidden;
-      }
-
-      .textLabel {
-        font-size: 14px;
-        font-weight: normal;
-        line-height: 20px;
-      }
-
-      .titleLabelPadding {
-        padding-top:10px;
-        padding-left:10px;
-        padding-bottom:10px;
-      }
-
-    </style>
-
-    <div class="well well-small planner-data-object-editor">
-
-    <gwt:Label text="{i18n.plannerSettingsLabel}" addStyleNames="textLabel titleLabelPadding" />
-
-    <b:RadioButton ui:field="notInPlanningRadioButton" name="entityType" addStyleNames="span3" text="{i18n.notInPlanningLabel}" />
-
-    <b:RadioButton ui:field="planningEntityRadioButton" name="entityType" addStyleNames="span3" text="{i18n.planningEntityLabel}" />
-
-    <b:RadioButton ui:field="planningSolutionRadioButton" name="entityType" addStyleNames="span3" text="{i18n.planningSolutionLabel}" />
-
-    </div>
-
-  </gwt:HTMLPanel>
+  <b:Container fluid="true">
+    <b:Form>
+      <b:FieldSet>
+        <b:FormGroup>
+          <b:FormLabel text="{i18n.plannerSettingsLabel}"/>
+          <b:Column size="MD_12">
+            <b:InlineRadio ui:field="notInPlanningRadioButton" name="entityType" text="{i18n.notInPlanningLabel}"/>
+            <b:InlineRadio ui:field="planningEntityRadioButton" name="entityType" text="{i18n.planningEntityLabel}"/>
+            <b:InlineRadio ui:field="planningSolutionRadioButton" name="entityType" text="{i18n.planningSolutionLabel}"/>
+          </b:Column>
+        </b:FormGroup>
+      </b:FieldSet>
+    </b:Form>
+  </b:Container>
 
 </ui:UiBinder>

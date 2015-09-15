@@ -15,12 +15,12 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorViewImpl;
+import org.uberfire.ext.widgets.common.client.ace.AceEditor;
+import org.uberfire.ext.widgets.common.client.ace.AceEditorMode;
+import org.uberfire.ext.widgets.common.client.ace.AceEditorTheme;
 
 public class SolverEditorViewImpl
         extends KieEditorViewImpl
@@ -32,15 +32,15 @@ public class SolverEditorViewImpl
 
     }
 
-    private static SolverEditorViewBinder uiBinder = GWT.create( SolverEditorViewBinder.class );
-
     private SolverEditorPresenter presenter;
 
-    @UiField
-    TextArea container;
+    private final AceEditor editor = new AceEditor();
 
     public SolverEditorViewImpl() {
-        initWidget( uiBinder.createAndBindUi( this ) );
+        editor.startEditor();
+        editor.setMode( AceEditorMode.TEXT );
+        editor.setTheme( AceEditorTheme.CHROME );
+        initWidget( editor );
     }
 
     @Override
@@ -49,13 +49,26 @@ public class SolverEditorViewImpl
     }
 
     @Override
-    public void setContent( final String config ) {
-        container.setText( config );
+    public void setContent( final String input ) {
+        final String content;
+        if ( input == null ) {
+            content = "";
+        } else {
+            content = input;
+        }
+        editor.setText( content );
+        editor.setFocus();
     }
 
     @Override
     public String getContent() {
-        return container.getText();
+        return editor.getValue();
     }
 
+    @Override
+    public void onResize() {
+        int height = getParent().getOffsetHeight();
+        editor.setHeight( height + "px" );
+        editor.redisplay();
+    }
 }

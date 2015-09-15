@@ -760,7 +760,7 @@
             <compileSourcesArtifact>org.uberfire:uberfire-workbench-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-backend</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-backend-api</compileSourcesArtifact>
-            <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-views-bs2</compileSourcesArtifact>
+            <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-views-patternfly</compileSourcesArtifact>
           </compileSourcesArtifacts>
         </configuration>
         <executions>
