@@ -1,0 +1,104 @@
+<!--
+  ~ Copyright 2015 JBoss Inc
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:gwt='urn:import:com.google.gwt.user.client.ui'
+             xmlns:widgets='urn:import:org.optaplanner.workbench.screens.solver.client.editor'
+             xmlns:bootstrap='urn:import:org.gwtbootstrap3.client.ui'>
+
+  <ui:with field="i18n" type="org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants"/>
+
+  <ui:style>
+    .label {
+      text-align: right;
+    }
+  </ui:style>
+
+  <bootstrap:Container fluid="true">
+
+    <bootstrap:Legend text='{i18n.Termination}'/>
+
+    <bootstrap:Row>
+      <bootstrap:Column size="MD_1">
+          <gwt:CheckBox ui:field="useSpentLimit"/>
+      </bootstrap:Column>
+      <bootstrap:Column size="MD_3" addStyleNames='{style.label}'>
+        <gwt:HorizontalPanel>
+          <bootstrap:FormLabel text='{i18n.SpentLimit}'/>
+        </gwt:HorizontalPanel>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="spentLimitDays"
+                         text='{i18n.Days}'/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="spentLimitHours"
+                         text='{i18n.Hours}'
+                         max="24"/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="spentLimitMinutes"
+                         text='{i18n.Minutes}'
+                         max="60"/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="spentLimitSeconds"
+                         text='{i18n.Seconds}'
+                         max="60"/>
+      </bootstrap:Column>
+
+    </bootstrap:Row>
+    <bootstrap:Row>
+      <bootstrap:Column size="MD_1">
+          <gwt:CheckBox ui:field="useUnimprovedSpentLimit"/>
+      </bootstrap:Column>
+      <bootstrap:Column size="MD_3" addStyleNames='{style.label}'>
+        <gwt:HorizontalPanel>
+          <bootstrap:FormLabel text='{i18n.UnimprovedSpendLimit}'/>
+        </gwt:HorizontalPanel>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="unimprovedSpendLimitDays"
+                         text='{i18n.Days}'/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="unimprovedSpendLimitHours"
+                         text='{i18n.Hours}'
+                         max="24"/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="unimprovedSpendLimitMinutes"
+                         text='{i18n.Minutes}'
+                         max="60"/>
+      </bootstrap:Column>
+
+      <bootstrap:Column size="MD_1">
+        <widgets:Spinner ui:field="unimprovedSpendLimitSeconds"
+                         text='{i18n.Seconds}'
+                         max="60"/>
+      </bootstrap:Column>
+    </bootstrap:Row>
+  </bootstrap:Container>
+
+</ui:UiBinder>

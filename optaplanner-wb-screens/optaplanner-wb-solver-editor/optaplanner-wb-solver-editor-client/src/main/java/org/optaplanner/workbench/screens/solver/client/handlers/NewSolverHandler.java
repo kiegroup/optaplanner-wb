@@ -28,6 +28,7 @@ import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
+import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
@@ -76,7 +77,7 @@ public class NewSolverHandler extends DefaultNewResourceHandler {
                             new HasBusyIndicatorDefaultErrorCallback( busyIndicatorView ) ).create( pkg.getPackageMainResourcesPath(),
                                                                                                     buildFileName( baseFileName,
                                                                                                                    resourceType ),
-                                                                                                    "",
+                                                                                                    new SolverConfigModel(),
                                                                                                     "" );
     }
 

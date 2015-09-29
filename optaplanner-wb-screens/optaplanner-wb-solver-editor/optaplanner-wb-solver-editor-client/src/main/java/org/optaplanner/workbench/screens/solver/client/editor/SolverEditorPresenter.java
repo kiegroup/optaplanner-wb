@@ -28,7 +28,9 @@ import org.jboss.errai.common.client.api.RemoteCallback;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationPopup;
 import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
 import org.kie.workbench.common.widgets.metadata.client.KieEditor;
+import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
+import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverModelContent;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.backend.vfs.ObservablePath;
@@ -37,6 +39,7 @@ import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartTitleDecoration;
 import org.uberfire.client.annotations.WorkbenchPartView;
+import org.uberfire.client.views.pfly.multipage.PageImpl;
 import org.uberfire.ext.widgets.common.client.callbacks.DefaultErrorCallback;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
 import org.uberfire.lifecycle.OnClose;
@@ -55,21 +58,32 @@ import org.uberfire.workbench.model.menu.Menus;
 public class SolverEditorPresenter
         extends KieEditor {
 
-    @Inject
     private Caller<SolverEditorService> solverService;
 
-    @Inject
     private Event<NotificationEvent> notification;
 
-    @Inject
     private SolverResourceType solverResourceType;
 
+    private XMLViewer xmlViewer;
+
     private SolverEditorView view;
+    private SolverConfigModel model;
 
     @Inject
-    public SolverEditorPresenter( final SolverEditorView view ) {
+    public SolverEditorPresenter( final SolverEditorView view,
+                                  final SolverResourceType solverResourceType,
+                                  final XMLViewer xmlViewer,
+                                  final Event<NotificationEvent> notification,
+                                  final Caller<SolverEditorService> solverService ) {
         super( view );
+
+        view.setPresenter( this );
+
+        this.xmlViewer = xmlViewer;
         this.view = view;
+        this.solverResourceType = solverResourceType;
+        this.notification = notification;
+        this.solverService = solverService;
     }
 
     @PostConstruct
@@ -102,15 +116,40 @@ public class SolverEditorPresenter
                 }
 
                 resetEditorPages( content.getOverview() );
-                addSourcePage();
 
-                final String config = content.getConfig();
-                view.setContent( config );
+                addXMLSourcePage();
+
+                model = content.getConfig();
+
+                view.setTerminationConfigModel( model.getTermination() );
+                view.setScoreDirectorFactoryConfig( model.getScoreDirectorFactoryConfig() );
 
                 view.hideBusyIndicator();
-                createOriginalHash( view.getContent() );
+                createOriginalHash( model );
             }
 
+        };
+    }
+
+    private void addXMLSourcePage() {
+        addPage( new PageImpl( xmlViewer,
+                               SolverEditorConstants.INSTANCE.Source() ) {
+
+            @Override
+            public void onFocus() {
+                solverService.call( getToSourceRemoteCallback(),
+                                    new DefaultErrorCallback() ).toSource( versionRecordManager.getCurrentPath(),
+                                                                           model );
+            }
+        } );
+    }
+
+    private RemoteCallback<String> getToSourceRemoteCallback() {
+        return new RemoteCallback<String>() {
+            @Override
+            public void callback( String xml ) {
+                xmlViewer.setContent( xml );
+            }
         };
     }
 
@@ -118,27 +157,32 @@ public class SolverEditorPresenter
         return new Command() {
             @Override
             public void execute() {
-                solverService.call( new RemoteCallback<List<ValidationMessage>>() {
-                    @Override
-                    public void callback( final List<ValidationMessage> results ) {
-                        if ( results == null || results.isEmpty() ) {
-                            notification.fire( new NotificationEvent( CommonConstants.INSTANCE.ItemValidatedSuccessfully(),
-                                                                      NotificationEvent.NotificationType.SUCCESS ) );
-                        } else {
-                            ValidationPopup.showMessages( results );
-                        }
-                    }
-                }, new DefaultErrorCallback() ).validate( versionRecordManager.getCurrentPath(),
-                                                          view.getContent() );
+                solverService.call( getValidateRemoteCallback(),
+                                    new DefaultErrorCallback() ).validate( versionRecordManager.getCurrentPath(),
+                                                                           model );
+            }
+        };
+    }
+
+    private RemoteCallback<List<ValidationMessage>> getValidateRemoteCallback() {
+        return new RemoteCallback<List<ValidationMessage>>() {
+            @Override
+            public void callback( final List<ValidationMessage> results ) {
+                if ( results == null || results.isEmpty() ) {
+                    notification.fire( new NotificationEvent( CommonConstants.INSTANCE.ItemValidatedSuccessfully(),
+                                                              NotificationEvent.NotificationType.SUCCESS ) );
+                } else {
+                    ValidationPopup.showMessages( results );
+                }
             }
         };
     }
 
     @Override
     protected void save( String commitMessage ) {
-        solverService.call( getSaveSuccessCallback( view.getContent().hashCode() ),
+        solverService.call( getSaveSuccessCallback( model.hashCode() ),
                             new HasBusyIndicatorDefaultErrorCallback( view ) ).save( versionRecordManager.getCurrentPath(),
-                                                                                     view.getContent(),
+                                                                                     model,
                                                                                      metadata,
                                                                                      commitMessage );
     }
@@ -150,7 +194,7 @@ public class SolverEditorPresenter
 
     @OnMayClose
     public boolean mayClose() {
-        return super.mayClose( view.getContent() );
+        return super.mayClose( model );
     }
 
     @WorkbenchPartTitleDecoration
@@ -161,11 +205,6 @@ public class SolverEditorPresenter
     @WorkbenchPartTitle
     public String getTitleText() {
         return super.getTitleText();
-    }
-
-    @Override
-    public void onSourceTabSelected() {
-        updateSource( view.getContent() );
     }
 
     @WorkbenchPartView

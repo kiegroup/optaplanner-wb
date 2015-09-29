@@ -29,11 +29,9 @@ public class SolverResourceType
         extends SolverResourceTypeDefinition
         implements ClientResourceType {
 
-    private static final Image IMAGE = new Image( SolverEditorResources.INSTANCE.images().typeSolver() );
-
     @Override
     public IsWidget getIcon() {
-        return IMAGE;
+        return new Image( SolverEditorResources.INSTANCE.images().typeSolver() );
     }
 
     @Override

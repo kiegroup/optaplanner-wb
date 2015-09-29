@@ -15,32 +15,59 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import javax.inject.Inject;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorViewImpl;
-import org.uberfire.ext.widgets.common.client.ace.AceEditor;
-import org.uberfire.ext.widgets.common.client.ace.AceEditorMode;
-import org.uberfire.ext.widgets.common.client.ace.AceEditorTheme;
+import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
+import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 
 public class SolverEditorViewImpl
         extends KieEditorViewImpl
         implements SolverEditorView {
 
-    interface SolverEditorViewBinder
+    interface Binder
             extends
             UiBinder<Widget, SolverEditorViewImpl> {
 
     }
 
+    private static Binder uiBinder = GWT.create( Binder.class );
+
     private SolverEditorPresenter presenter;
 
-    private final AceEditor editor = new AceEditor();
+    @UiField(provided = true)
+    TerminationConfigForm terminationConfigForm;
 
-    public SolverEditorViewImpl() {
-        editor.startEditor();
-        editor.setMode( AceEditorMode.TEXT );
-        editor.setTheme( AceEditorTheme.CHROME );
-        initWidget( editor );
+    @UiField(provided = true)
+    ScoreDirectorFactoryForm scoreDirectorFactoryForm;
+
+    @Inject
+    public SolverEditorViewImpl( final ScoreDirectorFactoryForm scoreDirectorFactoryForm,
+                                 final TerminationConfigForm terminationConfigForm ) {
+
+        this.scoreDirectorFactoryForm = scoreDirectorFactoryForm;
+        this.terminationConfigForm = terminationConfigForm;
+
+        initWidget( uiBinder.createAndBindUi( this ) );
+    }
+
+    @Override
+    public void setPresenter( SolverEditorPresenter presenter ) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void setTerminationConfigModel( TerminationConfigModel terminationConfigModel ) {
+        terminationConfigForm.setModel( terminationConfigModel );
+    }
+
+    @Override
+    public void setScoreDirectorFactoryConfig( ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig ) {
+        scoreDirectorFactoryForm.setModel( scoreDirectorFactoryConfig );
     }
 
     @Override
@@ -49,26 +76,8 @@ public class SolverEditorViewImpl
     }
 
     @Override
-    public void setContent( final String input ) {
-        final String content;
-        if ( input == null ) {
-            content = "";
-        } else {
-            content = input;
-        }
-        editor.setText( content );
-        editor.setFocus();
-    }
-
-    @Override
-    public String getContent() {
-        return editor.getValue();
-    }
-
-    @Override
     public void onResize() {
         int height = getParent().getOffsetHeight();
-        editor.setHeight( height + "px" );
-        editor.redisplay();
+        setHeight( height + "px" );
     }
 }

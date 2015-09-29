@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.solver.backend.server;
 
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
@@ -29,6 +28,7 @@ import org.guvnor.common.services.shared.metadata.model.Overview;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.bus.server.annotations.Service;
 import org.kie.workbench.common.services.backend.service.KieService;
+import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverModelContent;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
@@ -66,10 +66,16 @@ public class SolverEditorServiceImpl
     @Inject
     private SolverResourceTypeDefinition solverResourceType;
 
+    @Inject
+    private ConfigPersistence configPersistence;
+
+    @Inject
+    private SolverValidator solverValidator;
+
     @Override
     public Path create( final Path context,
                         final String fileName,
-                        final String content,
+                        final SolverConfigModel config,
                         final String comment ) {
         try {
             final org.uberfire.java.nio.file.Path nioPath = Paths.convert( context ).resolve( fileName );
@@ -80,7 +86,7 @@ public class SolverEditorServiceImpl
             }
 
             ioService.write( nioPath,
-                             content,
+                             configPersistence.toXML( config ),
                              makeCommentedOption( comment ) );
 
             return newPath;
@@ -91,15 +97,9 @@ public class SolverEditorServiceImpl
     }
 
     @Override
-    public String load( final Path path ) {
-        try {
-            final String content = ioService.readAllString( Paths.convert( path ) );
-
-            return content;
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
-        }
+    public SolverConfigModel load( final Path path ) {
+        String xml = ioService.readAllString( Paths.convert( path ) );
+        return configPersistence.toConfig( xml );
     }
 
     @Override
@@ -120,14 +120,20 @@ public class SolverEditorServiceImpl
     }
 
     @Override
+    public String toSource( final Path path,
+                            final SolverConfigModel model ) {
+        return configPersistence.toXML( model );
+    }
+
+    @Override
     public Path save( final Path resource,
-                      final String content,
+                      final SolverConfigModel config,
                       final Metadata metadata,
                       final String comment ) {
         try {
             Metadata currentMetadata = metadataService.getMetadata( resource );
             ioService.write( Paths.convert( resource ),
-                             content,
+                             configPersistence.toXML( config ),
                              metadataService.setUpAttributes( resource,
                                                               metadata ),
                              makeCommentedOption( comment ) );
@@ -164,7 +170,7 @@ public class SolverEditorServiceImpl
                                          newName,
                                          comment );
 
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             throw ExceptionUtilities.handleException( e );
         }
     }
@@ -185,14 +191,13 @@ public class SolverEditorServiceImpl
 
     @Override
     public List<ValidationMessage> validate( final Path path,
-                                             final String content ) {
+                                             final SolverConfigModel config ) {
         try {
-            //Perform any validation of a Sovler Configuration
-            return Collections.emptyList();
+
+            return solverValidator.validate( toSource( path, config ) );
 
         } catch ( Exception e ) {
             throw ExceptionUtilities.handleException( e );
         }
     }
-
 }

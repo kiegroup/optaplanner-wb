@@ -22,14 +22,14 @@ import org.uberfire.commons.validation.PortablePreconditions;
 @Portable
 public class SolverModelContent {
 
-    private String config;
+    private SolverConfigModel config;
     private Overview overview;
 
     public SolverModelContent() {
         //Errai marshalling
     }
 
-    public SolverModelContent( final String config,
+    public SolverModelContent( final SolverConfigModel config,
                                final Overview overview ) {
         this.config = PortablePreconditions.checkNotNull( "config",
                                                           config );
@@ -37,7 +37,7 @@ public class SolverModelContent {
                                                             overview );
     }
 
-    public String getConfig() {
+    public SolverConfigModel getConfig() {
         return this.config;
     }
 

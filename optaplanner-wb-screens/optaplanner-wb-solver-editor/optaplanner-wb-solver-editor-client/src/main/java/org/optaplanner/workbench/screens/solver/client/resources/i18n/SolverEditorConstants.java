@@ -31,4 +31,26 @@ public interface SolverEditorConstants
 
     String newSolverDescription();
 
+    String Hours();
+
+    String Minutes();
+
+    String Seconds();
+
+    String Source();
+
+    String ScoreDirectorFactory();
+
+    String SpentLimit();
+
+    String UnimprovedSpendLimit();
+
+    String Days();
+
+    String ScoreDefinitionType();
+
+    String ScoreDRL();
+
+    String Termination();
+
 }

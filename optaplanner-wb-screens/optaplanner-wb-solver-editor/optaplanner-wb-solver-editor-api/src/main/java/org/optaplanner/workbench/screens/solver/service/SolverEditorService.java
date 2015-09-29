@@ -18,6 +18,8 @@ package org.optaplanner.workbench.screens.solver.service;
 import org.guvnor.common.services.shared.file.SupportsUpdate;
 import org.guvnor.common.services.shared.validation.ValidationService;
 import org.jboss.errai.bus.server.annotations.Remote;
+import org.kie.workbench.common.services.shared.source.ViewSourceService;
+import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverModelContent;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.ext.editor.commons.service.support.SupportsCopy;
@@ -29,10 +31,11 @@ import org.uberfire.ext.editor.commons.service.support.SupportsRename;
 @Remote
 public interface SolverEditorService
         extends
-        ValidationService<String>,
-        SupportsCreate<String>,
-        SupportsRead<String>,
-        SupportsUpdate<String>,
+        ValidationService<SolverConfigModel>,
+        ViewSourceService<SolverConfigModel>,
+        SupportsCreate<SolverConfigModel>,
+        SupportsRead<SolverConfigModel>,
+        SupportsUpdate<SolverConfigModel>,
         SupportsDelete,
         SupportsCopy,
         SupportsRename {
