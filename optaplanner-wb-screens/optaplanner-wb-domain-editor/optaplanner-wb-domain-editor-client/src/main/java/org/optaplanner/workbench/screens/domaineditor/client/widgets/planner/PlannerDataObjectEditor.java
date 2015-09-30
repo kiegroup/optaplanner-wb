@@ -16,11 +16,18 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.List;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ObjectEditor;
+import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
+import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.uberfire.commons.data.Pair;
 
 public class PlannerDataObjectEditor
         extends ObjectEditor
@@ -33,6 +40,7 @@ public class PlannerDataObjectEditor
         this.view = view;
         view.setPresenter( this );
         initWidget( view.asWidget() );
+        view.setPlanningSolutionScoreTypeOptions( getPlanningSolutionScoreTypeOptions() );
     }
 
     @Override
@@ -46,6 +54,12 @@ public class PlannerDataObjectEditor
     }
 
     @Override
+    public void onContextChange( DataModelerContext context ) {
+        super.onContextChange( context );
+        adjustSelectedPlanningSolutionScoreType();
+    }
+
+    @Override
     protected void loadDataObject( DataObject dataObject ) {
         clean();
         this.dataObject = dataObject;
@@ -55,6 +69,7 @@ public class PlannerDataObjectEditor
 
             view.setPlanningEntityValue( hasPlanningEntity );
             view.setPlanningSolutionValue( hasPlanningSolution );
+            view.showPlanningSolutionScoreType( hasPlanningSolution );
             view.setNotInPlanningValue( !hasPlanningEntity && !hasPlanningSolution );
         }
     }
@@ -77,6 +92,14 @@ public class PlannerDataObjectEditor
                     getName(),
                     getDataObject(),
                     PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ).execute();
+
+            if ( isPlannerSolution( getDataObject().getSuperClassName() ) ) {
+                commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
+                        getName(),
+                        getDataObject(),
+                        null ).execute();
+            }
+            view.showPlanningSolutionScoreType( false );
         }
     }
 
@@ -95,6 +118,14 @@ public class PlannerDataObjectEditor
                         getName(),
                         getDataObject(),
                         PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ).execute();
+
+                if ( isPlannerSolution( getDataObject().getSuperClassName() ) ) {
+                    commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
+                            getName(),
+                            getDataObject(),
+                            null ).execute();
+                }
+                view.showPlanningSolutionScoreType( false );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
                         getContext(),
@@ -120,15 +151,95 @@ public class PlannerDataObjectEditor
                         getName(),
                         getDataObject(),
                         PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ).execute();
-
+                commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
+                        getName(),
+                        getDataObject(),
+                        buildPlanningSolutionScoreTypeSuperClass( view.getPlanningSolutionScoreType() ) ).execute();
+                view.showPlanningSolutionScoreType( true );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
                         getContext(),
                         getName(),
                         getDataObject(),
                         PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ).execute();
-
+                commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
+                        getName(),
+                        getDataObject(),
+                        null ).execute();
+                view.showPlanningSolutionScoreType( false );
             }
         }
     }
+
+    @Override
+    public void onPlanningSolutionScoreTypeChange() {
+        String planningSolutionScoreType = view.getPlanningSolutionScoreType();
+        String superClass = buildPlanningSolutionScoreTypeSuperClass( planningSolutionScoreType );
+        if ( superClass != null ) {
+            commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
+                    getName(),
+                    getDataObject(),
+                    superClass ).execute();
+        }
+    }
+
+    protected void onDataObjectChange( @Observes DataObjectChangeEvent event ) {
+        super.onDataObjectChange( event );
+        if ( event.isFromContext( getContext() != null ? getContext().getContextId() : null ) &&
+            !event.isFrom( getName() ) &&
+            event.getChangeType() == ChangeType.SUPER_CLASS_NAME_CHANGE &&
+            getDataObject() != null &&
+            getDataObject().getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ) != null &&
+            !isPlannerSolution( getDataObject().getSuperClassName() ) &&
+            isPlannerSolution( event.getOldValue() != null ? event.getOldValue().toString() : null ) ) {
+
+            commandBuilder.buildDataObjectRemoveAnnotationCommand(
+                    getContext(),
+                    getName(),
+                    getDataObject(),
+                    PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ).execute();
+
+        }
+    }
+
+    private boolean isPlannerSolution( String superClassName ) {
+        return superClassName != null &&
+                ( superClassName.startsWith( PlannerDomainTypes.ABSTRACT_SOLUTION_CLASS_NAME ) ||
+                        superClassName.startsWith( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME ) );
+    }
+
+
+    private List<Pair<String, String>> getPlanningSolutionScoreTypeOptions() {
+        return PlannerDomainTypes.SCORE_TYPES;
+    }
+
+    private String buildPlanningSolutionScoreTypeSuperClass( String planningSolutionScoreType ) {
+        return planningSolutionScoreType != null ?
+                PlannerDomainTypes.ABSTRACT_SOLUTION_CLASS_NAME + "<"+ planningSolutionScoreType + ">" :
+                null;
+    }
+
+    private void adjustSelectedPlanningSolutionScoreType() {
+        if ( context != null && context.getEditorModelContent() != null && context.getEditorModelContent().getSource() != null ) {
+            String selectedScoreType = getSelectedPlanningSolutionTypeFromSource( context.getEditorModelContent().getSource() );
+            if ( selectedScoreType != null ) {
+                view.setPlanningSolutionScoreType( selectedScoreType );
+            } else {
+                view.setPlanningSolutionScoreType( PlannerDomainTypes.SIMPLE_SCORE_CLASS );
+            }
+        }
+    }
+
+    private String getSelectedPlanningSolutionTypeFromSource( String source ) {
+        //TODO tmp implementation to make the planner prototype work, since data modeller by definition
+        //do not manage parametrized types.
+        for ( Pair<String, String> type : PlannerDomainTypes.SCORE_TYPES ) {
+            if ( source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + type.getK1() + ">" ) ||
+                    source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + type.getK2() + ">" )) {
+                return type.getK2();
+            }
+        }
+        return null;
+    }
+
 }

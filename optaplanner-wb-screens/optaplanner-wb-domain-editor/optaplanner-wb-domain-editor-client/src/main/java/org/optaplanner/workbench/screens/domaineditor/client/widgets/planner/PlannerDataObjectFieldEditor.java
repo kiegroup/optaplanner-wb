@@ -53,6 +53,7 @@ public class PlannerDataObjectFieldEditor
     @Override
     protected void loadDataObjectField( DataObject dataObject, ObjectProperty objectField ) {
         view.clear();
+        view.showPlanningFieldPropertiesNotAvailable( true );
         this.dataObject = dataObject;
         this.objectField = objectField;
 
@@ -178,6 +179,7 @@ public class PlannerDataObjectFieldEditor
     private void loadPlanningEntitySettings( ) {
         if ( dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
             view.showPlanningEntitySettingsPanel( true );
+            view.showPlanningFieldPropertiesNotAvailable( false );
             Annotation annotation = objectField.getAnnotation( PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION );
             if ( annotation != null ) {
                 view.setPlanningVariableValue( true );
@@ -196,6 +198,7 @@ public class PlannerDataObjectFieldEditor
     private void loadPlanningSolution( ) {
         if ( dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION  ) != null ) {
             view.showPlanningSolutionSettingsPanel( true );
+            view.showPlanningFieldPropertiesNotAvailable( false );
 
             //set the ValueRangeProvider
             Annotation annotation = objectField.getAnnotation( PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION );

@@ -16,7 +16,10 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.IsWidget;
+import org.uberfire.commons.data.Pair;
 
 public interface PlannerDataObjectEditorView
         extends IsWidget {
@@ -29,6 +32,7 @@ public interface PlannerDataObjectEditorView
 
         void onPlanningSolutionChange( boolean value );
 
+        void onPlanningSolutionScoreTypeChange();
     }
 
     void setPresenter( Presenter presenter );
@@ -38,6 +42,14 @@ public interface PlannerDataObjectEditorView
     void setPlanningEntityValue( boolean value );
 
     void setPlanningSolutionValue( boolean value );
+
+    void setPlanningSolutionScoreTypeOptions( List<Pair<String, String>> planningSolutionScoreTypeOptions );
+
+    String getPlanningSolutionScoreType();
+
+    void setPlanningSolutionScoreType( String scoreType );
+
+    void showPlanningSolutionScoreType( boolean show );
 
     void clear( );
 

@@ -16,14 +16,22 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.InlineRadio;
+import org.gwtbootstrap3.extras.select.client.ui.Select;
+import org.uberfire.commons.data.Pair;
+
+import static org.kie.workbench.common.screens.datamodeller.client.util.DataModelerUtils.*;
 
 public class PlannerDataObjectEditorViewImpl
         extends Composite
@@ -44,6 +52,12 @@ public class PlannerDataObjectEditorViewImpl
 
     @UiField
     InlineRadio planningSolutionRadioButton;
+
+    @UiField
+    FormGroup planningSolutionScoreTypeGroup;
+
+    @UiField
+    Select planningSolutionScoreTypeSelector;
 
     private Presenter presenter;
 
@@ -78,6 +92,31 @@ public class PlannerDataObjectEditorViewImpl
         setPlanningSolutionValue( false );
     }
 
+    @Override
+    public void setPlanningSolutionScoreTypeOptions( List<Pair<String, String>> options ) {
+        planningSolutionScoreTypeSelector.clear();
+        if ( options != null ) {
+            for ( Pair<String, String> option : options ) {
+                planningSolutionScoreTypeSelector.add( newOption( option.getK1(), option.getK2() ));
+            }
+        }
+    }
+
+    @Override
+    public String getPlanningSolutionScoreType() {
+        return planningSolutionScoreTypeSelector.getValue();
+    }
+
+    @Override
+    public void showPlanningSolutionScoreType( boolean show ) {
+        planningSolutionScoreTypeGroup.setVisible( show );
+    }
+
+    @Override
+    public void setPlanningSolutionScoreType( String scoreType ) {
+        planningSolutionScoreTypeSelector.setValue( scoreType );
+    }
+
     @UiHandler("notInPlanningRadioButton")
     void onNotInPlanningChange( ClickEvent event ) {
         presenter.onNotInPlanningChange( notInPlanningRadioButton.getValue() );
@@ -91,6 +130,11 @@ public class PlannerDataObjectEditorViewImpl
     @UiHandler("planningSolutionRadioButton")
     void onPlanningSolutionChange( ClickEvent event ) {
         presenter.onPlanningSolutionChange( planningSolutionRadioButton.getValue() );
+    }
+
+    @UiHandler("planningSolutionScoreTypeSelector")
+    void setPlanningSolutionScoreTypeChange( ChangeEvent event ) {
+        presenter.onPlanningSolutionScoreTypeChange();
     }
 
 }

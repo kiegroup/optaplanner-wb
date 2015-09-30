@@ -37,6 +37,8 @@ public interface DomainEditorConstants
 
     String planningSolutionLabel();
 
+    String planningSolutionScoreTypeLabel();
+
     String planningSolutionSettingsLabel();
 
     String valueRangeProviderLabel();
@@ -50,5 +52,7 @@ public interface DomainEditorConstants
     String planningVariableLabel();
 
     String valueRangeProviderRefsLabel();
+
+    String planningFieldPropertiesNotAvailableLabel();
 
 }

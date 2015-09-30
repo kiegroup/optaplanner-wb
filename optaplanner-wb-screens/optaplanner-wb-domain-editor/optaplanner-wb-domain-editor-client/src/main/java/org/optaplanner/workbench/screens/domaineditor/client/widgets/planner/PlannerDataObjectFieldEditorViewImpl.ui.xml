@@ -64,6 +64,10 @@
       </b:FieldSet>
     </b:Form>
 
+    <b:Form ui:field="planningFieldPropertiesNotAvailablePanel">
+      <b:FormLabel text="{i18n.planningFieldPropertiesNotAvailableLabel}"></b:FormLabel>
+    </b:Form>
+
   </b:Container>
 
 </ui:UiBinder>

@@ -62,6 +62,9 @@ public class PlannerDataObjectFieldEditorViewImpl
     @UiField
     TextBox valueRangeProviderRefsTextBox;
 
+    @UiField
+    Form planningFieldPropertiesNotAvailablePanel;
+
     public PlannerDataObjectFieldEditorViewImpl() {
         initWidget( uiBinder.createAndBindUi( this ) );
     }
@@ -142,8 +145,14 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
+    public void showPlanningFieldPropertiesNotAvailable( boolean show ) {
+        planningFieldPropertiesNotAvailablePanel.setVisible( show );
+    }
+
+    @Override
     public void clear() {
         showPlanningEntitySettingsPanel( false );
+        showPlanningSolutionSettingsPanel( false );
         showPlanningSolutionSettingsPanel( false );
         setValueRangeProviderValue( false );
         setValueRangeProviderIdValue( null );

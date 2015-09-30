@@ -65,6 +65,8 @@ public interface PlannerDataObjectFieldEditorView
 
     void showPlanningEntitySettingsPanel( boolean show );
 
+    void showPlanningFieldPropertiesNotAvailable( boolean show );
+
     void clear();
 
 }
