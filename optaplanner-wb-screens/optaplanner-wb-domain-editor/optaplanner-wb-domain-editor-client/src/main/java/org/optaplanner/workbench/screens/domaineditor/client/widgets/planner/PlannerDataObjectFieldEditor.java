@@ -18,15 +18,22 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.Widget;
+import org.kie.workbench.common.screens.datamodeller.client.command.DataModelCommandBuilder;
 import org.kie.workbench.common.screens.datamodeller.client.command.ValuePair;
+import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandlerRegistry;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.FieldEditor;
+import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 
+@Dependent
 public class PlannerDataObjectFieldEditor
         extends FieldEditor
         implements PlannerDataObjectFieldEditorView.Presenter {
@@ -34,10 +41,18 @@ public class PlannerDataObjectFieldEditor
     private PlannerDataObjectFieldEditorView view;
 
     @Inject
-    public PlannerDataObjectFieldEditor( PlannerDataObjectFieldEditorView view ) {
+    public PlannerDataObjectFieldEditor( PlannerDataObjectFieldEditorView view,
+            DomainHandlerRegistry handlerRegistry,
+            Event<DataModelerEvent> dataModelerEvent,
+            DataModelCommandBuilder commandBuilder ) {
+        super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
-        view.setPresenter( this );
-        initWidget( view.asWidget() );
+        view.init( this );
+    }
+
+    @Override
+    public Widget asWidget() {
+        return view.asWidget();
     }
 
     @Override
@@ -172,7 +187,7 @@ public class PlannerDataObjectFieldEditor
     }
 
     @Override
-    public void clean() {
+    public void clear() {
         view.clear();
     }
 

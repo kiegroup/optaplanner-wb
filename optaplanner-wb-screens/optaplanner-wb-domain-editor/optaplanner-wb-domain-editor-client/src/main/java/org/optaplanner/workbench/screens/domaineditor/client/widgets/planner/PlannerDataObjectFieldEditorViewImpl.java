@@ -16,6 +16,9 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -28,6 +31,7 @@ import org.gwtbootstrap3.client.ui.CheckBox;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.TextBox;
 
+@Dependent
 public class PlannerDataObjectFieldEditorViewImpl
         extends Composite
         implements PlannerDataObjectFieldEditorView {
@@ -65,12 +69,13 @@ public class PlannerDataObjectFieldEditorViewImpl
     @UiField
     Form planningFieldPropertiesNotAvailablePanel;
 
+    @Inject
     public PlannerDataObjectFieldEditorViewImpl() {
         initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
-    public void setPresenter( Presenter presenter ) {
+    public void init( Presenter presenter ) {
         this.presenter = presenter;
     }
 
