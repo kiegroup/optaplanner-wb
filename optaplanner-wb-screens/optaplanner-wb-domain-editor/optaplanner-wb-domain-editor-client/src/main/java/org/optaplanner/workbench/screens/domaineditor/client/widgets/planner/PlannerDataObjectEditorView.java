@@ -18,32 +18,37 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import org.uberfire.client.mvp.UberView;
 import org.uberfire.commons.data.Pair;
 
 public interface PlannerDataObjectEditorView
-        extends IsWidget {
+        extends UberView<PlannerDataObjectEditorView.Presenter> {
 
     interface Presenter {
 
-        void onNotInPlanningChange( boolean value );
+        void onNotInPlanningChange( );
 
-        void onPlanningEntityChange( boolean value );
+        void onPlanningEntityChange( );
 
-        void onPlanningSolutionChange( boolean value );
+        void onPlanningSolutionChange( );
 
         void onPlanningSolutionScoreTypeChange();
     }
 
-    void setPresenter( Presenter presenter );
-
     void setNotInPlanningValue( boolean value );
+
+    boolean getNotInPlanningValue( );
 
     void setPlanningEntityValue( boolean value );
 
+    boolean getPlanningEntityValue( );
+
     void setPlanningSolutionValue( boolean value );
 
-    void setPlanningSolutionScoreTypeOptions( List<Pair<String, String>> planningSolutionScoreTypeOptions );
+    boolean getPlanningSolutionValue( );
+
+    void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> planningSolutionScoreTypeOptions,
+            String selectedScoreType );
 
     String getPlanningSolutionScoreType();
 

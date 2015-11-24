@@ -16,10 +16,10 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import org.uberfire.client.mvp.UberView;
 
 public interface PlannerDataObjectFieldEditorView
-        extends IsWidget {
+        extends UberView<PlannerDataObjectFieldEditorView.Presenter> {
 
     interface Presenter {
 
@@ -34,8 +34,6 @@ public interface PlannerDataObjectFieldEditorView
         void onValueRangeProviderRefsChange();
 
     }
-
-    void setPresenter( Presenter presenter );
 
     void setValueRangeProviderValue( boolean value );
 

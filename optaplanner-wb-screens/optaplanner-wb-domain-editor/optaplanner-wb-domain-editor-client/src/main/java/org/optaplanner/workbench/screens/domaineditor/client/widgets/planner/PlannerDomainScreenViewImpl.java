@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+@Dependent
 public class PlannerDomainScreenViewImpl
         extends Composite
         implements PlannerDomainScreenView {

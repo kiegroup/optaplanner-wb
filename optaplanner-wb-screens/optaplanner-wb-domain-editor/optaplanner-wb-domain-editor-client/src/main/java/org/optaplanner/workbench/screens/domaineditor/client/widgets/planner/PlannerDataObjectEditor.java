@@ -17,18 +17,25 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.Widget;
 import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
+import org.kie.workbench.common.screens.datamodeller.client.command.DataModelCommandBuilder;
+import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandlerRegistry;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ObjectEditor;
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
+import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.uberfire.commons.data.Pair;
 
+@Dependent
 public class PlannerDataObjectEditor
         extends ObjectEditor
         implements PlannerDataObjectEditorView.Presenter {
@@ -36,11 +43,18 @@ public class PlannerDataObjectEditor
     private PlannerDataObjectEditorView view;
 
     @Inject
-    public PlannerDataObjectEditor( PlannerDataObjectEditorView view ) {
+    public PlannerDataObjectEditor( PlannerDataObjectEditorView view,
+            DomainHandlerRegistry handlerRegistry,
+            Event<DataModelerEvent> dataModelerEvent,
+            DataModelCommandBuilder commandBuilder ) {
+        super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
-        view.setPresenter( this );
-        initWidget( view.asWidget() );
-        view.setPlanningSolutionScoreTypeOptions( getPlanningSolutionScoreTypeOptions() );
+        view.init( this );
+    }
+
+    @Override
+    public Widget asWidget() {
+        return view.asWidget();
     }
 
     @Override
@@ -61,7 +75,7 @@ public class PlannerDataObjectEditor
 
     @Override
     protected void loadDataObject( DataObject dataObject ) {
-        clean();
+        clear();
         this.dataObject = dataObject;
         if ( dataObject != null ) {
             boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
@@ -75,13 +89,14 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void clean() {
+    public void clear() {
         view.clear();
         view.setNotInPlanningValue( true );
     }
 
     @Override
-    public void onNotInPlanningChange( boolean value ) {
+    public void onNotInPlanningChange( ) {
+        boolean value = view.getNotInPlanningValue();
         if ( value && dataObject != null ) {
             commandBuilder.buildDataObjectRemoveAnnotationCommand( getContext(),
                     getName(),
@@ -104,7 +119,8 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void onPlanningEntityChange( boolean value ) {
+    public void onPlanningEntityChange( ) {
+        boolean value = view.getPlanningEntityValue();
         if ( dataObject != null ) {
             if ( value ) {
                 commandBuilder.buildDataObjectAddAnnotationCommand(
@@ -137,7 +153,8 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void onPlanningSolutionChange( boolean value ) {
+    public void onPlanningSolutionChange( ) {
+        boolean value = view.getPlanningSolutionValue();
         if ( dataObject != null ) {
             if ( value ) {
                 commandBuilder.buildDataObjectAddAnnotationCommand(
@@ -151,11 +168,13 @@ public class PlannerDataObjectEditor
                         getName(),
                         getDataObject(),
                         PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ).execute();
+
                 commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
                         getName(),
                         getDataObject(),
-                        buildPlanningSolutionScoreTypeSuperClass( view.getPlanningSolutionScoreType() ) ).execute();
+                        buildPlanningSolutionScoreTypeSuperClass( getByDefaultSolutionScoreType() ) ).execute();
                 view.showPlanningSolutionScoreType( true );
+                view.setPlanningSolutionScoreType( getByDefaultSolutionScoreType() );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
                         getContext(),
@@ -208,7 +227,6 @@ public class PlannerDataObjectEditor
                         superClassName.startsWith( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME ) );
     }
 
-
     private List<Pair<String, String>> getPlanningSolutionScoreTypeOptions() {
         return PlannerDomainTypes.SCORE_TYPES;
     }
@@ -222,16 +240,15 @@ public class PlannerDataObjectEditor
     private void adjustSelectedPlanningSolutionScoreType() {
         if ( context != null && context.getEditorModelContent() != null && context.getEditorModelContent().getSource() != null ) {
             String selectedScoreType = getSelectedPlanningSolutionTypeFromSource( context.getEditorModelContent().getSource() );
-            if ( selectedScoreType != null ) {
-                view.setPlanningSolutionScoreType( selectedScoreType );
-            } else {
-                view.setPlanningSolutionScoreType( PlannerDomainTypes.SIMPLE_SCORE_CLASS );
+            if ( selectedScoreType == null ) {
+                selectedScoreType = getByDefaultSolutionScoreType();
             }
+            view.initPlanningSolutionScoreTypeOptions( getPlanningSolutionScoreTypeOptions(), selectedScoreType );
         }
     }
 
     private String getSelectedPlanningSolutionTypeFromSource( String source ) {
-        //TODO tmp implementation to make the planner prototype work, since data modeller by definition
+        //Implementation to make the planner prototype work, since data modeller by definition
         //do not manage parametrized types.
         for ( Pair<String, String> type : PlannerDomainTypes.SCORE_TYPES ) {
             if ( source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + type.getK1() + ">" ) ||
@@ -240,6 +257,10 @@ public class PlannerDataObjectEditor
             }
         }
         return null;
+    }
+
+    private String getByDefaultSolutionScoreType() {
+        return PlannerDomainTypes.HARD_SOFT_SCORE_CLASS;
     }
 
 }

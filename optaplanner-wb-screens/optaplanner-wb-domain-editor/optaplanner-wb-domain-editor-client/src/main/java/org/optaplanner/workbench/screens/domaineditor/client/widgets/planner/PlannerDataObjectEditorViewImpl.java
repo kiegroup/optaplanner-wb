@@ -17,6 +17,8 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -29,10 +31,10 @@ import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.InlineRadio;
 import org.gwtbootstrap3.extras.select.client.ui.Select;
+import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.uberfire.commons.data.Pair;
 
-import static org.kie.workbench.common.screens.datamodeller.client.util.DataModelerUtils.*;
-
+@Dependent
 public class PlannerDataObjectEditorViewImpl
         extends Composite
         implements PlannerDataObjectEditorView {
@@ -61,12 +63,13 @@ public class PlannerDataObjectEditorViewImpl
 
     private Presenter presenter;
 
+    @Inject
     public PlannerDataObjectEditorViewImpl() {
         initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
-    public void setPresenter( Presenter presenter ) {
+    public void init( Presenter presenter ) {
         this.presenter = presenter;
     }
 
@@ -76,13 +79,28 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
+    public boolean getNotInPlanningValue() {
+        return notInPlanningRadioButton.getValue();
+    }
+
+    @Override
     public void setPlanningEntityValue( boolean value ) {
         planningEntityRadioButton.setValue( value );
     }
 
     @Override
+    public boolean getPlanningEntityValue() {
+        return planningEntityRadioButton.getValue();
+    }
+
+    @Override
     public void setPlanningSolutionValue( boolean value ) {
         planningSolutionRadioButton.setValue( value );
+    }
+
+    @Override
+    public boolean getPlanningSolutionValue() {
+        return planningSolutionRadioButton.getValue();
     }
 
     @Override
@@ -93,13 +111,8 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void setPlanningSolutionScoreTypeOptions( List<Pair<String, String>> options ) {
-        planningSolutionScoreTypeSelector.clear();
-        if ( options != null ) {
-            for ( Pair<String, String> option : options ) {
-                planningSolutionScoreTypeSelector.add( newOption( option.getK1(), option.getK2() ));
-            }
-        }
+    public void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> options, String selectedScoreType ) {
+        UIUtil.initList( planningSolutionScoreTypeSelector, options, selectedScoreType, false );
     }
 
     @Override
@@ -114,22 +127,22 @@ public class PlannerDataObjectEditorViewImpl
 
     @Override
     public void setPlanningSolutionScoreType( String scoreType ) {
-        planningSolutionScoreTypeSelector.setValue( scoreType );
+        UIUtil.setSelectedValue( planningSolutionScoreTypeSelector, scoreType );
     }
 
     @UiHandler("notInPlanningRadioButton")
     void onNotInPlanningChange( ClickEvent event ) {
-        presenter.onNotInPlanningChange( notInPlanningRadioButton.getValue() );
+        presenter.onNotInPlanningChange( );
     }
 
     @UiHandler("planningEntityRadioButton")
     void onPlanningEntityChange( ClickEvent event ) {
-        presenter.onPlanningEntityChange( planningEntityRadioButton.getValue() );
+        presenter.onPlanningEntityChange( );
     }
 
     @UiHandler("planningSolutionRadioButton")
     void onPlanningSolutionChange( ClickEvent event ) {
-        presenter.onPlanningSolutionChange( planningSolutionRadioButton.getValue() );
+        presenter.onPlanningSolutionChange( );
     }
 
     @UiHandler("planningSolutionScoreTypeSelector")
