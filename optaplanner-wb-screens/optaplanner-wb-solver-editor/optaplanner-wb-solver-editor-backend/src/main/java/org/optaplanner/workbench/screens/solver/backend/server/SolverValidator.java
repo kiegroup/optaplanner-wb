@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
+import org.optaplanner.core.config.SolverConfigContext;
 import org.optaplanner.core.config.solver.SolverConfig;
 
 public class SolverValidator {
@@ -34,7 +35,7 @@ public class SolverValidator {
 
         try {
             SolverConfig solverConfig = configPersistence.toSolverConfig( xml );
-            solverConfig.buildSolver( null );
+            solverConfig.buildSolver( new SolverConfigContext() );
 
         } catch (Exception e) {
             validationMessages.add( make( e ) );
