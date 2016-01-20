@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.guvnor.common.services.backend.exceptions.ExceptionUtilities;
+import org.guvnor.common.services.backend.util.CommentedOptionFactory;
 import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.metadata.model.Overview;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
@@ -39,6 +40,7 @@ import org.uberfire.ext.editor.commons.service.DeleteService;
 import org.uberfire.ext.editor.commons.service.RenameService;
 import org.uberfire.io.IOService;
 import org.uberfire.java.nio.file.FileAlreadyExistsException;
+import org.uberfire.rpc.SessionInfo;
 import org.uberfire.workbench.events.ResourceOpenedEvent;
 
 @Service
@@ -72,6 +74,12 @@ public class SolverEditorServiceImpl
     @Inject
     private SolverValidator solverValidator;
 
+    @Inject
+    private SessionInfo sessionInfo;
+
+    @Inject
+    private CommentedOptionFactory commentedOptionFactory;
+
     @Override
     public Path create( final Path context,
                         final String fileName,
@@ -87,7 +95,7 @@ public class SolverEditorServiceImpl
 
             ioService.write( nioPath,
                              configPersistence.toXML( config ),
-                             makeCommentedOption( comment ) );
+                             commentedOptionFactory.makeCommentedOption( comment ) );
 
             return newPath;
 
@@ -136,7 +144,7 @@ public class SolverEditorServiceImpl
                              configPersistence.toXML( config ),
                              metadataService.setUpAttributes( resource,
                                                               metadata ),
-                             makeCommentedOption( comment ) );
+                             commentedOptionFactory.makeCommentedOption( comment ) );
 
             fireMetadataSocialEvents( resource,
                                       currentMetadata,
