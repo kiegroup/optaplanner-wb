@@ -112,17 +112,13 @@ public class SolverEditorPresenterTest {
     }
 
     @Test
-    public void testPresenterSet() throws Exception {
-        verify( view ).setPresenter( presenter );
-    }
-
-    @Test
     public void testLoad() throws Exception {
         presenter.onStartup( path,
                              mock( PlaceRequest.class ) );
 
         verify( view ).setTerminationConfigModel( terminationConfigModel );
-        verify( view ).setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
+        verify( view ).setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig,
+                                                      path );
     }
 
     private class NotificationEventMock

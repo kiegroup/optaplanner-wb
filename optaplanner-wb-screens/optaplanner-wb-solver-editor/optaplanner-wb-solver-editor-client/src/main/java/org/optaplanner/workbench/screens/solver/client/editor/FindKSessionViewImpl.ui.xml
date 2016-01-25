@@ -21,12 +21,6 @@
 
   <ui:with field="i18n" type="org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants"/>
 
-  <ui:style>
-    .label {
-      text-align: right;
-    }
-  </ui:style>
-
   <gwt:SimplePanel>
     <bootstrap:TextBox ui:field="fileName" />
   </gwt:SimplePanel>

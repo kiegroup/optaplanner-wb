@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
+import org.uberfire.backend.vfs.Path;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -33,6 +34,10 @@ public class ScoreDirectorFactoryFormTest {
 
     @Mock
     ScoreDirectorFactoryFormView view;
+
+    @Mock
+    private Path path;
+
     private ScoreDirectorFactoryForm form;
 
     @Before
@@ -48,7 +53,7 @@ public class ScoreDirectorFactoryFormTest {
     @Test
     public void testScoreDefinitionTypesSet() throws Exception {
 
-        for (ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values()) {
+        for ( ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values() ) {
             verify( view ).addScoreDefinitionType( type );
         }
 
@@ -59,11 +64,11 @@ public class ScoreDirectorFactoryFormTest {
     @Test
     public void testSetEmptyModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        form.setModel( model );
+        form.setModel( model, path );
 
         assertEquals( ScoreDefinitionTypeModel.HARD_SOFT, model.getScoreDefinitionType() );
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.HARD_SOFT );
-        verify( view ).setScoreDrl( "" );
+        verify( view ).setKSession( "", path );
     }
 
     @Test
@@ -71,10 +76,10 @@ public class ScoreDirectorFactoryFormTest {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
         model.setScoreDrlList( new ArrayList<String>() );
-        form.setModel( model );
+        form.setModel( model, path );
 
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
-        verify( view ).setScoreDrl( "" );
+        verify( view ).setKSession( "", path );
     }
 
     @Test
@@ -85,17 +90,17 @@ public class ScoreDirectorFactoryFormTest {
         scoreDrlList.add( "some.drl" );
         model.setScoreDrlList( scoreDrlList );
 
-        form.setModel( model );
+        form.setModel( model, path );
 
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
-        verify( view ).setScoreDrl( "some.drl" );
+        verify( view ).setKSession( "some.drl", path );
     }
 
     @Test
     public void testOnNameChange() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-        form.setModel( model );
+        form.setModel( model, path );
 
         form.onFileNameChange( "hello.txt" );
 
@@ -105,7 +110,7 @@ public class ScoreDirectorFactoryFormTest {
     @Test
     public void testSelectScoreDefinitionType() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        form.setModel( model );
+        form.setModel( model, path );
 
         form.onScoreDefinitionTypeSelected( ScoreDefinitionTypeModel.HARD_SOFT.name() );
 

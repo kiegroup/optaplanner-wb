@@ -24,10 +24,12 @@ import com.google.gwt.user.client.ui.Widget;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorViewImpl;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
+import org.uberfire.backend.vfs.Path;
 
 public class SolverEditorViewImpl
         extends KieEditorViewImpl
         implements SolverEditorView {
+
 
     interface Binder
             extends
@@ -36,8 +38,6 @@ public class SolverEditorViewImpl
     }
 
     private static Binder uiBinder = GWT.create( Binder.class );
-
-    private SolverEditorPresenter presenter;
 
     @UiField(provided = true)
     TerminationConfigForm terminationConfigForm;
@@ -56,23 +56,15 @@ public class SolverEditorViewImpl
     }
 
     @Override
-    public void setPresenter( SolverEditorPresenter presenter ) {
-        this.presenter = presenter;
-    }
-
-    @Override
     public void setTerminationConfigModel( TerminationConfigModel terminationConfigModel ) {
         terminationConfigForm.setModel( terminationConfigModel );
     }
 
     @Override
-    public void setScoreDirectorFactoryConfig( ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig ) {
-        scoreDirectorFactoryForm.setModel( scoreDirectorFactoryConfig );
-    }
-
-    @Override
-    public void init( final SolverEditorPresenter presenter ) {
-        this.presenter = presenter;
+    public void setScoreDirectorFactoryConfig( final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
+                                               final Path path ) {
+        scoreDirectorFactoryForm.setModel( scoreDirectorFactoryConfig,
+                                           path );
     }
 
     @Override
