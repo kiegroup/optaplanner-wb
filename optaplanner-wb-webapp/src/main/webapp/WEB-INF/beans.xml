@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee" bean-discovery-mode="all">
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       version="1.1" bean-discovery-mode="all">
   <scan>
-    <!-- These exclusions were added by Errai to avoid deploying client-side classes to the server -->
-    <!-- End of Errai exclusions -->
-
-
-
-
-
-
-
-
+    <!-- These exclusions are added for Errai to avoid deploying client-side classes to the server -->
     <exclude name="org.optaplanner.workbench.client.**"/>
+    <exclude name="org.optaplanner.workbench.screens.domaineditor.client.**"/>
     <exclude name="org.optaplanner.workbench.screens.solver.client.**"/>
   </scan>
 </beans>
