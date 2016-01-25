@@ -17,6 +17,7 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
+import org.uberfire.backend.vfs.Path;
 
 public interface ScoreDirectorFactoryFormView
         extends IsWidget {
@@ -27,6 +28,6 @@ public interface ScoreDirectorFactoryFormView
 
     void setSelectedScoreDefinitionType( ScoreDefinitionTypeModel type );
 
-    void setScoreDrl( String fileName );
+    void setKSession( String ksessionName, final Path path );
 
 }

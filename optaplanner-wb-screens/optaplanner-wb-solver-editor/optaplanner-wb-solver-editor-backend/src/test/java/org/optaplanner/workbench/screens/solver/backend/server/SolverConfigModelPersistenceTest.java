@@ -41,11 +41,14 @@ public class SolverConfigModelPersistenceTest {
     public void testNew() throws Exception {
         SolverConfigModel config = new SolverConfigModel();
         config.setTerminationConfig( new TerminationConfigModel() );
-        config.setScoreDirectorFactoryConfig( new ScoreDirectorFactoryConfigModel() );
+        final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfigModel();
+        scoreDirectorFactoryConfig.setKSessionName( "hello" );
+        config.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
         String xml = configPersistence.toXML( config );
         assertNotNull( xml );
         assertTrue( xml.startsWith( "<solver" ) );
         assertTrue( xml.contains( "<scanAnnotatedClasses" ) );
+        assertTrue( xml.contains( "hello" ) );
         assertTrue( xml.endsWith( ">" ) );
     }
 
@@ -70,6 +73,9 @@ public class SolverConfigModelPersistenceTest {
         SolverConfigModel config = configPersistence.toConfig( loadResource( "solver.xml" ) );
 
         assertNotNull( config );
+
+        assertEquals( "testdataKsession",
+                      config.getScoreDirectorFactoryConfig().getKSessionName() );
 
         assertEquals( Long.valueOf( 30 ),
                       config.getTermination().getSecondsSpentLimit() );

@@ -24,15 +24,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.TextBox;
 
-public class FindFileViewImpl
+public class FindKSessionViewImpl
         extends Composite
-        implements FindFileView {
+        implements FindKSessionView {
 
-    private FindFile presenter;
+    private FindKSession presenter;
 
     interface Binder
             extends
-            UiBinder<Widget, FindFileViewImpl> {
+            UiBinder<Widget, FindKSessionViewImpl> {
 
     }
 
@@ -41,25 +41,22 @@ public class FindFileViewImpl
     @UiField
     TextBox fileName;
 
-//    @UiField
-//    FocusPanel findFile;
-
-    public FindFileViewImpl() {
+    public FindKSessionViewImpl() {
         initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
-    public void setPresenter( FindFile presenter ) {
+    public void setPresenter( final FindKSession presenter ) {
         this.presenter = presenter;
     }
 
     @Override
-    public void setFileName( String fileName ) {
+    public void setFileName( final String fileName ) {
         this.fileName.setText( fileName );
     }
 
-    @UiHandler("fileName")
-    public void handleChange( ChangeEvent event ) {
+    @UiHandler( "fileName" )
+    public void handleChange( final ChangeEvent event ) {
         presenter.onFileNameChange( fileName.getText() );
     }
 }
