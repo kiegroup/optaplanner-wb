@@ -24,6 +24,8 @@ public class ScoreDirectorFactoryConfigModel {
 
     protected ScoreDefinitionTypeModel scoreDefinitionType = null;
 
+    protected String ksessionName = null;
+
     protected List<String> scoreDrlList = null;
 
     public ScoreDefinitionTypeModel getScoreDefinitionType() {
@@ -32,6 +34,14 @@ public class ScoreDirectorFactoryConfigModel {
 
     public void setScoreDefinitionType( ScoreDefinitionTypeModel scoreDefinitionType ) {
         this.scoreDefinitionType = scoreDefinitionType;
+    }
+
+    public String getKSessionName() {
+        return ksessionName;
+    }
+
+    public void setKSessionName( final String ksessionName ) {
+        this.ksessionName = ksessionName;
     }
 
     public List<String> getScoreDrlList() {

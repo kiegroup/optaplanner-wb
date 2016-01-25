@@ -22,8 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.optaplanner.workbench.screens.solver.client.editor.FindFile;
-import org.optaplanner.workbench.screens.solver.client.editor.FindFileView;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -32,15 +30,15 @@ import static org.mockito.Mockito.*;
 public class FindFileTest {
 
     @Mock
-    private FindFileView view;
+    private FindKSessionView view;
 
-    private FindFile findFile;
+    private FindKSession findFile;
 
     private String currentValue;
 
     @Before
     public void setUp() throws Exception {
-        findFile = new FindFile( view );
+        findFile = new FindKSession( view );
 
         findFile.addValueChangeHandler( new ValueChangeHandler<String>() {
             @Override

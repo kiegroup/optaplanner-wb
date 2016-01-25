@@ -17,11 +17,11 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-public interface FindFileView
+public interface FindKSessionView
         extends IsWidget {
 
-    void setPresenter( FindFile findFile );
+    void setPresenter( final FindKSession findFile );
 
-    void setFileName( String fileName );
+    void setFileName( final String fileName );
 
 }

@@ -77,18 +77,11 @@ public class SolverEditorPresenter
                                   final Caller<SolverEditorService> solverService ) {
         super( view );
 
-        view.setPresenter( this );
-
         this.xmlViewer = xmlViewer;
         this.view = view;
         this.solverResourceType = solverResourceType;
         this.notification = notification;
         this.solverService = solverService;
-    }
-
-    @PostConstruct
-    public void init() {
-        view.init( this );
     }
 
     @OnStartup
@@ -122,7 +115,8 @@ public class SolverEditorPresenter
                 model = content.getConfig();
 
                 view.setTerminationConfigModel( model.getTermination() );
-                view.setScoreDirectorFactoryConfig( model.getScoreDirectorFactoryConfig() );
+                view.setScoreDirectorFactoryConfig( model.getScoreDirectorFactoryConfig(),
+                                                    versionRecordManager.getCurrentPath() );
 
                 view.hideBusyIndicator();
                 createOriginalHash( model );

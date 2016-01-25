@@ -53,4 +53,6 @@ public interface SolverEditorConstants
 
     String Termination();
 
+    String KnowledgeSession();
+
 }
