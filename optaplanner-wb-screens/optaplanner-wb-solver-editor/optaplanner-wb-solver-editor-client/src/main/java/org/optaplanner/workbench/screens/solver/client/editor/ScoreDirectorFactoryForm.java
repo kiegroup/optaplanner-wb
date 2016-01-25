@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
+import org.uberfire.backend.vfs.Path;
 
 public class ScoreDirectorFactoryForm
         implements IsWidget {
@@ -30,7 +31,7 @@ public class ScoreDirectorFactoryForm
     private ScoreDirectorFactoryConfigModel model;
 
     @Inject
-    public ScoreDirectorFactoryForm( ScoreDirectorFactoryFormView view ) {
+    public ScoreDirectorFactoryForm( final ScoreDirectorFactoryFormView view ) {
         this.view = view;
         view.setPresenter( this );
 
@@ -44,7 +45,7 @@ public class ScoreDirectorFactoryForm
         return view.asWidget();
     }
 
-    public void onScoreDefinitionTypeSelected( String typeName ) {
+    public void onScoreDefinitionTypeSelected( final String typeName ) {
         for (ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values()) {
             if ( type.name().equals( typeName ) ) {
                 model.setScoreDefinitionType( type );
@@ -53,7 +54,8 @@ public class ScoreDirectorFactoryForm
         }
     }
 
-    public void setModel( ScoreDirectorFactoryConfigModel model ) {
+    public void setModel( final ScoreDirectorFactoryConfigModel model,
+                          final Path path ) {
         this.model = model;
 
         if ( model.getScoreDefinitionType() == null ) {
@@ -63,13 +65,15 @@ public class ScoreDirectorFactoryForm
         view.setSelectedScoreDefinitionType( model.getScoreDefinitionType() );
 
         if ( model.getScoreDrlList() == null || model.getScoreDrlList().isEmpty() ) {
-            view.setScoreDrl( "" );
+            view.setKSession( "",
+                              path );
         } else {
-            view.setScoreDrl( model.getScoreDrlList().get( 0 ) );
+            view.setKSession( model.getScoreDrlList().get( 0 ),
+                              path );
         }
     }
 
-    public void onFileNameChange( String fileName ) {
+    public void onFileNameChange( final String fileName ) {
         if ( model.getScoreDrlList() == null ) {
             model.setScoreDrlList( new ArrayList<String>() );
         }

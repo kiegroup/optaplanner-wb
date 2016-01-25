@@ -19,16 +19,14 @@ import com.google.gwt.user.client.ui.RequiresResize;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorView;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
-import org.uberfire.client.mvp.UberView;
+import org.uberfire.backend.vfs.Path;
 
 public interface SolverEditorView extends KieEditorView,
-                                          RequiresResize,
-                                          UberView<SolverEditorPresenter> {
+                                          RequiresResize {
 
-    void setPresenter( SolverEditorPresenter presenter );
+    void setTerminationConfigModel( final TerminationConfigModel terminationConfigModel );
 
-    void setTerminationConfigModel( TerminationConfigModel terminationConfigModel );
-
-    void setScoreDirectorFactoryConfig( ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig );
+    void setScoreDirectorFactoryConfig( final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
+                                        final Path path );
 
 }

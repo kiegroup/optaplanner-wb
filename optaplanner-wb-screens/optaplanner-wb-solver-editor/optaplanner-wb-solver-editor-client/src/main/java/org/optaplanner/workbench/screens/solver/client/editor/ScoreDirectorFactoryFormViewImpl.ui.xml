@@ -17,10 +17,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:gwt='urn:import:com.google.gwt.user.client.ui'
-             xmlns:widgets='urn:import:org.optaplanner.workbench.screens.solver.client.editor'
+             xmlns:widgets='urn:import:org.kie.workbench.common.widgets.client.widget'
              xmlns:bootstrap='urn:import:org.gwtbootstrap3.client.ui'>
 
   <ui:with field="i18n" type="org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants"/>
+
+
+  <ui:style>
+    .list-box {
+      margin-left: 20px;
+    }
+
+  </ui:style>
 
   <bootstrap:Container fluid="true">
     <bootstrap:Legend text='{i18n.ScoreDirectorFactory}'/>
@@ -29,17 +37,17 @@
       <bootstrap:Column size="MD_2">
         <bootstrap:FormLabel text='{i18n.ScoreDefinitionType}'/>
       </bootstrap:Column>
-      <bootstrap:Column size="MD_3">
+      <bootstrap:Column size="MD_8" addStyleNames='{style.list-box}'>
         <gwt:ListBox ui:field="scoreDefinitionType"/>
       </bootstrap:Column>
     </bootstrap:Row>
 
     <bootstrap:Row>
       <bootstrap:Column size="MD_2">
-        <bootstrap:FormLabel text='{i18n.ScoreDRL}'/>
+        <bootstrap:FormLabel text='{i18n.KnowledgeSession}'/>
       </bootstrap:Column>
-      <bootstrap:Column size="MD_3">
-        <widgets:FindFile ui:field="findFile"/>
+      <bootstrap:Column size="MD_10">
+        <widgets:KSessionSelector ui:field="kSessionSelector"/>
       </bootstrap:Column>
     </bootstrap:Row>
 

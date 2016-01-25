@@ -21,14 +21,14 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-public class FindFile
+public class FindKSession
         extends HasValueChangeHandlersImpl<String>
         implements IsWidget {
 
-    private FindFileView view;
+    private FindKSessionView view;
 
     @Inject
-    public FindFile( final FindFileView view ) {
+    public FindKSession( final FindKSessionView view ) {
         this.view = view;
         view.setPresenter( this );
     }
@@ -42,7 +42,7 @@ public class FindFile
         ValueChangeEvent.fire( this, fileName );
     }
 
-    public void setFileName( String fileName ) {
+    public void setFileName( final String fileName ) {
         view.setFileName( fileName );
     }
 }
