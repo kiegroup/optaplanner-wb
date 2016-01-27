@@ -31,17 +31,13 @@ import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPerspective;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.workbench.panels.impl.MultiListWorkbenchPanelPresenter;
-import org.uberfire.client.workbench.panels.impl.SimpleWorkbenchPanelPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
-import org.uberfire.workbench.model.CompassPosition;
-import org.uberfire.workbench.model.PanelDefinition;
 import org.uberfire.workbench.model.PerspectiveDefinition;
-import org.uberfire.workbench.model.impl.PanelDefinitionImpl;
-import org.uberfire.workbench.model.impl.PartDefinitionImpl;
 import org.uberfire.workbench.model.impl.PerspectiveDefinitionImpl;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuItem;
+import org.uberfire.workbench.model.menu.MenuPosition;
 import org.uberfire.workbench.model.menu.Menus;
 
 /**
@@ -50,7 +46,7 @@ import org.uberfire.workbench.model.menu.Menus;
  * set of Perspectives for which to show the Problems Panel
  */
 @ApplicationScoped
-@WorkbenchPerspective(identifier = "AuthoringPerspective", isTransient = false)
+@WorkbenchPerspective( identifier = "AuthoringPerspective", isTransient = false )
 public class AuthoringPerspective {
 
     @Inject
@@ -70,13 +66,13 @@ public class AuthoringPerspective {
 
     @PostConstruct
     public void setup() {
-        docks.setup("AuthoringPerspective", new DefaultPlaceRequest("org.kie.guvnor.explorer"));
+        docks.setup( "AuthoringPerspective", new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) );
     }
 
     @Perspective
     public PerspectiveDefinition buildPerspective() {
         final PerspectiveDefinitionImpl perspective = new PerspectiveDefinitionImpl( MultiListWorkbenchPanelPresenter.class.getName() );
-        perspective.setName("Author");
+        perspective.setName( "Author" );
 
         return perspective;
     }
@@ -92,7 +88,15 @@ public class AuthoringPerspective {
                 .endMenu()
                 .newTopLevelMenu( AppConstants.INSTANCE.Project() )
                 .withItems( projectMenu.getMenuItems() )
-                .endMenu().build();
+                .endMenu()
+                .newTopLevelMenu( AppConstants.INSTANCE.Find() ).position( MenuPosition.RIGHT ).respondsWith( new Command() {
+                    @Override
+                    public void execute() {
+                        placeManager.goTo( "FindForm" );
+                    }
+                } )
+                .endMenu()
+                .build();
     }
 
     private List<? extends MenuItem> getExploreMenuItems() {

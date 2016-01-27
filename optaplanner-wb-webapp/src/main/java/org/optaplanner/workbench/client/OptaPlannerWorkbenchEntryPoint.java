@@ -47,14 +47,13 @@ import org.uberfire.client.menu.CustomSplashHelp;
 import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
 import org.uberfire.client.mvp.ActivityManager;
 import org.uberfire.client.mvp.PlaceManager;
-import org.uberfire.client.workbench.docks.UberfireDock;
-import org.uberfire.client.workbench.docks.UberfireDockPosition;
+import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.docks.UberfireDocks;
+import org.uberfire.client.workbench.widgets.menu.UtilityMenuBar;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.MenuFactory;
-import org.uberfire.workbench.model.menu.MenuPosition;
 import org.uberfire.workbench.model.menu.Menus;
 
 /**
@@ -90,6 +89,12 @@ public class OptaPlannerWorkbenchEntryPoint {
     @Inject
     private UberfireDocks uberfireDocks;
 
+    @Inject
+    private UtilityMenuBar utilityMenuBar;
+
+    @Inject
+    private UserMenu userMenu;
+
     @AfterInitialization
     public void startApp() {
         kieSecurityService.call( new RemoteCallback<String>() {
@@ -116,19 +121,28 @@ public class OptaPlannerWorkbenchEntryPoint {
         final AbstractWorkbenchPerspectiveActivity defaultPerspective = getDefaultPerspectiveActivity();
 
         final Menus menus = MenuFactory
-                .newTopLevelMenu( AppConstants.INSTANCE.Home() )
-                .respondsWith( new Command() {
-                    @Override
-                    public void execute() {
-                        if ( defaultPerspective != null ) {
-                            placeManager.goTo( new DefaultPlaceRequest( defaultPerspective.getIdentifier() ) );
-                        } else {
-                            Window.alert( "Default perspective not found." );
-                        }
-                    }
-                } )
+                .newTopLevelMenu( AppConstants.INSTANCE.Home() ).place( new DefaultPlaceRequest( defaultPerspective.getIdentifier() ) ).endMenu()
+                .newTopLevelMenu( "Authoring" ).perspective( "AuthoringPerspective" ).endMenu()
+                .newTopLevelMenu( AppConstants.INSTANCE.MenuRepositories() ).perspective( "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective" ).endMenu()
+                .newTopLevelMenu( AppConstants.INSTANCE.AdministrationPerspectiveName() ).perspective( "org.optaplanner.workbench.client.perspectives.AdministrationPerspective" ).endMenu()
+                .build();
+
+        menubar.addMenus( menus );
+
+        final Menus utilityMenus = MenuFactory
+                .newTopLevelCustomMenu( iocManager.lookupBean( CustomSplashHelp.class ).getInstance() )
                 .endMenu()
-                .newTopLevelMenu( AppConstants.INSTANCE.Logout() )
+                .newTopLevelCustomMenu( iocManager.lookupBean( AboutMenuBuilder.class ).getInstance() )
+                .endMenu()
+                .newTopLevelCustomMenu( iocManager.lookupBean( ResetPerspectivesMenuBuilder.class ).getInstance() )
+                .endMenu()
+                .newTopLevelCustomMenu( userMenu )
+                .endMenu()
+                .build();
+
+        utilityMenuBar.addMenus( utilityMenus );
+
+        final Menus userMenus = MenuFactory.newTopLevelMenu( AppConstants.INSTANCE.Logout() )
                 .respondsWith( new Command() {
                     @Override
                     public void execute() {
@@ -136,24 +150,9 @@ public class OptaPlannerWorkbenchEntryPoint {
                     }
                 } )
                 .endMenu()
-                .newTopLevelMenu( AppConstants.INSTANCE.Find() )
-                .position( MenuPosition.RIGHT )
-                .respondsWith( new Command() {
-                    @Override
-                    public void execute() {
-                        placeManager.goTo( "FindForm" );
-                    }
-                } )
-                .endMenu()
-                .newTopLevelCustomMenu( iocManager.lookupBean( CustomSplashHelp.class ).getInstance() )
-                .endMenu()
-                .newTopLevelCustomMenu( iocManager.lookupBean( AboutMenuBuilder.class ).getInstance() )
-                .endMenu()
-                .newTopLevelCustomMenu( iocManager.lookupBean( ResetPerspectivesMenuBuilder.class ).getInstance() )
-                .endMenu()
                 .build();
 
-        menubar.addMenus( menus );
+        userMenu.addMenus( userMenus );
     }
 
     private AbstractWorkbenchPerspectiveActivity getDefaultPerspectiveActivity() {
@@ -188,7 +187,7 @@ public class OptaPlannerWorkbenchEntryPoint {
                                   return true;
                               }
                           }
-                        ).logout();
+        ).logout();
     }
 
     //Fade out the "Loading application" pop-up
