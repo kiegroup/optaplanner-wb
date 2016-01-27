@@ -21,19 +21,18 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.guvnor.m2repo.client.event.M2RepoRefreshEvent;
 import org.guvnor.m2repo.client.event.M2RepoSearchEvent;
 import org.guvnor.m2repo.client.upload.UploadFormPresenter;
 import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.kie.workbench.common.widgets.client.search.ContextualSearch;
 import org.kie.workbench.common.widgets.client.search.SearchBehavior;
+import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPanel;
 import org.uberfire.client.annotations.WorkbenchPerspective;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.util.Layouts;
-import org.uberfire.lifecycle.OnStartup;
 import org.uberfire.mvp.Command;
 import org.uberfire.security.annotations.Roles;
 import org.uberfire.workbench.model.menu.MenuFactory;
@@ -42,10 +41,12 @@ import org.uberfire.workbench.model.menu.Menus;
 /**
  * A Perspective to show M2_REPO related screen
  */
-@Roles({ "admin" })
+@Roles( { "admin" } )
 @ApplicationScoped
-@WorkbenchPerspective(identifier = "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective")
+@WorkbenchPerspective( identifier = M2RepoPerspective.PERSPECTIVE_ID )
 public class M2RepoPerspective extends FlowPanel {
+
+    public static final String PERSPECTIVE_ID = "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective";
 
     @Inject
     private ContextualSearch contextualSearch;
@@ -63,13 +64,20 @@ public class M2RepoPerspective extends FlowPanel {
     private SyncBeanManager iocManager;
 
     @Inject
-    @WorkbenchPanel(parts = "M2RepoEditor")
+    @WorkbenchPanel( parts = "M2RepoEditor" )
     FlowPanel m2RepoEditor;
 
     @PostConstruct
     private void init() {
         Layouts.setToFillParent( m2RepoEditor );
         add( m2RepoEditor );
+        contextualSearch.setPerspectiveSearchBehavior( PERSPECTIVE_ID, new SearchBehavior() {
+            @Override
+            public void execute( String searchFilter ) {
+                searchEvents.fire( new M2RepoSearchEvent( searchFilter ) );
+            }
+
+        } );
     }
 
     @WorkbenchMenu
@@ -94,14 +102,4 @@ public class M2RepoPerspective extends FlowPanel {
                 .build();
     }
 
-    @OnStartup
-    public void onStartup() {
-        contextualSearch.setSearchBehavior( new SearchBehavior() {
-            @Override
-            public void execute( String searchFilter ) {
-                searchEvents.fire( new M2RepoSearchEvent( searchFilter ) );
-            }
-
-        } );
-    }
 }
