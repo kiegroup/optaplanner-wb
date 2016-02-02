@@ -17,7 +17,7 @@ and configure a _Run/Debug configuration_ like this:
 * Module: `optaplanner-wb-webapp`
 * User Super Dev mode: `yes`
 * GWT Modules to load: `...FastCompiledOptaPlannerWorkbench`
-* VM options: `-Xmx2g -XX:MaxPermSize=512m -Xms1g -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-8.1.0.Final/` (replace `/.../optaplanner-wb/` with your clone directory path)
+* VM options: `-Xmx2g -XX:MaxPermSize=512m -Xms1g -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-8.1.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
 * Dev Mode parameters: `-server org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher`
 * Environment variables: (none)
 
