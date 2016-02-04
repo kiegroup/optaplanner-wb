@@ -53,7 +53,6 @@ class ToSolverConfig {
             ScoreDirectorFactoryConfig config = new ScoreDirectorFactoryConfig();
 
             config.setScoreDefinitionType( create( scoreDirectorFactoryConfig.getScoreDefinitionType() ) );
-            config.setScoreDrlList( scoreDirectorFactoryConfig.getScoreDrlList() );
             config.setKsessionName( scoreDirectorFactoryConfig.getKSessionName() );
 
             return config;
