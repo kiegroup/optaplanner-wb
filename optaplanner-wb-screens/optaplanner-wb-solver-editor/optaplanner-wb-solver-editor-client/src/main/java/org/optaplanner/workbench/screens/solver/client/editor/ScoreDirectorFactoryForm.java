@@ -15,7 +15,6 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import java.util.ArrayList;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -64,24 +63,12 @@ public class ScoreDirectorFactoryForm
 
         view.setSelectedScoreDefinitionType( model.getScoreDefinitionType() );
 
-        if ( model.getScoreDrlList() == null || model.getScoreDrlList().isEmpty() ) {
-            view.setKSession( "",
-                              path );
-        } else {
-            view.setKSession( model.getScoreDrlList().get( 0 ),
-                              path );
-        }
+
+        view.setKSession( model.getKSessionName(),
+                          path );
     }
 
-    public void onFileNameChange( final String fileName ) {
-        if ( model.getScoreDrlList() == null ) {
-            model.setScoreDrlList( new ArrayList<String>() );
-        }
-
-        if ( model.getScoreDrlList().isEmpty() ) {
-            model.getScoreDrlList().add( fileName );
-        } else {
-            model.getScoreDrlList().set( 0, fileName );
-        }
+    public void onKSessionNameChange( final String ksessionName ) {
+        model.setKSessionName( ksessionName );
     }
 }

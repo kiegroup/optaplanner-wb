@@ -19,11 +19,15 @@ package org.optaplanner.workbench.screens.solver.backend.server;
 import java.util.List;
 
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
+import org.guvnor.test.TestFileSystem;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.uberfire.backend.server.util.Paths;
+import org.uberfire.backend.vfs.Path;
 
 import static org.junit.Assert.*;
 import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.*;
@@ -31,29 +35,73 @@ import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.*
 @RunWith(MockitoJUnitRunner.class)
 public class SolverValidatorTest {
 
-    @Spy
-    ConfigPersistence configPersistence = new ConfigPersistence();
+    @Mock
+    Path path;
 
-    @InjectMocks
-    SolverValidator solverValidator;
+    private SolverValidator   solverValidator;
 
-    @Test
-    public void testMissingSolutionClass() throws Exception {
-        List<ValidationMessage> result = solverValidator.validate( "<solver />" );
-        assertFalse( result.isEmpty() );
-        assertEquals( 1, result.size() );
-        assertEquals( "The solver configuration must have a solutionClass (null), if it has no scanAnnotatedClasses (null).",
-                      result.get( 0 ).getText() );
+    private TestFileSystem testFileSystem;
+
+    @Before
+    public void setUp() throws Exception {
+        testFileSystem = new TestFileSystem();
+        solverValidator = testFileSystem.getReference( SolverValidator.class );
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        testFileSystem.tearDown();
     }
 
     @Test
-    public void testFromFile() throws Exception {
-        List<ValidationMessage> result = solverValidator.validate( loadResource( "solver.xml" ) );
+    public void testProjectWorks() throws Exception {
 
-        assertFalse( result.isEmpty() );
-        assertEquals( 1, result.size() );
-        assertEquals( "The scanAnnotatedClasses (ScanAnnotatedClassesConfig()) did not find any classes with a PlanningSolution annotation.",
-                      result.get( 0 ).getText() );
+        final String url = "/ProjectWorks/src/main/resources/cb/my.solver.xml";
+
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+
+        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
+                                                                           loadResource( url ) );
+
+        for ( ValidationMessage message : messages ) {
+            System.out.println( message.getText() );
+        }
+
+        assertTrue( messages.isEmpty() );
+    }
+
+    @Test
+    public void testProjectBuildError() throws Exception {
+
+        final String url = "/ProjectBuildError/src/main/resources/cb/my.solver.xml";
+
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+
+        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
+                                                                           loadResource( url ) );
+
+        for ( ValidationMessage message : messages ) {
+            System.out.println( message.getText() );
+        }
+
+        assertFalse( messages.isEmpty() );
+    }
+
+    @Test
+    public void testProjectPlannerError() throws Exception {
+
+        final String url = "/ProjectPlannerError/src/main/resources/cb/my.solver.xml";
+
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+
+        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
+                                                                           loadResource( url ) );
+
+        for ( ValidationMessage message : messages ) {
+            System.out.println( message.getText() );
+        }
+
+        assertFalse( messages.isEmpty() );
     }
 
 }

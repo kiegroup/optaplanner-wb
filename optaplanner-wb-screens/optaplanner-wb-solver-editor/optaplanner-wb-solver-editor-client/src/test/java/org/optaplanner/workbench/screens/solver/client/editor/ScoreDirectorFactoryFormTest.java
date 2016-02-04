@@ -15,8 +15,6 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import java.util.ArrayList;
-
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,32 +66,30 @@ public class ScoreDirectorFactoryFormTest {
 
         assertEquals( ScoreDefinitionTypeModel.HARD_SOFT, model.getScoreDefinitionType() );
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.HARD_SOFT );
-        verify( view ).setKSession( "", path );
+        verify( view ).setKSession( null, path );
     }
 
     @Test
-    public void testSetEmptyScoreDrl() throws Exception {
+    public void testSetEmptyKSession() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
-        model.setScoreDrlList( new ArrayList<String>() );
         form.setModel( model, path );
 
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
-        verify( view ).setKSession( "", path );
+        verify( view ).setKSession( null, path );
     }
 
     @Test
     public void testSetModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
-        ArrayList<String> scoreDrlList = new ArrayList<String>();
-        scoreDrlList.add( "some.drl" );
-        model.setScoreDrlList( scoreDrlList );
+        model.setKSessionName( "someSession" );
+
 
         form.setModel( model, path );
 
         verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
-        verify( view ).setKSession( "some.drl", path );
+        verify( view ).setKSession( "someSession", path );
     }
 
     @Test
@@ -102,9 +98,9 @@ public class ScoreDirectorFactoryFormTest {
 
         form.setModel( model, path );
 
-        form.onFileNameChange( "hello.txt" );
+        form.onKSessionNameChange( "mySession" );
 
-        assertTrue( model.getScoreDrlList().contains( "hello.txt" ) );
+        assertEquals( "mySession", model.getKSessionName() );
     }
 
     @Test

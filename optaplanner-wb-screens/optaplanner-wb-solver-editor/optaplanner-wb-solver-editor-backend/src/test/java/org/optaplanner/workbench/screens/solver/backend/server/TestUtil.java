@@ -15,6 +15,7 @@
  */
 package org.optaplanner.workbench.screens.solver.backend.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,6 +24,10 @@ public class TestUtil {
 
     public static String loadResource( final String name ) throws Exception {
         final InputStream in = TestUtil.class.getResourceAsStream( name );
+        return loadResource( in );
+    }
+
+    public static String loadResource( final InputStream in ) throws IOException {
         final Reader reader = new InputStreamReader( in );
         final StringBuilder text = new StringBuilder();
         final char[] buf = new char[1024];

@@ -202,7 +202,8 @@ public class SolverEditorServiceImpl
                                              final SolverConfigModel config ) {
         try {
 
-            return solverValidator.validate( toSource( path, config ) );
+            return solverValidator.validate( path,
+                                             toSource( path, config ) );
 
         } catch ( Exception e ) {
             throw ExceptionUtilities.handleException( e );

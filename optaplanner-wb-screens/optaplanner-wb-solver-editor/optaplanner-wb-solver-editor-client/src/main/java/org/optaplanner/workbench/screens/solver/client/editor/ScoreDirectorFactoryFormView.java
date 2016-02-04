@@ -22,12 +22,13 @@ import org.uberfire.backend.vfs.Path;
 public interface ScoreDirectorFactoryFormView
         extends IsWidget {
 
-    void setPresenter( ScoreDirectorFactoryForm form );
+    void setPresenter( final ScoreDirectorFactoryForm form );
 
-    void addScoreDefinitionType( ScoreDefinitionTypeModel type );
+    void addScoreDefinitionType( final ScoreDefinitionTypeModel type );
 
-    void setSelectedScoreDefinitionType( ScoreDefinitionTypeModel type );
+    void setSelectedScoreDefinitionType( final ScoreDefinitionTypeModel type );
 
-    void setKSession( String ksessionName, final Path path );
+    void setKSession( final String ksessionName,
+                      final Path path );
 
 }

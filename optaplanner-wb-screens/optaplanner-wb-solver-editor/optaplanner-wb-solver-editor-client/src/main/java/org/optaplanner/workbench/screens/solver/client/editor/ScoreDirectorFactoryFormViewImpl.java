@@ -56,7 +56,7 @@ public class ScoreDirectorFactoryFormViewImpl
         this.kSessionSelector.addSelectionChangeHandler( new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange( final SelectionChangeEvent selectionChangeEvent ) {
-                presenter.onFileNameChange( kSessionSelector.getSelectedKSessionName() );
+                presenter.onKSessionNameChange( kSessionSelector.getSelectedKSessionName() );
             }
         } );
 
