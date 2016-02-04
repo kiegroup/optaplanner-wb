@@ -65,16 +65,21 @@ public class PicketLinkDefaultUsers {
 
         final Role roleAdmin = new Role( "admin" );
         final Role roleAnalyst = new Role( "analyst" );
+        final Role rolePlannermgmt = new Role( "plannermgmt" );
 
         identityManager.add( roleAdmin );
         identityManager.add( roleAnalyst );
+        identityManager.add( rolePlannermgmt );
 
         relationshipManager.add( new Grant( admin, roleAnalyst ) );
         relationshipManager.add( new Grant( admin, roleAdmin ) );
+        relationshipManager.add( new Grant( admin, rolePlannermgmt ) );
 
         relationshipManager.add( new Grant( director, roleAnalyst ) );
+        relationshipManager.add( new Grant( director, rolePlannermgmt ) );
 
         relationshipManager.add( new Grant( user, roleAnalyst ) );
+        relationshipManager.add( new Grant( user, rolePlannermgmt ) );
     }
 
 }

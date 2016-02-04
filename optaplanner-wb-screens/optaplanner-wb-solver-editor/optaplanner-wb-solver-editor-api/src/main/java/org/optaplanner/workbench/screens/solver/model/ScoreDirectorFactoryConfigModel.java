@@ -15,8 +15,6 @@
  */
 package org.optaplanner.workbench.screens.solver.model;
 
-import java.util.List;
-
 import org.jboss.errai.common.client.api.annotations.Portable;
 
 @Portable
@@ -25,8 +23,6 @@ public class ScoreDirectorFactoryConfigModel {
     protected ScoreDefinitionTypeModel scoreDefinitionType = null;
 
     protected String ksessionName = null;
-
-    protected List<String> scoreDrlList = null;
 
     public ScoreDefinitionTypeModel getScoreDefinitionType() {
         return scoreDefinitionType;
@@ -42,13 +38,5 @@ public class ScoreDirectorFactoryConfigModel {
 
     public void setKSessionName( final String ksessionName ) {
         this.ksessionName = ksessionName;
-    }
-
-    public List<String> getScoreDrlList() {
-        return scoreDrlList;
-    }
-
-    public void setScoreDrlList( List<String> scoreDrlList ) {
-        this.scoreDrlList = scoreDrlList;
     }
 }

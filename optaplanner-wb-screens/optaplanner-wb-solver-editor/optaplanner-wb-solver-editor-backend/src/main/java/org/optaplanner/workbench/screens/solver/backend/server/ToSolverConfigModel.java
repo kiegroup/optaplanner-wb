@@ -49,7 +49,6 @@ class ToSolverConfigModel {
 
             model.setScoreDefinitionType( create( scoreDirectorFactoryConfig.getScoreDefinitionType() ) );
             model.setKSessionName( scoreDirectorFactoryConfig.getKsessionName() );
-            model.setScoreDrlList( scoreDirectorFactoryConfig.getScoreDrlList() );
 
             return model;
         }
