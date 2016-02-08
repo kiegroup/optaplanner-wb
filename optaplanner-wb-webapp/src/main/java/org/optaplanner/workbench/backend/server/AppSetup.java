@@ -60,7 +60,7 @@ public class AppSetup {
     // default repository section - start
     private static final String DROOLS_WB_PLAYGROUND_SCHEME = "git";
     private static final String DROOLS_WB_PLAYGROUND_ALIAS = "uf-playground";
-    private static final String DROOLS_WB_PLAYGROUND_ORIGIN = "https://github.com/guvnorngtestuser1/guvnorng-playground.git";
+    private static final String DROOLS_WB_PLAYGROUND_ORIGIN = "https://github.com/guvnorngtestuser1/optaplanner-playground.git";
     private static final String DROOLS_WB_PLAYGROUND_UID = "guvnorngtestuser1";
     private static final String DROOLS_WB_PLAYGROUND_PWD = "test1234";
 
