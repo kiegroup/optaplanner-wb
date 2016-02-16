@@ -73,15 +73,23 @@ public class TerminationConfigFormViewImpl
     Spinner unimprovedSpendLimitDays;
 
     @Inject
-    public TerminationConfigFormViewImpl( final Spinner spentLimitDays,
-                                          final Spinner spentLimitHours,
-                                          final Spinner spentLimitMinutes,
-                                          final Spinner spentLimitSeconds,
-                                          final Spinner unimprovedSpentLimitHours,
-                                          final Spinner unimprovedSpendLimitHours,
-                                          final Spinner unimprovedSpendLimitMinutes,
-                                          final Spinner unimprovedSpendLimitSeconds ) {
-        this.spentLimitDays = spentLimitDays;
+    public TerminationConfigFormViewImpl( ) {
+        this.spentLimitDays = new Spinner( new SpinnerViewImpl() );
+        this.spentLimitHours = new Spinner( new SpinnerViewImpl() );
+        this.spentLimitMinutes = new Spinner( new SpinnerViewImpl() );
+        this.spentLimitSeconds = new Spinner( new SpinnerViewImpl() );
+        this.unimprovedSpendLimitDays = new Spinner( new SpinnerViewImpl() );
+        this.unimprovedSpendLimitHours = new Spinner( new SpinnerViewImpl() );
+        this.unimprovedSpendLimitMinutes = new Spinner( new SpinnerViewImpl() );
+        this.unimprovedSpendLimitSeconds = new Spinner( new SpinnerViewImpl() );
+
+
+        initWidget( uiBinder.createAndBindUi( this ) );
+
+        addValueChangeHandlers();
+    }
+
+    private void addValueChangeHandlers() {
         this.spentLimitDays.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
@@ -89,21 +97,18 @@ public class TerminationConfigFormViewImpl
             }
         } );
 
-        this.spentLimitHours = spentLimitHours;
         this.spentLimitHours.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onHoursSpentLimitChange( event.getValue() );
             }
         } );
-        this.spentLimitMinutes = spentLimitMinutes;
         this.spentLimitMinutes.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onMinutesSpentLimitChange( event.getValue() );
             }
         } );
-        this.spentLimitSeconds = spentLimitSeconds;
         this.spentLimitSeconds.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
@@ -111,36 +116,30 @@ public class TerminationConfigFormViewImpl
             }
         } );
 
-        this.unimprovedSpendLimitDays = unimprovedSpentLimitHours;
         this.unimprovedSpendLimitDays.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onUnimprovedDaysSpentLimitChange( event.getValue() );
             }
         } );
-        this.unimprovedSpendLimitHours = unimprovedSpendLimitHours;
         this.unimprovedSpendLimitHours.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onUnimprovedHoursSpentLimit( event.getValue() );
             }
         } );
-        this.unimprovedSpendLimitMinutes = unimprovedSpendLimitMinutes;
         this.unimprovedSpendLimitMinutes.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onUnimprovedMinutesSpentLimit( event.getValue() );
             }
         } );
-        this.unimprovedSpendLimitSeconds = unimprovedSpendLimitSeconds;
         this.unimprovedSpendLimitSeconds.addValueChangeHandler( new ValueChangeHandler<Long>() {
             @Override
             public void onValueChange( ValueChangeEvent<Long> event ) {
                 presenter.onUnimprovedSecondsSpentLimit( event.getValue() );
             }
         } );
-
-        initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
