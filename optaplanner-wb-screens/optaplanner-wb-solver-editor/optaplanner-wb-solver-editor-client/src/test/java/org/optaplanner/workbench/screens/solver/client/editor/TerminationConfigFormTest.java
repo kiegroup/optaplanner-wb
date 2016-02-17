@@ -188,6 +188,66 @@ public class TerminationConfigFormTest {
         assertNull( model.getUnimprovedSecondsSpentLimit() );
     }
 
+    @Test
+    public void testEnableSpentLimit() throws Exception {
+        form.setModel( new TerminationConfigModel() );
+        verify( view ).showSpentLimit( false );
+        reset( view );
+
+        TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setDaysSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setHoursSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setMinutesSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setSecondsSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showSpentLimit( true );
+    }
+
+    @Test
+    public void testEnableUnimprovedSpentLimit() throws Exception {
+        form.setModel( new TerminationConfigModel() );
+        verify( view ).showUnimprovedSpentLimit( false );
+        reset( view );
+
+        TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setUnimprovedDaysSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showUnimprovedSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setUnimprovedHoursSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showUnimprovedSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setUnimprovedMinutesSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showUnimprovedSpentLimit( true );
+        reset( view );
+
+        terminationConfigModel = new TerminationConfigModel();
+        terminationConfigModel.setUnimprovedSecondsSpentLimit( 1L );
+        form.setModel( terminationConfigModel );
+        verify( view ).showUnimprovedSpentLimit( true );
+    }
+
     private TerminationConfigModel getModel() {
         TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
 
