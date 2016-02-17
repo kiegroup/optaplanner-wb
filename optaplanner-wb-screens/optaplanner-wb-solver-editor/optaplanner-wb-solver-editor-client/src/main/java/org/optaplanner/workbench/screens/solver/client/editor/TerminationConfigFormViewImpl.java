@@ -189,6 +189,7 @@ public class TerminationConfigFormViewImpl
 
     @Override
     public void showSpentLimit( final boolean show ) {
+        useSpentLimit.setValue( show );
         spentLimitDays.setEnabled( show );
         spentLimitHours.setEnabled( show );
         spentLimitMinutes.setEnabled( show );
@@ -197,6 +198,7 @@ public class TerminationConfigFormViewImpl
 
     @Override
     public void showUnimprovedSpentLimit( final boolean show ) {
+        useUnimprovedSpentLimit.setValue( show );
         unimprovedSpendLimitDays.setEnabled( show );
         unimprovedSpendLimitHours.setEnabled( show );
         unimprovedSpendLimitMinutes.setEnabled( show );
