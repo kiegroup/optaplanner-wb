@@ -70,13 +70,15 @@ public class TerminationConfigForm
     }
 
     private boolean isSpentLimitSet() {
-        return model.getHoursSpentLimit() != null
+        return model.getDaysSpentLimit() != null
+                ||model.getHoursSpentLimit() != null
                 || model.getMinutesSpentLimit() != null
                 || model.getSecondsSpentLimit() != null;
     }
 
     private boolean isUnimprovedSpentLimitSet() {
-        return model.getUnimprovedHoursSpentLimit() != null
+        return model.getUnimprovedDaysSpentLimit() != null
+                ||model.getUnimprovedHoursSpentLimit() != null
                 || model.getUnimprovedMinutesSpentLimit() != null
                 || model.getUnimprovedSecondsSpentLimit() != null;
     }
