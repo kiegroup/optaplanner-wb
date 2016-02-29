@@ -16,10 +16,35 @@ and configure a _Run/Debug configuration_ like this:
 * Type: GWT configuration
 * Module: `optaplanner-wb-webapp`
 * User Super Dev mode: `yes`
-* GWT Modules to load: `...FastCompiledOptaPlannerWorkbench`
-* VM options: `-Xmx2g -XX:MaxPermSize=512m -Xms1g -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-8.1.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
+* GWT Modules to load: `All` (only 1 option, default)
+* VM options: `-Xmx4G -Xms1G -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-8.1.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
 * Dev Mode parameters: `-server org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher`
-* Environment variables: (none)
+* Environment variables: (none, default)
+* Start page: `optaplanner-wb.html` (default)
+
+== Advanced development start
+
+Add the upstream wb projects too, because you might want to make changes on those too:
+
+* Git clone: `guvnor`, `kie-wb-common`, `drools-wb` too (besides `optaplanner-wb`)
+* Import them all in the *same* IntelliJ project
+* Configure a GWT configuration as mentioned above.
+** It is likely crash with `Too many open files` in IntelliJ on linux.
+*** Use this to fix that:
++
+----
+$ sudo echo "fs.inotify.max_user_watches = 8388608" >> /etc/sysctl.conf
+$ sudo echo "fs.inotify.max_user_instances = 8388608" >> /etc/sysctl.conf
+$ sudo sysctl -p
+... (no errors)
+$ ulimit -n
+1024
+$ sudo echo "*       	soft    nofile  102400" >> /etc/security/limits.conf
+$ sudo echo "*       	hard    nofile  102400" >> /etc/security/limits.conf
+$ sudo reboot
+$ ulimit -n
+102400
+----
 
 == Developing Drools, OptaPlanner and jBPM
 
