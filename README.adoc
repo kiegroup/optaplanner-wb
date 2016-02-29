@@ -30,7 +30,8 @@ Add the upstream wb projects too, because you might want to make changes on thos
 * Import them all in the *same* IntelliJ project
 * Configure a GWT configuration as mentioned above.
 ** It is likely crash with `Too many open files` in IntelliJ on linux.
-*** Use this to fix that:+
+*** Use this to fix that:
++
 ----
 $ sudo echo "fs.inotify.max_user_watches = 8388608" >> /etc/sysctl.conf
 $ sudo echo "fs.inotify.max_user_instances = 8388608" >> /etc/sysctl.conf
