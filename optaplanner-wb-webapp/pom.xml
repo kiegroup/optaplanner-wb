@@ -144,11 +144,13 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-simple-docks-client</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -471,6 +473,7 @@
     <dependency>
       <groupId>org.kie.uberfire</groupId>
       <artifactId>kie-uberfire-social-activities-client</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -732,13 +735,11 @@
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-api</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-client</artifactId>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-backend</artifactId>
@@ -748,13 +749,11 @@
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-domain-editor-api</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-domain-editor-client</artifactId>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-domain-editor-backend</artifactId>
@@ -825,6 +824,7 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-cdi-client</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
