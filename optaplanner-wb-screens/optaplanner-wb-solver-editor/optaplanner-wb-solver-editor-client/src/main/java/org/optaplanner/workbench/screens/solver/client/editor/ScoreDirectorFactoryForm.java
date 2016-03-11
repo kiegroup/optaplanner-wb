@@ -69,6 +69,10 @@ public class ScoreDirectorFactoryForm
     }
 
     public void onKSessionNameChange( final String ksessionName ) {
-        model.setKSessionName( ksessionName );
+        if ( "defaultKieSession".equals( ksessionName ) ) {
+            model.setKSessionName( null );
+        } else {
+            model.setKSessionName( ksessionName );
+        }
     }
 }
