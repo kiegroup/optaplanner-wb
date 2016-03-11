@@ -81,5 +81,18 @@ public class SolverConfigModelPersistenceTest {
                       config.getTermination().getSecondsSpentLimit() );
     }
 
+    @Test
+    public void testFromFileNoKSessionName() throws Exception {
+        SolverConfigModel config = configPersistence.toConfig( loadResource( "ksessionNameNull.solver.xml" ) );
+
+        assertNotNull( config );
+
+        assertEquals( null,
+                      config.getScoreDirectorFactoryConfig().getKSessionName() );
+
+        assertEquals( Long.valueOf( 30 ),
+                      config.getTermination().getSecondsSpentLimit() );
+    }
+
 
 }
