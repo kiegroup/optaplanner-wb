@@ -267,7 +267,7 @@ public class AppSetup {
             if ( repository != null ) {
                 final String projectLocation = repository.getUri() + ioService.getFileSystem( URI.create( repository.getUri() ) ).getSeparator() + artifact;
                 if ( !ioService.exists( ioService.get( URI.create( projectLocation ) ) ) ) {
-                    projectService.newProject( repository,
+                    projectService.newProject( repository.getBranchRoot( repository.getDefaultBranch() ),
                                                new POM( gav ),
                                                "/" );
                 }
