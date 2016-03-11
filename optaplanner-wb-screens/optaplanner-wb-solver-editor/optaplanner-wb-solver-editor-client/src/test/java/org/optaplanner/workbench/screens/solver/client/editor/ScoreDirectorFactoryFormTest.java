@@ -104,6 +104,28 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
+    public void testOnNameChangeToDefault() throws Exception {
+        ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
+
+        form.setModel( model, path );
+
+        form.onKSessionNameChange( "defaultKieSession" );
+
+        assertNull( model.getKSessionName() );
+    }
+
+    @Test
+    public void testOnNameChangeNull() throws Exception {
+        ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
+
+        form.setModel( model, path );
+
+        form.onKSessionNameChange( null );
+
+        assertEquals( null, model.getKSessionName() );
+    }
+
+    @Test
     public void testSelectScoreDefinitionType() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         form.setModel( model, path );
