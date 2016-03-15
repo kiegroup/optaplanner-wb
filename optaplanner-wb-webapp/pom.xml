@@ -141,6 +141,11 @@
       <artifactId>uberfire-widgets-commons</artifactId>
       <scope>provided</scope>
     </dependency>
+     <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-table</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
@@ -923,7 +928,7 @@
         <artifactId>gwt-maven-plugin</artifactId>
         <configuration>
           <deploy>${project.build.directory}/gwt-symbols-deploy</deploy>
-          <extraJvmArgs>-Xmx2048m -Xms1024m -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=${errai.jboss.home} -Derrai.marshalling.server.classOutput=${project.build.outputDirectory}</extraJvmArgs>
+          <extraJvmArgs>-Xmx4g -Xms1g -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=${errai.jboss.home} -Derrai.marshalling.server.classOutput=${project.build.outputDirectory}</extraJvmArgs>
           <module>org.optaplanner.workbench.OptaPlannerWorkbench</module>
           <logLevel>INFO</logLevel>
           <noServer>false</noServer>
@@ -1039,6 +1044,7 @@
             <compileSourcesArtifact>org.uberfire:uberfire-apps-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-apps-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-widgets-commons</compileSourcesArtifact>
+             <compileSourcesArtifact>org.uberfire:uberfire-widgets-table</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-widgets-service-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-widgets-core-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-widgets-properties-editor-api</compileSourcesArtifact>
