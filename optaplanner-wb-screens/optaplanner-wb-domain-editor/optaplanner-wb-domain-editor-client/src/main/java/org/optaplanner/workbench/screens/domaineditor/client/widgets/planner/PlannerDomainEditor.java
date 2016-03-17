@@ -19,10 +19,10 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.BaseDomainEditor;
+import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ContextAwareBaseDomainEditor;
 
 @Dependent
-public class PlannerDomainEditor extends BaseDomainEditor {
+public class PlannerDomainEditor extends ContextAwareBaseDomainEditor {
 
     public static final String PLANNER_DOMAIN = "PLANNER_DOMAIN";
 
