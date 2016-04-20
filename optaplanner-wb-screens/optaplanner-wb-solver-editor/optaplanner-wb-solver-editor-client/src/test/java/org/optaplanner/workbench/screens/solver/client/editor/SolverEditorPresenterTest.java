@@ -171,6 +171,10 @@ public class SolverEditorPresenterTest {
                 return null;
             }
 
+            @Override public Path copy( Path path, String newName, Path targetDirectory, String comment ) {
+                return null;
+            }
+
             @Override public Path create( Path context, String fileName, SolverConfigModel content, String comment ) {
                 return null;
             }
