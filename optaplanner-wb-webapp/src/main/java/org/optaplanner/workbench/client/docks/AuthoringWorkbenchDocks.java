@@ -23,6 +23,7 @@ import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchContext;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchContextChangeEvent;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchFocusEvent;
+import org.optaplanner.workbench.client.resources.AppResource;
 import org.uberfire.client.workbench.docks.UberfireDock;
 import org.uberfire.client.workbench.docks.UberfireDockPosition;
 import org.uberfire.client.workbench.docks.UberfireDockReadyEvent;
@@ -60,7 +61,7 @@ public class AuthoringWorkbenchDocks {
         projectExplorerDock = new UberfireDock( UberfireDockPosition.WEST, "ADJUST", projectExplorerPlaceRequest, authoringPerspectiveIdentifier ).withSize( 400 ).withLabel( "Project Explorer" );
         uberfireDocks.add(
                 projectExplorerDock,
-                new UberfireDock(UberfireDockPosition.EAST, "RANDOM", new DefaultPlaceRequest("PlannerDomainScreen"), authoringPerspectiveIdentifier).withSize(450).withLabel("OptaPlanner"),
+                new UberfireDock(UberfireDockPosition.EAST, AppResource.INSTANCE.images().optaPlannerDisabledIcon(), AppResource.INSTANCE.images().optaPlannerEnabledIcon(), new DefaultPlaceRequest("PlannerDomainScreen"), authoringPerspectiveIdentifier).withSize(450).withLabel("OptaPlanner"),
                 new UberfireDock( UberfireDockPosition.EAST, "COG", new DefaultPlaceRequest( "AdvancedDomainScreen" ), authoringPerspectiveIdentifier ).withSize( 450 ).withLabel( "Advanced" )
         );
         uberfireDocks.disable( UberfireDockPosition.EAST, authoringPerspectiveIdentifier );
