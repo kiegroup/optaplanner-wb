@@ -28,6 +28,8 @@ Add the upstream wb projects too, because you might want to make changes on thos
 
 * Git clone: `guvnor`, `kie-wb-common`, `drools-wb` too (besides `optaplanner-wb`)
 * Import them all in the *same* IntelliJ project
+* Make sure to use `Maven -> Reimport All Maven Projects` and `Maven -> Generate Sources and Update Folders for All Projects` to update module dependencies
+* GWT-2.8.0 users: Disable "safe writes" `Settings -> Appearance & Behavior -> System Settings -> Use "safe write"` until https://github.com/gwtproject/gwt/issues/9310 is resolved
 * Configure a GWT configuration as mentioned above.
 ** It is likely crash with `Too many open files` in IntelliJ on linux.
 *** Use this to fix that:
