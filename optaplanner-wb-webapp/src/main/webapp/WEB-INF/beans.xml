@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
        version="1.1" bean-discovery-mode="all">
   <scan>
-    <!-- These exclusions are added for Errai to avoid deploying client-side classes to the server -->
+    <!-- These exclusions are added for Weld to avoid loading client-side classes when running in Super Dev Mode -->
     <exclude name="org.drools.workbench.client.**"/>
     <exclude name="org.drools.workbench.screens.categories.client.**"/>
     <exclude name="org.drools.workbench.screens.drltext.client.**"/>
