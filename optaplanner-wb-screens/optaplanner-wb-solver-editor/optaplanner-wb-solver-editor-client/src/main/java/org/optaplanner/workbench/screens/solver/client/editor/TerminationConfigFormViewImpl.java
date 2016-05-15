@@ -18,21 +18,16 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TerminationConfigFormViewImpl
         extends Composite
         implements TerminationConfigFormView {
-
-    private TerminationConfigForm presenter;
 
     interface Binder
             extends
@@ -43,179 +38,20 @@ public class TerminationConfigFormViewImpl
     private static Binder uiBinder = GWT.create( Binder.class );
 
     @UiField(provided = true)
-    Spinner spentLimitHours;
-
-    @UiField(provided = true)
-    Spinner spentLimitMinutes;
-
-    @UiField(provided = true)
-    Spinner spentLimitSeconds;
-
-    @UiField(provided = true)
-    Spinner unimprovedSpendLimitHours;
-
-    @UiField(provided = true)
-    Spinner unimprovedSpendLimitMinutes;
-
-    @UiField(provided = true)
-    Spinner unimprovedSpendLimitSeconds;
-
-    @UiField
-    CheckBox useSpentLimit;
-
-    @UiField
-    CheckBox useUnimprovedSpentLimit;
-
-    @UiField(provided = true)
-    Spinner spentLimitDays;
-
-    @UiField(provided = true)
-    Spinner unimprovedSpendLimitDays;
+    Tree tree;
 
     public TerminationConfigFormViewImpl() {
     }
 
     @Inject
-    public TerminationConfigFormViewImpl( final Spinner spentLimitDays,
-                                          final Spinner spentLimitHours,
-                                          final Spinner spentLimitMinutes,
-                                          final Spinner spentLimitSeconds,
-                                          final Spinner unimprovedSpentLimitHours,
-                                          final Spinner unimprovedSpendLimitHours,
-                                          final Spinner unimprovedSpendLimitMinutes,
-                                          final Spinner unimprovedSpendLimitSeconds ) {
-        this.spentLimitDays = spentLimitDays;
-        this.spentLimitDays.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onDaysSpentLimitChange( event.getValue() );
-            }
-        } );
-
-        this.spentLimitHours = spentLimitHours;
-        this.spentLimitHours.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onHoursSpentLimitChange( event.getValue() );
-            }
-        } );
-        this.spentLimitMinutes = spentLimitMinutes;
-        this.spentLimitMinutes.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onMinutesSpentLimitChange( event.getValue() );
-            }
-        } );
-        this.spentLimitSeconds = spentLimitSeconds;
-        this.spentLimitSeconds.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onSecondsSpentLimitChange( event.getValue() );
-            }
-        } );
-
-        this.unimprovedSpendLimitDays = unimprovedSpentLimitHours;
-        this.unimprovedSpendLimitDays.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onUnimprovedDaysSpentLimitChange( event.getValue() );
-            }
-        } );
-        this.unimprovedSpendLimitHours = unimprovedSpendLimitHours;
-        this.unimprovedSpendLimitHours.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onUnimprovedHoursSpentLimit( event.getValue() );
-            }
-        } );
-        this.unimprovedSpendLimitMinutes = unimprovedSpendLimitMinutes;
-        this.unimprovedSpendLimitMinutes.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onUnimprovedMinutesSpentLimit( event.getValue() );
-            }
-        } );
-        this.unimprovedSpendLimitSeconds = unimprovedSpendLimitSeconds;
-        this.unimprovedSpendLimitSeconds.addValueChangeHandler( new ValueChangeHandler<Long>() {
-            @Override
-            public void onValueChange( ValueChangeEvent<Long> event ) {
-                presenter.onUnimprovedSecondsSpentLimit( event.getValue() );
-            }
-        } );
-
+    public TerminationConfigFormViewImpl( final Tree tree ) {
+        this.tree = tree;
         initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
-    public void setPresenter( TerminationConfigForm form ) {
-        this.presenter = form;
+    public void initTree( TreeItem rootTreeItem ) {
+        this.tree.addItem( rootTreeItem );
     }
 
-    @Override
-    public void setDaysSpentLimit( Long days ) {
-        spentLimitDays.setValue( days );
-    }
-
-    @Override
-    public void setHoursSpentLimit( Long hours ) {
-        spentLimitHours.setValue( hours );
-    }
-
-    @Override
-    public void setMinutesSpentLimit( Long minutes ) {
-        spentLimitMinutes.setValue( minutes );
-    }
-
-    @Override
-    public void setSecondsSpentLimit( Long seconds ) {
-        spentLimitSeconds.setValue( seconds );
-    }
-
-    @Override
-    public void setUnimprovedDaysSpentLimit( Long days ) {
-        unimprovedSpendLimitDays.setValue( days );
-    }
-
-    @Override
-    public void setUnimprovedHoursSpentLimit( Long hours ) {
-        unimprovedSpendLimitHours.setValue( hours );
-    }
-
-    @Override
-    public void setUnimprovedMinutesSpentLimit( Long minutes ) {
-        unimprovedSpendLimitMinutes.setValue( minutes );
-    }
-
-    @Override
-    public void setUnimprovedSecondsSpentLimit( Long seconds ) {
-        unimprovedSpendLimitSeconds.setValue( seconds );
-    }
-
-    @Override
-    public void showSpentLimit( final boolean show ) {
-        useSpentLimit.setValue( show );
-        spentLimitDays.setEnabled( show );
-        spentLimitHours.setEnabled( show );
-        spentLimitMinutes.setEnabled( show );
-        spentLimitSeconds.setEnabled( show );
-    }
-
-    @Override
-    public void showUnimprovedSpentLimit( final boolean show ) {
-        useUnimprovedSpentLimit.setValue( show );
-        unimprovedSpendLimitDays.setEnabled( show );
-        unimprovedSpendLimitHours.setEnabled( show );
-        unimprovedSpendLimitMinutes.setEnabled( show );
-        unimprovedSpendLimitSeconds.setEnabled( show );
-    }
-
-    @UiHandler({"useSpentLimit"})
-    public void onUseSpentLimitChange( ClickEvent event ) {
-        presenter.onUseSpentLimitChange( useSpentLimit.getValue() );
-    }
-
-    @UiHandler({"useUnimprovedSpentLimit"})
-    public void onUnimprovedSpentLimitChange( ClickEvent event ) {
-        presenter.onUseUnimprovedSpentLimitChange( useUnimprovedSpentLimit.getValue() );
-    }
 }

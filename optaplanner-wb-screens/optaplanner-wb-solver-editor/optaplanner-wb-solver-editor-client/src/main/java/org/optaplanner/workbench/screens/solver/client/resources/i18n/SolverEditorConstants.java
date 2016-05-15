@@ -31,21 +31,15 @@ public interface SolverEditorConstants
 
     String newSolverDescription();
 
-    String Hours();
+    String addTermination();
 
-    String Minutes();
+    String delete();
 
-    String Seconds();
+    String terminationValueEmpty();
 
     String Source();
 
     String ScoreDirectorFactory();
-
-    String SpentLimit();
-
-    String UnimprovedSpendLimit();
-
-    String Days();
 
     String ScoreDefinitionType();
 
@@ -53,6 +47,56 @@ public interface SolverEditorConstants
 
     String Termination();
 
+    String TerminationPopupTitle();
+
+    String CreateTerminationAndContinue();
+
+    String CreateTermination();
+
+    String Cancel();
+
     String KnowledgeSession();
+
+    String TerminationCompositionStyle();
+
+    String MillisecondsSpentLimit();
+
+    String SecondsSpentLimit();
+
+    String MinutesSpentLimit();
+
+    String HoursSpentLimit();
+
+    String DaysSpentLimit();
+
+    String UnimprovedMillisecondsSpentLimit();
+
+    String UnimprovedSecondsSpentLimit();
+
+    String UnimprovedMinutesSpentLimit();
+
+    String UnimprovedHoursSpentLimit();
+
+    String UnimprovedDaysSpentLimit();
+
+    String BestScoreLimit();
+
+    String BestScoreFeasible();
+
+    String StepCountLimit();
+
+    String UnimprovedStepCountLimit();
+
+    String ScoreCalculationCountLimit();
+
+    String NestedTermination();
+
+    String And();
+
+    String Or();
+
+    String True();
+
+    String False();
 
 }

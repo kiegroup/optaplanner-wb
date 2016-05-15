@@ -15,6 +15,8 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,90 +25,24 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
-@RunWith( GwtMockitoTestRunner.class )
+@RunWith(GwtMockitoTestRunner.class)
 public class TerminationConfigFormViewImplTest {
 
     private TerminationConfigFormViewImpl terminationConfigFormView;
 
     @Mock
-    private Spinner spentLimitDays;
-
-    @Mock
-    private Spinner spentLimitHours;
-
-    @Mock
-    private Spinner spentLimitMinutes;
-
-    @Mock
-    private Spinner spentLimitSeconds;
-
-    @Mock
-    private Spinner unimprovedSpendLimitDays;
-
-    @Mock
-    private Spinner unimprovedSpendLimitHours;
-
-    @Mock
-    private Spinner unimprovedSpendLimitMinutes;
-
-    @Mock
-    private Spinner unimprovedSpendLimitSeconds;
+    private Tree tree;
 
     @Before
     public void setUp() throws Exception {
-        terminationConfigFormView = new TerminationConfigFormViewImpl( spentLimitDays,
-                                                                       spentLimitHours,
-                                                                       spentLimitMinutes,
-                                                                       spentLimitSeconds,
-                                                                       unimprovedSpendLimitDays,
-                                                                       unimprovedSpendLimitHours,
-                                                                       unimprovedSpendLimitMinutes,
-                                                                       unimprovedSpendLimitSeconds );
-
+        terminationConfigFormView = new TerminationConfigFormViewImpl( tree );
     }
 
     @Test
-    public void testSpentLimitTrue() throws Exception {
-        terminationConfigFormView.showSpentLimit( true );
-
-        verify( terminationConfigFormView.useSpentLimit ).setValue( true );
-        verify( spentLimitDays ).setEnabled( true );
-        verify( spentLimitHours ).setEnabled( true );
-        verify( spentLimitMinutes ).setEnabled( true );
-        verify( spentLimitSeconds ).setEnabled( true );
-    }
-
-    @Test
-    public void testSpentLimitFalse() throws Exception {
-        terminationConfigFormView.showSpentLimit( false );
-
-        verify( terminationConfigFormView.useSpentLimit ).setValue( false );
-        verify( spentLimitDays ).setEnabled( false );
-        verify( spentLimitHours ).setEnabled( false );
-        verify( spentLimitMinutes ).setEnabled( false );
-        verify( spentLimitSeconds ).setEnabled( false );
-    }
-
-    @Test
-    public void testUnimprovedSpentLimitTrue() throws Exception {
-        terminationConfigFormView.showUnimprovedSpentLimit( true );
-
-        verify( terminationConfigFormView.useUnimprovedSpentLimit ).setValue( true );
-        verify( unimprovedSpendLimitDays ).setEnabled( true );
-        verify( unimprovedSpendLimitHours ).setEnabled( true );
-        verify( unimprovedSpendLimitMinutes ).setEnabled( true );
-        verify( unimprovedSpendLimitSeconds ).setEnabled( true );
-    }
-
-    @Test
-    public void testUnimprovedSpentLimitFalse() throws Exception {
-        terminationConfigFormView.showUnimprovedSpentLimit( false );
-
-        verify( terminationConfigFormView.useUnimprovedSpentLimit ).setValue( false );
-        verify( unimprovedSpendLimitDays ).setEnabled( false );
-        verify( unimprovedSpendLimitHours ).setEnabled( false );
-        verify( unimprovedSpendLimitMinutes ).setEnabled( false );
-        verify( unimprovedSpendLimitSeconds ).setEnabled( false );
+    public void testInitTree() {
+        TreeItem treeItem = new TreeItem();
+        terminationConfigFormView.initTree( treeItem );
+        verify( tree ).addItem( treeItem );
     }
 
 }

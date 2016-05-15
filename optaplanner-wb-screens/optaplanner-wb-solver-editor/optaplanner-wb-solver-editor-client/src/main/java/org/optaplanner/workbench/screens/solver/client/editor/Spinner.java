@@ -30,6 +30,8 @@ public class Spinner
     private long value = 0;
     private long max = 0;
 
+    private boolean enabled;
+
     private SpinnerView view;
 
     public Spinner() {
@@ -51,7 +53,11 @@ public class Spinner
         ValueChangeEvent.fire( this, value );
     }
 
-    public void setMax( int max ) {
+    public long getValue() {
+        return value;
+    }
+
+    public void setMax( long max ) {
         this.max = max;
     }
 
@@ -85,6 +91,7 @@ public class Spinner
     }
 
     public void setEnabled( boolean enabled ) {
+        this.enabled = enabled;
         if ( enabled ) {
             view.enable();
         } else {
@@ -92,6 +99,10 @@ public class Spinner
             value = 0;
             view.setValue( value );
         }
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override

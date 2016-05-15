@@ -23,14 +23,13 @@
 
   <ui:style>
     .text {
-      width: 25px;
       margin-top: 2px;
     }
   </ui:style>
 
-  <bootstrap:InputGroup>
+  <bootstrap:InputGroup width="100%">
     <bootstrap:FormLabel ui:field="label"/>
-    <gwt:TextBox ui:field="valueTextBox" text="0" addStyleNames='{style.text}' enabled="false"/>
+    <gwt:TextBox ui:field="valueTextBox" text="0" addStyleNames='{style.text}' enabled="false" width="100%"/>
     <bootstrap:InputGroupButton>
       <gwt:VerticalPanel>
         <gwt:FocusPanel ui:field="up" height="13px" visible="false">

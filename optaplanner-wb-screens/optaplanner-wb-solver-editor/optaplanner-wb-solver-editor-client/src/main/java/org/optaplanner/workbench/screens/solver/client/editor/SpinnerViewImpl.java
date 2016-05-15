@@ -70,6 +70,8 @@ public class SpinnerViewImpl
     @Override
     public void enable() {
         valueTextBox.setEnabled( true );
+        valueTextBox.setVisible( true );
+        label.setVisible( true );
         up.setVisible( true );
         down.setVisible( true );
     }
@@ -77,6 +79,8 @@ public class SpinnerViewImpl
     @Override
     public void disable() {
         valueTextBox.setEnabled( false );
+        valueTextBox.setVisible( false );
+        label.setVisible( false );
         up.setVisible( false );
         down.setVisible( false );
     }

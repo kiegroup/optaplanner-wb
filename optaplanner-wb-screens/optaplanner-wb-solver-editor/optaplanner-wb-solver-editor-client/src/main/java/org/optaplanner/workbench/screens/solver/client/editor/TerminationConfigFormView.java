@@ -16,30 +16,11 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.TreeItem;
 
 public interface TerminationConfigFormView
         extends IsWidget {
 
-    void setPresenter( TerminationConfigForm form );
-
-    void setDaysSpentLimit( Long days );
-
-    void setHoursSpentLimit( Long hours );
-
-    void setMinutesSpentLimit( Long minutes );
-
-    void setSecondsSpentLimit( Long seconds );
-
-    void setUnimprovedDaysSpentLimit( Long days );
-
-    void setUnimprovedHoursSpentLimit( Long hours );
-
-    void setUnimprovedMinutesSpentLimit( Long minutes );
-
-    void setUnimprovedSecondsSpentLimit( Long seconds );
-
-    void showSpentLimit(boolean show);
-
-    void showUnimprovedSpentLimit(boolean show);
+    void initTree( TreeItem rootTreeItem );
 
 }

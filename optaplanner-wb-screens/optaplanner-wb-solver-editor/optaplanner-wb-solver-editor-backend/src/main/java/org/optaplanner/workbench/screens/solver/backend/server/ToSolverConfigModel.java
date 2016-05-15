@@ -15,6 +15,9 @@
  */
 package org.optaplanner.workbench.screens.solver.backend.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
@@ -22,6 +25,7 @@ import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
+import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 
 class ToSolverConfigModel {
@@ -73,6 +77,10 @@ class ToSolverConfigModel {
         } else {
             TerminationConfigModel model = new TerminationConfigModel();
 
+            if ( terminationConfig.getTerminationCompositionStyle() != null ) {
+                model.setTerminationCompositionStyle( TerminationCompositionStyleModel.valueOf( terminationConfig.getTerminationCompositionStyle().name() ) );
+            }
+
             model.setDaysSpentLimit( terminationConfig.getDaysSpentLimit() );
             model.setHoursSpentLimit( terminationConfig.getHoursSpentLimit() );
             model.setMinutesSpentLimit( terminationConfig.getMinutesSpentLimit() );
@@ -85,6 +93,21 @@ class ToSolverConfigModel {
             model.setUnimprovedSecondsSpentLimit( terminationConfig.getUnimprovedSecondsSpentLimit() );
             model.setUnimprovedMillisecondsSpentLimit( terminationConfig.getUnimprovedMillisecondsSpentLimit() );
 
+            model.setBestScoreLimit( terminationConfig.getBestScoreLimit() );
+            model.setBestScoreFeasible( terminationConfig.getBestScoreFeasible() );
+
+            model.setStepCountLimit( terminationConfig.getStepCountLimit() );
+            model.setUnimprovedStepCountLimit( terminationConfig.getUnimprovedStepCountLimit() );
+
+            model.setScoreCalculationCountLimit( terminationConfig.getScoreCalculationCountLimit() );
+
+            if ( terminationConfig.getTerminationConfigList() != null ) {
+                List<TerminationConfigModel> nestedTerminationList = new ArrayList<>();
+                for ( TerminationConfig termination : terminationConfig.getTerminationConfigList() ) {
+                    nestedTerminationList.add( create( termination ) );
+                }
+                model.setTerminationConfigList( nestedTerminationList );
+            }
             return model;
         }
     }
