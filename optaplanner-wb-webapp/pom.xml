@@ -505,6 +505,12 @@
       <artifactId>kie-wb-common-social-home-page-backend</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-workbench-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Drools Workbench REST -->
     <dependency>
       <groupId>org.guvnor</groupId>
@@ -893,10 +899,20 @@
       <scope>provided</scope>
     </dependency>
 
-    <!--JUnit for Test scenarios -->
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt.gwtmockito</groupId>
+      <artifactId>gwtmockito</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-testing-utils</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- hack to disable sisu annotation processing (that scans client side types) -->
@@ -989,6 +1005,7 @@
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-java-editor-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-default-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-default-editor-client</compileSourcesArtifact>
+            <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-workbench-client</compileSourcesArtifact>
 
             <!-- optaplanner-wb -->
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-api</compileSourcesArtifact>

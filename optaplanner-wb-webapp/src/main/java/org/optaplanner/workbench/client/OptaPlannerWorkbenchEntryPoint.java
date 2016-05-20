@@ -15,201 +15,70 @@
  */
 package org.optaplanner.workbench.client;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 import javax.inject.Inject;
 
-import com.google.gwt.animation.client.Animation;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.RootPanel;
 import org.guvnor.common.services.shared.config.AppConfigService;
 import org.guvnor.common.services.shared.security.KieWorkbenchACL;
-import org.guvnor.common.services.shared.security.KieWorkbenchPolicy;
-import org.guvnor.common.services.shared.security.KieWorkbenchSecurityService;
-import org.jboss.errai.bus.client.api.BusErrorCallback;
-import org.jboss.errai.bus.client.api.messaging.Message;
 import org.jboss.errai.common.client.api.Caller;
-import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
-import org.jboss.errai.ioc.client.container.SyncBeanDef;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.jboss.errai.security.shared.service.AuthenticationService;
-import org.kie.workbench.common.services.shared.preferences.ApplicationPreferences;
-import org.kie.workbench.common.widgets.client.menu.AboutMenuBuilder;
-import org.kie.workbench.common.widgets.client.menu.ResetPerspectivesMenuBuilder;
+import org.kie.workbench.common.services.shared.security.KieWorkbenchSecurityService;
+import org.kie.workbench.common.services.shared.service.PlaceManagerActivityService;
+import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
+import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
-import org.uberfire.client.menu.CustomSplashHelp;
 import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
-import org.uberfire.client.mvp.ActivityManager;
-import org.uberfire.client.mvp.PlaceManager;
+import org.uberfire.client.mvp.ActivityBeansCache;
 import org.uberfire.client.views.pfly.menu.UserMenu;
-import org.uberfire.client.workbench.docks.UberfireDocks;
-import org.uberfire.client.workbench.widgets.menu.UtilityMenuBar;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
-import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
-/**
- * GWT's Entry-point for Drools Workbench
- */
 @EntryPoint
-public class OptaPlannerWorkbenchEntryPoint {
+public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
+
+    protected AppConstants constants = AppConstants.INSTANCE;
+
+    protected DefaultWorkbenchFeaturesMenusHelper menusHelper;
+
+    protected WorkbenchMenuBarPresenter menuBar;
+
+    protected Caller<AuthenticationService> authService;
+
+    protected UserMenu userMenu;
 
     @Inject
-    private Caller<AppConfigService> appConfigService;
-
-    @Inject
-    private WorkbenchMenuBarPresenter menubar;
-
-    @Inject
-    private PlaceManager placeManager;
-
-    @Inject
-    private SyncBeanManager iocManager;
-
-    @Inject
-    private ActivityManager activityManager;
-
-    @Inject
-    private KieWorkbenchACL kieACL;
-
-    @Inject
-    private Caller<KieWorkbenchSecurityService> kieSecurityService;
-
-    @Inject
-    private Caller<AuthenticationService> authService;
-
-    @Inject
-    private UberfireDocks uberfireDocks;
-
-    @Inject
-    private UtilityMenuBar utilityMenuBar;
-
-    @Inject
-    private UserMenu userMenu;
-
-    @AfterInitialization
-    public void startApp() {
-        kieSecurityService.call( new RemoteCallback<String>() {
-            public void callback( final String str ) {
-                KieWorkbenchPolicy policy = new KieWorkbenchPolicy( str );
-                kieACL.activatePolicy( policy );
-                loadPreferences();
-                setupMenu();
-                hideLoadingPopup();
-            }
-        } ).loadPolicy();
+    public OptaPlannerWorkbenchEntryPoint( final Caller<AppConfigService> appConfigService,
+                                           final Caller<KieWorkbenchSecurityService> kieSecurityService,
+                                           final Caller<PlaceManagerActivityService> pmas,
+                                           final KieWorkbenchACL kieACL,
+                                           final ActivityBeansCache activityBeansCache,
+                                           final DefaultWorkbenchFeaturesMenusHelper menusHelper,
+                                           final WorkbenchMenuBarPresenter menuBar,
+                                           final Caller<AuthenticationService> authService,
+                                           final UserMenu userMenu ) {
+        super( appConfigService, kieSecurityService, pmas, kieACL, activityBeansCache );
+        this.menusHelper = menusHelper;
+        this.menuBar = menuBar;
+        this.authService = authService;
+        this.userMenu = userMenu;
     }
 
-    private void loadPreferences() {
-        appConfigService.call( new RemoteCallback<Map<String, String>>() {
-            @Override
-            public void callback( final Map<String, String> response ) {
-                ApplicationPreferences.setUp( response );
-            }
-        } ).loadPreferences();
-    }
-
-    private void setupMenu() {
-        final AbstractWorkbenchPerspectiveActivity defaultPerspective = getDefaultPerspectiveActivity();
+    @Override
+    protected void setupMenu() {
+        final AbstractWorkbenchPerspectiveActivity defaultPerspective = menusHelper.getDefaultPerspectiveActivity();
 
         final Menus menus = MenuFactory
-                .newTopLevelMenu( AppConstants.INSTANCE.Home() ).place( new DefaultPlaceRequest( defaultPerspective.getIdentifier() ) ).endMenu()
-                .newTopLevelMenu( "Authoring" ).perspective( "AuthoringPerspective" ).endMenu()
-                .newTopLevelMenu( AppConstants.INSTANCE.MenuRepositories() ).perspective( "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective" ).endMenu()
-                .newTopLevelMenu( AppConstants.INSTANCE.AdministrationPerspectiveName() ).perspective( "org.optaplanner.workbench.client.perspectives.AdministrationPerspective" ).endMenu()
+                .newTopLevelMenu( constants.Home() ).place( new DefaultPlaceRequest( defaultPerspective.getIdentifier() ) ).endMenu()
+                .newTopLevelMenu( constants.Authoring() ).perspective( "AuthoringPerspective" ).endMenu()
+                .newTopLevelMenu( constants.MenuRepositories() ).perspective( "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective" ).endMenu()
+                .newTopLevelMenu( constants.AdministrationPerspectiveName() ).perspective( "org.optaplanner.workbench.client.perspectives.AdministrationPerspective" ).endMenu()
                 .build();
 
-        menubar.addMenus( menus );
+        menuBar.addMenus( menus );
 
-        final Menus utilityMenus = MenuFactory
-                .newTopLevelCustomMenu( iocManager.lookupBean( CustomSplashHelp.class ).getInstance() )
-                .endMenu()
-                .newTopLevelCustomMenu( iocManager.lookupBean( AboutMenuBuilder.class ).getInstance() )
-                .endMenu()
-                .newTopLevelCustomMenu( iocManager.lookupBean( ResetPerspectivesMenuBuilder.class ).getInstance() )
-                .endMenu()
-                .newTopLevelCustomMenu( userMenu )
-                .endMenu()
-                .build();
-
-        utilityMenuBar.addMenus( utilityMenus );
-
-        final Menus userMenus = MenuFactory.newTopLevelMenu( AppConstants.INSTANCE.Logout() )
-                .respondsWith( new Command() {
-                    @Override
-                    public void execute() {
-                        logout();
-                    }
-                } )
-                .endMenu()
-                .build();
-
-        userMenu.addMenus( userMenus );
+        menusHelper.addUtilitiesMenuItems();
+        menusHelper.addLogoutMenuItem();
     }
-
-    private AbstractWorkbenchPerspectiveActivity getDefaultPerspectiveActivity() {
-        AbstractWorkbenchPerspectiveActivity defaultPerspective = null;
-        final Collection<SyncBeanDef<AbstractWorkbenchPerspectiveActivity>> perspectives = iocManager.lookupBeans( AbstractWorkbenchPerspectiveActivity.class );
-        final Iterator<SyncBeanDef<AbstractWorkbenchPerspectiveActivity>> perspectivesIterator = perspectives.iterator();
-        outer_loop:
-        while ( perspectivesIterator.hasNext() ) {
-            final SyncBeanDef<AbstractWorkbenchPerspectiveActivity> perspective = perspectivesIterator.next();
-            final AbstractWorkbenchPerspectiveActivity instance = perspective.getInstance();
-            if ( instance.isDefault() ) {
-                defaultPerspective = instance;
-                break outer_loop;
-            } else {
-                iocManager.destroyBean( instance );
-            }
-        }
-        return defaultPerspective;
-    }
-
-    private void logout() {
-        authService.call( new RemoteCallback<Void>() {
-                              @Override
-                              public void callback( Void response ) {
-                                  redirect( GWT.getHostPageBaseURL() + "login.jsp" );
-                              }
-                          }, new BusErrorCallback() {
-                              @Override
-                              public boolean error( Message message,
-                                                    Throwable throwable ) {
-                                  Window.alert( "Logout failed: " + throwable );
-                                  return true;
-                              }
-                          }
-        ).logout();
-    }
-
-    //Fade out the "Loading application" pop-up
-    private void hideLoadingPopup() {
-        final Element e = RootPanel.get( "loading" ).getElement();
-
-        new Animation() {
-
-            @Override
-            protected void onUpdate( double progress ) {
-                e.getStyle().setOpacity( 1.0 - progress );
-            }
-
-            @Override
-            protected void onComplete() {
-                e.getStyle().setVisibility( Style.Visibility.HIDDEN );
-            }
-        }.run( 500 );
-    }
-
-    public static native void redirect( String url )/*-{
-        $wnd.location = url;
-    }-*/;
-
 }
