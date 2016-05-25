@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import org.kie.workbench.common.screens.projecteditor.client.menu.ProjectMenu;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcesMenu;
+import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.optaplanner.workbench.client.docks.AuthoringWorkbenchDocks;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.Perspective;
@@ -46,7 +47,7 @@ import org.uberfire.workbench.model.menu.Menus;
  * set of Perspectives for which to show the Problems Panel
  */
 @ApplicationScoped
-@WorkbenchPerspective( identifier = "AuthoringPerspective", isTransient = false )
+@WorkbenchPerspective( identifier = PerspectiveIds.AUTHORING, isTransient = false )
 public class AuthoringPerspective {
 
     @Inject
@@ -66,7 +67,7 @@ public class AuthoringPerspective {
 
     @PostConstruct
     public void setup() {
-        docks.setup( "AuthoringPerspective", new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) );
+        docks.setup( PerspectiveIds.AUTHORING, new DefaultPlaceRequest( "org.kie.guvnor.explorer" ) );
     }
 
     @Perspective
