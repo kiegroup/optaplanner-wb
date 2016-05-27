@@ -50,6 +50,7 @@
     <exclude name="org.kie.workbench.common.widgets.configresource.client.**"/>
     <exclude name="org.kie.workbench.common.widgets.decoratedgrid.client.**"/>
     <exclude name="org.kie.workbench.common.widgets.metadata.client.**"/>
+    <exclude name="org.kie.workbench.common.workbench.client.**"/>
 
     <exclude name="org.optaplanner.workbench.client.**"/>
     <exclude name="org.optaplanner.workbench.screens.domaineditor.client.**"/>

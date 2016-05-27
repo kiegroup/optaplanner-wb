@@ -31,11 +31,13 @@ public class TerminationConfigModel {
     private Long secondsSpentLimit = null;
     private Long minutesSpentLimit = null;
     private Long hoursSpentLimit = null;
+    private Long daysSpentLimit;
 
     private Long unimprovedMillisecondsSpentLimit = null;
     private Long unimprovedSecondsSpentLimit = null;
     private Long unimprovedMinutesSpentLimit = null;
     private Long unimprovedHoursSpentLimit = null;
+    private Long unimprovedDaysSpentLimit;
 
     private String bestScoreLimit = null;
     private Boolean bestScoreFeasible = null;
@@ -43,10 +45,10 @@ public class TerminationConfigModel {
     private Integer stepCountLimit = null;
     private Integer unimprovedStepCountLimit = null;
 
+    private Long scoreCalculationCountLimit = null;
+
     @XStreamImplicit(itemFieldName = "termination")
     private List<TerminationConfigModel> terminationConfigList = null;
-    private Long daysSpentLimit;
-    private Long unimprovedDaysSpentLimit;
 
     public String getTerminationClass() {
         return terminationClass;
@@ -96,6 +98,14 @@ public class TerminationConfigModel {
         this.hoursSpentLimit = hoursSpentLimit;
     }
 
+    public void setDaysSpentLimit( Long daysSpentLimit ) {
+        this.daysSpentLimit = daysSpentLimit;
+    }
+
+    public Long getDaysSpentLimit() {
+        return daysSpentLimit;
+    }
+
     public Long getUnimprovedMillisecondsSpentLimit() {
         return unimprovedMillisecondsSpentLimit;
     }
@@ -126,6 +136,14 @@ public class TerminationConfigModel {
 
     public void setUnimprovedHoursSpentLimit( Long unimprovedHoursSpentLimit ) {
         this.unimprovedHoursSpentLimit = unimprovedHoursSpentLimit;
+    }
+
+    public void setUnimprovedDaysSpentLimit( Long unimprovedDaysSpentLimit ) {
+        this.unimprovedDaysSpentLimit = unimprovedDaysSpentLimit;
+    }
+
+    public Long getUnimprovedDaysSpentLimit() {
+        return unimprovedDaysSpentLimit;
     }
 
     public String getBestScoreLimit() {
@@ -168,19 +186,12 @@ public class TerminationConfigModel {
         this.terminationConfigList = terminationConfigList;
     }
 
-    public void setDaysSpentLimit( Long daysSpentLimit ) {
-        this.daysSpentLimit = daysSpentLimit;
+    public Long getScoreCalculationCountLimit() {
+        return scoreCalculationCountLimit;
     }
 
-    public Long getDaysSpentLimit() {
-        return daysSpentLimit;
+    public void setScoreCalculationCountLimit( Long scoreCalculationCountLimit ) {
+        this.scoreCalculationCountLimit = scoreCalculationCountLimit;
     }
 
-    public void setUnimprovedDaysSpentLimit( Long unimprovedDaysSpentLimit ) {
-        this.unimprovedDaysSpentLimit = unimprovedDaysSpentLimit;
-    }
-
-    public Long getUnimprovedDaysSpentLimit() {
-        return unimprovedDaysSpentLimit;
-    }
 }
