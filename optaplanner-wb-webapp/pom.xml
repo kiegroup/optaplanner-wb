@@ -1071,6 +1071,7 @@
             <!-- Wires -->
             <compileSourcesArtifact>org.uberfire:uberfire-wires-core-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-wires-core-client</compileSourcesArtifact>
+            <compileSourcesArtifact>org.uberfire:uberfire-wires-core-grids</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-wires-core-trees</compileSourcesArtifact>
 
             <!-- UberFire -->
