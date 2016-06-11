@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2016 Red Hat, Inc. and/or its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<div id="view" class="container-fluid">
+    <div class="row">
+
+        <div id="addTerminationDiv" class="row col-xs-3 col-sm-3 col-md-3" >
+            <div id="addTerminationButtonGroup" class="btn-group col-xs-3 col-sm-3 col-md-3">
+                <button id="addTerminationButton" type="button" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-plus" ></span>
+                    <span data-i18n-key="Add"></span>
+                </button>
+                <span id="dropdownMenuList" />
+            </div>
+
+            <div id="terminationCompositionStyleDiv" class="col-xs-3 col-sm-3 col-md-3" >
+                <select id="terminationCompositionStyleSelect" class="form-control" style="width: auto">
+                    <option id="orOption" value="or" data-i18n-key="Or"></option>
+                    <option id="andOption" value="and" data-i18n-key="And"></option>
+                </select>
+            </div>
+
+            <div id="dropDownHelpIcon" class="col-xs-1 col-sm-1 col-md-1 uf-help-icon" >
+            </div>
+
+            <label id="formLabel">
+            </label>
+        </div>
+
+        <div id="terminationValuesDiv" class="col-xs-7 col-sm-7 col-md-7">
+            <div id="timeSpentDiv">
+                <form>
+                    <input id="daysSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;" />
+                    <label for="daysSpentInput" data-i18n-key="Days"></label>
+                    <input id="hoursSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="hoursSpentInput" data-i18n-key="Hours"></label>
+                    <input id="minutesSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="minutesSpentInput" data-i18n-key="Minutes"></label>
+                    <input id="secondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="secondsSpentInput" data-i18n-key="Seconds"></label>
+                    <input id="millisecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="millisecondsSpentInput" data-i18n-key="Milliseconds"></label>
+                </form>
+            </div>
+
+            <div id="unimprovedTimeSpentDiv">
+                <form>
+                    <input id="unimprovedDaysSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="unimprovedDaysSpentInput" data-i18n-key="Days"></label>
+                    <input id="unimprovedHoursSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="unimprovedHoursSpentInput" data-i18n-key="Hours"></label>
+                    <input id="unimprovedMinutesSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="unimprovedMinutesSpentInput" data-i18n-key="Minutes"></label>
+                    <input id="unimprovedSecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="unimprovedSecondsSpentInput" data-i18n-key="Seconds"></label>
+                    <input id="unimprovedMillisecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
+                    <label for="unimprovedMillisecondsSpentInput" data-i18n-key="Milliseconds"></label>
+                </form>
+            </div>
+
+            <input id="stepCountLimitInput" type="number" min="0" max="2147483647" style="width: 150px;"/>
+
+            <input id="unimprovedStepCountLimitInput" type="number" min="0" max="2147483647" style="width: 150px;"/>
+
+            <input id="scoreCalculationCountLimitInput" type="number" min="0" max="9223372036854775807" style="width: 150px;"/>
+
+            <input id="bestScoreInput" type="text"/>
+
+            <input id="bestScoreFeasibleInput" type="checkbox"/>
+
+        </div>
+
+        <div id="removeTerminationDiv" class="col-xs-2 col-sm-2 col-md-2">
+            <button id="removeTerminationButton" type="button" style="float: right;">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span data-i18n-key="Remove"></span>
+            </button>
+        </div>
+    </div>
+</div>

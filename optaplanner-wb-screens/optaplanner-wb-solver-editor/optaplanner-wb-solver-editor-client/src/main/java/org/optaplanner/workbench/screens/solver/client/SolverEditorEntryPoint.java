@@ -15,11 +15,13 @@
  */
 package org.optaplanner.workbench.screens.solver.client;
 
+import org.jboss.errai.ui.shared.api.annotations.Bundle;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 
 @EntryPoint
+@Bundle("resources/i18n/SolverEditorConstants.properties")
 public class SolverEditorEntryPoint {
 
     @AfterInitialization

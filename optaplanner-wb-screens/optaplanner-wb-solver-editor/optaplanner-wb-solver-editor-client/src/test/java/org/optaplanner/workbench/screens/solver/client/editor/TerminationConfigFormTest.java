@@ -19,12 +19,16 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.WithClassesToStub;
+import org.jboss.errai.common.client.ui.ElementWrapperWidget;
+import org.jboss.errai.ioc.client.container.SyncBeanDef;
+import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 
 import java.util.Arrays;
@@ -33,20 +37,26 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-@WithClassesToStub(TerminationTreeItemContent.class)
+@WithClassesToStub({ElementWrapperWidget.class})
 public class TerminationConfigFormTest {
 
     @Mock
     private TerminationConfigFormView view;
 
     @Mock
-    private TerminationPopup terminationPopup;
+    private SyncBeanManager beanManager;
+
+    @Mock
+    private SyncBeanDef<TerminationTreeItemContent> syncBeanDef;
+
+    private TerminationTreeItemContent terminationTreeItemContent;
 
     private TerminationConfigForm form;
 
     @Before
     public void setUp() throws Exception {
-        form = new TerminationConfigForm( view, terminationPopup );
+        form = new TerminationConfigForm( view, beanManager );
+        terminationTreeItemContent = new TerminationTreeItemContent( Mockito.mock( TerminationTreeItemContentView.class ) );
     }
 
     @Test
@@ -56,7 +66,11 @@ public class TerminationConfigFormTest {
         terminationConfigModel.setMillisecondsSpentLimit( 10l );
         List<TerminationConfigModel> terminationConfigModelList = Arrays.asList( new TerminationConfigModel() );
         terminationConfigModel.setTerminationConfigList( terminationConfigModelList );
+        when( beanManager.lookupBean( TerminationTreeItemContent.class ) ).thenReturn( syncBeanDef );
+        when (syncBeanDef.newInstance()).thenReturn( terminationTreeItemContent );
+
         form.setModel( terminationConfigModel );
+
         ArgumentCaptor<TreeItem> treeItemArgumentCaptor = ArgumentCaptor.forClass( TreeItem.class );
         verify( view ).initTree( treeItemArgumentCaptor.capture() );
 

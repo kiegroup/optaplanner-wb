@@ -17,21 +17,18 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
-import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
-import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
+import org.jboss.errai.common.client.ui.ElementWrapperWidget;
+import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigOption;
-import org.uberfire.commons.data.Pair;
 
 @Dependent
 public class TerminationConfigForm
@@ -41,73 +38,77 @@ public class TerminationConfigForm
 
     private TerminationConfigFormView view;
 
-    private TerminationPopup terminationPopup;
+    private SyncBeanManager beanManager;
 
-    private Map<TerminationConfigOption, TerminationModelManager> modelManagerMap = new HashMap<>();
+    private TreeItem rootTreeItem;
+
+    private List<TerminationTreeItemContent> terminationTreeItemContentList = new ArrayList<>();
 
     @Inject
-    public TerminationConfigForm( TerminationConfigFormView view, TerminationPopup terminationPopup ) {
+    public TerminationConfigForm( TerminationConfigFormView view, SyncBeanManager beanManager ) {
         this.view = view;
-        this.terminationPopup = terminationPopup;
-        initModelManagerMap();
+        this.beanManager = beanManager;
     }
 
-    @PostConstruct
-    public void init() {
-        terminationPopup.addPopupHandler( new TerminationPopupView.TerminationPopupHandler() {
-            @Override
-            public void onCreate( String terminationType, Pair<String, String> value, TerminationTreeItemContent treeItemContent ) {
-                handleNewTermination( terminationType, value, treeItemContent, true );
-            }
-
-            @Override
-            public void onCreateAndContinue( String terminationType, Pair<String, String> value, TerminationTreeItemContent treeItemContent ) {
-                handleNewTermination( terminationType, value, treeItemContent, false );
-            }
-
-            @Override
-            public void onCancel() {
-                terminationPopup.resetSelectedTermination();
-                terminationPopup.setErrorMessage( null );
-                terminationPopup.hide();
-            }
-        } );
+    public void displayEmptyTreeLabel( boolean visible ) {
+        view.displayEmptyTreeLabel( visible );
     }
 
-    private void handleNewTermination( String terminationType, Pair<String, String> value, TerminationTreeItemContent treeItemContent, boolean creationFinished ) {
+    public void addNewTerminationType( String terminationType, TerminationTreeItemContent treeItemContent ) {
+        TreeItem nestedTreeItem = new TreeItem();
+        insertTreeItem( treeItemContent.getTreeItem(), nestedTreeItem, TerminationConfigOption.valueOf( terminationType ) );
+        treeItemContent.getTreeItem().setState( true );
+
         TerminationConfigOption terminationConfigOption = TerminationConfigOption.valueOf( terminationType );
-        if ( !TerminationConfigOption.NESTED.equals( terminationConfigOption ) && value.getK2().isEmpty() ) {
-            terminationPopup.setErrorMessage( SolverEditorConstants.INSTANCE.terminationValueEmpty() );
+        final TerminationConfigModel terminationConfigModel;
+        if ( terminationConfigOption == TerminationConfigOption.NESTED ) {
+            TerminationConfigModel childTerminationConfigModel = new TerminationConfigModel();
+            if ( treeItemContent.getModel().getTerminationConfigList() == null ) {
+                treeItemContent.getModel().setTerminationConfigList( new ArrayList<>( 1 ) );
+            }
+            treeItemContent.getModel().getTerminationConfigList().add( childTerminationConfigModel );
+            terminationConfigModel = childTerminationConfigModel;
         } else {
-            TreeItem nestedTreeItem = new TreeItem();
-            nestedTreeItem.setState( true );
-            treeItemContent.getTreeItem().addItem( nestedTreeItem );
-            treeItemContent.getTreeItem().setState( true );
+            terminationConfigModel = treeItemContent.getModel();
+        }
+        TerminationTreeItemContent terminationTreeItemContent = createTerminationTreeItemContent( terminationConfigOption, nestedTreeItem, terminationConfigModel );
 
-            TerminationConfigModel terminationConfigModel = getModelManager( terminationConfigOption ).setTerminationValue( treeItemContent.getModel(), null, value.getK2() );
-            TerminationTreeItemContent terminationTreeItemContent = new TerminationTreeItemContent( TerminationConfigForm.this, nestedTreeItem, terminationConfigOption, terminationConfigModel, value.getK1() );
-            nestedTreeItem.setUserObject( terminationTreeItemContent );
-            nestedTreeItem.setWidget( terminationTreeItemContent );
+        terminationTreeItemContent.setNewValue( terminationConfigOption );
 
-            terminationPopup.resetSelectedTermination();
-            terminationPopup.setErrorMessage( null );
-            if ( creationFinished ) {
-                terminationPopup.hide();
-            } else {
-                terminationPopup.init( treeItemContent, getAssignableTerminationConfigOptions( treeItemContent.getModel() ) );
+        treeItemContent.removeDropDownOption( TerminationConfigOption.valueOf( terminationType ) );
+        view.displayEmptyTreeLabel( rootTreeItem.getChildCount() == 0 );
+        view.refreshTree();
+    }
+
+    private void insertTreeItem( TreeItem treeItem, TreeItem nestedTreeItem, TerminationConfigOption terminationConfigOption ) {
+        if ( treeItem.getChildCount() == 0 ) {
+            treeItem.addItem( nestedTreeItem );
+        } else {
+            for ( int i = 0; i < treeItem.getChildCount(); i++ ) {
+                TerminationTreeItemContent childTreeItemContent = (TerminationTreeItemContent) treeItem.getChild( i ).getUserObject();
+                if ( terminationConfigOption.ordinal() < childTreeItemContent.getTerminationConfigOption().ordinal() ) {
+                    treeItem.insertItem( i, nestedTreeItem );
+                    break;
+                }
+                if ( i == treeItem.getChildCount() - 1 ) {
+                    treeItem.addItem( nestedTreeItem );
+                    break;
+                }
             }
         }
     }
 
-    public List<Pair<String, String>> getAssignableTerminationConfigOptions( TerminationConfigModel terminationConfigModel ) {
-        List<Pair<String, String>> uninitializedTerminationConfigOptions = new ArrayList<>();
-        for ( TerminationConfigOption terminationConfigOption : TerminationConfigOption.values() ) {
-            Pair<String, Object> terminationValue = getModelManager( terminationConfigOption ).getTerminationValue( terminationConfigModel );
-            if ( terminationValue.getK2() == null || terminationConfigOption.equals( TerminationConfigOption.NESTED ) ) {
-                uninitializedTerminationConfigOptions.add( new Pair<>( getModelManager( terminationConfigOption ).getLocalizedTerminationConfigOption(), terminationConfigOption.name() ) );
-            }
-        }
-        return uninitializedTerminationConfigOptions;
+    private TerminationTreeItemContent createTerminationTreeItemContent( TerminationConfigOption terminationConfigOption, TreeItem treeItem, TerminationConfigModel terminationConfigModel ) {
+        TerminationTreeItemContent terminationTreeItemContent = beanManager.lookupBean( TerminationTreeItemContent.class ).newInstance();
+        terminationTreeItemContent.setTerminationConfigForm( this );
+        terminationTreeItemContent.setTerminationConfigOption( terminationConfigOption );
+        terminationTreeItemContent.setTreeItem( treeItem );
+        terminationTreeItemContent.setModel( terminationConfigModel );
+        treeItem.setUserObject( terminationTreeItemContent );
+        treeItem.setWidget( ElementWrapperWidget.getWidget( terminationTreeItemContent.getElement() ) );
+        treeItem.setState( true );
+        terminationTreeItemContentList.add( terminationTreeItemContent );
+        return terminationTreeItemContent;
     }
 
     public void setModel( TerminationConfigModel terminationConfigModel ) {
@@ -116,25 +117,90 @@ public class TerminationConfigForm
     }
 
     private void initTerminationTree( TerminationConfigModel terminationConfigModel ) {
-        TreeItem rootTreeItem = new TreeItem();
+        this.rootTreeItem = new TreeItem();
         initTerminationTreeItemHierarchy( terminationConfigModel, rootTreeItem );
         view.initTree( rootTreeItem );
         rootTreeItem.setState( true );
+        view.displayEmptyTreeLabel( rootTreeItem.getChildCount() == 0 );
+        view.refreshTree();
+    }
+
+    public TreeItem getRootTreeItem() {
+        return rootTreeItem;
     }
 
     private void initTerminationTreeItemHierarchy( TerminationConfigModel terminationConfigModel, TreeItem treeItem ) {
-        TerminationTreeItemContent terminationTreeItemContent = new TerminationTreeItemContent( this, treeItem, TerminationConfigOption.NESTED, terminationConfigModel, null );
-        treeItem.setUserObject( terminationTreeItemContent );
-        treeItem.setWidget( terminationTreeItemContent );
+        TerminationTreeItemContent terminationTreeItemContent = createTerminationTreeItemContent( TerminationConfigOption.NESTED, treeItem, terminationConfigModel );
+
+        TerminationConfigOption timeSpentTerminationOption = null;
+        boolean timeSpentInserted = false;
+        boolean unimprovedTimeSpentInserted = false;
+        outer:
         for ( TerminationConfigOption terminationConfigOption : TerminationConfigOption.values() ) {
-            Pair<String, Object> terminationValue = getModelManager( terminationConfigOption ).getTerminationValue( terminationConfigModel );
-            if ( terminationValue.getK2() != null && !TerminationConfigOption.NESTED.equals( terminationConfigOption )) {
+            timeSpentTerminationOption = null;
+            Object terminationValue = getTerminationValue( terminationConfigModel, terminationConfigOption );
+            if ( terminationConfigOption == TerminationConfigOption.TERMINATION_COMPOSITION_STYLE ) {
+                TerminationTreeItemContent parentTreeItemContent = (TerminationTreeItemContent) treeItem.getUserObject();
+                parentTreeItemContent.setExistingValue( terminationValue, TerminationConfigOption.TERMINATION_COMPOSITION_STYLE );
+                continue;
+            }
+            if ( terminationValue != null ) {
+                if ( timeSpentInserted && ( terminationConfigOption == TerminationConfigOption.MILLISECONDS_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.SECONDS_SPENT_LIMIT
+                        || terminationConfigOption == TerminationConfigOption.MINUTES_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.HOURS_SPENT_LIMIT
+                        || terminationConfigOption == TerminationConfigOption.DAYS_SPENT_LIMIT ) ) {
+                    for ( int i = 0; i < treeItem.getChildCount(); i++ ) {
+                        TerminationTreeItemContent treeItemContent = (TerminationTreeItemContent) treeItem.getChild( i ).getUserObject();
+                        if ( treeItemContent.getTerminationConfigOption() == TerminationConfigOption.MILLISECONDS_SPENT_LIMIT || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.SECONDS_SPENT_LIMIT
+                                || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.MINUTES_SPENT_LIMIT || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.HOURS_SPENT_LIMIT
+                                || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.DAYS_SPENT_LIMIT ) {
+                            treeItemContent.setTerminationConfigOption( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
+                            treeItemContent.setExistingValue( terminationValue, TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
+                            continue outer;
+                        }
+                    }
+                } else {
+                    if ( terminationConfigOption == TerminationConfigOption.MILLISECONDS_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.SECONDS_SPENT_LIMIT
+                            || terminationConfigOption == TerminationConfigOption.MINUTES_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.HOURS_SPENT_LIMIT
+                            || terminationConfigOption == TerminationConfigOption.DAYS_SPENT_LIMIT ) {
+                        timeSpentTerminationOption = TerminationConfigOption.MILLISECONDS_SPENT_LIMIT;
+                        timeSpentInserted = true;
+                    }
+                }
+            }
+            if ( terminationValue != null ) {
+                if ( unimprovedTimeSpentInserted && ( terminationConfigOption == TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.UNIMPROVED_SECONDS_SPENT_LIMIT
+                        || terminationConfigOption == TerminationConfigOption.UNIMPROVED_MINUTES_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.UNIMPROVED_HOURS_SPENT_LIMIT
+                        || terminationConfigOption == TerminationConfigOption.UNIMPROVED_DAYS_SPENT_LIMIT ) ) {
+                    for ( int i = 0; i < treeItem.getChildCount(); i++ ) {
+                        TerminationTreeItemContent treeItemContent = (TerminationTreeItemContent) treeItem.getChild( i ).getUserObject();
+                        if ( treeItemContent.getTerminationConfigOption() == TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.UNIMPROVED_SECONDS_SPENT_LIMIT
+                                || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.UNIMPROVED_MINUTES_SPENT_LIMIT || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.UNIMPROVED_HOURS_SPENT_LIMIT
+                                || treeItemContent.getTerminationConfigOption() == TerminationConfigOption.UNIMPROVED_DAYS_SPENT_LIMIT ) {
+                            treeItemContent.setTerminationConfigOption( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT );
+                            treeItemContent.setExistingValue( terminationValue, TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT );
+                            continue outer;
+                        }
+                    }
+                } else {
+                    if ( terminationConfigOption == TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.UNIMPROVED_SECONDS_SPENT_LIMIT
+                            || terminationConfigOption == TerminationConfigOption.UNIMPROVED_MINUTES_SPENT_LIMIT || terminationConfigOption == TerminationConfigOption.UNIMPROVED_HOURS_SPENT_LIMIT
+                            || terminationConfigOption == TerminationConfigOption.UNIMPROVED_DAYS_SPENT_LIMIT ) {
+                        timeSpentTerminationOption = TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT;
+                        unimprovedTimeSpentInserted = true;
+                    }
+                }
+            }
+            if ( terminationValue != null && !TerminationConfigOption.NESTED.equals( terminationConfigOption ) ) {
                 TreeItem nestedTreeItem = new TreeItem();
-                treeItem.addItem( nestedTreeItem );
-                TerminationTreeItemContent nestedTerminationTreeItemContent = new TerminationTreeItemContent( this, nestedTreeItem, terminationConfigOption, terminationConfigModel, terminationValue.getK1() );
-                nestedTreeItem.setUserObject( nestedTerminationTreeItemContent );
-                nestedTreeItem.setWidget( nestedTerminationTreeItemContent );
-                nestedTreeItem.setState( true );
+
+                if (timeSpentTerminationOption != null) {
+                    terminationConfigOption = timeSpentTerminationOption;
+                }
+                insertTreeItem( treeItem, nestedTreeItem, terminationConfigOption );
+
+                terminationTreeItemContent.removeDropDownOption( terminationConfigOption );
+                TerminationTreeItemContent nestedTerminationTreeItemContent = createTerminationTreeItemContent( terminationConfigOption, nestedTreeItem, terminationConfigModel );
+                nestedTerminationTreeItemContent.setExistingValue( terminationValue, terminationConfigOption );
             }
         }
         if ( terminationConfigModel.getTerminationConfigList() != null ) {
@@ -147,399 +213,69 @@ public class TerminationConfigForm
         }
     }
 
-    public interface TerminationModelManager {
-
-        TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value );
-
-        Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel );
-
-        String getLocalizedTerminationConfigOption();
-    }
-
-    private void initModelManagerMap() {
-        for ( TerminationConfigOption terminationConfigOption : TerminationConfigOption.values() ) {
-            modelManagerMap.put( terminationConfigOption, createModelManager( terminationConfigOption ) );
-        }
-    }
-
-    public TerminationModelManager getModelManager( TerminationConfigOption terminationConfigOption ) {
-        return modelManagerMap.get( terminationConfigOption );
-    }
-
-    private TerminationModelManager createModelManager( TerminationConfigOption terminationConfigOption ) {
+    public Object getTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigOption terminationConfigOption ) {
         switch ( terminationConfigOption ) {
-            case NESTED: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        if ( value == null ) {
-                            parentTerminationConfigModel.getTerminationConfigList().remove( terminationConfigModel );
-                            if ( parentTerminationConfigModel.getTerminationConfigList().isEmpty() ) {
-                                parentTerminationConfigModel.setTerminationConfigList( null );
-                            }
-                            return parentTerminationConfigModel;
-                        } else {
-                            TerminationConfigModel childTerminationConfigModel = new TerminationConfigModel();
-                            if ( terminationConfigModel.getTerminationConfigList() == null ) {
-                                terminationConfigModel.setTerminationConfigList( new ArrayList<>( 1 ) );
-                            }
-                            terminationConfigModel.getTerminationConfigList().add( childTerminationConfigModel );
-                            return childTerminationConfigModel;
-                        }
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( null, terminationConfigModel.getTerminationConfigList() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.NestedTermination();
-                    }
-                };
-            }
-            case TERMINATION_COMPOSITION_STYLE: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setTerminationCompositionStyle( value == null ? null : TerminationCompositionStyleModel.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        TerminationCompositionStyleModel terminationCompositionStyle = terminationConfigModel.getTerminationCompositionStyle();
-                        String label = null;
-                        if ( TerminationCompositionStyleModel.AND.equals( terminationCompositionStyle ) ) {
-                            label = SolverEditorConstants.INSTANCE.And();
-                        } else if ( TerminationCompositionStyleModel.OR.equals( terminationCompositionStyle ) ) {
-                            label = SolverEditorConstants.INSTANCE.Or();
-                        }
-                        return new Pair<>( label, terminationCompositionStyle );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.TerminationCompositionStyle();
-                    }
-                };
-            }
             case MILLISECONDS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setMillisecondsSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getMillisecondsSpentLimit() ), terminationConfigModel.getMillisecondsSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.MillisecondsSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getMillisecondsSpentLimit();
             }
             case SECONDS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setSecondsSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getSecondsSpentLimit() ), terminationConfigModel.getSecondsSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.SecondsSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getSecondsSpentLimit();
             }
             case MINUTES_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setMinutesSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getMinutesSpentLimit() ), terminationConfigModel.getMinutesSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.MinutesSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getMinutesSpentLimit();
             }
             case HOURS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setHoursSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getHoursSpentLimit() ), terminationConfigModel.getHoursSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.HoursSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getHoursSpentLimit();
             }
             case DAYS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setDaysSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getDaysSpentLimit() ), terminationConfigModel.getDaysSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.DaysSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getDaysSpentLimit();
             }
             case UNIMPROVED_MILLISECONDS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedMillisecondsSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedMillisecondsSpentLimit() ), terminationConfigModel.getUnimprovedMillisecondsSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedMillisecondsSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedMillisecondsSpentLimit();
             }
             case UNIMPROVED_SECONDS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedSecondsSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedSecondsSpentLimit() ), terminationConfigModel.getUnimprovedSecondsSpentLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedSecondsSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedSecondsSpentLimit();
             }
             case UNIMPROVED_MINUTES_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedMinutesSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedMinutesSpentLimit() ), terminationConfigModel.getUnimprovedMinutesSpentLimit() );
-                    }
-
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedMinutesSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedMinutesSpentLimit();
             }
             case UNIMPROVED_HOURS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedHoursSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedHoursSpentLimit() ), terminationConfigModel.getUnimprovedHoursSpentLimit() );
-                    }
-
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedHoursSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedHoursSpentLimit();
             }
             case UNIMPROVED_DAYS_SPENT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedDaysSpentLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedDaysSpentLimit() ), terminationConfigModel.getUnimprovedDaysSpentLimit() );
-                    }
-
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedDaysSpentLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedDaysSpentLimit();
             }
             case BEST_SCORE_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setBestScoreLimit( value );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( terminationConfigModel.getBestScoreLimit(), terminationConfigModel.getBestScoreLimit() );
-                    }
-
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.BestScoreLimit();
-                    }
-                };
+                return terminationConfigModel.getBestScoreLimit();
             }
             case BEST_SCORE_FEASIBLE: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setBestScoreFeasible( value == null ? null : Boolean.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        Boolean bestScoreFeasible = terminationConfigModel.getBestScoreFeasible();
-                        String label = null;
-                        if ( Boolean.TRUE.equals( bestScoreFeasible ) ) {
-                            label = SolverEditorConstants.INSTANCE.True();
-                        } else if ( Boolean.FALSE.equals( bestScoreFeasible ) ) {
-                            label = SolverEditorConstants.INSTANCE.False();
-                        }
-                        return new Pair<>( label, bestScoreFeasible );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.BestScoreFeasible();
-                    }
-                };
+                return terminationConfigModel.getBestScoreFeasible();
             }
             case STEP_COUNT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setStepCountLimit( value == null ? null : Integer.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getStepCountLimit() ), terminationConfigModel.getStepCountLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.StepCountLimit();
-                    }
-                };
+                return terminationConfigModel.getStepCountLimit();
             }
             case UNIMPROVED_STEP_COUNT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setUnimprovedStepCountLimit( value == null ? null : Integer.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getUnimprovedStepCountLimit() ), terminationConfigModel.getUnimprovedStepCountLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.UnimprovedStepCountLimit();
-                    }
-                };
+                return terminationConfigModel.getUnimprovedStepCountLimit();
             }
             case SCORE_CALCULATION_COUNT_LIMIT: {
-                return new TerminationModelManager() {
-                    @Override
-                    public TerminationConfigModel setTerminationValue( TerminationConfigModel terminationConfigModel, TerminationConfigModel parentTerminationConfigModel, String value ) {
-                        terminationConfigModel.setScoreCalculationCountLimit( value == null ? null : Long.valueOf( value ) );
-                        return terminationConfigModel;
-                    }
-
-                    @Override
-                    public Pair<String, Object> getTerminationValue( TerminationConfigModel terminationConfigModel ) {
-                        return new Pair<>( safeToString( terminationConfigModel.getScoreCalculationCountLimit() ), terminationConfigModel.getScoreCalculationCountLimit() );
-                    }
-
-                    @Override
-                    public String getLocalizedTerminationConfigOption() {
-                        return SolverEditorConstants.INSTANCE.ScoreCalculationCountLimit();
-                    }
-                };
+                return terminationConfigModel.getScoreCalculationCountLimit();
             }
-            default:
-                throw new IllegalStateException( "Option " + terminationConfigOption + " is undefined" );
+            case TERMINATION_COMPOSITION_STYLE: {
+                return terminationConfigModel.getTerminationCompositionStyle();
+            }
         }
-
-    }
-
-    private String safeToString( Object object ) {
-        if ( object == null ) {
-            return null;
-        }
-        return object.toString();
-    }
-
-    public TerminationPopup getTerminationPopup() {
-        return terminationPopup;
+        return null;
     }
 
     @Override
     public Widget asWidget() {
         return view.asWidget();
+    }
+
+    @PreDestroy
+    public void destroy() {
+        for (TerminationTreeItemContent terminationTreeItemContent : terminationTreeItemContentList) {
+            beanManager.destroyBean( terminationTreeItemContent );
+        }
     }
 }
