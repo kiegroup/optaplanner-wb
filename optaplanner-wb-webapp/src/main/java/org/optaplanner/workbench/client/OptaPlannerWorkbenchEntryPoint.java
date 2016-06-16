@@ -18,11 +18,9 @@ package org.optaplanner.workbench.client;
 import javax.inject.Inject;
 
 import org.guvnor.common.services.shared.config.AppConfigService;
-import org.guvnor.common.services.shared.security.KieWorkbenchACL;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.security.shared.service.AuthenticationService;
-import org.kie.workbench.common.services.shared.security.KieWorkbenchSecurityService;
 import org.kie.workbench.common.services.shared.service.PlaceManagerActivityService;
 import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
@@ -34,6 +32,8 @@ import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
+
+import static org.kie.workbench.common.workbench.client.PerspectiveIds.*;
 
 @EntryPoint
 public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
@@ -50,15 +50,13 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     @Inject
     public OptaPlannerWorkbenchEntryPoint( final Caller<AppConfigService> appConfigService,
-                                           final Caller<KieWorkbenchSecurityService> kieSecurityService,
                                            final Caller<PlaceManagerActivityService> pmas,
-                                           final KieWorkbenchACL kieACL,
                                            final ActivityBeansCache activityBeansCache,
                                            final DefaultWorkbenchFeaturesMenusHelper menusHelper,
                                            final WorkbenchMenuBarPresenter menuBar,
                                            final Caller<AuthenticationService> authService,
                                            final UserMenu userMenu ) {
-        super( appConfigService, kieSecurityService, pmas, kieACL, activityBeansCache );
+        super( appConfigService, pmas, activityBeansCache );
         this.menusHelper = menusHelper;
         this.menuBar = menuBar;
         this.authService = authService;
@@ -71,9 +69,9 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
         final Menus menus = MenuFactory
                 .newTopLevelMenu( constants.Home() ).place( new DefaultPlaceRequest( defaultPerspective.getIdentifier() ) ).endMenu()
-                .newTopLevelMenu( constants.Authoring() ).perspective( "AuthoringPerspective" ).endMenu()
-                .newTopLevelMenu( constants.MenuRepositories() ).perspective( "org.guvnor.m2repo.client.perspectives.GuvnorM2RepoPerspective" ).endMenu()
-                .newTopLevelMenu( constants.AdministrationPerspectiveName() ).perspective( "org.optaplanner.workbench.client.perspectives.AdministrationPerspective" ).endMenu()
+                .newTopLevelMenu( constants.Authoring() ).perspective( AUTHORING ).endMenu()
+                .newTopLevelMenu( constants.MenuRepositories() ).perspective( GUVNOR_M2REPO ).endMenu()
+                .newTopLevelMenu( constants.AdministrationPerspectiveName() ).perspective( PLANNER_ADMIN ).endMenu()
                 .build();
 
         menuBar.addMenus( menus );

@@ -20,13 +20,11 @@ import java.util.ArrayList;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.guvnor.common.services.shared.config.AppConfigService;
-import org.guvnor.common.services.shared.security.KieWorkbenchACL;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.security.shared.service.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.workbench.common.services.shared.security.KieWorkbenchSecurityService;
 import org.kie.workbench.common.services.shared.service.PlaceManagerActivityService;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.mockito.ArgumentCaptor;
@@ -52,15 +50,8 @@ public class OptaPlannerWorkbenchEntryPointTest {
     private CallerMock<AppConfigService> appConfigServiceCallerMock;
 
     @Mock
-    private KieWorkbenchSecurityService kieSecurityService;
-    private CallerMock<KieWorkbenchSecurityService> kieSecurityServiceCallerMock;
-
-    @Mock
     private PlaceManagerActivityService pmas;
     private CallerMock<PlaceManagerActivityService> pmasCallerMock;
-
-    @Mock
-    private KieWorkbenchACL kieACL;
 
     @Mock
     private ActivityBeansCache activityBeansCache;
@@ -82,13 +73,10 @@ public class OptaPlannerWorkbenchEntryPointTest {
     @Before
     public void setup() {
         appConfigServiceCallerMock = new CallerMock<>( appConfigService );
-        kieSecurityServiceCallerMock = new CallerMock<>( kieSecurityService );
         pmasCallerMock = new CallerMock<>( pmas );
 
         optaPlannerWorkbenchEntryPoint = spy( new OptaPlannerWorkbenchEntryPoint( appConfigServiceCallerMock,
-                                                                                  kieSecurityServiceCallerMock,
                                                                                   pmasCallerMock,
-                                                                                  kieACL,
                                                                                   activityBeansCache,
                                                                                   menusHelper,
                                                                                   menuBar,
