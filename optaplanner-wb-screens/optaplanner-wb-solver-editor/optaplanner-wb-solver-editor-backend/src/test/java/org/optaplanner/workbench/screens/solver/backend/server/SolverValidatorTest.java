@@ -54,7 +54,7 @@ public class SolverValidatorTest {
     }
 
     @Test
-    public void testProjectWorks() throws Exception {
+    public void projectWorks() throws Exception {
 
         final String url = "/ProjectWorks/src/main/resources/cb/my.solver.xml";
 
@@ -71,7 +71,7 @@ public class SolverValidatorTest {
     }
 
     @Test
-    public void testProjectBuildError() throws Exception {
+    public void projectBuildError() throws Exception {
 
         final String url = "/ProjectBuildError/src/main/resources/cb/my.solver.xml";
 
@@ -88,7 +88,7 @@ public class SolverValidatorTest {
     }
 
     @Test
-    public void testProjectPlannerError() throws Exception {
+    public void projectPlannerError() throws Exception {
 
         final String url = "/ProjectPlannerError/src/main/resources/cb/my.solver.xml";
 

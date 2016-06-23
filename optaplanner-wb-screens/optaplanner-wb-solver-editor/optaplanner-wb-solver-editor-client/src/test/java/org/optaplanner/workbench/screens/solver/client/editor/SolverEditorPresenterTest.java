@@ -112,7 +112,7 @@ public class SolverEditorPresenterTest {
     }
 
     @Test
-    public void testLoad() throws Exception {
+    public void load() throws Exception {
         presenter.onStartup( path,
                              mock( PlaceRequest.class ) );
 

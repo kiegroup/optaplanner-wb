@@ -38,7 +38,7 @@ public class SolverConfigModelPersistenceTest {
     ConfigPersistence configPersistence;
 
     @Test
-    public void testNew() throws Exception {
+    public void newSolverConfigModel() throws Exception {
         SolverConfigModel config = new SolverConfigModel();
         config.setTerminationConfig( new TerminationConfigModel() );
         final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfigModel();
@@ -53,7 +53,7 @@ public class SolverConfigModelPersistenceTest {
     }
 
     @Test
-    public void testTerminationIsNotEmpty() throws Exception {
+    public void terminationIsNotEmpty() throws Exception {
 
         SolverConfigModel solverConfigModel = configPersistence.toConfig( "<solver  />" );
 
@@ -61,7 +61,7 @@ public class SolverConfigModelPersistenceTest {
     }
 
     @Test
-    public void testScoreDirectorFactoryConfigIsNotEmpty() throws Exception {
+    public void scoreDirectorFactoryConfigIsNotEmpty() throws Exception {
 
         SolverConfigModel solverConfigModel = configPersistence.toConfig( "<solver />" );
 
@@ -69,7 +69,7 @@ public class SolverConfigModelPersistenceTest {
     }
 
     @Test
-    public void testFromFile() throws Exception {
+    public void fromFile() throws Exception {
         SolverConfigModel config = configPersistence.toConfig( loadResource( "solver.xml" ) );
 
         assertNotNull( config );
@@ -82,7 +82,7 @@ public class SolverConfigModelPersistenceTest {
     }
 
     @Test
-    public void testFromFileNoKSessionName() throws Exception {
+    public void fromFileNoKSessionName() throws Exception {
         SolverConfigModel config = configPersistence.toConfig( loadResource( "ksessionNameNull.solver.xml" ) );
 
         assertNotNull( config );

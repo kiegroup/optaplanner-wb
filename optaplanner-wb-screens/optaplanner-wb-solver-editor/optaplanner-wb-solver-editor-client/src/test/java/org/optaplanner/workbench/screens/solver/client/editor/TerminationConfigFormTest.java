@@ -50,7 +50,7 @@ public class TerminationConfigFormTest {
     }
 
     @Test
-    public void testSetModel() {
+    public void setModel() {
         TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
         terminationConfigModel.setBestScoreFeasible( Boolean.TRUE );
         terminationConfigModel.setMillisecondsSpentLimit( 10l );

@@ -54,7 +54,7 @@ public class PlannerDataObjectFieldEditorTest
     }
 
     @Test
-    public void loadDataObjectFieldTest() {
+    public void loadDataObjectField() {
 
         PlannerDataObjectFieldEditor fieldEditor = createFieldEditor();
 
@@ -73,7 +73,7 @@ public class PlannerDataObjectFieldEditorTest
     }
 
     @Test
-    public void fieldPlanningEntitySettingsTest() {
+    public void fieldPlanningEntitySettings() {
 
         PlannerDataObjectFieldEditor fieldEditor = createFieldEditor();
 
@@ -105,7 +105,7 @@ public class PlannerDataObjectFieldEditorTest
     }
 
     @Test
-    public void planningSolutionSettingsTest() {
+    public void planningSolutionSettings() {
 
         PlannerDataObjectFieldEditor fieldEditor = createFieldEditor();
 

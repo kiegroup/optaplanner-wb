@@ -44,12 +44,12 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testSetPresenter() throws Exception {
+    public void setPresenter() throws Exception {
         verify( view ).setPresenter( form );
     }
 
     @Test
-    public void testScoreDefinitionTypesSet() throws Exception {
+    public void scoreDefinitionTypesSet() throws Exception {
 
         for ( ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values() ) {
             verify( view ).addScoreDefinitionType( type );
@@ -60,7 +60,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testSetEmptyModel() throws Exception {
+    public void setEmptyModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         form.setModel( model, path );
 
@@ -70,7 +70,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testSetEmptyKSession() throws Exception {
+    public void setEmptyKSession() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
         form.setModel( model, path );
@@ -80,7 +80,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testSetModel() throws Exception {
+    public void setModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
         model.setKSessionName( "someSession" );
@@ -93,7 +93,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testOnNameChange() throws Exception {
+    public void onNameChange() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
         form.setModel( model, path );
@@ -104,7 +104,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testOnNameChangeToDefault() throws Exception {
+    public void onNameChangeToDefault() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
         form.setModel( model, path );
@@ -115,7 +115,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testOnNameChangeNull() throws Exception {
+    public void onNameChangeNull() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
         form.setModel( model, path );
@@ -126,7 +126,7 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void testSelectScoreDefinitionType() throws Exception {
+    public void selectScoreDefinitionType() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         form.setModel( model, path );
 
