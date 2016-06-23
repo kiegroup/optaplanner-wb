@@ -43,7 +43,7 @@ public class PlannerDataObjectEditorTest
     }
 
     @Test
-    public void loadDataObjectTest() {
+    public void loadDataObject() {
         PlannerDataObjectEditor objectEditor = createObjectEditor();
 
         //The domain editors typically reacts upon DataModelerContext changes.
@@ -60,7 +60,7 @@ public class PlannerDataObjectEditorTest
     }
 
     @Test
-    public void changeToPlanningEntityTest() {
+    public void changeToPlanningEntity() {
 
         PlannerDataObjectEditor objectEditor = createObjectEditor();
 
@@ -82,7 +82,7 @@ public class PlannerDataObjectEditorTest
     }
 
     @Test
-    public void changeToPlanningSolutionTest() {
+    public void changeToPlanningSolution() {
 
         PlannerDataObjectEditor objectEditor = createObjectEditor();
 

@@ -87,7 +87,7 @@ public class OptaPlannerWorkbenchEntryPointTest {
     }
 
     @Test
-    public void setupMenuTest() {
+    public void setupMenu() {
         optaPlannerWorkbenchEntryPoint.setupMenu();
 
         ArgumentCaptor<Menus> menusCaptor = ArgumentCaptor.forClass( Menus.class );

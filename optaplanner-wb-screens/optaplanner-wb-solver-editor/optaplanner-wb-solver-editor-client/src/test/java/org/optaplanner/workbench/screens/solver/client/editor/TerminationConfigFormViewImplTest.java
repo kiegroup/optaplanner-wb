@@ -39,7 +39,7 @@ public class TerminationConfigFormViewImplTest {
     }
 
     @Test
-    public void testInitTree() {
+    public void initTree() {
         TreeItem treeItem = new TreeItem();
         terminationConfigFormView.initTree( treeItem );
         verify( tree ).addItem( treeItem );
