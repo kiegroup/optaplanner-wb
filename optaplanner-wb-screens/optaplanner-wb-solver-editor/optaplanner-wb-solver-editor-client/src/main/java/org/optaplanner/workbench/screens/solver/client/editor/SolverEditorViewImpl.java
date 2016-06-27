@@ -21,10 +21,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.Well;
+import org.jboss.errai.common.client.ui.ElementWrapperWidget;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorViewImpl;
+import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.uberfire.backend.vfs.Path;
+
+import java.util.List;
 
 public class SolverEditorViewImpl
         extends KieEditorViewImpl
@@ -45,19 +50,36 @@ public class SolverEditorViewImpl
     @UiField(provided = true)
     ScoreDirectorFactoryForm scoreDirectorFactoryForm;
 
+    @UiField(provided = true)
+    Well well;
+
+    PhaseConfigForm phaseConfigForm;
+
     @Inject
     public SolverEditorViewImpl( final ScoreDirectorFactoryForm scoreDirectorFactoryForm,
-                                 final TerminationConfigForm terminationConfigForm ) {
+                                 final TerminationConfigForm terminationConfigForm,
+                                 final Well well,
+                                 final PhaseConfigForm phaseConfigForm) {
 
         this.scoreDirectorFactoryForm = scoreDirectorFactoryForm;
         this.terminationConfigForm = terminationConfigForm;
+        this.well = well;
+
+        this.phaseConfigForm = phaseConfigForm;
 
         initWidget( uiBinder.createAndBindUi( this ) );
+
+        well.add( ElementWrapperWidget.getWidget( phaseConfigForm.getElement() ));
     }
 
     @Override
     public void setTerminationConfigModel( TerminationConfigModel terminationConfigModel ) {
         terminationConfigForm.setModel( terminationConfigModel );
+    }
+
+    @Override
+    public void setPhaseConfigModel( List<PhaseConfigModel> phaseConfigModel ) {
+        phaseConfigForm.setModel( phaseConfigModel );
     }
 
     @Override

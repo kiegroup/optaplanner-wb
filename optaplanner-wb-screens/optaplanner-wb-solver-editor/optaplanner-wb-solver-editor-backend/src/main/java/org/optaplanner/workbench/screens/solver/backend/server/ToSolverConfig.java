@@ -18,12 +18,17 @@ package org.optaplanner.workbench.screens.solver.backend.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
 import org.optaplanner.core.config.domain.ScanAnnotatedClassesConfig;
+import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
+import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
+import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
@@ -45,6 +50,7 @@ class ToSolverConfig {
 
         solverConfig.setTerminationConfig( create( config.getTermination() ) );
         solverConfig.setScoreDirectorFactoryConfig( create( config.getScoreDirectorFactoryConfig() ) );
+        solverConfig.setPhaseConfigList( create( config.getPhaseConfigList() ) );
 
         return solverConfig;
     }
@@ -114,6 +120,25 @@ class ToSolverConfig {
             }
 
             return terminationConfig;
+        }
+    }
+
+    private List<PhaseConfig> create( final List<PhaseConfigModel> phaseConfigList ) {
+        if ( phaseConfigList == null ) {
+            return new ArrayList<>();
+        } else {
+            List<PhaseConfig> result = new ArrayList<>( phaseConfigList.size() );
+            for ( PhaseConfigModel phaseConfigModel : phaseConfigList ) {
+                if ( phaseConfigModel instanceof ConstructionHeuristicPhaseConfigModel ) {
+                    ConstructionHeuristicPhaseConfig phaseConfig = new ConstructionHeuristicPhaseConfig();
+                    ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) phaseConfigModel;
+                    if ( constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() != null ) {
+                        phaseConfig.setConstructionHeuristicType( ConstructionHeuristicType.valueOf( ( constructionHeuristicPhaseConfigModel.getConstructionHeuristicType().name() ) ) );
+                    }
+                    result.add( phaseConfig );
+                }
+            }
+            return result;
         }
     }
 }

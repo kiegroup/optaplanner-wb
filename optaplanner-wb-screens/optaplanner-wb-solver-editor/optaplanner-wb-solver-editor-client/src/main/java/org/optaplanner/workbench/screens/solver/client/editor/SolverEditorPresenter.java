@@ -16,7 +16,6 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -117,6 +116,7 @@ public class SolverEditorPresenter
                 view.setTerminationConfigModel( model.getTermination() );
                 view.setScoreDirectorFactoryConfig( model.getScoreDirectorFactoryConfig(),
                                                     versionRecordManager.getCurrentPath() );
+                view.setPhaseConfigModel( model.getPhaseConfigList() );
 
                 view.hideBusyIndicator();
                 createOriginalHash( model );

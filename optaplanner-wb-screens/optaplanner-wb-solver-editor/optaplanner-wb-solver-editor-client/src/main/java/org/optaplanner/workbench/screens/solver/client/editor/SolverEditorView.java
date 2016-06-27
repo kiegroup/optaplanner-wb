@@ -15,8 +15,11 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.RequiresResize;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorView;
+import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.uberfire.backend.vfs.Path;
@@ -28,5 +31,7 @@ public interface SolverEditorView extends KieEditorView,
 
     void setScoreDirectorFactoryConfig( final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
                                         final Path path );
+
+    void setPhaseConfigModel( final List<PhaseConfigModel> phaseConfigModel );
 
 }
