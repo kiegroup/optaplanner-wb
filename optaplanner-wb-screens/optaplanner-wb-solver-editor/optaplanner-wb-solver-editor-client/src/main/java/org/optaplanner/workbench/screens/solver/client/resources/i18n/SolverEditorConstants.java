@@ -31,11 +31,7 @@ public interface SolverEditorConstants
 
     String newSolverDescription();
 
-    String addTermination();
-
     String delete();
-
-    String terminationValueEmpty();
 
     String Source();
 
@@ -47,47 +43,39 @@ public interface SolverEditorConstants
 
     String Termination();
 
-    String TerminationPopupTitle();
-
-    String CreateTerminationAndContinue();
-
-    String CreateTermination();
-
     String Cancel();
 
     String KnowledgeSession();
 
-    String TerminationCompositionStyle();
+    String TerminationCompositionStyleHelp();
 
-    String MillisecondsSpentLimit();
+    String TimeSpent();
 
-    String SecondsSpentLimit();
+    String TimeSpentHelp();
 
-    String MinutesSpentLimit();
+    String UnimprovedTimeSpent();
 
-    String HoursSpentLimit();
-
-    String DaysSpentLimit();
-
-    String UnimprovedMillisecondsSpentLimit();
-
-    String UnimprovedSecondsSpentLimit();
-
-    String UnimprovedMinutesSpentLimit();
-
-    String UnimprovedHoursSpentLimit();
-
-    String UnimprovedDaysSpentLimit();
+    String UnimprovedTimeSpentHelp();
 
     String BestScoreLimit();
 
+    String BestScoreLimitHelp();
+
     String BestScoreFeasible();
+
+    String BestScoreFeasibleHelp();
 
     String StepCountLimit();
 
+    String StepCountLimitHelp();
+
     String UnimprovedStepCountLimit();
 
+    String UnimprovedStepCountLimitHelp();
+
     String ScoreCalculationCountLimit();
+
+    String ScoreCalculationCountLimitHelp();
 
     String NestedTermination();
 
@@ -98,5 +86,7 @@ public interface SolverEditorConstants
     String True();
 
     String False();
+
+    String EmptyTreeLabelText();
 
 }

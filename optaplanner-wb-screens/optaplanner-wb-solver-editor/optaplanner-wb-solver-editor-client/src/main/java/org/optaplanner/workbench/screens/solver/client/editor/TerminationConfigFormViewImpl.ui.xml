@@ -22,14 +22,23 @@
   <ui:with field="i18n" type="org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants"/>
 
   <ui:style>
+    .gwt-Tree {
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      border-right: 1px solid #e5e5e5;
+    }
+
     .gwt-Tree table {
       width: 100%;
-      padding: 1px 3px 1px 0px;
+      padding: 3px 3px 3px 0px;
       border-collapse: separate;
     }
 
     .gwt-Tree td:first-child {
-      width: 20px;
+      width: 23px;
+    }
+    .gwt-Tree td:first-child + td {
+      border-bottom: 1px solid #e5e5e5;
     }
   </ui:style>
 
@@ -38,6 +47,8 @@
     <bootstrap:Legend text='{i18n.Termination}'/>
 
     <gwt:Tree ui:field="tree" addStyleNames='{style.gwt-Tree}' />
+
+    <bootstrap:Label ui:field="emptyTreeLabel" text="{i18n.EmptyTreeLabelText}"/>
 
   </bootstrap:Container>
 

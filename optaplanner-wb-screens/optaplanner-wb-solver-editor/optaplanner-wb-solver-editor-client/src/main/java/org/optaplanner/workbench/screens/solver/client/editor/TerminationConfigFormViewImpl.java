@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.ui.Label;
 
 public class TerminationConfigFormViewImpl
         extends Composite
@@ -40,6 +41,9 @@ public class TerminationConfigFormViewImpl
     @UiField(provided = true)
     Tree tree;
 
+    @UiField
+    Label emptyTreeLabel;
+
     public TerminationConfigFormViewImpl() {
     }
 
@@ -51,7 +55,23 @@ public class TerminationConfigFormViewImpl
 
     @Override
     public void initTree( TreeItem rootTreeItem ) {
+        this.tree.clear();
         this.tree.addItem( rootTreeItem );
     }
+
+    @Override
+    public void displayEmptyTreeLabel( boolean visible ) {
+        emptyTreeLabel.setVisible( visible );
+    }
+
+    public void refreshTree() {
+        refreshNestedTreeItemBorders();
+    }
+
+    public static native void refreshNestedTreeItemBorders() /*-{
+        $wnd.jQuery(".gwt-Tree div:has(> table)").css("border-left", "1px solid #e5e5e5");
+        $wnd.jQuery(".gwt-Tree div:has(> table)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
+        $wnd.jQuery(".gwt-Tree div:has(> div.gwt-TreeItem)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
+    }-*/;
 
 }

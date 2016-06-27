@@ -19,7 +19,6 @@ import org.jboss.errai.common.client.api.annotations.Portable;
 
 @Portable
 public enum TerminationConfigOption {
-    TERMINATION_COMPOSITION_STYLE,
     MILLISECONDS_SPENT_LIMIT,
     SECONDS_SPENT_LIMIT,
     MINUTES_SPENT_LIMIT,
@@ -35,6 +34,7 @@ public enum TerminationConfigOption {
     STEP_COUNT_LIMIT,
     UNIMPROVED_STEP_COUNT_LIMIT,
     SCORE_CALCULATION_COUNT_LIMIT,
+    TERMINATION_COMPOSITION_STYLE,
     NESTED;
 
 }

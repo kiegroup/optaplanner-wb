@@ -23,4 +23,8 @@ public interface TerminationConfigFormView
 
     void initTree( TreeItem rootTreeItem );
 
+    void displayEmptyTreeLabel(boolean visible);
+
+    void refreshTree();
+
 }
