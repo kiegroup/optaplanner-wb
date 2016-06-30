@@ -25,7 +25,6 @@ import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
@@ -49,7 +48,7 @@ public class ToSolverConfigModelTest {
 
         assertEquals( 1, solverConfigModel.getPhaseConfigList().size() );
         ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 0 );
-        assertEquals( ConstructionHeuristicTypeModel.FIRST_FIT, constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() );
+        assertEquals( ConstructionHeuristicType.FIRST_FIT, constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() );
 
     }
 

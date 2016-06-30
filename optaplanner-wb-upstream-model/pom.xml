@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>optaplanner-wb</artifactId>
+    <groupId>org.optaplanner</groupId>
+    <version>7.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>optaplanner-wb-upstream-model</artifactId>
+  <packaging>jar</packaging>
+
+  <name>OptaPlanner Workbench - Upstream Model</name>
+  <description>OptaPlanner Workbench - Upstream Model</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-core</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeGroupIds>org.optaplanner</includeGroupIds>
+              <includeArtifactIds>optaplanner-core</includeArtifactIds>
+              <classifier>sources</classifier>
+              <outputDirectory>${project.build.directory}/upstream-dependencies</outputDirectory>
+              <overWriteReleases>true</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <!--Include classes and resources reused by client-side of the workbench -->
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/upstream-dependencies</directory>
+        <includes>
+          <include>org/optaplanner/core/config/constructionheuristic/ConstructionHeuristicType.java</include>
+          <include>org/optaplanner/core/config/heuristic/selector/entity/EntitySorterManner.java</include>
+          <include>org/optaplanner/core/config/heuristic/selector/value/ValueSorterManner.java</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+  </build>
+
+</project>

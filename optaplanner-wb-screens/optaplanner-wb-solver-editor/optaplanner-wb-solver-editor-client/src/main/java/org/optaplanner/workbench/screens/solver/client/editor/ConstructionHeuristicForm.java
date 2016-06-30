@@ -23,6 +23,9 @@ import javax.inject.Inject;
 import com.google.gwt.core.client.GWT;
 import org.jboss.errai.common.client.api.IsElement;
 import org.jboss.errai.common.client.dom.HTMLElement;
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.heuristic.selector.entity.EntitySorterManner;
+import org.optaplanner.core.config.heuristic.selector.value.ValueSorterManner;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstantsWithLookup;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
@@ -42,6 +45,12 @@ public class ConstructionHeuristicForm implements IsElement {
     public ConstructionHeuristicForm( final ConstructionHeuristicFormView view ) {
         this.view = view;
         view.setPresenter( this );
+        initConstructionHeuristicTypeSelectOptions();
+        initEntitySorterMannerSelectOptions();
+        initValueSorterMannerSelectOptions();
+    }
+
+    private void initConstructionHeuristicTypeSelectOptions() {
         List<Pair<String, String>> constructionHeuristicTypeOptions = new ArrayList<>();
         for ( ConstructionHeuristicTypeModel constructionHeuristicTypeModel : ConstructionHeuristicTypeModel.values() ) {
             Pair<String, String> option = new Pair<>( solverEditorConstantsWithLookup.getString( constructionHeuristicTypeModel.name() ), constructionHeuristicTypeModel.name() );
@@ -50,13 +59,40 @@ public class ConstructionHeuristicForm implements IsElement {
         view.initConstructionHeuristicTypeSelectOptions( constructionHeuristicTypeOptions );
     }
 
+    private void initEntitySorterMannerSelectOptions() {
+        List<Pair<String, String>> entitySorterMannerOptions = new ArrayList<>();
+        for ( EntitySorterManner entitySorterManner : EntitySorterManner.values() ) {
+            Pair<String, String> option = new Pair<>( solverEditorConstantsWithLookup.getString( entitySorterManner.name() ), entitySorterManner.name() );
+            entitySorterMannerOptions.add( option );
+        }
+        view.initEntitySorterMannerSelectOptions( entitySorterMannerOptions );
+    }
+
+    private void initValueSorterMannerSelectOptions() {
+        List<Pair<String, String>> valueSorterMannerOptions = new ArrayList<>();
+        for ( ValueSorterManner valueSorterManner : ValueSorterManner.values() ) {
+            Pair<String, String> option = new Pair<>( solverEditorConstantsWithLookup.getString( valueSorterManner.name() ), valueSorterManner.name() );
+            valueSorterMannerOptions.add( option );
+        }
+        view.initValueSorterMannerSelectOptions( valueSorterMannerOptions );
+    }
+
     public void setPhaseConfigForm( PhaseConfigForm phaseConfigForm ) {
         this.phaseConfigForm = phaseConfigForm;
     }
 
     public void onConstructionHeuristicTypeSelected( String constructionHeuristicType ) {
-        model.setConstructionHeuristicType( ConstructionHeuristicTypeModel.valueOf( constructionHeuristicType ) );
+        model.setConstructionHeuristicType( ConstructionHeuristicType.valueOf( constructionHeuristicType ) );
     }
+
+    public void onEntitySorterMannerSelected( String entitySorterManner ) {
+        model.setEntitySorterManner( EntitySorterManner.valueOf( entitySorterManner ) );
+    }
+
+    public void onValueSorterMannerSelected( String valueSorterManner ) {
+        model.setValueSorterManner( ValueSorterManner.valueOf( valueSorterManner ) );
+    }
+
 
     public void onConstructionHeuristicRemoved() {
         phaseConfigForm.removeConstructionHeuristic( this );
@@ -70,10 +106,22 @@ public class ConstructionHeuristicForm implements IsElement {
         this.model = model;
 
         if ( model.getConstructionHeuristicType() == null ) {
-            model.setConstructionHeuristicType( ConstructionHeuristicTypeModel.FIRST_FIT );
+            model.setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
         }
 
         view.setSelectedConstructionHeuristicType( model.getConstructionHeuristicType().name() );
+
+        if (model.getEntitySorterManner() == null) {
+            model.setEntitySorterManner( EntitySorterManner.NONE );
+        }
+
+        view.setSelectedEntitySorterManner( model.getEntitySorterManner().name() );
+
+        if (model.getValueSorterManner() == null) {
+            model.setValueSorterManner( ValueSorterManner.NONE );
+        }
+
+        view.setSelectedValueSorterManner( model.getValueSorterManner().name() );
     }
 
     @Override
