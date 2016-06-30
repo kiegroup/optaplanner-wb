@@ -80,6 +80,9 @@
           <include>org/optaplanner/core/api/score/buildin/simplebigdecimal/SimpleBigDecimalScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/simpledouble/SimpleDoubleScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/simplelong/SimpleLongScore.java</include>
+          <include>org/optaplanner/core/config/constructionheuristic/ConstructionHeuristicType.java</include>
+          <include>org/optaplanner/core/config/heuristic/selector/entity/EntitySorterManner.java</include>
+          <include>org/optaplanner/core/config/heuristic/selector/value/ValueSorterManner.java</include>
         </includes>
       </resource>
       <resource>

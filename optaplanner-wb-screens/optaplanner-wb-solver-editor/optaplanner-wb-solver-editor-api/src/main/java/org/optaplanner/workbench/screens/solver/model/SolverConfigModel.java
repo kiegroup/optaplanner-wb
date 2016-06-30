@@ -22,31 +22,11 @@ import org.jboss.errai.common.client.api.annotations.Portable;
 @Portable
 public class SolverConfigModel {
 
-    protected String solutionClass = null;
-
-    protected List<String> entityClassList = null;
-
     protected ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = null;
 
     private TerminationConfigModel terminationConfig;
 
     protected List<PhaseConfigModel> phaseConfigList = null;
-
-    public String getSolutionClass() {
-        return solutionClass;
-    }
-
-    public void setSolutionClass( String solutionClass ) {
-        this.solutionClass = solutionClass;
-    }
-
-    public List<String> getEntityClassList() {
-        return entityClassList;
-    }
-
-    public void setEntityClassList( List<String> entityClassList ) {
-        this.entityClassList = entityClassList;
-    }
 
     public ScoreDirectorFactoryConfigModel getScoreDirectorFactoryConfig() {
         return scoreDirectorFactoryConfig;

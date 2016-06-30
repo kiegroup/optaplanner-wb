@@ -23,8 +23,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.heuristic.selector.entity.EntitySorterManner;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
@@ -59,18 +60,36 @@ public class ConstructionHeuristicFormTest {
         verify( view ).initConstructionHeuristicTypeSelectOptions( constructionHeuristicTypeSelectOptionsCaptor.capture() );
 
         List value = constructionHeuristicTypeSelectOptionsCaptor.getValue();
-        assertEquals( ConstructionHeuristicTypeModel.values().length, value.size() );
+        assertEquals( ConstructionHeuristicType.values().length, value.size() );
+
+        verify( view ).initEntitySorterMannerSelectOptions( constructionHeuristicTypeSelectOptionsCaptor.capture() );
+
+        value = constructionHeuristicTypeSelectOptionsCaptor.getValue();
+        assertEquals( EntitySorterManner.values().length, value.size() );
     }
 
     @Test
     public void onConstructionHeuristicTypeSelected() {
-        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicTypeModel.FIRST_FIT );
+        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
+        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY );
 
         constructionHeuristicForm.setModel( model );
 
         constructionHeuristicForm.onConstructionHeuristicTypeSelected( "FIRST_FIT" );
 
-        verify( model ).setConstructionHeuristicType( ConstructionHeuristicTypeModel.FIRST_FIT );
+        verify( model ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+    }
+
+    @Test
+    public void onEntitySorterMannerSelected() {
+        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
+        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
+
+        constructionHeuristicForm.setModel( model );
+
+        constructionHeuristicForm.onEntitySorterMannerSelected( "DECREASING_DIFFICULTY" );
+
+        verify( model ).setEntitySorterManner( EntitySorterManner.DECREASING_DIFFICULTY );
     }
 
     @Test
@@ -81,21 +100,25 @@ public class ConstructionHeuristicFormTest {
     }
 
     @Test
-    public void setModelNullConstructionHeuristicsType() {
-        when( model.getConstructionHeuristicType() ).thenReturn( null ).thenReturn( ConstructionHeuristicTypeModel.FIRST_FIT );
+    public void setModelNullAttribute() {
+        when( model.getConstructionHeuristicType() ).thenReturn( null ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
+        when( model.getEntitySorterManner() ).thenReturn( null ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
 
         constructionHeuristicForm.setModel( model );
 
-        verify( model ).setConstructionHeuristicType( ConstructionHeuristicTypeModel.FIRST_FIT );
+        verify( model ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+        verify( model ).setEntitySorterManner( EntitySorterManner.NONE );
     }
 
     @Test
-    public void setModelNonNullConstructionHeuristicsType() {
-        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicTypeModel.STRONGEST_FIT );
+    public void setModelNonNullAttribute() {
+        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
+        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
 
         constructionHeuristicForm.setModel( model );
 
-        verify( model, times( 0 ) ).setConstructionHeuristicType( ConstructionHeuristicTypeModel.FIRST_FIT );
+        verify( model, times( 0 ) ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+        verify( model, times( 0 ) ).setEntitySorterManner( EntitySorterManner.NONE );
     }
 
 }

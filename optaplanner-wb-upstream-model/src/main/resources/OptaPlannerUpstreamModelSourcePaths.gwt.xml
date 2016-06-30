@@ -36,5 +36,8 @@
   <source path="org/optaplanner/core/api/score/buildin/simplebigdecimal" includes="SimpleBigDecimalScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/simpledouble" includes="SimpleDoubleScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/simplelong" includes="SimpleLongScore.java" />
+  <source path="org/optaplanner/core/config/constructionheuristic"  includes="ConstructionHeuristicType.java"/>
+  <source path="org/optaplanner/core/config/heuristic/selector/entity"  includes="EntitySorterManner.java"/>
+  <source path="org/optaplanner/core/config/heuristic/selector/value"  includes="ValueSorterManner.java"/>
 
 </module>

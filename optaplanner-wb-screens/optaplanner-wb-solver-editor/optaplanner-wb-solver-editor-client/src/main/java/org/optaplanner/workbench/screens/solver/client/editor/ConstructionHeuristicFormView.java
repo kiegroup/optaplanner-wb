@@ -26,5 +26,10 @@ public interface ConstructionHeuristicFormView extends IsElement {
 
     void initConstructionHeuristicTypeSelectOptions( List<Pair<String, String>> options );
 
+    void initEntitySorterMannerSelectOptions( List<Pair<String, String>> options );
+
     void setSelectedConstructionHeuristicType( String constructionHeuristicType );
+
+    void setSelectedEntitySorterManner( String entitySorterManner );
+
 }
