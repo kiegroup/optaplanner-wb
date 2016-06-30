@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.client.util;
+package org.optaplanner.workbench.screens.domaineditor.client.resources.i18n;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.optaplanner.core.api.score.Score;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.i18n.client.Messages;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
 import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
 import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
@@ -34,27 +33,37 @@ import org.optaplanner.core.api.score.buildin.simplebigdecimal.SimpleBigDecimalS
 import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScore;
 import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScore;
 
-public class PlannerDomainTypes {
+/**
+ * Domain Editor i18n constants.
+ */
+public interface DomainEditorConstantsWithLookup extends ConstantsWithLookup {
 
-    public static final String ABSTRACT_SOLUTION_CLASS_NAME = "org.optaplanner.core.impl.domain.solution.AbstractSolution";
+    DomainEditorConstantsWithLookup INSTANCE = GWT.create( DomainEditorConstantsWithLookup.class );
 
-    public static final String ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME = "AbstractSolution";
+    String BendableScore();
 
-    public static final List<Class<? extends Score>> SCORE_TYPES = new ArrayList<>(  );
+    String BendableBigDecimalScore();
 
-    static {
-        SCORE_TYPES.add( BendableScore.class );
-        SCORE_TYPES.add( BendableBigDecimalScore.class );
-        SCORE_TYPES.add( BendableLongScore.class );
-        SCORE_TYPES.add( HardMediumSoftScore.class );
-        SCORE_TYPES.add( HardMediumSoftLongScore.class );
-        SCORE_TYPES.add( HardSoftScore.class );
-        SCORE_TYPES.add( HardSoftBigDecimalScore.class );
-        SCORE_TYPES.add( HardSoftDoubleScore.class );
-        SCORE_TYPES.add( HardSoftLongScore.class );
-        SCORE_TYPES.add( SimpleScore.class );
-        SCORE_TYPES.add( SimpleBigDecimalScore.class );
-        SCORE_TYPES.add( SimpleDoubleScore.class );
-        SCORE_TYPES.add( SimpleLongScore.class );
-    }
+    String BendableLongScore();
+
+    String HardMediumSoftScore();
+
+    String HardMediumSoftLongScore();
+
+    String HardSoftScore();
+
+    String HardSoftBigDecimalScore();
+
+    String HardSoftDoubleScore();
+
+    String HardSoftLongScore();
+
+    String SimpleScore();
+
+    String SimpleBigDecimalScore();
+
+    String SimpleDoubleScore();
+
+    String SimpleLongScore();
+
 }

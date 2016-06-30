@@ -23,6 +23,7 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.mockito.Mock;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -103,7 +104,7 @@ public class PlannerDataObjectEditorTest
 
         //the dataObject should have been now configured as a HardSoftCore PlanningSolution by default.
         assertNotNull( dataObject.getAnnotation( PlanningSolution.class.getName() ) );
-        assertEquals( "org.optaplanner.core.impl.domain.solution.AbstractSolution<org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore>"
+        assertEquals( "org.optaplanner.core.impl.domain.solution.AbstractSolution<" + HardSoftScore.class.getName() + ">"
                 , dataObject.getSuperClassName() );
 
     }
