@@ -18,7 +18,13 @@
              xmlns:widgets='urn:import:org.optaplanner.workbench.screens.solver.client.editor'
              xmlns:bootstrap='urn:import:org.gwtbootstrap3.client.ui'>
 
-  <bootstrap:Well>
+  <ui:style>
+    .well-custom {
+      height: 100% !important;
+    }
+  </ui:style>
+
+  <bootstrap:Well ui:field="well" addStyleNames='{style.well-custom}'>
     <widgets:ScoreDirectorFactoryForm ui:field="scoreDirectorFactoryForm"/>
     <widgets:TerminationConfigForm ui:field="terminationConfigForm"/>
 

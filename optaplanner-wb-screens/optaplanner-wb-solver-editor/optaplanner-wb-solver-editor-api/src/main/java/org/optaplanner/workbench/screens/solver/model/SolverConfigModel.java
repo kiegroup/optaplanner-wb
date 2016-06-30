@@ -30,6 +30,8 @@ public class SolverConfigModel {
 
     private TerminationConfigModel terminationConfig;
 
+    protected List<PhaseConfigModel> phaseConfigList = null;
+
     public String getSolutionClass() {
         return solutionClass;
     }
@@ -60,5 +62,13 @@ public class SolverConfigModel {
 
     public void setTerminationConfig( TerminationConfigModel terminationConfig ) {
         this.terminationConfig = terminationConfig;
+    }
+
+    public List<PhaseConfigModel> getPhaseConfigList() {
+        return phaseConfigList;
+    }
+
+    public void setPhaseConfigList( List<PhaseConfigModel> phaseConfigList ) {
+        this.phaseConfigList = phaseConfigList;
     }
 }
