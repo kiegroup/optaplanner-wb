@@ -20,13 +20,11 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
-import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 
@@ -45,7 +43,6 @@ public class ToSolverConfigModelTest {
         assertEquals( Boolean.TRUE, terminationConfigModel.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
 
         assertEquals( "testKsession", solverConfigModel.getScoreDirectorFactoryConfig().getKSessionName() );
-        assertEquals( ScoreDefinitionTypeModel.HARD_SOFT, solverConfigModel.getScoreDirectorFactoryConfig().getScoreDefinitionType() );
 
         assertEquals( 1, solverConfigModel.getPhaseConfigList().size() );
         ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 0 );
@@ -64,7 +61,6 @@ public class ToSolverConfigModelTest {
         solverConfig.setTerminationConfig( terminationConfig );
 
         ScoreDirectorFactoryConfig scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfig();
-        scoreDirectorFactoryConfig.setScoreDefinitionType( ScoreDefinitionType.HARD_SOFT );
         scoreDirectorFactoryConfig.setKsessionName( "testKsession" );
         solverConfig.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
 

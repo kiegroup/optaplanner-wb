@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.uberfire.backend.vfs.Path;
 
@@ -33,10 +32,6 @@ public class ScoreDirectorFactoryForm
     public ScoreDirectorFactoryForm( final ScoreDirectorFactoryFormView view ) {
         this.view = view;
         view.setPresenter( this );
-
-        for (ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values()) {
-            view.addScoreDefinitionType( type );
-        }
     }
 
     @Override
@@ -44,25 +39,9 @@ public class ScoreDirectorFactoryForm
         return view.asWidget();
     }
 
-    public void onScoreDefinitionTypeSelected( final String typeName ) {
-        for (ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values()) {
-            if ( type.name().equals( typeName ) ) {
-                model.setScoreDefinitionType( type );
-                break;
-            }
-        }
-    }
-
     public void setModel( final ScoreDirectorFactoryConfigModel model,
                           final Path path ) {
         this.model = model;
-
-        if ( model.getScoreDefinitionType() == null ) {
-            model.setScoreDefinitionType( ScoreDefinitionTypeModel.HARD_SOFT );
-        }
-
-        view.setSelectedScoreDefinitionType( model.getScoreDefinitionType() );
-
 
         view.setKSession( model.getKSessionName(),
                           path );

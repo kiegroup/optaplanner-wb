@@ -18,16 +18,12 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import org.kie.workbench.common.widgets.client.widget.KSessionSelector;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.uberfire.backend.vfs.Path;
 
 public class ScoreDirectorFactoryFormViewImpl
@@ -41,9 +37,6 @@ public class ScoreDirectorFactoryFormViewImpl
     }
 
     private static Binder uiBinder = GWT.create( Binder.class );
-
-    @UiField
-    ListBox scoreDefinitionType;
 
     @UiField( provided = true )
     KSessionSelector kSessionSelector;
@@ -69,30 +62,10 @@ public class ScoreDirectorFactoryFormViewImpl
     }
 
     @Override
-    public void setSelectedScoreDefinitionType( final ScoreDefinitionTypeModel type ) {
-        for ( int i = 0; i < scoreDefinitionType.getItemCount(); i++ ) {
-            if ( scoreDefinitionType.getItemText( i ).equals( type.name() ) ) {
-                scoreDefinitionType.setSelectedIndex( i );
-                break;
-            }
-        }
-    }
-
-    @Override
     public void setKSession( final String kSessionName,
                              final Path path ) {
         kSessionSelector.init( path,
                                kSessionName );
-    }
-
-    @Override
-    public void addScoreDefinitionType( final ScoreDefinitionTypeModel type ) {
-        scoreDefinitionType.addItem( type.toString() );
-    }
-
-    @UiHandler( "scoreDefinitionType" )
-    public void handleChange( final ChangeEvent event ) {
-        presenter.onScoreDefinitionTypeSelected( scoreDefinitionType.getSelectedItemText() );
     }
 
 }

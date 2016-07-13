@@ -20,14 +20,12 @@ import java.util.List;
 
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
 import org.optaplanner.core.config.phase.PhaseConfig;
-import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
@@ -57,23 +55,10 @@ class ToSolverConfigModel {
         } else {
             ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-            model.setScoreDefinitionType( create( scoreDirectorFactoryConfig.getScoreDefinitionType() ) );
             model.setKSessionName( scoreDirectorFactoryConfig.getKsessionName() );
 
             return model;
         }
-    }
-
-    private ScoreDefinitionTypeModel create( final ScoreDefinitionType scoreDefinitionType ) {
-        if ( scoreDefinitionType != null ) {
-            for ( ScoreDefinitionTypeModel model : ScoreDefinitionTypeModel.values() ) {
-                if ( model.name().equals( scoreDefinitionType.name() ) ) {
-                    return model;
-                }
-            }
-        }
-
-        return null;
     }
 
     private TerminationConfigModel create( final TerminationConfig terminationConfig ) {

@@ -37,8 +37,6 @@ public interface SolverEditorConstants
 
     String ScoreDirectorFactory();
 
-    String ScoreDefinitionType();
-
     String ScoreDRL();
 
     String Termination();
