@@ -847,7 +847,7 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-cdi-client</artifactId>
-      <!-- Unlike all other client only dependencies, errai-cdi-client must not be in scope provided -->
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
