@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.heuristic.selector.value.ValueSorterManner;
 import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
@@ -127,9 +129,9 @@ class ToSolverConfigModel {
                 if ( phaseConfig instanceof ConstructionHeuristicPhaseConfig ) {
                     ConstructionHeuristicPhaseConfigModel phaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
                     ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) phaseConfig;
-                    if ( constructionHeuristicPhaseConfig.getConstructionHeuristicType() != null ) {
-                        phaseConfigModel.setConstructionHeuristicType( ConstructionHeuristicTypeModel.valueOf( constructionHeuristicPhaseConfig.getConstructionHeuristicType().name() ) );
-                    }
+                    phaseConfigModel.setConstructionHeuristicType( constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
+                    phaseConfigModel.setEntitySorterManner( constructionHeuristicPhaseConfig.getEntitySorterManner() );
+                    phaseConfigModel.setValueSorterManner( constructionHeuristicPhaseConfig.getValueSorterManner() );
                     result.add( phaseConfigModel );
                 }
             }
