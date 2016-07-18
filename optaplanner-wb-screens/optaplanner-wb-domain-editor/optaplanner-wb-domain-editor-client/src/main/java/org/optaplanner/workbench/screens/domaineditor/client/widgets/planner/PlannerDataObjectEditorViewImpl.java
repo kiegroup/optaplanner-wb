@@ -20,8 +20,8 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.ui.Composite;
 import org.gwtbootstrap3.extras.select.client.ui.Select;
 import org.jboss.errai.common.client.dom.Div;
@@ -141,7 +141,7 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @EventHandler("planningSolutionScoreTypeSelector")
-    void setPlanningSolutionScoreTypeChange( ChangeEvent event ) {
+    void setPlanningSolutionScoreTypeChange( ValueChangeEvent<String> event ) {
         presenter.onPlanningSolutionScoreTypeChange();
     }
 
