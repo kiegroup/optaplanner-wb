@@ -20,12 +20,10 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
-import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
@@ -45,7 +43,6 @@ public class ToSolverConfigTest {
         assertEquals( Boolean.TRUE, terminationConfig.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
 
         assertEquals( "testKsession", solverConfig.getScoreDirectorFactoryConfig().getKsessionName() );
-        assertEquals( ScoreDefinitionType.HARD_SOFT, solverConfig.getScoreDirectorFactoryConfig().getScoreDefinitionType() );
 
         assertEquals( 1, solverConfig.getPhaseConfigList().size() );
         ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) solverConfig.getPhaseConfigList().get( 0 );
@@ -64,7 +61,6 @@ public class ToSolverConfigTest {
         solverConfigModel.setTerminationConfig( terminationConfigModel );
 
         ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfigModel = new ScoreDirectorFactoryConfigModel();
-        scoreDirectorFactoryConfigModel.setScoreDefinitionType( ScoreDefinitionTypeModel.HARD_SOFT );
         scoreDirectorFactoryConfigModel.setKSessionName( "testKsession" );
         solverConfigModel.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfigModel );
 

@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.uberfire.backend.vfs.Path;
 
@@ -49,46 +48,29 @@ public class ScoreDirectorFactoryFormTest {
     }
 
     @Test
-    public void scoreDefinitionTypesSet() throws Exception {
-
-        for ( ScoreDefinitionTypeModel type : ScoreDefinitionTypeModel.values() ) {
-            verify( view ).addScoreDefinitionType( type );
-        }
-
-        verify( view, atLeastOnce() ).addScoreDefinitionType( any( ScoreDefinitionTypeModel.class ) );
-        verify( view, times( ScoreDefinitionTypeModel.values().length ) ).addScoreDefinitionType( any( ScoreDefinitionTypeModel.class ) );
-    }
-
-    @Test
     public void setEmptyModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
         form.setModel( model, path );
 
-        assertEquals( ScoreDefinitionTypeModel.HARD_SOFT, model.getScoreDefinitionType() );
-        verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.HARD_SOFT );
         verify( view ).setKSession( null, path );
     }
 
     @Test
     public void setEmptyKSession() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
         form.setModel( model, path );
 
-        verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE );
         verify( view ).setKSession( null, path );
     }
 
     @Test
     public void setModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        model.setScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
         model.setKSessionName( "someSession" );
 
 
         form.setModel( model, path );
 
-        verify( view ).setSelectedScoreDefinitionType( ScoreDefinitionTypeModel.SIMPLE_BIG_DECIMAL );
         verify( view ).setKSession( "someSession", path );
     }
 
@@ -125,13 +107,4 @@ public class ScoreDirectorFactoryFormTest {
         assertEquals( null, model.getKSessionName() );
     }
 
-    @Test
-    public void selectScoreDefinitionType() throws Exception {
-        ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        form.setModel( model, path );
-
-        form.onScoreDefinitionTypeSelected( ScoreDefinitionTypeModel.HARD_SOFT.name() );
-
-        assertEquals( ScoreDefinitionTypeModel.HARD_SOFT, model.getScoreDefinitionType() );
-    }
 }

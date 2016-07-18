@@ -22,14 +22,12 @@ import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPh
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
 import org.optaplanner.core.config.domain.ScanAnnotatedClassesConfig;
 import org.optaplanner.core.config.phase.PhaseConfig;
-import org.optaplanner.core.config.score.definition.ScoreDefinitionType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
@@ -62,22 +60,10 @@ class ToSolverConfig {
         } else {
             ScoreDirectorFactoryConfig config = new ScoreDirectorFactoryConfig();
 
-            config.setScoreDefinitionType( create( scoreDirectorFactoryConfig.getScoreDefinitionType() ) );
             config.setKsessionName( scoreDirectorFactoryConfig.getKSessionName() );
 
             return config;
         }
-    }
-
-    private ScoreDefinitionType create( final ScoreDefinitionTypeModel scoreDefinitionType ) {
-        if ( scoreDefinitionType != null ) {
-            for ( ScoreDefinitionType model : ScoreDefinitionType.values() ) {
-                if ( model.name().equals( scoreDefinitionType.name() ) ) {
-                    return model;
-                }
-            }
-        }
-        return null;
     }
 
     private TerminationConfig create( final TerminationConfigModel termination ) {

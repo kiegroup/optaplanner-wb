@@ -20,17 +20,7 @@ import org.jboss.errai.common.client.api.annotations.Portable;
 @Portable
 public class ScoreDirectorFactoryConfigModel {
 
-    protected ScoreDefinitionTypeModel scoreDefinitionType = null;
-
     protected String ksessionName = null;
-
-    public ScoreDefinitionTypeModel getScoreDefinitionType() {
-        return scoreDefinitionType;
-    }
-
-    public void setScoreDefinitionType( ScoreDefinitionTypeModel scoreDefinitionType ) {
-        this.scoreDefinitionType = scoreDefinitionType;
-    }
 
     public String getKSessionName() {
         return ksessionName;

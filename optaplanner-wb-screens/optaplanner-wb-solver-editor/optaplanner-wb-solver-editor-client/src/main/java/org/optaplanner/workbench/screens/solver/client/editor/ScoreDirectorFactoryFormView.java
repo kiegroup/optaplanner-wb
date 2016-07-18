@@ -16,17 +16,12 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import org.optaplanner.workbench.screens.solver.model.ScoreDefinitionTypeModel;
 import org.uberfire.backend.vfs.Path;
 
 public interface ScoreDirectorFactoryFormView
         extends IsWidget {
 
     void setPresenter( final ScoreDirectorFactoryForm form );
-
-    void addScoreDefinitionType( final ScoreDefinitionTypeModel type );
-
-    void setSelectedScoreDefinitionType( final ScoreDefinitionTypeModel type );
 
     void setKSession( final String ksessionName,
                       final Path path );
