@@ -20,28 +20,19 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 
 @Dependent
+@Templated
 public class PlannerDomainScreenViewImpl
         extends Composite
         implements PlannerDomainScreenView {
 
-    interface Binder
-            extends UiBinder<Widget, PlannerDomainScreenViewImpl> {
-
-    }
-
-    ;
-
-    private static Binder uiBinder = GWT.create( Binder.class );
-
-    @UiField
+    @Inject
+    @DataField("containerPanel")
     FlowPanel containerPanel;
 
     private PlannerDomainEditor domainEditor;
@@ -51,7 +42,6 @@ public class PlannerDomainScreenViewImpl
 
     @Inject
     public PlannerDomainScreenViewImpl( PlannerDomainEditor domainEditor ) {
-        initWidget( uiBinder.createAndBindUi( this ) );
         this.domainEditor = domainEditor;
     }
 

@@ -25,23 +25,20 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.Label;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
+import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
 
+@Templated
 public class TerminationConfigFormViewImpl
         extends Composite
         implements TerminationConfigFormView {
 
-    interface Binder
-            extends
-            UiBinder<Widget, TerminationConfigFormViewImpl> {
-
-    }
-
-    private static Binder uiBinder = GWT.create( Binder.class );
-
-    @UiField(provided = true)
+    @DataField("tree")
     Tree tree;
 
-    @UiField
+    @Inject
+    @DataField("emptyTreeLabel")
     Label emptyTreeLabel;
 
     public TerminationConfigFormViewImpl() {
@@ -50,7 +47,7 @@ public class TerminationConfigFormViewImpl
     @Inject
     public TerminationConfigFormViewImpl( final Tree tree ) {
         this.tree = tree;
-        initWidget( uiBinder.createAndBindUi( this ) );
+        this.tree.setStyleName( SolverEditorResources.INSTANCE.CSS().terminationTree() );
     }
 
     @Override
@@ -69,9 +66,9 @@ public class TerminationConfigFormViewImpl
     }
 
     public static native void refreshNestedTreeItemBorders() /*-{
-        $wnd.jQuery(".gwt-Tree div:has(> table)").css("border-left", "1px solid #e5e5e5");
-        $wnd.jQuery(".gwt-Tree div:has(> table)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
-        $wnd.jQuery(".gwt-Tree div:has(> div.gwt-TreeItem)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
+        $wnd.jQuery("#tree div:has(> table)").css("border-left", "1px solid #e5e5e5");
+        $wnd.jQuery("#tree div:has(> table)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
+        $wnd.jQuery("#tree div:has(> div.gwt-TreeItem)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
     }-*/;
 
 }

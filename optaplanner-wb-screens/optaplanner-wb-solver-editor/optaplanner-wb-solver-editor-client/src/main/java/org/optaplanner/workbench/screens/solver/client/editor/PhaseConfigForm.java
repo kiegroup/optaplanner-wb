@@ -18,17 +18,15 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.errai.common.client.api.IsElement;
-import org.jboss.errai.common.client.dom.HTMLElement;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.ioc.client.container.SyncBeanManager;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 
-@Dependent
-public class PhaseConfigForm implements IsElement {
+public class PhaseConfigForm implements IsWidget {
 
     private List<PhaseConfigModel> model;
 
@@ -80,15 +78,15 @@ public class PhaseConfigForm implements IsElement {
         }
     }
 
-    @Override
-    public HTMLElement getElement() {
-        return view.getElement();
-    }
-
     @PreDestroy
     public void destroy() {
         for ( Object phaseForm : phaseFormList ) {
             syncBeanManager.destroyBean( phaseForm );
         }
+    }
+
+    @Override
+    public Widget asWidget() {
+        return view.asWidget();
     }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2016 Red Hat, Inc. and/or its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<div id="view" class="container-fluid">
+    <form>
+        <legend data-i18n-key="PlannerSettingsLabel"></legend>
+        <fieldset>
+            <div class="form-group">
+                <input id="notInPlanningRadioButton" name="entityType" type="radio"/>
+                <label for="notInPlanningRadioButton" data-i18n-key="NotInPlanningLabel"></label>
+                <input id="planningEntityRadioButton" name="entityType" type="radio"/>
+                <label for="planningEntityRadioButton" data-i18n-key="PlanningEntityLabel"></label>
+                <input id="planningSolutionRadioButton" name="entityType" type="radio"/>
+                <label for="planningSolutionRadioButton" data-i18n-key="PlanningSolutionLabel"></label>
+            </div>
+            <div id="planningSolutionScoreTypeGroup" class="row form-group">
+                <label for="planningSolutionScoreTypeSelector" class="control-label col-md-4" data-i18n-key="PlanningSolutionScoreTypeLabel"></label>
+                <div class="col-md-8">
+                    <span id="planningSolutionScoreTypeSelector"></span>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

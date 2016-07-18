@@ -15,9 +15,9 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.Composite;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
 import org.jboss.errai.common.client.dom.Div;
@@ -25,9 +25,8 @@ import org.jboss.errai.common.client.dom.HTMLElement;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 
-@Dependent
 @Templated
-public class PhaseConfigFormViewImpl implements PhaseConfigFormView {
+public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFormView {
 
     @DataField("view")
     @Inject
@@ -49,11 +48,6 @@ public class PhaseConfigFormViewImpl implements PhaseConfigFormView {
         constructionHeuristicListItem.addClickHandler( h -> presenter.addConstructionHeuristic() );
         this.dropdownMenuList.add( constructionHeuristicListItem );
         // TODO add Local search, Exhaustive search, ...
-    }
-
-    @Override
-    public HTMLElement getElement() {
-        return view;
     }
 
     @Override

@@ -15,61 +15,35 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import java.util.List;
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Widget;
-import org.gwtbootstrap3.client.ui.Well;
-import org.jboss.errai.common.client.ui.ElementWrapperWidget;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorViewImpl;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.uberfire.backend.vfs.Path;
 
-import java.util.List;
-
+@Templated
 public class SolverEditorViewImpl
         extends KieEditorViewImpl
         implements SolverEditorView {
 
-
-    interface Binder
-            extends
-            UiBinder<Widget, SolverEditorViewImpl> {
-
-    }
-
-    private static Binder uiBinder = GWT.create( Binder.class );
-
-    @UiField(provided = true)
+    @Inject
+    @DataField("terminationConfigForm")
     TerminationConfigForm terminationConfigForm;
 
-    @UiField(provided = true)
+    @Inject
+    @DataField("scoreDirectorFactoryForm")
     ScoreDirectorFactoryForm scoreDirectorFactoryForm;
 
-    @UiField(provided = true)
-    Well well;
-
+    @Inject
+    @DataField("phaseConfigForm")
     PhaseConfigForm phaseConfigForm;
 
-    @Inject
-    public SolverEditorViewImpl( final ScoreDirectorFactoryForm scoreDirectorFactoryForm,
-                                 final TerminationConfigForm terminationConfigForm,
-                                 final Well well,
-                                 final PhaseConfigForm phaseConfigForm) {
-
-        this.scoreDirectorFactoryForm = scoreDirectorFactoryForm;
-        this.terminationConfigForm = terminationConfigForm;
-        this.well = well;
-
-        this.phaseConfigForm = phaseConfigForm;
-
-        initWidget( uiBinder.createAndBindUi( this ) );
-
-        well.add( ElementWrapperWidget.getWidget( phaseConfigForm.getElement() ));
+    public SolverEditorViewImpl() {
     }
 
     @Override

@@ -19,59 +19,57 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import org.gwtbootstrap3.client.ui.CheckBox;
-import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.jboss.errai.common.client.dom.CheckboxInput;
+import org.jboss.errai.common.client.dom.Div;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.EventHandler;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 
 @Dependent
+@Templated
 public class PlannerDataObjectFieldEditorViewImpl
         extends Composite
         implements PlannerDataObjectFieldEditorView {
 
-    interface Binder
-            extends UiBinder<Widget, PlannerDataObjectFieldEditorViewImpl> {
-
-    }
-
-    private static Binder uiBinder = GWT.create( Binder.class );
-
     private Presenter presenter;
 
-    @UiField
-    Form planningSolutionSettingsPanel;
-
-    @UiField
-    CheckBox valueRangeProviderCheckBox;
-
-    @UiField
-    TextBox valueRangeProviderIdTextBox;
-
-    @UiField
-    CheckBox planningEntityCollectionCheckBox;
-
-    @UiField
-    Form planningEntitySettingsPanel;
-
-    @UiField
-    CheckBox planningVariableCheckBox;
-
-    @UiField
-    TextBox valueRangeProviderRefsTextBox;
-
-    @UiField
-    Form planningFieldPropertiesNotAvailablePanel;
+    @Inject
+    @DataField("planningSolutionSettingsPanelDiv")
+    Div planningSolutionSettingsPanelDiv;
 
     @Inject
+    @DataField("valueRangeProviderCheckBox")
+    CheckboxInput valueRangeProviderCheckBox;
+
+    @Inject
+    @DataField("valueRangeProviderIdTextBox")
+    TextBox valueRangeProviderIdTextBox;
+
+    @Inject
+    @DataField("planningEntityCollectionCheckBox")
+    CheckboxInput planningEntityCollectionCheckBox;
+
+    @Inject
+    @DataField("planningEntitySettingsPanelDiv")
+    Div planningEntitySettingsPanelDiv;
+
+    @Inject
+    @DataField("planningVariableCheckBox")
+    CheckboxInput planningVariableCheckBox;
+
+    @Inject
+    @DataField("valueRangeProviderRefsTextBox")
+    TextBox valueRangeProviderRefsTextBox;
+
+    @Inject
+    @DataField("planningFieldPropertiesNotAvailablePanelDiv")
+    Div planningFieldPropertiesNotAvailablePanelDiv;
+
     public PlannerDataObjectFieldEditorViewImpl() {
-        initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
@@ -81,12 +79,12 @@ public class PlannerDataObjectFieldEditorViewImpl
 
     @Override
     public void setValueRangeProviderValue( boolean value ) {
-        valueRangeProviderCheckBox.setValue( value );
+        valueRangeProviderCheckBox.setChecked( value );
     }
 
     @Override
     public boolean getValueRangeProviderValue() {
-        return valueRangeProviderCheckBox.getValue();
+        return valueRangeProviderCheckBox.getChecked();
     }
 
     @Override
@@ -106,22 +104,22 @@ public class PlannerDataObjectFieldEditorViewImpl
 
     @Override
     public void setPlanningEntityCollectionValue( boolean value ) {
-        planningEntityCollectionCheckBox.setValue( value );
+        planningEntityCollectionCheckBox.setChecked( value );
     }
 
     @Override
     public boolean getPlanningEntityCollectionValue() {
-        return planningEntityCollectionCheckBox.getValue();
+        return planningEntityCollectionCheckBox.getChecked();
     }
 
     @Override
     public void setPlanningVariableValue( boolean value ) {
-        planningVariableCheckBox.setValue( value );
+        planningVariableCheckBox.setChecked( value );
     }
 
     @Override
     public boolean getPlanningVariableValue() {
-        return planningVariableCheckBox.getValue();
+        return planningVariableCheckBox.getChecked();
     }
 
     @Override
@@ -140,18 +138,17 @@ public class PlannerDataObjectFieldEditorViewImpl
 
     @Override
     public void showPlanningSolutionSettingsPanel( boolean show ) {
-        planningSolutionSettingsPanel.setVisible( show );
-
+        planningSolutionSettingsPanelDiv.setHidden( !show );
     }
 
     @Override
     public void showPlanningEntitySettingsPanel( boolean show ) {
-        planningEntitySettingsPanel.setVisible( show );
+        planningEntitySettingsPanelDiv.setHidden( !show );
     }
 
     @Override
     public void showPlanningFieldPropertiesNotAvailable( boolean show ) {
-        planningFieldPropertiesNotAvailablePanel.setVisible( show );
+        planningFieldPropertiesNotAvailablePanelDiv.setHidden( !show );
     }
 
     @Override
@@ -168,28 +165,28 @@ public class PlannerDataObjectFieldEditorViewImpl
         enableValueRangeProviderRefs( false );
     }
 
-    @UiHandler("valueRangeProviderCheckBox")
+    @EventHandler("valueRangeProviderCheckBox")
     void onValueRangeProviderChange( ClickEvent event ) {
         presenter.onValueRangeProviderChange();
     }
 
-    @UiHandler("valueRangeProviderIdTextBox")
-    void onValueRangeProviderId( ValueChangeEvent<String> event ) {
+    @EventHandler("valueRangeProviderIdTextBox")
+    void onValueRangeProviderId( ChangeEvent event ) {
         presenter.onValueRangeProviderIdChange();
     }
 
-    @UiHandler("planningEntityCollectionCheckBox")
+    @EventHandler("planningEntityCollectionCheckBox")
     void onPlanningEntityCollection( ClickEvent event ) {
         presenter.onPlanningEntityCollectionChange();
     }
 
-    @UiHandler("planningVariableCheckBox")
+    @EventHandler("planningVariableCheckBox")
     void onPlanningVariableChange( ClickEvent event ) {
         presenter.onPlanningVariableChange();
     }
 
-    @UiHandler("valueRangeProviderRefsTextBox")
-    void onValueRangeProviderRefs( ValueChangeEvent<String> event ) {
+    @EventHandler("valueRangeProviderRefsTextBox")
+    void onValueRangeProviderRefs( ChangeEvent event ) {
         presenter.onValueRangeProviderRefsChange();
     }
 

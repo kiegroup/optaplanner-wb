@@ -20,52 +20,47 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.InlineRadio;
 import org.gwtbootstrap3.extras.select.client.ui.Select;
+import org.jboss.errai.common.client.dom.Div;
+import org.jboss.errai.common.client.dom.Input;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.EventHandler;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.uberfire.commons.data.Pair;
 
 @Dependent
+@Templated
 public class PlannerDataObjectEditorViewImpl
         extends Composite
         implements PlannerDataObjectEditorView {
 
-    interface Binder
-            extends UiBinder<Widget, PlannerDataObjectEditorViewImpl> {
+    @Inject
+    @DataField("notInPlanningRadioButton")
+    Input notInPlanningRadioButton;
 
-    }
+    @Inject
+    @DataField("planningEntityRadioButton")
+    Input planningEntityRadioButton;
 
-    private static Binder uiBinder = GWT.create( Binder.class );
+    @Inject
+    @DataField("planningSolutionRadioButton")
+    Input planningSolutionRadioButton;
 
-    @UiField
-    InlineRadio notInPlanningRadioButton;
+    @Inject
+    @DataField("planningSolutionScoreTypeGroup")
+    Div planningSolutionScoreTypeGroup;
 
-    @UiField
-    InlineRadio planningEntityRadioButton;
-
-    @UiField
-    InlineRadio planningSolutionRadioButton;
-
-    @UiField
-    FormGroup planningSolutionScoreTypeGroup;
-
-    @UiField
+    @Inject
+    @DataField("planningSolutionScoreTypeSelector")
     Select planningSolutionScoreTypeSelector;
 
     private Presenter presenter;
 
-    @Inject
     public PlannerDataObjectEditorViewImpl() {
-        initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override
@@ -75,32 +70,32 @@ public class PlannerDataObjectEditorViewImpl
 
     @Override
     public void setNotInPlanningValue( boolean value ) {
-        notInPlanningRadioButton.setValue( value );
+        notInPlanningRadioButton.setChecked( value );
     }
 
     @Override
     public boolean getNotInPlanningValue() {
-        return notInPlanningRadioButton.getValue();
+        return notInPlanningRadioButton.getChecked();
     }
 
     @Override
     public void setPlanningEntityValue( boolean value ) {
-        planningEntityRadioButton.setValue( value );
+        planningEntityRadioButton.setChecked( value );
     }
 
     @Override
     public boolean getPlanningEntityValue() {
-        return planningEntityRadioButton.getValue();
+        return planningEntityRadioButton.getChecked();
     }
 
     @Override
     public void setPlanningSolutionValue( boolean value ) {
-        planningSolutionRadioButton.setValue( value );
+        planningSolutionRadioButton.setChecked( value );
     }
 
     @Override
     public boolean getPlanningSolutionValue() {
-        return planningSolutionRadioButton.getValue();
+        return planningSolutionRadioButton.getChecked();
     }
 
     @Override
@@ -122,7 +117,7 @@ public class PlannerDataObjectEditorViewImpl
 
     @Override
     public void showPlanningSolutionScoreType( boolean show ) {
-        planningSolutionScoreTypeGroup.setVisible( show );
+        planningSolutionScoreTypeGroup.setHidden( !show );
     }
 
     @Override
@@ -130,22 +125,22 @@ public class PlannerDataObjectEditorViewImpl
         UIUtil.setSelectedValue( planningSolutionScoreTypeSelector, scoreType );
     }
 
-    @UiHandler("notInPlanningRadioButton")
+    @EventHandler("notInPlanningRadioButton")
     void onNotInPlanningChange( ClickEvent event ) {
         presenter.onNotInPlanningChange( );
     }
 
-    @UiHandler("planningEntityRadioButton")
+    @EventHandler("planningEntityRadioButton")
     void onPlanningEntityChange( ClickEvent event ) {
         presenter.onPlanningEntityChange( );
     }
 
-    @UiHandler("planningSolutionRadioButton")
+    @EventHandler("planningSolutionRadioButton")
     void onPlanningSolutionChange( ClickEvent event ) {
         presenter.onPlanningSolutionChange( );
     }
 
-    @UiHandler("planningSolutionScoreTypeSelector")
+    @EventHandler("planningSolutionScoreTypeSelector")
     void setPlanningSolutionScoreTypeChange( ChangeEvent event ) {
         presenter.onPlanningSolutionScoreTypeChange();
     }
