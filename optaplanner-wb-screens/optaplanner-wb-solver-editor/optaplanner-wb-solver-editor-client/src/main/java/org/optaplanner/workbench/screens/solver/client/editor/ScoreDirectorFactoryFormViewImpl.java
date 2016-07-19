@@ -17,28 +17,19 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.widgets.client.widget.KSessionSelector;
 import org.uberfire.backend.vfs.Path;
 
+@Templated
 public class ScoreDirectorFactoryFormViewImpl
         extends Composite
         implements ScoreDirectorFactoryFormView {
 
-    interface Binder
-            extends
-            UiBinder<Widget, ScoreDirectorFactoryFormViewImpl> {
-
-    }
-
-    private static Binder uiBinder = GWT.create( Binder.class );
-
-    @UiField( provided = true )
+    @DataField("kSessionSelector")
     KSessionSelector kSessionSelector;
 
     private ScoreDirectorFactoryForm presenter;
@@ -52,8 +43,6 @@ public class ScoreDirectorFactoryFormViewImpl
                 presenter.onKSessionNameChange( kSessionSelector.getSelectedKSessionName() );
             }
         } );
-
-        initWidget( uiBinder.createAndBindUi( this ) );
     }
 
     @Override

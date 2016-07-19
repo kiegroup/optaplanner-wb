@@ -29,30 +29,4 @@ public interface DomainEditorConstants
 
     String planner_domain_screen_name();
 
-    String plannerSettingsLabel();
-
-    String notInPlanningLabel();
-
-    String planningEntityLabel();
-
-    String planningSolutionLabel();
-
-    String planningSolutionScoreTypeLabel();
-
-    String planningSolutionSettingsLabel();
-
-    String valueRangeProviderLabel();
-
-    String valueRangeProviderIdLabel();
-
-    String planningEntitySettingsLabel();
-
-    String planningEntityCollectionLabel();
-
-    String planningVariableLabel();
-
-    String valueRangeProviderRefsLabel();
-
-    String planningFieldPropertiesNotAvailableLabel();
-
 }

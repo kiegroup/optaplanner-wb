@@ -31,19 +31,7 @@ public interface SolverEditorConstants
 
     String newSolverDescription();
 
-    String delete();
-
     String Source();
-
-    String ScoreDirectorFactory();
-
-    String ScoreDRL();
-
-    String Termination();
-
-    String Cancel();
-
-    String KnowledgeSession();
 
     String TerminationCompositionStyleHelp();
 
@@ -76,15 +64,5 @@ public interface SolverEditorConstants
     String ScoreCalculationCountLimitHelp();
 
     String NestedTermination();
-
-    String And();
-
-    String Or();
-
-    String True();
-
-    String False();
-
-    String EmptyTreeLabelText();
 
 }

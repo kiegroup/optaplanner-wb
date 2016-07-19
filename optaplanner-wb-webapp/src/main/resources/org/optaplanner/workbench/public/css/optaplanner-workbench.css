@@ -515,3 +515,7 @@ a.serviceTab:active {
 	border-radius: 4px;
 	overflow: hidden;
 }
+
+.solver-configuration-well {
+    height: 100% !important;
+}

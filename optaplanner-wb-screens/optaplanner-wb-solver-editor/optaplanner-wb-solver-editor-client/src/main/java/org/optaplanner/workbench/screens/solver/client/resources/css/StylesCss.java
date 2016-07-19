@@ -21,4 +21,6 @@ public interface StylesCss
         extends
         CssResource {
 
+    @ClassName("termination-tree")
+    String terminationTree();
 }

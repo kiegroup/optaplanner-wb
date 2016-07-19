@@ -15,10 +15,10 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import org.jboss.errai.common.client.api.IsElement;
+import com.google.gwt.user.client.ui.IsWidget;
 import org.jboss.errai.common.client.dom.HTMLElement;
 
-public interface PhaseConfigFormView extends IsElement {
+public interface PhaseConfigFormView extends IsWidget {
 
     void setPresenter( PhaseConfigForm presenter );
 
