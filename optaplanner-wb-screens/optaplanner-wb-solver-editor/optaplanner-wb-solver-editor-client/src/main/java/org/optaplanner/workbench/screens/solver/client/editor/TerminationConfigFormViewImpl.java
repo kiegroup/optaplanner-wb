@@ -17,14 +17,10 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.Widget;
-import org.gwtbootstrap3.client.ui.Label;
+import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
@@ -39,7 +35,7 @@ public class TerminationConfigFormViewImpl
 
     @Inject
     @DataField("emptyTreeLabel")
-    Label emptyTreeLabel;
+    Div emptyTreeLabel;
 
     public TerminationConfigFormViewImpl() {
     }
@@ -58,7 +54,7 @@ public class TerminationConfigFormViewImpl
 
     @Override
     public void displayEmptyTreeLabel( boolean visible ) {
-        emptyTreeLabel.setVisible( visible );
+        emptyTreeLabel.setHidden( !visible );
     }
 
     public void refreshTree() {
