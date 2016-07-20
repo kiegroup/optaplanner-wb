@@ -18,12 +18,9 @@ package org.optaplanner.workbench.screens.domaineditor.client.handlers.planner;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.jboss.errai.ioc.client.container.IOC;
 import org.kie.workbench.common.screens.datamodeller.client.command.DataModelCommand;
 import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandler;
-import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.DomainEditor;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ResourceOptions;
-import org.optaplanner.workbench.screens.domaineditor.client.widgets.planner.PlannerDomainEditor;
 
 @ApplicationScoped
 public class PlannerDomainHandler implements DomainHandler {
@@ -42,21 +39,9 @@ public class PlannerDomainHandler implements DomainHandler {
     }
 
     @Override
-    public DomainEditor getDomainEditor( boolean newInstance ) {
-        PlannerDomainEditor domainEditor = IOC.getBeanManager().lookupBean( PlannerDomainEditor.class ).newInstance();
-        domainEditor.setHandler( this );
-        return domainEditor;
-    }
-
-    @Override
     public ResourceOptions getResourceOptions( boolean newInstance ) {
         //not apply for this domain.
         return null;
-    }
-
-    @Override
-    public boolean validateCommand( DataModelCommand command ) {
-        return true;
     }
 
     @Override

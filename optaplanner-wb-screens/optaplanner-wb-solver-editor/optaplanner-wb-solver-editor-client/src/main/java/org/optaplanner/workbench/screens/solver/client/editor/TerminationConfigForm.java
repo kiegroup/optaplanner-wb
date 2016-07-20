@@ -17,8 +17,6 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -26,7 +24,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.ui.ElementWrapperWidget;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigOption;
 
@@ -38,16 +36,14 @@ public class TerminationConfigForm
 
     private TerminationConfigFormView view;
 
-    private SyncBeanManager beanManager;
+    private ManagedInstance<TerminationTreeItemContent> terminationTreeItemContentProvider;
 
     private TreeItem rootTreeItem;
 
-    private List<TerminationTreeItemContent> terminationTreeItemContentList = new ArrayList<>();
-
     @Inject
-    public TerminationConfigForm( TerminationConfigFormView view, SyncBeanManager beanManager ) {
+    public TerminationConfigForm( TerminationConfigFormView view, ManagedInstance<TerminationTreeItemContent> terminationTreeItemContentProvider ) {
         this.view = view;
-        this.beanManager = beanManager;
+        this.terminationTreeItemContentProvider = terminationTreeItemContentProvider;
     }
 
     public void displayEmptyTreeLabel( boolean visible ) {
@@ -99,7 +95,7 @@ public class TerminationConfigForm
     }
 
     private TerminationTreeItemContent createTerminationTreeItemContent( TerminationConfigOption terminationConfigOption, TreeItem treeItem, TerminationConfigModel terminationConfigModel ) {
-        TerminationTreeItemContent terminationTreeItemContent = beanManager.lookupBean( TerminationTreeItemContent.class ).newInstance();
+        TerminationTreeItemContent terminationTreeItemContent = terminationTreeItemContentProvider.get();
         terminationTreeItemContent.setTerminationConfigForm( this );
         terminationTreeItemContent.setTerminationConfigOption( terminationConfigOption );
         terminationTreeItemContent.setTreeItem( treeItem );
@@ -107,8 +103,11 @@ public class TerminationConfigForm
         treeItem.setUserObject( terminationTreeItemContent );
         treeItem.setWidget( ElementWrapperWidget.getWidget( terminationTreeItemContent.getElement() ) );
         treeItem.setState( true );
-        terminationTreeItemContentList.add( terminationTreeItemContent );
         return terminationTreeItemContent;
+    }
+
+    public void destroyTerminationTreeItemContent( TerminationTreeItemContent terminationTreeItemContent ) {
+        terminationTreeItemContentProvider.destroy( terminationTreeItemContent );
     }
 
     public void setModel( TerminationConfigModel terminationConfigModel ) {
@@ -270,12 +269,5 @@ public class TerminationConfigForm
     @Override
     public Widget asWidget() {
         return view.asWidget();
-    }
-
-    @PreDestroy
-    public void destroy() {
-        for (TerminationTreeItemContent terminationTreeItemContent : terminationTreeItemContentList) {
-            beanManager.destroyBean( terminationTreeItemContent );
-        }
     }
 }

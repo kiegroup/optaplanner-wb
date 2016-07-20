@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import org.guvnor.m2repo.client.event.M2RepoRefreshEvent;
 import org.guvnor.m2repo.client.event.M2RepoSearchEvent;
 import org.guvnor.m2repo.client.upload.UploadFormPresenter;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.kie.workbench.common.widgets.client.search.ContextualSearch;
 import org.kie.workbench.common.widgets.client.search.SearchBehavior;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
@@ -58,7 +58,7 @@ public class M2RepoPerspective extends FlowPanel {
     private PlaceManager placeManager;
 
     @Inject
-    private SyncBeanManager iocManager;
+    private ManagedInstance<UploadFormPresenter> uploadFormPresenterProvider;
 
     @WorkbenchPanel( parts = "M2RepoEditor" )
     FlowPanel m2RepoEditor = new FlowPanel();
@@ -82,7 +82,7 @@ public class M2RepoPerspective extends FlowPanel {
                 .respondsWith( new Command() {
                     @Override
                     public void execute() {
-                        UploadFormPresenter uploadFormPresenter = iocManager.lookupBean( UploadFormPresenter.class ).getInstance();
+                        UploadFormPresenter uploadFormPresenter = uploadFormPresenterProvider.get();
                         uploadFormPresenter.showView();
                     }
                 } )

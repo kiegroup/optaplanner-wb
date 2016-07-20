@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import org.jboss.errai.ioc.client.container.SyncBeanDef;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,10 +40,7 @@ public class PhaseConfigFormTest {
     private PhaseConfigFormView view;
 
     @Mock
-    private SyncBeanManager syncBeanManager;
-
-    @Mock
-    private SyncBeanDef<ConstructionHeuristicForm> syncBeanDef;
+    private ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider;
 
     @Mock
     private ConstructionHeuristicForm constructionHeuristicForm;
@@ -56,7 +52,7 @@ public class PhaseConfigFormTest {
 
     @Before
     public void setUp() {
-        phaseConfigForm = new PhaseConfigForm( view, syncBeanManager );
+        phaseConfigForm = new PhaseConfigForm( view, constructionHeuristicFormProvider );
         phaseConfigForm.setModel( new ArrayList<>() );
     }
 
@@ -71,8 +67,7 @@ public class PhaseConfigFormTest {
         phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
         phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
 
-        when( syncBeanManager.lookupBean( ConstructionHeuristicForm.class ) ).thenReturn( syncBeanDef );
-        when( syncBeanDef.newInstance() ).thenReturn( constructionHeuristicForm );
+        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
 
         phaseConfigForm.setModel( phaseConfigModelList );
 
@@ -90,8 +85,7 @@ public class PhaseConfigFormTest {
     }
 
     private void addConstructionHeuristic( boolean newConstructionHeuristic ) {
-        when( syncBeanManager.lookupBean( ConstructionHeuristicForm.class ) ).thenReturn( syncBeanDef );
-        when( syncBeanDef.newInstance() ).thenReturn( constructionHeuristicForm );
+        when( constructionHeuristicFormProvider.get()).thenReturn( constructionHeuristicForm );
 
         if ( newConstructionHeuristic ) {
             phaseConfigForm.addConstructionHeuristic();

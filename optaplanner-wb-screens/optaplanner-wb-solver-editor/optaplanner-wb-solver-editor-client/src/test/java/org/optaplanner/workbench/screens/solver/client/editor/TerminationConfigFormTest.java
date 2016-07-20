@@ -20,8 +20,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.WithClassesToStub;
 import org.jboss.errai.common.client.ui.ElementWrapperWidget;
-import org.jboss.errai.ioc.client.container.SyncBeanDef;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +43,7 @@ public class TerminationConfigFormTest {
     private TerminationConfigFormView view;
 
     @Mock
-    private SyncBeanManager beanManager;
-
-    @Mock
-    private SyncBeanDef<TerminationTreeItemContent> syncBeanDef;
+    private ManagedInstance<TerminationTreeItemContent> terminationTreeItemContentProvider;
 
     private TerminationTreeItemContent terminationTreeItemContent;
 
@@ -55,7 +51,7 @@ public class TerminationConfigFormTest {
 
     @Before
     public void setUp() throws Exception {
-        form = new TerminationConfigForm( view, beanManager );
+        form = new TerminationConfigForm( view, terminationTreeItemContentProvider );
         terminationTreeItemContent = new TerminationTreeItemContent( Mockito.mock( TerminationTreeItemContentView.class ) );
     }
 
@@ -66,8 +62,7 @@ public class TerminationConfigFormTest {
         terminationConfigModel.setMillisecondsSpentLimit( 10l );
         List<TerminationConfigModel> terminationConfigModelList = Arrays.asList( new TerminationConfigModel() );
         terminationConfigModel.setTerminationConfigList( terminationConfigModelList );
-        when( beanManager.lookupBean( TerminationTreeItemContent.class ) ).thenReturn( syncBeanDef );
-        when (syncBeanDef.newInstance()).thenReturn( terminationTreeItemContent );
+        when( terminationTreeItemContentProvider.get() ).thenReturn( terminationTreeItemContent );
 
         form.setModel( terminationConfigModel );
 

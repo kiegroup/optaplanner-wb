@@ -134,6 +134,7 @@ public class TerminationTreeItemContent implements IsElement {
         parent.getView().addDropDownOption( terminationConfigOption );
         treeItem.remove();
         terminationConfigForm.displayEmptyTreeLabel( terminationConfigForm.getRootTreeItem().getChildCount() == 0 );
+        terminationConfigForm.destroyTerminationTreeItemContent( this );
     }
 
     public void onDaysSpentChange( Long value ) {
