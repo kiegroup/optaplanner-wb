@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import org.guvnor.asset.management.client.editors.repository.wizard.CreateRepositoryWizard;
 import org.guvnor.common.services.shared.security.AppRoles;
 import org.guvnor.structure.client.editors.repository.clone.CloneRepositoryPresenter;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.Perspective;
@@ -61,7 +61,7 @@ public class AdministrationPerspective {
     private PlaceManager placeManager;
 
     @Inject
-    private SyncBeanManager iocManager;
+    private ManagedInstance<CreateRepositoryWizard> createRepositoryWizardProvider;
 
     @Inject
     private CloneRepositoryPresenter cloneRepositoryPresenter;
@@ -124,12 +124,12 @@ public class AdministrationPerspective {
                 new Command() {
                     @Override
                     public void execute() {
-                        final CreateRepositoryWizard newRepositoryWizard = iocManager.lookupBean( CreateRepositoryWizard.class ).getInstance();
+                        final CreateRepositoryWizard newRepositoryWizard = createRepositoryWizardProvider.get();
                         //When pop-up is closed destroy bean to avoid memory leak
                         newRepositoryWizard.onCloseCallback( new Callback<Void>() {
                             @Override
                             public void callback( Void result ) {
-                                iocManager.destroyBean( newRepositoryWizard );
+                                createRepositoryWizardProvider.destroy( newRepositoryWizard );
                             }
                         } );
                         newRepositoryWizard.start();

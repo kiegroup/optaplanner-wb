@@ -17,12 +17,11 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import org.jboss.errai.ioc.client.container.SyncBeanManager;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 
@@ -34,13 +33,13 @@ public class PhaseConfigForm implements IsWidget {
 
     private PhaseConfigFormView view;
 
-    private SyncBeanManager syncBeanManager;
+    private ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider;
 
     @Inject
     public PhaseConfigForm( final PhaseConfigFormView view,
-                            final SyncBeanManager syncBeanManager ) {
+                            final ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider ) {
         this.view = view;
-        this.syncBeanManager = syncBeanManager;
+        this.constructionHeuristicFormProvider = constructionHeuristicFormProvider;
 
         view.setPresenter( this );
     }
@@ -52,7 +51,7 @@ public class PhaseConfigForm implements IsWidget {
     }
 
     public void addConstructionHeuristic( ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel ) {
-        ConstructionHeuristicForm constructionHeuristicForm = syncBeanManager.lookupBean( ConstructionHeuristicForm.class ).newInstance();
+        ConstructionHeuristicForm constructionHeuristicForm = constructionHeuristicFormProvider.get();
         constructionHeuristicForm.setPhaseConfigForm( this );
         constructionHeuristicForm.setModel( constructionHeuristicPhaseConfigModel );
         phaseFormList.add( constructionHeuristicForm );
@@ -63,6 +62,7 @@ public class PhaseConfigForm implements IsWidget {
         phaseFormList.remove( constructionHeuristicForm );
         view.removeConstructionHeuristic( constructionHeuristicForm.getElement() );
         model.remove( constructionHeuristicForm.getModel() );
+        constructionHeuristicFormProvider.destroy( constructionHeuristicForm );
     }
 
     public List<PhaseConfigModel> getModel() {
@@ -75,13 +75,6 @@ public class PhaseConfigForm implements IsWidget {
             if ( phaseConfigModel instanceof ConstructionHeuristicPhaseConfigModel ) {
                 addConstructionHeuristic( (ConstructionHeuristicPhaseConfigModel) phaseConfigModel );
             }
-        }
-    }
-
-    @PreDestroy
-    public void destroy() {
-        for ( Object phaseForm : phaseFormList ) {
-            syncBeanManager.destroyBean( phaseForm );
         }
     }
 
