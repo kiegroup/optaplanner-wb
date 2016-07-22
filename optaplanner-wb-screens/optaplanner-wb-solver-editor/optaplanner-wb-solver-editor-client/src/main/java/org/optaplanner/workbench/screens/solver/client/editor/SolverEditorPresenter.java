@@ -20,6 +20,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.common.client.api.Caller;
@@ -29,6 +30,7 @@ import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
 import org.kie.workbench.common.widgets.metadata.client.KieEditor;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
+import org.optaplanner.workbench.screens.solver.client.util.SuperDevModeFlag;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverModelContent;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
@@ -91,6 +93,31 @@ public class SolverEditorPresenter
                     solverResourceType );
     }
 
+    @Override
+    protected void makeMenuBar() {
+        SuperDevModeFlag superDevModeFlag = GWT.create( SuperDevModeFlag.class );
+        if ( superDevModeFlag.isSuperDevModeUsed() ) {
+            menus = menuBuilder
+                    .addSave( versionRecordManager.newSaveMenuItem( new Command() {
+                        @Override
+                        public void execute() {
+                            onSave();
+                        }
+                    } ) )
+                    .addCopy( versionRecordManager.getCurrentPath(),
+                            fileNameValidator )
+                    .addRename( versionRecordManager.getPathToLatest(),
+                            fileNameValidator )
+                    .addDelete( versionRecordManager.getPathToLatest() )
+                    .addValidate( onValidate() )
+                    .addCommand( SolverEditorConstants.INSTANCE.SmokeTest(), onSmokeTest() )
+                    .addNewTopLevelMenu( versionRecordManager.buildMenu() )
+                    .build();
+        } else {
+            super.makeMenuBar();
+        }
+    }
+
     protected void loadContent() {
         view.showLoading();
         solverService.call( getLoadContentSuccessCallback(),
@@ -151,24 +178,32 @@ public class SolverEditorPresenter
         return new Command() {
             @Override
             public void execute() {
-                solverService.call( getValidateRemoteCallback(),
+                solverService.call( getRemoteCallback( CommonConstants.INSTANCE.ItemValidatedSuccessfully() ),
                                     new DefaultErrorCallback() ).validate( versionRecordManager.getCurrentPath(),
                                                                            model );
             }
         };
     }
 
-    private RemoteCallback<List<ValidationMessage>> getValidateRemoteCallback() {
+    private RemoteCallback<List<ValidationMessage>> getRemoteCallback( String message ) {
         return new RemoteCallback<List<ValidationMessage>>() {
             @Override
             public void callback( final List<ValidationMessage> results ) {
                 if ( results == null || results.isEmpty() ) {
-                    notification.fire( new NotificationEvent( CommonConstants.INSTANCE.ItemValidatedSuccessfully(),
+                    notification.fire( new NotificationEvent( message,
                                                               NotificationEvent.NotificationType.SUCCESS ) );
                 } else {
                     ValidationPopup.showMessages( results );
                 }
             }
+        };
+    }
+
+    protected Command onSmokeTest() {
+        return () -> {
+            solverService.call( getRemoteCallback( SolverEditorConstants.INSTANCE.SmokeTestSuccess() ),
+                    new DefaultErrorCallback() ).smokeTest( versionRecordManager.getCurrentPath(),
+                    model );
         };
     }
 

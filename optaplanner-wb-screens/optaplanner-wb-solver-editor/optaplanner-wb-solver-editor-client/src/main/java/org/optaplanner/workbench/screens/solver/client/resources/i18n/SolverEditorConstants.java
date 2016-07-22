@@ -27,6 +27,10 @@ public interface SolverEditorConstants
 
     public static final SolverEditorConstants INSTANCE = GWT.create( SolverEditorConstants.class );
 
+    String SmokeTest();
+
+    String SmokeTestSuccess();
+
     String solverResourceTypeDescription();
 
     String newSolverDescription();

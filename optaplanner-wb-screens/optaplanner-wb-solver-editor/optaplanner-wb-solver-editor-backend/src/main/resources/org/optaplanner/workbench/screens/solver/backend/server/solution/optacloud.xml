@@ -1,0 +1,48 @@
+<opta.optacloud.CloudSolution id="1">
+  <computerList id="2">
+    <opta.optacloud.Computer id="3">
+      <cpuPower>24</cpuPower>
+      <memory>96</memory>
+      <networkBandwidth>16</networkBandwidth>
+      <cost>4800</cost>
+    </opta.optacloud.Computer>
+    <opta.optacloud.Computer id="4">
+      <cpuPower>6</cpuPower>
+      <memory>4</memory>
+      <networkBandwidth>6</networkBandwidth>
+      <cost>660</cost>
+    </opta.optacloud.Computer>
+  </computerList>
+  <processList id="5">
+    <opta.optacloud.Process id="6">
+      <requiredCpuPower>1</requiredCpuPower>
+      <requiredMemory>1</requiredMemory>
+      <requiredNetworkBandwidth>1</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+    <opta.optacloud.Process id="7">
+      <requiredCpuPower>3</requiredCpuPower>
+      <requiredMemory>6</requiredMemory>
+      <requiredNetworkBandwidth>1</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+    <opta.optacloud.Process id="8">
+      <requiredCpuPower>1</requiredCpuPower>
+      <requiredMemory>1</requiredMemory>
+      <requiredNetworkBandwidth>3</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+    <opta.optacloud.Process id="9">
+      <requiredCpuPower>1</requiredCpuPower>
+      <requiredMemory>2</requiredMemory>
+      <requiredNetworkBandwidth>11</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+    <opta.optacloud.Process id="10">
+      <requiredCpuPower>1</requiredCpuPower>
+      <requiredMemory>1</requiredMemory>
+      <requiredNetworkBandwidth>1</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+    <opta.optacloud.Process id="11">
+      <requiredCpuPower>1</requiredCpuPower>
+      <requiredMemory>1</requiredMemory>
+      <requiredNetworkBandwidth>5</requiredNetworkBandwidth>
+    </opta.optacloud.Process>
+  </processList>
+</opta.optacloud.CloudSolution>

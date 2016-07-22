@@ -167,6 +167,11 @@ public class SolverEditorPresenterTest {
                 return null;
             }
 
+            @Override
+            public List<ValidationMessage> smokeTest( Path path, SolverConfigModel config ) {
+                return null;
+            }
+
             @Override public Path copy( Path path, String newName, String comment ) {
                 return null;
             }
