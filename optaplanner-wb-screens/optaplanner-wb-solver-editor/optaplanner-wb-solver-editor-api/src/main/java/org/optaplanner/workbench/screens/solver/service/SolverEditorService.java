@@ -15,8 +15,11 @@
  */
 package org.optaplanner.workbench.screens.solver.service;
 
+import java.util.List;
+
 import org.guvnor.common.services.shared.file.SupportsUpdate;
 import org.guvnor.common.services.shared.validation.ValidationService;
+import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.bus.server.annotations.Remote;
 import org.kie.workbench.common.services.shared.source.ViewSourceService;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
@@ -41,5 +44,7 @@ public interface SolverEditorService
         SupportsRename {
 
     SolverModelContent loadContent( final Path path );
+
+    List<ValidationMessage> smokeTest( final Path path, final SolverConfigModel config);
 
 }

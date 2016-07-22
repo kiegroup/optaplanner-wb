@@ -18,7 +18,9 @@ package org.optaplanner.workbench.screens.solver.backend.server;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -38,11 +40,16 @@ import org.kie.workbench.common.services.backend.validation.asset.Validator;
 import org.kie.workbench.common.services.backend.validation.asset.ValidatorFileSystemProvider;
 import org.kie.workbench.common.services.shared.project.KieProject;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.io.IOService;
 
 public class SolverValidator {
+
+    private static final long SMOKE_TEST_MILLISECONDS_SPENT_LIMIT = 3000;
+
+    private static final Set<String> SMOKE_TEST_SUPPORTED_PROJECTS = new HashSet<>(  );
 
     private IOService ioService;
 
@@ -50,6 +57,10 @@ public class SolverValidator {
 
     @Inject
     private LRUBuilderCache builderCache;
+
+    static {
+        SMOKE_TEST_SUPPORTED_PROJECTS.add( "optacloud" );
+    }
 
     public SolverValidator() {
     }
@@ -63,6 +74,17 @@ public class SolverValidator {
 
     public List<ValidationMessage> validate( final Path resourcePath,
                                              final String content ) {
+        return validate( resourcePath, content, false );
+    }
+
+    public List<ValidationMessage> validateAndRun( final Path resourcePath,
+                                                   final String content ) {
+        return validate( resourcePath, content, true );
+    }
+
+    private List<ValidationMessage> validate( final Path resourcePath,
+                                              final String content,
+                                              final boolean runSolver ) {
         try {
 
             // Run validation with the changed resource ( == everything builds ).
@@ -77,12 +99,11 @@ public class SolverValidator {
             if ( validationMessages.isEmpty() ) {
                 return buildSolver( resourcePath,
                                     kieProject,
-                                    validator );
+                                    validator,
+                                    runSolver );
             } else {
                 return validationMessages;
             }
-
-
         } catch ( NoProjectException e ) {
             return new ArrayList<ValidationMessage>();
         }
@@ -90,12 +111,14 @@ public class SolverValidator {
 
     private List<ValidationMessage> buildSolver( final Path resourcePath,
                                                  final KieProject kieProject,
-                                                 final Validator validator ) {
-        final List<ValidationMessage> validationMessages = new ArrayList<ValidationMessage>();
+                                                 final Validator validator,
+                                                 final boolean runSolver ) {
+        final List<ValidationMessage> validationMessages = new ArrayList<>();
 
         final ValidationMessage validationMessage = createSolverFactory( resourcePath,
                                                                          validator,
-                                                                         kieProject );
+                                                                         kieProject,
+                                                                         runSolver );
         if ( validationMessage != null ) {
             validationMessages.add( validationMessage );
         }
@@ -121,7 +144,8 @@ public class SolverValidator {
 
     private ValidationMessage createSolverFactory( final Path resourcePath,
                                                    final Validator validator,
-                                                   final KieProject kieWorkbenchProject ) {
+                                                   final KieProject kieWorkbenchProject,
+                                                   final boolean runSolver ) {
 
         final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject( ( InternalKieModule ) validator.getKieBuilder().getKieModule(), null );
         final KieContainer kieContainer = new KieContainerImpl( kieProject,
@@ -131,8 +155,28 @@ public class SolverValidator {
 
             final String solverConfigResource = getSolverConfigResource( resourcePath,
                                                                          kieWorkbenchProject );
-            SolverFactory.createFromKieContainerXmlResource( kieContainer,
-                                                             solverConfigResource ).buildSolver();
+
+            SolverFactory<Object> solverFactory = SolverFactory.createFromKieContainerXmlResource( kieContainer, solverConfigResource );
+
+            if (runSolver) {
+                String projectName = resolveProjectName( resourcePath );
+                if ( !SMOKE_TEST_SUPPORTED_PROJECTS.contains( projectName ) ) {
+                    throw new IllegalStateException( "Running a smoke test for project (" + projectName + ") is not supported." );
+                }
+
+                solverFactory.getSolverConfig().getTerminationConfig().shortenTimeMillisSpentLimit( SMOKE_TEST_MILLISECONDS_SPENT_LIMIT );
+                if (solverFactory.getSolverConfig().getScoreDirectorFactoryConfig().getKsessionName() == null) {
+                    solverFactory.getSolverConfig().getScoreDirectorFactoryConfig().setKsessionName( kieProject.getDefaultKieSession().getName() );
+                }
+                Solver<Object> solver = solverFactory.buildSolver();
+
+                XStreamSolutionImporter solutionImporter = new XStreamSolutionImporter( kieContainer.getClassLoader() );
+                Object solution = solutionImporter.read( getClass().getClassLoader().getResourceAsStream( "org/optaplanner/workbench/screens/solver/backend/server/solution/" + projectName + ".xml" ) );
+
+                solver.solve( solution );
+            } else {
+                solverFactory.buildSolver();
+            }
 
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -141,6 +185,14 @@ public class SolverValidator {
         }
 
         return null;
+    }
+
+    private String resolveProjectName( final Path resourcePath ) {
+        KieProject kieProject = projectService.resolveProject( resourcePath );
+        if ( kieProject == null ) {
+            throw new IllegalStateException( "Failed to resolve KieProject (" + kieProject + ").");
+        }
+        return kieProject.getProjectName();
     }
 
     private String getSolverConfigResource( final Path resourcePath,
@@ -159,4 +211,5 @@ public class SolverValidator {
 
         return message;
     }
+
 }

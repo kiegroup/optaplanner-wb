@@ -225,4 +225,17 @@ public class SolverEditorServiceImpl
             throw ExceptionUtilities.handleException( e );
         }
     }
+
+    @Override
+    public List<ValidationMessage> smokeTest( final Path path,
+                                              final SolverConfigModel config ) {
+        try {
+
+            return solverValidator.validateAndRun( path,
+                                                   toSource( path, config ) );
+
+        } catch ( Exception e ) {
+            throw ExceptionUtilities.handleException( e );
+        }
+    }
 }
