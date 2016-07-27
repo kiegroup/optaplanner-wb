@@ -100,4 +100,14 @@ public class PhaseConfigFormTest {
         phaseConfigForm.removeConstructionHeuristic( constructionHeuristicForm );
         verify( view ).removeConstructionHeuristic( constructionHeuristicForm.getElement() );
     }
+
+    @Test
+    public void displayEmptyPhaseConfigurationLabel() {
+        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
+        phaseConfigForm.addConstructionHeuristic();
+        verify( view ).displayEmptyPhaseConfigurationLabel( false );
+
+        phaseConfigForm.removeConstructionHeuristic( constructionHeuristicForm );
+        verify( view ).displayEmptyPhaseConfigurationLabel( true );
+    }
 }

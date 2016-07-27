@@ -25,4 +25,6 @@ public interface PhaseConfigFormView extends IsWidget {
     void addConstructionHeuristic( HTMLElement element );
 
     void removeConstructionHeuristic( HTMLElement element );
+
+    void displayEmptyPhaseConfigurationLabel( boolean visible );
 }

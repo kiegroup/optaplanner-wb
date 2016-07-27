@@ -51,6 +51,9 @@ public class PhaseConfigForm implements IsWidget {
     }
 
     public void addConstructionHeuristic( ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel ) {
+        if ( phaseFormList.isEmpty() ) {
+            view.displayEmptyPhaseConfigurationLabel( false );
+        }
         ConstructionHeuristicForm constructionHeuristicForm = constructionHeuristicFormProvider.get();
         constructionHeuristicForm.setPhaseConfigForm( this );
         constructionHeuristicForm.setModel( constructionHeuristicPhaseConfigModel );
@@ -63,6 +66,9 @@ public class PhaseConfigForm implements IsWidget {
         view.removeConstructionHeuristic( constructionHeuristicForm.getElement() );
         model.remove( constructionHeuristicForm.getModel() );
         constructionHeuristicFormProvider.destroy( constructionHeuristicForm );
+        if ( phaseFormList.isEmpty() ) {
+            view.displayEmptyPhaseConfigurationLabel( true );
+        }
     }
 
     public List<PhaseConfigModel> getModel() {

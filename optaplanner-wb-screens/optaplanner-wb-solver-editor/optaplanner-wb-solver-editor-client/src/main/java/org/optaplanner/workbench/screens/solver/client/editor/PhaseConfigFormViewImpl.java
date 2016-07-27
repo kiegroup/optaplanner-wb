@@ -39,6 +39,10 @@ public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFor
     @DataField("dropdownMenuList")
     DropDownMenu dropdownMenuList;
 
+    @DataField("emptyPhaseConfigurationLabel")
+    @Inject
+    Div emptyPhaseConfigurationLabel;
+
     private PhaseConfigForm presenter;
 
     @Inject
@@ -63,5 +67,10 @@ public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFor
     @Override
     public void removeConstructionHeuristic( HTMLElement element ) {
         view.removeChild( element );
+    }
+
+    @Override
+    public void displayEmptyPhaseConfigurationLabel( boolean visible ) {
+        emptyPhaseConfigurationLabel.setHidden( !visible );
     }
 }

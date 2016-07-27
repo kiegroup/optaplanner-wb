@@ -519,3 +519,7 @@ a.serviceTab:active {
 .solver-configuration-well {
     height: 100% !important;
 }
+
+.empty-label {
+    padding-top: 5px;
+}
