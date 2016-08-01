@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2016 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.client.resources.i18n;
+package org.optaplanner.workbench.screens.domaineditor.model;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.Messages;
+import java.util.List;
+
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 
 /**
- * Domain Editor i18n constants.
+ * Defines a chain of object properties to be used for comparison, starting from a planning entity.
  */
-public interface DomainEditorConstants
-        extends Messages {
+public interface ObjectPropertyPath {
 
-    DomainEditorConstants INSTANCE = GWT.create( DomainEditorConstants.class );
+    List<ObjectProperty> getObjectPropertyPath();
 
-    String planner_domain_screen_name();
+    void appendObjectProperty( ObjectProperty objectProperty );
 
-    String UnexpectedErrorComparatorInit();
+    void setDescending( boolean descending );
 
-    String UnexpectedErrorComparatorUpdate();
-
+    boolean isDescending();
 }

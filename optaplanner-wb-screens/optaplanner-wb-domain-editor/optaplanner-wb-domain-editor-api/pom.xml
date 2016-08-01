@@ -32,4 +32,26 @@
   <name>OptaPlanner Workbench - Domain Editor API</name>
   <description>OptaPlanner Workbench - Domain API</description>
 
+
+  <dependencies>
+
+    <!-- dependencies added because of new illegal transitive dependency check -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-bus</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-common</artifactId>
+    </dependency>
+
+    <!-- Regular dependencies -->
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-data-modeller-core</artifactId>
+    </dependency>
+
+  </dependencies>
+
 </project>

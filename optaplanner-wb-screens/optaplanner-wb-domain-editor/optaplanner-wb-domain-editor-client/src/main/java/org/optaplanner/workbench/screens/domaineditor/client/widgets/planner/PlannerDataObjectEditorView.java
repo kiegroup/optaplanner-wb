@@ -18,6 +18,11 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
 
+import org.kie.workbench.common.services.datamodeller.core.DataModel;
+import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
+import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.commons.data.Pair;
 
@@ -33,6 +38,10 @@ public interface PlannerDataObjectEditorView
         void onPlanningSolutionChange( );
 
         void onPlanningSolutionScoreTypeChange();
+
+        void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths );
+
+        void removeComparatorDefinition(DataObject dataObject, boolean resetPlanningEntityAnnotation);
     }
 
     void setNotInPlanningValue( boolean value );
@@ -56,6 +65,12 @@ public interface PlannerDataObjectEditorView
 
     void showPlanningSolutionScoreType( boolean show );
 
+    void showComparatorGroup( boolean show );
+
     void clear( );
+
+    void initFieldPicker( DataModel dataModel, DataObject rootDataObject, ComparatorObject comparatorObject );
+
+    void destroyFieldPicker();
 
 }
