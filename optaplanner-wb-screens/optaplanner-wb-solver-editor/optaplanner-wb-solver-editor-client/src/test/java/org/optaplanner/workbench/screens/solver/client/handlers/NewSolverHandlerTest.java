@@ -17,6 +17,8 @@ package org.optaplanner.workbench.screens.solver.client.handlers;
 
 import java.util.HashSet;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.security.shared.api.Role;
 import org.jboss.errai.security.shared.api.RoleImpl;
 import org.jboss.errai.security.shared.api.identity.User;
@@ -24,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.ext.widgets.common.client.common.BusyIndicatorView;
@@ -33,15 +34,12 @@ import org.uberfire.mocks.CallerMock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith(GwtMockitoTestRunner.class )
 public class NewSolverHandlerTest {
 
 
     @Mock
     private SolverEditorService solverService;
-
-    @Mock
-    private SolverResourceType resourceType;
 
     @Mock
     private BusyIndicatorView busyIndicatorView;
@@ -51,12 +49,15 @@ public class NewSolverHandlerTest {
 
     private NewSolverHandler newSolverHandler;
 
+    private SolverResourceType resourceType;
+
     @Before
     public void setUp() throws Exception {
         newSolverHandler = new NewSolverHandler( new CallerMock<>( solverService ),
                                                  resourceType,
                                                  busyIndicatorView,
                                                  user );
+        resourceType = GWT.create( SolverResourceType.class );
     }
 
     @Test
