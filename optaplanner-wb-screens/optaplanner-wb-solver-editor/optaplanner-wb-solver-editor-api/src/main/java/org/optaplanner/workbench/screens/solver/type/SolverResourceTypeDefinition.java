@@ -46,7 +46,7 @@ public class SolverResourceTypeDefinition
 
     @Override
     public int getPriority() {
-        return 0;
+        return 10;
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import javax.enterprise.event.Event;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMock;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.guvnor.common.services.shared.metadata.model.Metadata;
@@ -72,19 +73,18 @@ public class SolverEditorPresenterTest {
     ObservablePath path;
 
     @Mock
-    SolverResourceType resourceType;
-
-    @Mock
     VersionRecordManager versionRecordManager;
 
     private SolverConfigModel model;
 
+    private SolverResourceType resourceType;
+
     @Before
     public void setUp() throws Exception {
-
         model = new SolverConfigModel();
         model.setTerminationConfig( terminationConfigModel );
         model.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
+        resourceType = GWT.create( SolverResourceType.class );
 
         when( resourceType.getSuffix() ).thenReturn( "solver.xml" );
         when( resourceType.accept( path ) ).thenReturn( true );
