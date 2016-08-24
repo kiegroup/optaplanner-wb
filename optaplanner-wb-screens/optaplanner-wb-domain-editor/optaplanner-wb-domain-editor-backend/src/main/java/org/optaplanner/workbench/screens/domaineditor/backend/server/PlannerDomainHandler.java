@@ -83,4 +83,5 @@ public class PlannerDomainHandler implements DomainHandler {
     public List<AnnotationDefinition> getManagedAnnotations() {
         return domainAnnotations;
     }
+
 }

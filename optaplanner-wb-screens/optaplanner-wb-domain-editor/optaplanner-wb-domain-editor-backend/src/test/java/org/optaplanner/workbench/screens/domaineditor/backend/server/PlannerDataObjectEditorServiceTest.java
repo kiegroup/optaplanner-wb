@@ -63,7 +63,6 @@ public class PlannerDataObjectEditorServiceTest {
         DataObject dataObject = mock(DataObject.class);
         when( dataObject.getAnnotation( ComparatorDefinition.class.getName() ) ).thenReturn( getAnnotation( Arrays.asList("abc.def=") ) );
         service.extractComparatorObject( dataObject, dataModel );
-
     }
 
     @Test(expected = IllegalStateException.class)

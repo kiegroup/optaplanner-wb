@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.jboss.errai.common.client.api.Caller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
@@ -24,6 +25,7 @@ import org.mockito.Mock;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
+import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -35,11 +37,15 @@ public class PlannerDataObjectEditorTest
     @Mock
     private PlannerDataObjectEditorView view;
 
+    @Mock
+    private Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService;
+
     protected PlannerDataObjectEditor createObjectEditor() {
         PlannerDataObjectEditor objectEditor = new PlannerDataObjectEditor( view,
                 handlerRegistry,
                 dataModelerEvent,
-                commandBuilder );
+                commandBuilder,
+                plannerDataObjectEditorService );
         return objectEditor;
     }
 

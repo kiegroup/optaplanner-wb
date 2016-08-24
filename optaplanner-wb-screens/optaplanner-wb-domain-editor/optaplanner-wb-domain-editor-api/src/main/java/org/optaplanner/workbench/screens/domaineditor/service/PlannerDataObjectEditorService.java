@@ -19,7 +19,6 @@ package org.optaplanner.workbench.screens.domaineditor.service;
 import java.util.List;
 
 import org.jboss.errai.bus.server.annotations.Remote;
-import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
