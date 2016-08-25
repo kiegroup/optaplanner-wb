@@ -16,6 +16,7 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
@@ -31,6 +32,9 @@ import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.optaplanner.core.api.score.Score;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
+import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstantsWithLookup;
 import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.uberfire.commons.data.Pair;
@@ -228,7 +232,11 @@ public class PlannerDataObjectEditor
     }
 
     private List<Pair<String, String>> getPlanningSolutionScoreTypeOptions() {
-        return PlannerDomainTypes.SCORE_TYPES;
+        List<Pair<String, String>> planningSolutionScoreTypeOptions = new ArrayList<>( PlannerDomainTypes.SCORE_TYPES.size() );
+        for (Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
+            planningSolutionScoreTypeOptions.add( new Pair<>( DomainEditorConstantsWithLookup.INSTANCE.getString( scoreClass.getSimpleName() ), scoreClass.getName() ) );
+        }
+        return planningSolutionScoreTypeOptions;
     }
 
     private String buildPlanningSolutionScoreTypeSuperClass( String planningSolutionScoreType ) {
@@ -250,17 +258,17 @@ public class PlannerDataObjectEditor
     private String getSelectedPlanningSolutionTypeFromSource( String source ) {
         //Implementation to make the planner prototype work, since data modeller by definition
         //do not manage parametrized types.
-        for ( Pair<String, String> type : PlannerDomainTypes.SCORE_TYPES ) {
-            if ( source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + type.getK1() + ">" ) ||
-                    source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + type.getK2() + ">" )) {
-                return type.getK2();
+        for ( Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
+            if ( source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + scoreClass.getSimpleName() + ">" ) ||
+                    source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + scoreClass.getName() + ">" )) {
+                return scoreClass.getName();
             }
         }
         return null;
     }
 
     private String getByDefaultSolutionScoreType() {
-        return PlannerDomainTypes.HARD_SOFT_SCORE_CLASS;
+        return HardSoftScore.class.getName();
     }
 
 }

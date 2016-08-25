@@ -101,7 +101,6 @@
     </dependency>
 
     <!-- Guvnor dependencies -->
-
     <dependency>
       <groupId>org.kie.workbench.services</groupId>
       <artifactId>kie-wb-common-data-modeller-core</artifactId>
@@ -119,7 +118,17 @@
 
     <dependency>
       <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-upstream-model</artifactId>
     </dependency>
 
     <dependency>
@@ -140,13 +149,6 @@
       <artifactId>uberfire-testing-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.optaplanner</groupId>
-      <artifactId>optaplanner-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
 
   </dependencies>
 
