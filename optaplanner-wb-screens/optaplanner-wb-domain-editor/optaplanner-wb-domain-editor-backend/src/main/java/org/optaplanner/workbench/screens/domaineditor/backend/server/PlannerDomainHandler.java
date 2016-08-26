@@ -23,6 +23,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.kie.workbench.common.screens.datamodeller.backend.server.handler.DomainHandler;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
+import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -48,6 +49,11 @@ public class PlannerDomainHandler implements DomainHandler {
     @Override
     public void setDefaultValues( DataObject dataObject, Map<String, Object> options ) {
         //This domain doesn't do any by default processing at data object creation time
+    }
+
+    @Override
+    public void processDataObject( DataObject dataObject, DataModel dataModel ) {
+        //This domain doesn't do any data model processing
     }
 
     @Override
