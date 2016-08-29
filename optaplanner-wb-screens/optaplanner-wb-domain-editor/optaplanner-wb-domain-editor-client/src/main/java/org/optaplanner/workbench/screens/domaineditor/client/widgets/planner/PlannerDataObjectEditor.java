@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
@@ -24,33 +25,64 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.Widget;
+import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.common.client.api.ErrorCallback;
+import org.jboss.errai.common.client.api.RemoteCallback;
 import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
 import org.kie.workbench.common.screens.datamodeller.client.command.DataModelCommandBuilder;
+import org.kie.workbench.common.screens.datamodeller.client.command.ValuePair;
 import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandlerRegistry;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ObjectEditor;
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
+import org.kie.workbench.common.screens.datamodeller.events.DataObjectCreatedEvent;
+import org.kie.workbench.common.screens.datamodeller.events.DataObjectFieldCreatedEvent;
+import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.kie.workbench.common.services.datamodeller.core.JavaClass;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
+import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstantsWithLookup;
 import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
+import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
 import org.uberfire.commons.data.Pair;
+import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
+import org.uberfire.ext.widgets.common.client.common.popups.errors.ErrorPopup;
 
 @Dependent
 public class PlannerDataObjectEditor
         extends ObjectEditor
         implements PlannerDataObjectEditorView.Presenter {
 
+    @Inject
+    private Caller<DataModelerService> dataModelerService;
+
+    @Inject
+    private Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService;
+
+    @Inject
+    protected VersionRecordManager versionRecordManager;
+
+    @Inject
+    protected Caller<KieProjectService> projectService;
+
     private PlannerDataObjectEditorView view;
+
+    private ComparatorObject comparatorObject;
 
     @Inject
     public PlannerDataObjectEditor( PlannerDataObjectEditorView view,
-            DomainHandlerRegistry handlerRegistry,
-            Event<DataModelerEvent> dataModelerEvent,
-            DataModelCommandBuilder commandBuilder ) {
+                                    DomainHandlerRegistry handlerRegistry,
+                                    Event<DataModelerEvent> dataModelerEvent,
+                                    DataModelCommandBuilder commandBuilder ) {
         super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
         view.init( this );
@@ -81,6 +113,7 @@ public class PlannerDataObjectEditor
     protected void loadDataObject( DataObject dataObject ) {
         clear();
         this.dataObject = dataObject;
+        this.comparatorObject = null;
         if ( dataObject != null ) {
             boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
             boolean hasPlanningSolution = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ) != null;
@@ -89,6 +122,19 @@ public class PlannerDataObjectEditor
             view.setPlanningSolutionValue( hasPlanningSolution );
             view.showPlanningSolutionScoreType( hasPlanningSolution );
             view.setNotInPlanningValue( !hasPlanningEntity && !hasPlanningSolution );
+            view.destroyFieldPicker();
+
+            if ( hasPlanningEntity ) {
+                if ( dataObject.getAnnotation( ComparatorDefinition.class.getName() ) != null && !dataObject.getNestedClasses().isEmpty() ) {
+                    for ( JavaClass javaClass : dataObject.getNestedClasses() ) {
+                        if ( javaClass instanceof ComparatorObject ) {
+                            PlannerDataObjectEditor.this.comparatorObject = (ComparatorObject) javaClass;
+                            break;
+                        }
+                    }
+                }
+                view.initFieldPicker( getContext().getDataModel(), getDataObject(), comparatorObject );
+            }
         }
     }
 
@@ -99,7 +145,90 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void onNotInPlanningChange( ) {
+    public void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths ) {
+
+        if ( objectPropertyPaths == null || objectPropertyPaths.isEmpty() ) {
+            commandBuilder.buildDataObjectRemoveAnnotationCommand( context, getName(), dataObject, ComparatorDefinition.class.getName() ).execute();
+            commandBuilder.buildDataObjectRemoveNestedClassCommand( context, getName(), dataObject, comparatorObject ).execute();
+            commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
+                    getName(),
+                    getDataObject(),
+                    PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ).execute();
+            this.comparatorObject = null;
+            view.initFieldPicker( getContext().getDataModel(), getDataObject(), null );
+            return;
+        }
+
+        List<String> objectPropertyPathList = new ArrayList<>();
+        for ( ObjectPropertyPath objectPropertyPath : objectPropertyPaths ) {
+            StringBuilder pathBuilder = new StringBuilder();
+            List<ObjectProperty> path = objectPropertyPath.getObjectPropertyPath();
+            for ( int i = 0; i < path.size(); i++ ) {
+                ObjectProperty objectProperty = path.get( i );
+                pathBuilder.append( objectProperty.getClassName() ).append( ":" ).append( objectProperty.getName() );
+                if ( i != path.size() - 1 ) {
+                    pathBuilder.append( "-" );
+                }
+            }
+            pathBuilder.append( "=" ).append( objectPropertyPath.isDescending() ? "desc" : "asc" );
+            objectPropertyPathList.add( pathBuilder.toString() );
+        }
+
+        commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
+                getName(),
+                getDataObject(),
+                ComparatorDefinition.class.getName(),
+                Arrays.asList( new ValuePair( "fieldPaths", objectPropertyPathList ) ) ).execute();
+
+        plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
+            @Override
+            public void callback( ComparatorObject comparatorObject ) {
+                PlannerDataObjectEditor.this.comparatorObject = comparatorObject;
+                dataObject.getNestedClasses().clear();
+                commandBuilder.buildDataObjectAddNestedClassCommand( getContext(), getName(), getDataObject(), comparatorObject ).execute();
+            }
+        }, new ErrorCallback<Object>() {
+            @Override
+            public boolean error( Object o, Throwable throwable ) {
+                view.initFieldPicker( getContext().getDataModel(), getDataObject(), comparatorObject );
+                ErrorPopup.showMessage( DomainEditorConstants.INSTANCE.UnexpectedErrorComparatorUpdate() + " " + throwable.getMessage() );
+                return false;
+            }
+        } ).updateComparatorObject( getDataObject(), comparatorObject, objectPropertyPaths );
+
+        List<ValuePair> valuePairList = Arrays.asList( new ValuePair( "difficultyComparatorClass", getDataObject().getName() + "." + getDataObject().getName() + "Comparator.class" ) );
+        commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
+                getName(),
+                getDataObject(),
+                PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION,
+                valuePairList ).execute();
+    }
+
+    @Override
+    public void removeComparatorDefinition( DataObject dataObject, boolean resetPlanningEntityAnnotation ) {
+        if ( comparatorObject != null ) {
+            commandBuilder.buildDataObjectRemoveNestedClassCommand( getContext(),
+                    getName(),
+                    dataObject,
+                    comparatorObject ).execute();
+            this.comparatorObject = null;
+        }
+
+        commandBuilder.buildDataObjectRemoveAnnotationCommand( getContext(),
+                getName(),
+                getDataObject(),
+                ComparatorDefinition.class.getName() ).execute();
+
+        if ( resetPlanningEntityAnnotation ) {
+            commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
+                    getName(),
+                    getDataObject(),
+                    PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ).execute();
+        }
+    }
+
+    @Override
+    public void onNotInPlanningChange() {
         boolean value = view.getNotInPlanningValue();
         if ( value && dataObject != null ) {
             commandBuilder.buildDataObjectRemoveAnnotationCommand( getContext(),
@@ -118,12 +247,14 @@ public class PlannerDataObjectEditor
                         getDataObject(),
                         null ).execute();
             }
+            removeComparatorDefinition( getDataObject(), false );
+            view.destroyFieldPicker();
             view.showPlanningSolutionScoreType( false );
         }
     }
 
     @Override
-    public void onPlanningEntityChange( ) {
+    public void onPlanningEntityChange() {
         boolean value = view.getPlanningEntityValue();
         if ( dataObject != null ) {
             if ( value ) {
@@ -145,6 +276,7 @@ public class PlannerDataObjectEditor
                             getDataObject(),
                             null ).execute();
                 }
+                view.initFieldPicker( getContext().getDataModel(), getDataObject(), null );
                 view.showPlanningSolutionScoreType( false );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
@@ -157,7 +289,7 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void onPlanningSolutionChange( ) {
+    public void onPlanningSolutionChange() {
         boolean value = view.getPlanningSolutionValue();
         if ( dataObject != null ) {
             if ( value ) {
@@ -177,6 +309,8 @@ public class PlannerDataObjectEditor
                         getName(),
                         getDataObject(),
                         buildPlanningSolutionScoreTypeSuperClass( getByDefaultSolutionScoreType() ) ).execute();
+                removeComparatorDefinition( getDataObject(), false );
+                view.destroyFieldPicker();
                 view.showPlanningSolutionScoreType( true );
                 view.setPlanningSolutionScoreType( getByDefaultSolutionScoreType() );
             } else {
@@ -209,12 +343,12 @@ public class PlannerDataObjectEditor
     protected void onDataObjectChange( @Observes DataObjectChangeEvent event ) {
         super.onDataObjectChange( event );
         if ( event.isFromContext( getContext() != null ? getContext().getContextId() : null ) &&
-            !event.isFrom( getName() ) &&
-            event.getChangeType() == ChangeType.SUPER_CLASS_NAME_CHANGE &&
-            getDataObject() != null &&
-            getDataObject().getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ) != null &&
-            !isPlannerSolution( getDataObject().getSuperClassName() ) &&
-            isPlannerSolution( event.getOldValue() != null ? event.getOldValue().toString() : null ) ) {
+                !event.isFrom( getName() ) &&
+                event.getChangeType() == ChangeType.SUPER_CLASS_NAME_CHANGE &&
+                getDataObject() != null &&
+                getDataObject().getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ) != null &&
+                !isPlannerSolution( getDataObject().getSuperClassName() ) &&
+                isPlannerSolution( event.getOldValue() != null ? event.getOldValue().toString() : null ) ) {
 
             commandBuilder.buildDataObjectRemoveAnnotationCommand(
                     getContext(),
@@ -241,7 +375,7 @@ public class PlannerDataObjectEditor
 
     private String buildPlanningSolutionScoreTypeSuperClass( String planningSolutionScoreType ) {
         return planningSolutionScoreType != null ?
-                PlannerDomainTypes.ABSTRACT_SOLUTION_CLASS_NAME + "<"+ planningSolutionScoreType + ">" :
+                PlannerDomainTypes.ABSTRACT_SOLUTION_CLASS_NAME + "<" + planningSolutionScoreType + ">" :
                 null;
     }
 

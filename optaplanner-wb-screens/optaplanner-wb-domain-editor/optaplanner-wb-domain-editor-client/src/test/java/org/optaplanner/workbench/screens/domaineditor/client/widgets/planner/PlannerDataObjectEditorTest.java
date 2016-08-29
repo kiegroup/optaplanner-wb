@@ -80,6 +80,8 @@ public class PlannerDataObjectEditorTest
         verify( view, times( 1 ) ).getPlanningEntityValue();
         assertNotNull( dataObject.getAnnotation( PlanningEntity.class.getName() ) );
 
+        verify( view, times( 1 ) ).initFieldPicker( context.getDataModel(), dataObject, null );
+
     }
 
     @Test
@@ -101,6 +103,8 @@ public class PlannerDataObjectEditorTest
         //the dataObject should have been now configured as a PlanningEntity
         verify( view, times( 1 ) ).getPlanningSolutionValue();
         verify( view, times( 1 ) ).showPlanningSolutionScoreType( true );
+        // loadDataObject + onPlanningSolutionChange
+        verify( view, times( 2 ) ).destroyFieldPicker();
 
         //the dataObject should have been now configured as a HardSoftCore PlanningSolution by default.
         assertNotNull( dataObject.getAnnotation( PlanningSolution.class.getName() ) );

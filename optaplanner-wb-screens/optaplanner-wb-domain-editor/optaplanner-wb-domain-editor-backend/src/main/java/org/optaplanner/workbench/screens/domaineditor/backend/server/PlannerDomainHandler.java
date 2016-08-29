@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.kie.workbench.common.screens.datamodeller.backend.server.handler.DomainHandler;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
@@ -31,12 +32,23 @@ import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
+import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class PlannerDomainHandler implements DomainHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger( PlannerDomainHandler.class );
 
-    private static List<AnnotationDefinition> domainAnnotations = new ArrayList<AnnotationDefinition>( );
+    @Inject
+    private PlannerDataObjectEditorService plannerDataObjectEditorService;
+
+    private static List<AnnotationDefinition> domainAnnotations = new ArrayList<AnnotationDefinition>();
+
     static {
         //Planner managed annotations
         domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningEntity.class ) );
@@ -44,6 +56,7 @@ public class PlannerDomainHandler implements DomainHandler {
         domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningVariable.class ) );
         domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ValueRangeProvider.class ) );
         domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningEntityCollectionProperty.class ) );
+        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ComparatorDefinition.class ) );
     }
 
     @Override
@@ -53,7 +66,17 @@ public class PlannerDomainHandler implements DomainHandler {
 
     @Override
     public void processDataObject( DataObject dataObject, DataModel dataModel ) {
-        //This domain doesn't do any data model processing
+        boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
+        boolean hasComparatorDefinition = dataObject.getAnnotation( ComparatorDefinition.class.getName() ) != null;
+        if ( hasPlanningEntity && hasComparatorDefinition ) {
+            try {
+                ComparatorObject comparatorObject = plannerDataObjectEditorService.extractComparatorObject( dataObject, dataModel );
+                dataObject.getNestedClasses().clear();
+                dataObject.getNestedClasses().add( comparatorObject );
+            } catch ( Exception e ) {
+                logger.error( "Unable to extract comparator object from " + dataObject.getClassName() );
+            }
+        }
     }
 
     @Override

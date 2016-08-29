@@ -30,7 +30,12 @@ import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
+import org.kie.workbench.common.services.datamodeller.core.DataModel;
+import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
 import org.uberfire.commons.data.Pair;
+import org.uberfire.ext.widgets.common.client.common.popups.errors.ErrorPopup;
 
 @Dependent
 @Templated
@@ -57,6 +62,14 @@ public class PlannerDataObjectEditorViewImpl
     @Inject
     @DataField("planningSolutionScoreTypeSelector")
     Select planningSolutionScoreTypeSelector;
+
+    @Inject
+    @DataField("fieldPicker")
+    DataObjectFieldPicker fieldPicker;
+
+    @Inject
+    @DataField("comparatorGroup")
+    Div comparatorGroup;
 
     private Presenter presenter;
 
@@ -106,6 +119,21 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
+    public void initFieldPicker( DataModel dataModel, DataObject rootDataObject, org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject comparatorObject ) {
+        try {
+            fieldPicker.init( dataModel, rootDataObject, comparatorObject, presenter );
+        } catch ( Exception e ) {
+            ErrorPopup.showMessage( DomainEditorConstants.INSTANCE.UnexpectedErrorComparatorInit() + " " + e.getMessage() );
+            fieldPicker.destroy();
+        }
+    }
+
+    @Override
+    public void destroyFieldPicker() {
+        fieldPicker.destroy();
+    }
+
+    @Override
     public void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> options, String selectedScoreType ) {
         UIUtil.initList( planningSolutionScoreTypeSelector, options, selectedScoreType, false );
     }
@@ -121,23 +149,28 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
+    public void showComparatorGroup( boolean show ) {
+        comparatorGroup.setHidden( !show );
+    }
+
+    @Override
     public void setPlanningSolutionScoreType( String scoreType ) {
         UIUtil.setSelectedValue( planningSolutionScoreTypeSelector, scoreType );
     }
 
     @EventHandler("notInPlanningRadioButton")
     void onNotInPlanningChange( ClickEvent event ) {
-        presenter.onNotInPlanningChange( );
+        presenter.onNotInPlanningChange();
     }
 
     @EventHandler("planningEntityRadioButton")
     void onPlanningEntityChange( ClickEvent event ) {
-        presenter.onPlanningEntityChange( );
+        presenter.onPlanningEntityChange();
     }
 
     @EventHandler("planningSolutionRadioButton")
     void onPlanningSolutionChange( ClickEvent event ) {
-        presenter.onPlanningSolutionChange( );
+        presenter.onPlanningSolutionChange();
     }
 
     @EventHandler("planningSolutionScoreTypeSelector")
