@@ -36,13 +36,9 @@ import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domai
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
-import org.kie.workbench.common.screens.datamodeller.events.DataObjectCreatedEvent;
-import org.kie.workbench.common.screens.datamodeller.events.DataObjectFieldCreatedEvent;
-import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
@@ -54,7 +50,6 @@ import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
 import org.uberfire.commons.data.Pair;
-import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
 import org.uberfire.ext.widgets.common.client.common.popups.errors.ErrorPopup;
 
 @Dependent
@@ -62,17 +57,7 @@ public class PlannerDataObjectEditor
         extends ObjectEditor
         implements PlannerDataObjectEditorView.Presenter {
 
-    @Inject
-    private Caller<DataModelerService> dataModelerService;
-
-    @Inject
     private Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService;
-
-    @Inject
-    protected VersionRecordManager versionRecordManager;
-
-    @Inject
-    protected Caller<KieProjectService> projectService;
 
     private PlannerDataObjectEditorView view;
 
@@ -82,9 +67,12 @@ public class PlannerDataObjectEditor
     public PlannerDataObjectEditor( PlannerDataObjectEditorView view,
                                     DomainHandlerRegistry handlerRegistry,
                                     Event<DataModelerEvent> dataModelerEvent,
-                                    DataModelCommandBuilder commandBuilder ) {
+                                    DataModelCommandBuilder commandBuilder,
+                                    Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService) {
         super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
+        this.plannerDataObjectEditorService = plannerDataObjectEditorService;
+
         view.init( this );
     }
 
@@ -308,11 +296,11 @@ public class PlannerDataObjectEditor
                 commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
                         getName(),
                         getDataObject(),
-                        buildPlanningSolutionScoreTypeSuperClass( getByDefaultSolutionScoreType() ) ).execute();
+                        buildPlanningSolutionScoreTypeSuperClass( getDefaultSolutionScoreType() ) ).execute();
                 removeComparatorDefinition( getDataObject(), false );
                 view.destroyFieldPicker();
                 view.showPlanningSolutionScoreType( true );
-                view.setPlanningSolutionScoreType( getByDefaultSolutionScoreType() );
+                view.setPlanningSolutionScoreType( getDefaultSolutionScoreType() );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
                         getContext(),
@@ -383,7 +371,7 @@ public class PlannerDataObjectEditor
         if ( context != null && context.getEditorModelContent() != null && context.getEditorModelContent().getSource() != null ) {
             String selectedScoreType = getSelectedPlanningSolutionTypeFromSource( context.getEditorModelContent().getSource() );
             if ( selectedScoreType == null ) {
-                selectedScoreType = getByDefaultSolutionScoreType();
+                selectedScoreType = getDefaultSolutionScoreType();
             }
             view.initPlanningSolutionScoreTypeOptions( getPlanningSolutionScoreTypeOptions(), selectedScoreType );
         }
@@ -401,7 +389,7 @@ public class PlannerDataObjectEditor
         return null;
     }
 
-    private String getByDefaultSolutionScoreType() {
+    private String getDefaultSolutionScoreType() {
         return HardSoftScore.class.getName();
     }
 
