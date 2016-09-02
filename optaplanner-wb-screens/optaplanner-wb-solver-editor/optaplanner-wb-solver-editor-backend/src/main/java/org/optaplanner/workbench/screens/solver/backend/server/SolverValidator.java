@@ -18,83 +18,81 @@ package org.optaplanner.workbench.screens.solver.backend.server;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.google.common.base.Charsets;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
+import org.guvnor.common.services.project.builder.service.BuildService;
 import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.api.KieServices;
-import org.kie.api.builder.Message;
 import org.kie.api.runtime.KieContainer;
+import org.kie.workbench.common.services.backend.builder.Builder;
 import org.kie.workbench.common.services.backend.builder.LRUBuilderCache;
-import org.kie.workbench.common.services.backend.validation.asset.AllKieProjectFilesFilter;
 import org.kie.workbench.common.services.backend.validation.asset.NoProjectException;
 import org.kie.workbench.common.services.backend.validation.asset.Validator;
-import org.kie.workbench.common.services.backend.validation.asset.ValidatorFileSystemProvider;
 import org.kie.workbench.common.services.shared.project.KieProject;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.uberfire.backend.vfs.Path;
-import org.uberfire.io.IOService;
 
 public class SolverValidator {
 
-    private IOService ioService;
+    private static final Set<String> SMOKE_TEST_SUPPORTED_PROJECTS = new HashSet<String>();
 
     private KieProjectService projectService;
 
     @Inject
     private LRUBuilderCache builderCache;
 
+    @Inject
+    private BuildService buildService;
+
+    static {
+        SMOKE_TEST_SUPPORTED_PROJECTS.add( "optacloud" );
+    }
+
     public SolverValidator() {
     }
 
     @Inject
-    public SolverValidator( final @Named( "ioStrategy" ) IOService ioService,
-                            final KieProjectService projectService ) {
-        this.ioService = ioService;
+    public SolverValidator( final KieProjectService projectService ) {
         this.projectService = projectService;
     }
 
     public List<ValidationMessage> validate( final Path resourcePath,
                                              final String content ) {
         try {
-
-            // Run validation with the changed resource ( == everything builds ).
             final KieProject kieProject = projectService.resolveProject( resourcePath );
 
-            final Validator validator = getValidator( resourcePath,
-                                                      content,
-                                                      kieProject );
-
-            final List<ValidationMessage> validationMessages = validator.validate();
+            final List<ValidationMessage> validationMessages = validator().validate( resourcePath,
+                                                                                     content );
 
             if ( validationMessages.isEmpty() ) {
                 return buildSolver( resourcePath,
-                                    kieProject,
-                                    validator );
+                                    kieProject );
             } else {
                 return validationMessages;
             }
-
 
         } catch ( NoProjectException e ) {
             return new ArrayList<ValidationMessage>();
         }
     }
 
-    private List<ValidationMessage> buildSolver( final Path resourcePath,
-                                                 final KieProject kieProject,
-                                                 final Validator validator ) {
-        final List<ValidationMessage> validationMessages = new ArrayList<ValidationMessage>();
+    private ByteArrayInputStream inputStream( final String content ) {
+        return new ByteArrayInputStream( content.getBytes( Charsets.UTF_8 ) );
+    }
 
+    private List<ValidationMessage> buildSolver( final Path resourcePath,
+                                                 final KieProject kieProject ) {
+        final List<ValidationMessage> validationMessages = new ArrayList<ValidationMessage>();
         final ValidationMessage validationMessage = createSolverFactory( resourcePath,
-                                                                         validator,
                                                                          kieProject );
         if ( validationMessage != null ) {
             validationMessages.add( validationMessage );
@@ -103,29 +101,22 @@ public class SolverValidator {
         return validationMessages;
     }
 
-    private Validator getValidator( final Path resourcePath,
-                                    final String content,
-                                    final KieProject kieProject ) throws NoProjectException {
-        return new Validator( new ValidatorFileSystemProvider( resourcePath,
-                                                               new ByteArrayInputStream( content.getBytes( Charsets.UTF_8 ) ),
-                                                               kieProject,
-                                                               ioService,
-                                                               new AllKieProjectFilesFilter() ) ) {
+    private Validator validator() throws NoProjectException {
+        return new Validator( projectService, buildService ) {
             @Override
-            protected void addMessage( final String destinationBasePath,
-                                       final Message message ) {
-                validationMessages.add( convertMessage( message ) );
+            protected boolean isValidatPath( final Path path,
+                                             final ValidationMessage message ) {
+                return true;
             }
         };
     }
 
     private ValidationMessage createSolverFactory( final Path resourcePath,
-                                                   final Validator validator,
                                                    final KieProject kieWorkbenchProject ) {
-
-        final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject( ( InternalKieModule ) validator.getKieBuilder().getKieModule(), null );
-        final KieContainer kieContainer = new KieContainerImpl( kieProject,
-                                                                KieServices.Factory.get().getRepository() );
+        final Builder builder = builderCache.assertBuilder( kieWorkbenchProject );
+        final InternalKieModule kieModule = (InternalKieModule) builder.getKieModule();
+        final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject( kieModule, null );
+        final KieContainer kieContainer = new KieContainerImpl( kieProject, KieServices.Factory.get().getRepository() );
 
         try {
 
