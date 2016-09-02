@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import com.google.gwt.core.client.GWT;
 import org.jboss.errai.common.client.api.IsElement;
 import org.jboss.errai.common.client.dom.HTMLElement;
-import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstantsWithLookup;
+import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorLookupConstants;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 import org.uberfire.commons.data.Pair;
@@ -36,7 +36,7 @@ public class ConstructionHeuristicForm implements IsElement {
 
     private PhaseConfigForm phaseConfigForm;
 
-    private SolverEditorConstantsWithLookup solverEditorConstantsWithLookup = GWT.create( SolverEditorConstantsWithLookup.class );
+    private SolverEditorLookupConstants solverEditorLookupConstants = GWT.create( SolverEditorLookupConstants.class );
 
     @Inject
     public ConstructionHeuristicForm( final ConstructionHeuristicFormView view ) {
@@ -44,7 +44,7 @@ public class ConstructionHeuristicForm implements IsElement {
         view.setPresenter( this );
         List<Pair<String, String>> constructionHeuristicTypeOptions = new ArrayList<>();
         for ( ConstructionHeuristicTypeModel constructionHeuristicTypeModel : ConstructionHeuristicTypeModel.values() ) {
-            Pair<String, String> option = new Pair<>( solverEditorConstantsWithLookup.getString( constructionHeuristicTypeModel.name() ), constructionHeuristicTypeModel.name() );
+            Pair<String, String> option = new Pair<>( solverEditorLookupConstants.getString( constructionHeuristicTypeModel.name() ), constructionHeuristicTypeModel.name() );
             constructionHeuristicTypeOptions.add( option );
         }
         view.initConstructionHeuristicTypeSelectOptions( constructionHeuristicTypeOptions );
