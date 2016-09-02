@@ -18,9 +18,9 @@ package org.optaplanner.workbench.screens.solver.client.resources.i18n;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 
-public interface SolverEditorConstantsWithLookup extends ConstantsWithLookup {
+public interface SolverEditorLookupConstants extends ConstantsWithLookup {
 
-    SolverEditorConstantsWithLookup INSTANCE = GWT.create( SolverEditorConstantsWithLookup.class );
+    SolverEditorLookupConstants INSTANCE = GWT.create( SolverEditorLookupConstants.class );
 
     String FIRST_FIT();
     String FIRST_FIT_DECREASING();

@@ -42,7 +42,7 @@ import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
-import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstantsWithLookup;
+import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorLookupConstants;
 import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
@@ -356,7 +356,7 @@ public class PlannerDataObjectEditor
     private List<Pair<String, String>> getPlanningSolutionScoreTypeOptions() {
         List<Pair<String, String>> planningSolutionScoreTypeOptions = new ArrayList<>( PlannerDomainTypes.SCORE_TYPES.size() );
         for (Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
-            planningSolutionScoreTypeOptions.add( new Pair<>( DomainEditorConstantsWithLookup.INSTANCE.getString( scoreClass.getSimpleName() ), scoreClass.getName() ) );
+            planningSolutionScoreTypeOptions.add( new Pair<>( DomainEditorLookupConstants.INSTANCE.getString( scoreClass.getSimpleName() ), scoreClass.getName() ) );
         }
         return planningSolutionScoreTypeOptions;
     }

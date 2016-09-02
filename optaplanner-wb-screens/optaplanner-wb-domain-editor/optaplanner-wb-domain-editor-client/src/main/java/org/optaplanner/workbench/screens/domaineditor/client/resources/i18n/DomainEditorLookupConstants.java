@@ -18,27 +18,13 @@ package org.optaplanner.workbench.screens.domaineditor.client.resources.i18n;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
-import com.google.gwt.i18n.client.Messages;
-import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
-import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
-import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
-import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
-import org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScore;
-import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScore;
-import org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScore;
-import org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScore;
-import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
-import org.optaplanner.core.api.score.buildin.simplebigdecimal.SimpleBigDecimalScore;
-import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScore;
-import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScore;
 
 /**
  * Domain Editor i18n constants.
  */
-public interface DomainEditorConstantsWithLookup extends ConstantsWithLookup {
+public interface DomainEditorLookupConstants extends ConstantsWithLookup {
 
-    DomainEditorConstantsWithLookup INSTANCE = GWT.create( DomainEditorConstantsWithLookup.class );
+    DomainEditorLookupConstants INSTANCE = GWT.create( DomainEditorLookupConstants.class );
 
     String BendableScore();
 
