@@ -80,7 +80,7 @@ public class PlannerDomainHandler implements DomainHandler {
     public void postEventProcessing( DataModelerEvent event ) {
         try {
             DataObject dataObject = event.getCurrentDataObject();
-            if ( dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
+            if ( dataObject != null && dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
                 Annotation comparatorDefinition = dataObject.getAnnotation( ComparatorDefinition.class.getName() );
                 if ( comparatorDefinition == null ) {
                     return;
