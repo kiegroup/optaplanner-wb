@@ -16,12 +16,12 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ContextAwareBaseDomainEditor;
 
-@Dependent
+@ApplicationScoped
 public class PlannerDomainEditor extends ContextAwareBaseDomainEditor {
 
     public static final String PLANNER_DOMAIN = "PLANNER_DOMAIN";
