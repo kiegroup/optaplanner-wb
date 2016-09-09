@@ -41,7 +41,6 @@ import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartTitleDecoration;
 import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.views.pfly.multipage.PageImpl;
-import org.uberfire.ext.widgets.common.client.callbacks.DefaultErrorCallback;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
 import org.uberfire.lifecycle.OnClose;
 import org.uberfire.lifecycle.OnMayClose;
@@ -158,9 +157,8 @@ public class SolverEditorPresenter
 
             @Override
             public void onFocus() {
-                solverService.call( getToSourceRemoteCallback(),
-                                    new DefaultErrorCallback() ).toSource( versionRecordManager.getCurrentPath(),
-                                                                           model );
+                solverService.call( getToSourceRemoteCallback() ).toSource( versionRecordManager.getCurrentPath(),
+                                                                            model );
             }
         } );
     }
@@ -178,9 +176,9 @@ public class SolverEditorPresenter
         return new Command() {
             @Override
             public void execute() {
-                solverService.call( getRemoteCallback( CommonConstants.INSTANCE.ItemValidatedSuccessfully() ),
-                                    new DefaultErrorCallback() ).validate( versionRecordManager.getCurrentPath(),
-                                                                           model );
+                solverService.call( getRemoteCallback( CommonConstants.INSTANCE.ItemValidatedSuccessfully() ) )
+                        .validate( versionRecordManager.getCurrentPath(),
+                                   model );
             }
         };
     }
@@ -201,9 +199,9 @@ public class SolverEditorPresenter
 
     protected Command onSmokeTest() {
         return () -> {
-            solverService.call( getRemoteCallback( SolverEditorConstants.INSTANCE.SmokeTestSuccess() ),
-                    new DefaultErrorCallback() ).smokeTest( versionRecordManager.getCurrentPath(),
-                    model );
+            solverService.call( getRemoteCallback( SolverEditorConstants.INSTANCE.SmokeTestSuccess() ) )
+                    .smokeTest( versionRecordManager.getCurrentPath(),
+                                model );
         };
     }
 
