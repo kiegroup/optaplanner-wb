@@ -20,6 +20,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
 import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartView;
@@ -29,19 +30,23 @@ import org.uberfire.client.annotations.WorkbenchScreen;
 @WorkbenchScreen( identifier = "PlannerDomainScreen")
 public class PlannerDomainScreen {
 
-    PlannerDomainScreenView view;
+    private TranslationService translationService;
+
+    private PlannerDomainScreenView view;
 
     public PlannerDomainScreen() {
     }
 
     @Inject
-    public PlannerDomainScreen( PlannerDomainScreenView view ) {
+    public PlannerDomainScreen( PlannerDomainScreenView view,
+                                TranslationService translationService ) {
         this.view = view;
+        this.translationService = translationService;
     }
 
     @WorkbenchPartTitle
     public String getTitle() {
-        return DomainEditorConstants.INSTANCE.planner_domain_screen_name();
+        return translationService.getTranslation( DomainEditorConstants.PlannerDomainScreenName );
     }
 
     @WorkbenchPartView

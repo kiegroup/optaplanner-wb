@@ -34,6 +34,7 @@ import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
+import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 
 @Templated
@@ -93,28 +94,29 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
     }
 
     @Override
-    public void initSelectFieldDropdownOptions( List<String> options ) {
+    public void initSelectFieldDropdownOptions( List<ObjectProperty> options ) {
         selectFieldDropdown.clear();
-        for ( String option : options ) {
-            AnchorListItem listItem = new AnchorListItem( option );
+        for ( ObjectProperty option : options ) {
+            AnchorListItem listItem = new AnchorListItem( option.getName() );
             listItem.addClickHandler( c -> presenter.onFieldAdded( option, true ) );
             selectFieldDropdown.add( listItem );
         }
     }
 
     @Override
-    public void addFieldItem( String field, ObjectProperty objectProperty, boolean rootItem ) {
-        if ( rootItem ) {
-            Label label = new Label( field );
-            label.addClickHandler( c -> presenter.onRootLabelRemoved() );
-            label.setMarginRight( 5 );
-            fieldPickerItemRow.add( label );
-        } else {
-            Label label = new Label( field );
-            label.addClickHandler( c -> presenter.onFieldRemoved( objectProperty ) );
-            label.setMarginRight( 5 );
-            fieldPickerItemRow.add( label );
-        }
+    public void addRootItem( DataObject rootDataObject ) {
+        Label label = new Label( rootDataObject.getName() );
+        label.addClickHandler( c -> presenter.onRootLabelRemoved() );
+        label.setMarginRight( 5 );
+        fieldPickerItemRow.add( label );
+    }
+
+    @Override
+    public void addFieldItem( ObjectProperty objectProperty ) {
+        Label label = new Label( objectProperty.getName() );
+        label.addClickHandler( c -> presenter.onFieldRemoved( objectProperty ) );
+        label.setMarginRight( 5 );
+        fieldPickerItemRow.add( label );
     }
 
     @Override

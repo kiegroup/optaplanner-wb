@@ -16,10 +16,13 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.handlers.planner;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.jboss.errai.common.client.api.Caller;
@@ -29,30 +32,28 @@ import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandl
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ResourceOptions;
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
+import org.kie.workbench.common.screens.datamodeller.events.DataModelerValueChangeEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectFieldChangeEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectFieldDeletedEvent;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
-import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
-import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
-import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class PlannerDomainHandler implements DomainHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger( PlannerDomainHandler.class );
-
-    @Inject
-    private Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService;
+    private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
     public PlannerDomainHandler() {
+    }
+
+    @Inject
+    public PlannerDomainHandler( Caller<ComparatorDefinitionService> comparatorDefinitionService ) {
+        this.comparatorDefinitionService = comparatorDefinitionService;
     }
 
     @Override
@@ -76,62 +77,69 @@ public class PlannerDomainHandler implements DomainHandler {
         //not apply for this domain.
     }
 
-    @Override
-    public void postEventProcessing( DataModelerEvent event ) {
-        try {
-            DataObject dataObject = event.getCurrentDataObject();
-            if ( dataObject != null && dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
-                Annotation comparatorDefinition = dataObject.getAnnotation( ComparatorDefinition.class.getName() );
-                if ( comparatorDefinition == null ) {
-                    return;
-                }
-                if ( dataObject.getNestedClasses() == null || dataObject.getNestedClasses().isEmpty() ) {
-                    return;
-                }
+    public void onDataModelerValueChangeEvent( @Observes DataModelerValueChangeEvent event ) {
+        handleDataModelerEvent( event );
+    }
 
-                ComparatorObject comparatorObject = getComparatorNestedClass( dataObject );
+    public void onDataObjectFieldDeletedEvent( @Observes DataObjectFieldDeletedEvent event ) {
+        handleDataModelerEvent( event );
+    }
+
+    private void handleDataModelerEvent( DataModelerEvent event ) {
+        DataObject dataObject = event.getCurrentDataObject();
+
+        if ( dataObject != null && dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
+            if ( dataObject.getNestedClasses() == null || dataObject.getNestedClasses().isEmpty() ) {
+                return;
+            }
+
+            List<JavaClass> comparatorObjects = getComparatorNestedClasses( dataObject );
+
+            for ( JavaClass comparatorObject : comparatorObjects ) {
+                Annotation comparatorDefinition = comparatorObject.getAnnotation( ComparatorDefinition.class.getName() );
 
                 if ( event instanceof DataObjectFieldDeletedEvent ) {
                     boolean changed = false;
-                    ListIterator<ObjectPropertyPath> objectPropertyPathListIterator = comparatorObject.getObjectPropertyPathList().listIterator();
+
+                    ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinition );
+
+                    List<Annotation> objectPropertyPaths = comparatorAnnotationHandler.getObjectPropertyPaths();
+
+                    ListIterator<Annotation> objectPropertyPathListIterator = objectPropertyPaths.listIterator();
+
                     while ( objectPropertyPathListIterator.hasNext() ) {
-                        ObjectPropertyPath objectPropertyPath = objectPropertyPathListIterator.next();
-                        ListIterator<ObjectProperty> iterator = objectPropertyPath.getObjectPropertyPath().listIterator();
+                        Annotation objectPropertyPath = objectPropertyPathListIterator.next();
+
+                        List<Annotation> objectProperties = comparatorAnnotationHandler.getObjectProperties( objectPropertyPath );
+
+                        ListIterator<Annotation> iterator = objectProperties.listIterator();
+
                         boolean remove = false;
-                        while ( iterator.hasNext() ) {
-                            ObjectProperty objectProperty = iterator.next();
-                            if ( remove ) {
-                                iterator.remove();
-                                continue;
-                            }
-                            if ( objectProperty.equals( event.getCurrentField() ) ) {
-                                iterator.remove();
-                                remove = true;
+
+                        if ( iterator.hasNext() ) {
+                            Annotation field = iterator.next();
+                            if ( event.getCurrentField().getName().equals( comparatorAnnotationHandler.getName( field ) ) ) {
                                 changed = true;
+                                remove = true;
+                                iterator.remove();
                             }
                         }
-                        if ( objectPropertyPath.getObjectPropertyPath().isEmpty() ) {
-                            objectPropertyPathListIterator.remove();
+
+                        if ( remove ) {
+                            while ( iterator.hasNext() ) {
+                                iterator.next();
+                                iterator.remove();
+                            }
+
+                            if ( objectProperties.isEmpty() ) {
+                                objectPropertyPathListIterator.remove();
+                            }
                         }
                     }
-                    if ( changed ) {
-                        plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
-                            @Override
-                            public void callback( ComparatorObject updatedComparatorObject ) {
-                                dataObject.getNestedClasses().clear();
-                                if ( updatedComparatorObject != null ) {
-                                    dataObject.addNestedClass( updatedComparatorObject );
 
-                                    comparatorDefinition.setValue( "fieldPaths", getAnnotationDef( updatedComparatorObject.getObjectPropertyPathList() ) );
-                                } else {
-                                    dataObject.removeAnnotation( comparatorDefinition.getClassName() );
-                                    Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-                                    if ( planningEntityAnnotation != null ) {
-                                        planningEntityAnnotation.removeValue( "difficultyComparatorClass" );
-                                    }
-                                }
-                            }
-                        } ).updateComparatorObject( dataObject, comparatorObject, comparatorObject.getObjectPropertyPathList() );
+                    if ( changed ) {
+                        comparatorDefinitionService.call( getRemoteCallback( dataObject, comparatorObject ) )
+                                .updateComparatorObject( dataObject, comparatorObject );
                     }
                 } else if ( event instanceof DataObjectChangeEvent ) {
                     if ( ( (DataObjectChangeEvent) event ).getChangeType() == ChangeType.OBJECT_NAME_CHANGE
@@ -139,132 +147,113 @@ public class PlannerDomainHandler implements DomainHandler {
                             || ( (DataObjectChangeEvent) event ).getChangeType() == ChangeType.CLASS_NAME_CHANGE ) {
 
                         Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-                        planningEntityAnnotation.setValue( "difficultyComparatorClass", dataObject.getName() + "." + dataObject.getName() + "Comparator.class" );
+                        planningEntityAnnotation.setValue( "difficultyComparatorClass", dataObject.getName() + ".DifficultyComparator.class" );
 
-                        plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
-                            @Override
-                            public void callback( ComparatorObject updatedComparatorObject ) {
-                                dataObject.getNestedClasses().clear();
-                                if ( updatedComparatorObject != null ) {
-                                    dataObject.addNestedClass( updatedComparatorObject );
-
-                                    comparatorDefinition.setValue( "fieldPaths", getAnnotationDef( updatedComparatorObject.getObjectPropertyPathList() ) );
-                                } else {
-                                    dataObject.removeAnnotation( comparatorDefinition.getClassName() );
-                                    Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-                                    if ( planningEntityAnnotation != null ) {
-                                        planningEntityAnnotation.removeValue( "difficultyComparatorClass" );
-                                    }
-                                }
-                            }
-                        } ).updateComparatorObject( dataObject, comparatorObject, comparatorObject.getObjectPropertyPathList() );
+                        comparatorDefinitionService.call( getRemoteCallback( dataObject, comparatorObject ) )
+                                .updateComparatorObject( dataObject, comparatorObject );
                     }
                 } else if ( event instanceof DataObjectFieldChangeEvent ) {
                     if ( ( (DataObjectFieldChangeEvent) event ).getChangeType() == ChangeType.FIELD_NAME_CHANGE ) {
-                        for ( ObjectPropertyPath objectPropertyPath : comparatorObject.getObjectPropertyPathList() ) {
-                            List<ObjectProperty> objectPropertyList = objectPropertyPath.getObjectPropertyPath();
-                            if ( objectPropertyList != null && !objectPropertyList.isEmpty() ) {
-                                if ( objectPropertyList.get( 0 ).getName().equals( ( (DataObjectFieldChangeEvent) event ).getOldValue() ) ) {
-                                    objectPropertyList.get( 0 ).setName( ( (DataObjectFieldChangeEvent) event ).getNewValue().toString() );
-                                    break;
-                                }
-                            }
-                        }
 
-                        plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
-                            @Override
-                            public void callback( ComparatorObject updatedComparatorObject ) {
-                                dataObject.getNestedClasses().clear();
-                                if ( updatedComparatorObject != null ) {
-                                    dataObject.addNestedClass( updatedComparatorObject );
+                        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinition );
 
-                                    comparatorDefinition.setValue( "fieldPaths", getAnnotationDef( updatedComparatorObject.getObjectPropertyPathList() ) );
-                                } else {
-                                    dataObject.removeAnnotation( comparatorDefinition.getClassName() );
-                                    Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-                                    if ( planningEntityAnnotation != null ) {
-                                        planningEntityAnnotation.removeValue( "difficultyComparatorClass" );
-                                    }
-                                }
-                            }
-                        } ).updateComparatorObject( dataObject, comparatorObject, comparatorObject.getObjectPropertyPathList() );
-                    } else if ( ( (DataObjectFieldChangeEvent) event ).getChangeType() == ChangeType.FIELD_TYPE_CHANGE ) {
+                        List<Annotation> objectPropertyPaths = comparatorAnnotationHandler.getObjectPropertyPaths();
+
+                        ListIterator<Annotation> objectPropertyPathListIterator = objectPropertyPaths.listIterator();
+
                         boolean changed = false;
-                        ListIterator<ObjectPropertyPath> objectPropertyPathListIterator = comparatorObject.getObjectPropertyPathList().listIterator();
-                        while ( objectPropertyPathListIterator.hasNext() ) {
-                            ObjectPropertyPath objectPropertyPath = objectPropertyPathListIterator.next();
-                            ListIterator<ObjectProperty> iterator = objectPropertyPath.getObjectPropertyPath().listIterator();
-                            boolean remove = false;
-                            while ( iterator.hasNext() ) {
-                                ObjectProperty objectProperty = iterator.next();
-                                if ( remove ) {
-                                    iterator.remove();
-                                    continue;
-                                }
-                                if ( objectProperty.equals( event.getCurrentField() ) ) {
-                                    // remove just all subsequent items in the path
-                                    remove = true;
-                                    changed = true;
-                                }
-                            }
-                            if ( objectPropertyPath.getObjectPropertyPath().isEmpty() ) {
-                                objectPropertyPathListIterator.remove();
-                            }
-                        }
-                        if ( changed ) {
-                            plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
-                                @Override
-                                public void callback( ComparatorObject updatedComparatorObject ) {
-                                    dataObject.getNestedClasses().clear();
-                                    if ( updatedComparatorObject != null ) {
-                                        dataObject.addNestedClass( updatedComparatorObject );
 
-                                        comparatorDefinition.setValue( "fieldPaths", getAnnotationDef( updatedComparatorObject.getObjectPropertyPathList() ) );
-                                    } else {
-                                        dataObject.removeAnnotation( comparatorDefinition.getClassName() );
-                                        Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-                                        if ( planningEntityAnnotation != null ) {
-                                            planningEntityAnnotation.removeValue( "difficultyComparatorClass" );
-                                        }
-                                    }
-                                }
-                            } ).updateComparatorObject( dataObject, comparatorObject, comparatorObject.getObjectPropertyPathList() );
+                        while ( objectPropertyPathListIterator.hasNext() ) {
+                            Annotation objectPropertyPath = objectPropertyPathListIterator.next();
+
+                            List<Annotation> objectProperties = comparatorAnnotationHandler.getObjectProperties( objectPropertyPath );
+
+                            if ( !objectProperties.isEmpty() && ( (DataObjectFieldChangeEvent) event ).getOldValue().equals( comparatorAnnotationHandler.getName( objectProperties.get( 0 ) ) ) ) {
+                                comparatorAnnotationHandler.setName( objectProperties.get( 0 ), (String) ( (DataObjectFieldChangeEvent) event ).getNewValue() );
+                                changed = true;
+                            }
                         }
+
+                        if ( changed ) {
+                            comparatorDefinitionService.call( getRemoteCallback( dataObject, comparatorObject ) )
+                                    .updateComparatorObject( dataObject, comparatorObject );
+                        }
+                    } else if ( ( (DataObjectFieldChangeEvent) event ).getChangeType() == ChangeType.FIELD_TYPE_CHANGE ) {
+
+                        boolean changed = false;
+
+                        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinition );
+
+                        List<Annotation> objectPropertyPaths = comparatorAnnotationHandler.getObjectPropertyPaths();
+
+                        ListIterator<Annotation> objectPropertyPathListIterator = objectPropertyPaths.listIterator();
+
+                        while ( objectPropertyPathListIterator.hasNext() ) {
+                            Annotation objectPropertyPath = objectPropertyPathListIterator.next();
+
+                            List<Annotation> objectProperties = comparatorAnnotationHandler.getObjectProperties( objectPropertyPath );
+
+                            ListIterator<Annotation> iterator = objectProperties.listIterator();
+
+                            boolean remove = false;
+
+                            if ( iterator.hasNext() ) {
+                                Annotation objectProperty = iterator.next();
+                                if ( event.getCurrentField().getName().equals( comparatorAnnotationHandler.getName( objectProperty ) ) ) {
+                                    comparatorAnnotationHandler.setType( objectProperty, (String) ( (DataObjectFieldChangeEvent) event ).getNewValue() );
+                                    changed = true;
+                                    remove = true;
+                                }
+                            }
+
+                            if ( remove ) {
+                                while ( iterator.hasNext() ) {
+                                    iterator.next();
+                                    iterator.remove();
+                                }
+
+                                if ( objectProperties.isEmpty() ) {
+                                    objectPropertyPathListIterator.remove();
+                                }
+                            }
+                        }
+
+                        if ( changed ) {
+                            comparatorDefinitionService.call( getRemoteCallback( dataObject, comparatorObject ) )
+                                    .updateComparatorObject( dataObject, comparatorObject );
+                        }
+
                     }
                 }
             }
-        } catch ( Exception e ) {
-            logger.error( "Unexpected error while processing data modeller event " + event, e );
         }
     }
 
-    private ComparatorObject getComparatorNestedClass( DataObject dataObject ) {
-        for ( JavaClass javaClass : dataObject.getNestedClasses() ) {
-            if ( javaClass instanceof ComparatorObject ) {
-                return (ComparatorObject) javaClass;
+    private RemoteCallback<JavaClass> getRemoteCallback( DataObject dataObject, JavaClass currentComparatorObject ) {
+        return new RemoteCallback<JavaClass>() {
+            @Override
+            public void callback( JavaClass updatedComparatorObject ) {
+                dataObject.removeNestedClass( currentComparatorObject );
+                dataObject.addNestedClass( updatedComparatorObject );
+            }
+        };
+    }
+
+    private List<JavaClass> getComparatorNestedClasses( DataObject dataObject ) {
+        Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
+        if ( dataObject.getNestedClasses() != null && planningEntityAnnotation != null ) {
+            String difficultyComparatorClass = (String) planningEntityAnnotation.getValue( "difficultyComparatorClass" );
+            if ( difficultyComparatorClass != null && difficultyComparatorClass.matches( "\\w[\\.\\w]+\\.class" ) ) {
+                String[] difficultyComparatorTokens = difficultyComparatorClass.split( "\\." );
+                return dataObject.getNestedClasses().stream()
+                        .filter( t -> t.getName().equals( difficultyComparatorTokens[difficultyComparatorTokens.length - 2] )
+                                && t.getAnnotation( ComparatorDefinition.class.getName() ) != null
+                                && t.getAnnotation( "javax.annotation.Generated" ) != null
+                                && t.getInterfaces().stream().anyMatch( i -> i.startsWith( Comparator.class.getName() ) ) )
+                        .collect( Collectors.toList() );
             }
         }
-        throw new IllegalStateException( "Data object " + dataObject.getClassName() + " contains " + ComparatorDefinition.class.getName() + " annotation, " +
-                "however no nested comparator object is present." );
+        return Collections.emptyList();
     }
 
-    private List<String> getAnnotationDef( List<ObjectPropertyPath> objectPropertyPaths ) {
-        List<String> objectPropertyPathList = new ArrayList<>();
-        for ( ObjectPropertyPath objectPropertyPath : objectPropertyPaths ) {
-            StringBuilder pathBuilder = new StringBuilder();
-            List<ObjectProperty> path = objectPropertyPath.getObjectPropertyPath();
-            for ( int i = 0; i < path.size(); i++ ) {
-                ObjectProperty objectProperty = path.get( i );
-
-                pathBuilder.append( objectProperty.getClassName() ).append( ":" ).append( objectProperty.getName() );
-                if ( i != path.size() - 1 ) {
-                    pathBuilder.append( "-" );
-                }
-            }
-            pathBuilder.append( "=" ).append( objectPropertyPath.isDescending() ? "desc" : "asc" );
-
-            objectPropertyPathList.add( pathBuilder.toString() );
-        }
-        return objectPropertyPathList;
-    }
 }

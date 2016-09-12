@@ -28,13 +28,25 @@
             </div>
             <div id="planningSolutionScoreTypeGroup" class="row form-group">
                 <label for="planningSolutionScoreTypeSelector" class="control-label col-md-4" data-i18n-key="PlanningSolutionScoreTypeLabel"></label>
-                <div class="col-md-8">
+                <div class="col-md-8" style="padding-left: 0px;">
                     <span id="planningSolutionScoreTypeSelector"></span>
                 </div>
             </div>
-            <div id="comparatorGroup">
-                <div id="fieldPicker"></div>
+            <div id="planningSolutionBendableScoreInputGroup" class="form-group">
+                <div class="row">
+                    <label class="col-md-4" for="planningSolutionBendableScoreHardLevelsSizeInput"
+                           data-i18n-key="BendableHardLevelsSize"></label>
+                    <input id="planningSolutionBendableScoreHardLevelsSizeInput" type="number"
+                           min="0" max="2147483647" style="width: 50px;"></input>
+                </div>
+                <div class="row">
+                    <label class="col-md-4" for="planningSolutionBendableScoreSoftLevelsSizeInput"
+                           data-i18n-key="BendableSoftLevelsSize"></label>
+                    <input id="planningSolutionBendableScoreSoftLevelsSizeInput" type="number"
+                           min="0" max="2147483647" style="width: 50px;"></input>
+                </div>
             </div>
+            <div id="fieldPicker"></div>
         </fieldset>
     </form>
 </div>

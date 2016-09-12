@@ -16,21 +16,20 @@
 
 package org.optaplanner.workbench.screens.domaineditor.model;
 
-import java.util.List;
-
-import org.kie.workbench.common.services.datamodeller.core.JavaClass;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Contains definitions of selected object properties and generated compare method. Added as a nested static class to a planning entity.
+ * Represents a chain of data object properties used for planning entity comparison.
  */
-public interface ComparatorObject extends JavaClass {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ComparatorObjectPropertyPath {
 
-    void setType(String type);
+    ComparatorObjectProperty[] objectProperties() default {};
 
-    String getType();
-
-    List<ObjectPropertyPath> getObjectPropertyPathList();
-
-    void setObjectPropertyPathList(List<ObjectPropertyPath> objectPropertyPaths);
+    boolean ascending() default true;
 
 }

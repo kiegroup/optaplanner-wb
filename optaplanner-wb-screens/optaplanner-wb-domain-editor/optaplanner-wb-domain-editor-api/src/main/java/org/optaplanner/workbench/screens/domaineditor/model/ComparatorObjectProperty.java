@@ -22,12 +22,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Added to a nested class inside planning entity, the annotation contains definition of object properties used for comparison. Avoids parsing of compare method body.
+ * Represents single data object property used for planning entity comparison.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ComparatorDefinition {
+public @interface ComparatorObjectProperty {
 
-    ComparatorObjectPropertyPath[] objectPropertyPaths() default {};
+    String name();
 
+    Class type();
 }

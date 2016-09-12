@@ -20,8 +20,6 @@ import java.util.List;
 
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.commons.data.Pair;
@@ -39,7 +37,11 @@ public interface PlannerDataObjectEditorView
 
         void onPlanningSolutionScoreTypeChange();
 
-        void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths );
+        void onPlanningSolutionBendableScoreHardLevelsSizeChange();
+
+        void onPlanningSolutionBendableScoreSoftLevelsSizeChange();
+
+        void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths, boolean itemsRemoved );
 
         void removeComparatorDefinition(DataObject dataObject, boolean resetPlanningEntityAnnotation);
     }
@@ -65,12 +67,22 @@ public interface PlannerDataObjectEditorView
 
     void showPlanningSolutionScoreType( boolean show );
 
-    void showComparatorGroup( boolean show );
+    int getPlanningSolutionBendableScoreHardLevelsSize();
+
+    void setPlanningSolutionBendableScoreHardLevelsSize( int hardLevelsSize );
+
+    int getPlanningSolutionBendableScoreSoftLevelsSize();
+
+    void setPlanningSolutionBendableScoreSoftLevelsSize( int softLevelsSize );
+
+    void showPlanningSolutionBendableScoreInput( boolean show );
 
     void clear( );
 
-    void initFieldPicker( DataModel dataModel, DataObject rootDataObject, ComparatorObject comparatorObject );
+    void initFieldPicker( DataModel dataModel, DataObject rootDataObject, List<ObjectPropertyPath> objectPropertyPaths );
 
     void destroyFieldPicker();
+
+    boolean isFieldPickerEmpty();
 
 }

@@ -62,7 +62,7 @@ public class DataObjectFieldPickerItemTest {
     public void init() {
         fieldPickerItem.init( dataModel, dataObject, fieldPicker );
         verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( view, times( 1 ) ).addFieldItem( anyString(), any( ObjectProperty.class ), anyBoolean() );
+        verify( view, times( 1 ) ).addRootItem( any( DataObject.class ) );
     }
 
     @Test
@@ -84,12 +84,12 @@ public class DataObjectFieldPickerItemTest {
 
         Mockito.reset( view );
 
-        fieldPickerItem.onFieldAdded( "testProperty", true );
+        fieldPickerItem.onFieldAdded( objectProperty, true );
 
-        verify( view, times( 1 ) ).addFieldItem( "testProperty", objectProperty, false );
+        verify( view, times( 1 ) ).addFieldItem( objectProperty );
         verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
         verify( view, times( 1 ) ).displaySelectFieldButton( true );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged();
+        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( false );
     }
 
     @Test
@@ -106,12 +106,12 @@ public class DataObjectFieldPickerItemTest {
 
         Mockito.reset( view );
 
-        fieldPickerItem.onFieldAdded( "testProperty", true );
+        fieldPickerItem.onFieldAdded( objectProperty, true );
 
-        verify( view, times( 1 ) ).addFieldItem( "testProperty", objectProperty, false );
+        verify( view, times( 1 ) ).addFieldItem( objectProperty );
         verify( view, times( 0 ) ).initSelectFieldDropdownOptions( anyList() );
         verify( view, times( 1 ) ).displaySelectFieldButton( false );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged();
+        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( false );
     }
 
     @Test
@@ -126,7 +126,7 @@ public class DataObjectFieldPickerItemTest {
 
         when( dataObject.getProperty( "testProperty" ) ).thenReturn( objectProperty );
 
-        fieldPickerItem.onFieldAdded( "testProperty", true );
+        fieldPickerItem.onFieldAdded( objectProperty, true );
 
         Mockito.reset( view, fieldPicker );
 
@@ -135,6 +135,6 @@ public class DataObjectFieldPickerItemTest {
         verify( view, times( 1 ) ).removeLastFieldItem();
         verify( view, times( 1 ) ).displaySelectFieldButton( true );
         verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged();
+        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( true );
     }
 }

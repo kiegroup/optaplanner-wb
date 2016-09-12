@@ -27,7 +27,6 @@ import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 
 /**
@@ -53,7 +52,7 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
         view.setPresenter( this );
     }
 
-    public void init( DataModel dataModel, DataObject rootDataObject, ComparatorObject comparatorObject, PlannerDataObjectEditorView.Presenter presenter ) {
+    public void init( DataModel dataModel, DataObject rootDataObject, List<ObjectPropertyPath> objectPropertyPaths, PlannerDataObjectEditorView.Presenter presenter ) {
         this.dataModel = dataModel;
         this.rootDataObject = rootDataObject;
         this.presenter = presenter;
@@ -65,13 +64,13 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
         }
         fieldPickerItemList.clear();
 
-        if ( comparatorObject != null && comparatorObject.getObjectPropertyPathList() != null ) {
+        if ( objectPropertyPaths != null ) {
             view.setComparatorCheckboxValue( true );
             view.displayFieldPicker( true );
-            for ( ObjectPropertyPath path : comparatorObject.getObjectPropertyPathList() ) {
+            for ( ObjectPropertyPath path : objectPropertyPaths ) {
                 DataObjectFieldPickerItem fieldPickerItem = addFieldPickerItem();
                 for ( ObjectProperty field : path.getObjectPropertyPath() ) {
-                    fieldPickerItem.onFieldAdded( field.getName(), false );
+                    fieldPickerItem.onFieldAdded( field, false );
                     fieldPickerItem.onOrderSelectValueChange( path.isDescending(), false );
                 }
             }
@@ -97,13 +96,15 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
             fieldPickerItemList.get( i ).setFieldPickerItemIndex( i + 1 );
         }
         fieldPickerItemProducer.destroy( fieldPickerItem );
-        objectPropertyPathChanged();
+        objectPropertyPathChanged( true );
     }
 
     @Override
     public void onComparatorSpecified( boolean specified ) {
         view.displayFieldPicker( specified );
-        if ( !specified ) {
+        if ( specified ) {
+            objectPropertyPathChanged( false );
+        } else {
             presenter.removeComparatorDefinition( rootDataObject, true );
             view.clear();
             for ( DataObjectFieldPickerItem item : fieldPickerItemList ) {
@@ -123,7 +124,7 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
             fieldPickerItem.setFieldPickerItemIndex( currentIndex );
             Collections.swap( fieldPickerItemList, currentIndex, currentIndex - 1 );
         }
-        objectPropertyPathChanged();
+        objectPropertyPathChanged( false );
     }
 
     @Override
@@ -136,7 +137,7 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
             fieldPickerItem.setFieldPickerItemIndex( currentIndex + 2 );
             Collections.swap( fieldPickerItemList, currentIndex, currentIndex + 1 );
         }
-        objectPropertyPathChanged();
+        objectPropertyPathChanged( false );
     }
 
     @Override
@@ -154,14 +155,18 @@ public class DataObjectFieldPicker implements DataObjectFieldPickerView.Presente
         return view.asWidget();
     }
 
-    public void objectPropertyPathChanged() {
+    public void objectPropertyPathChanged( boolean itemsRemoved ) {
         List<ObjectPropertyPath> objectPropertyPathList = new ArrayList<>();
         for ( DataObjectFieldPickerItem item : fieldPickerItemList ) {
             if ( !item.getObjectPropertyPath().getObjectPropertyPath().isEmpty() ) {
                 objectPropertyPathList.add( item.getObjectPropertyPath() );
             }
         }
-        presenter.objectPropertyPathChanged( objectPropertyPathList );
+        presenter.objectPropertyPathChanged( objectPropertyPathList, itemsRemoved );
+    }
+
+    public boolean isEmpty() {
+        return fieldPickerItemList.isEmpty();
     }
 
 }

@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
@@ -26,52 +27,68 @@ import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.api.Caller;
-import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
 import org.kie.workbench.common.screens.datamodeller.client.command.DataModelCommandBuilder;
 import org.kie.workbench.common.screens.datamodeller.client.command.ValuePair;
 import org.kie.workbench.common.screens.datamodeller.client.handlers.DomainHandlerRegistry;
+import org.kie.workbench.common.screens.datamodeller.client.util.ErrorPopupHelper;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domain.ObjectEditor;
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
+import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
+import org.kie.workbench.common.services.datamodeller.core.Method;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.datamodeller.core.Parameter;
+import org.kie.workbench.common.services.datamodeller.core.Type;
+import org.kie.workbench.common.services.datamodeller.core.Visibility;
+import org.kie.workbench.common.services.datamodeller.core.impl.MethodImpl;
+import org.kie.workbench.common.services.datamodeller.core.impl.ParameterImpl;
+import org.kie.workbench.common.services.datamodeller.core.impl.TypeImpl;
 import org.optaplanner.core.api.score.Score;
+import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
+import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
+import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
+import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
+import org.optaplanner.workbench.screens.domaineditor.client.handlers.planner.ComparatorDefinitionAnnotationValueHandler;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorLookupConstants;
 import org.optaplanner.workbench.screens.domaineditor.client.util.PlannerDomainTypes;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
+import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPathImpl;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
-import org.optaplanner.workbench.screens.domaineditor.service.PlannerDataObjectEditorService;
 import org.uberfire.commons.data.Pair;
-import org.uberfire.ext.widgets.common.client.common.popups.errors.ErrorPopup;
 
 @Dependent
 public class PlannerDataObjectEditor
         extends ObjectEditor
         implements PlannerDataObjectEditorView.Presenter {
 
-    private Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService;
-
     private PlannerDataObjectEditorView view;
 
-    private ComparatorObject comparatorObject;
+    private TranslationService translationService;
+
+    private JavaClass comparatorObject;
+
+    private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
     @Inject
     public PlannerDataObjectEditor( PlannerDataObjectEditorView view,
                                     DomainHandlerRegistry handlerRegistry,
                                     Event<DataModelerEvent> dataModelerEvent,
                                     DataModelCommandBuilder commandBuilder,
-                                    Caller<PlannerDataObjectEditorService> plannerDataObjectEditorService) {
+                                    TranslationService translationService,
+                                    Caller<ComparatorDefinitionService> comparatorDefinitionService ) {
         super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
-        this.plannerDataObjectEditorService = plannerDataObjectEditorService;
+        this.translationService = translationService;
+        this.comparatorDefinitionService = comparatorDefinitionService;
 
         view.init( this );
     }
@@ -111,19 +128,109 @@ public class PlannerDataObjectEditor
             view.showPlanningSolutionScoreType( hasPlanningSolution );
             view.setNotInPlanningValue( !hasPlanningEntity && !hasPlanningSolution );
             view.destroyFieldPicker();
+            view.showPlanningSolutionBendableScoreInput( false );
 
             if ( hasPlanningEntity ) {
-                if ( dataObject.getAnnotation( ComparatorDefinition.class.getName() ) != null && !dataObject.getNestedClasses().isEmpty() ) {
+                if ( !dataObject.getNestedClasses().isEmpty() ) {
                     for ( JavaClass javaClass : dataObject.getNestedClasses() ) {
-                        if ( javaClass instanceof ComparatorObject ) {
-                            PlannerDataObjectEditor.this.comparatorObject = (ComparatorObject) javaClass;
-                            break;
+                        if ( javaClass.getAnnotation( ComparatorDefinition.class.getName() ) != null ) {
+                            try {
+                                view.initFieldPicker( getContext().getDataModel(), getDataObject(),
+                                        getObjectPropertyPathList( javaClass.getAnnotation( ComparatorDefinition.class.getName() ) ) );
+                                this.comparatorObject = javaClass;
+                                break;
+                            } catch ( IllegalStateException e ) {
+                                ErrorPopupHelper.showErrorPopup( translationService.getTranslation( DomainEditorConstants.PlannerDataObjectEditorComparatorDefinitionProcessingFailed ) + " " + e.getMessage() );
+                            }
                         }
                     }
+                } else {
+                    view.initFieldPicker( getContext().getDataModel(), getDataObject(), null );
                 }
-                view.initFieldPicker( getContext().getDataModel(), getDataObject(), comparatorObject );
+            }
+
+            if ( hasPlanningSolution ) {
+                Method getScoreMethod = dataObject.getMethod( "getScore", Collections.EMPTY_LIST );
+
+                if ( getScoreMethod != null ) {
+                    Type getScoreMethodReturnType = getScoreMethod.getReturnType();
+                    if ( getScoreMethodReturnType != null && isBendableScore( getScoreMethod.getReturnType().getName() ) ) {
+                        view.showPlanningSolutionBendableScoreInput( true );
+                        Annotation annotation = getScoreMethod.getAnnotation( PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION );
+                        if ( annotation != null ) {
+                            Object hardLevelsSize = annotation.getValue( "bendableHardLevelsSize" );
+                            if ( hardLevelsSize != null ) {
+                                view.setPlanningSolutionBendableScoreHardLevelsSize( (int) hardLevelsSize == -1 ? 0 : (int) hardLevelsSize );
+                            } else {
+                                view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+                            }
+
+                            Object softLevelsSize = annotation.getValue( "bendableSoftLevelsSize" );
+                            if ( softLevelsSize != null ) {
+                                view.setPlanningSolutionBendableScoreSoftLevelsSize( (int) softLevelsSize == -1 ? 0 : (int) softLevelsSize );
+                            } else {
+                                view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+                            }
+                        }
+                    } else {
+                        view.showPlanningSolutionBendableScoreInput( false );
+
+                        view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+                        view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+                    }
+                }
             }
         }
+    }
+
+    private List<ObjectPropertyPath> getObjectPropertyPathList( Annotation comparatorDefinition ) {
+        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinition );
+        List<ObjectPropertyPath> objectPropertyPathList = new ArrayList<>();
+        List<Annotation> comparatorFieldPaths = comparatorAnnotationHandler.getObjectPropertyPaths();
+
+        for ( Annotation comparatorFieldPath : comparatorFieldPaths ) {
+            ObjectPropertyPath objectPropertyPath = new ObjectPropertyPathImpl();
+            objectPropertyPath.setDescending( !comparatorAnnotationHandler.isAscending( comparatorFieldPath ) );
+
+            List<Annotation> comparatorFields = comparatorAnnotationHandler.getObjectProperties( comparatorFieldPath );
+            if ( !comparatorFields.isEmpty() ) {
+
+                String objectPropertyName = comparatorAnnotationHandler.getName( comparatorFields.get( 0 ) );
+
+                ObjectProperty objectProperty = dataObject.getProperty( objectPropertyName );
+                if ( objectProperty == null ) {
+                    throw new IllegalStateException( dataObject.getName() + "Comparator: Property " + objectPropertyName + " not found in data object " + dataObject.getClassName() );
+                }
+                objectPropertyPath.appendObjectProperty( objectProperty );
+                for ( int i = 1; i < comparatorFields.size(); i++ ) {
+
+                    objectPropertyName = comparatorAnnotationHandler.getName( comparatorFields.get( i ) );
+
+                    ObjectProperty lastObjectPropertyInPath = objectPropertyPath.getObjectPropertyPath().get( objectPropertyPath.getObjectPropertyPath().size() - 1 );
+                    if ( lastObjectPropertyInPath.isBaseType() || lastObjectPropertyInPath.isPrimitiveType() ) {
+                        throw new IllegalStateException( dataObject.getName() + "Comparator: Cannot append property " + objectPropertyName + " to primitive/base type " + lastObjectPropertyInPath.getClassName() );
+                    }
+                    DataObject lastDataObjectInPath = getContext().getDataModel().getDataObject( lastObjectPropertyInPath.getClassName() );
+                    if ( lastObjectPropertyInPath == null ) {
+                        throw new IllegalStateException( dataObject.getName() + "Comparator: Data object " + lastObjectPropertyInPath.getClassName() + " not found" );
+                    }
+                    ObjectProperty currentObjectProperty = lastDataObjectInPath.getProperty( objectPropertyName );
+                    if ( currentObjectProperty == null ) {
+                        throw new IllegalStateException( dataObject.getName() + "Comparator: Property " + objectPropertyName + " not found in data object " + lastDataObjectInPath.getClassName() );
+                    }
+                    objectPropertyPath.appendObjectProperty( currentObjectProperty );
+                }
+            }
+            objectPropertyPathList.add( objectPropertyPath );
+        }
+
+        return objectPropertyPathList;
+    }
+
+    private boolean isBendableScore( String planningSolutionScoreType ) {
+        return BendableScore.class.getName().equals( planningSolutionScoreType )
+                || BendableLongScore.class.getName().equals( planningSolutionScoreType )
+                || BendableBigDecimalScore.class.getName().equals( planningSolutionScoreType );
     }
 
     @Override
@@ -133,58 +240,46 @@ public class PlannerDataObjectEditor
     }
 
     @Override
-    public void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths ) {
-
-        if ( objectPropertyPaths == null || objectPropertyPaths.isEmpty() ) {
-            commandBuilder.buildDataObjectRemoveAnnotationCommand( context, getName(), dataObject, ComparatorDefinition.class.getName() ).execute();
+    public void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths, boolean itemsRemoved ) {
+        if ( objectPropertyPaths.isEmpty() && view.isFieldPickerEmpty() && itemsRemoved ) {
             commandBuilder.buildDataObjectRemoveNestedClassCommand( context, getName(), dataObject, comparatorObject ).execute();
             commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
                     getName(),
                     getDataObject(),
                     PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ).execute();
             this.comparatorObject = null;
-            view.initFieldPicker( getContext().getDataModel(), getDataObject(), null );
+            view.initFieldPicker( getContext().getDataModel(), getDataObject(), Collections.EMPTY_LIST );
             return;
         }
 
-        List<String> objectPropertyPathList = new ArrayList<>();
-        for ( ObjectPropertyPath objectPropertyPath : objectPropertyPaths ) {
-            StringBuilder pathBuilder = new StringBuilder();
-            List<ObjectProperty> path = objectPropertyPath.getObjectPropertyPath();
-            for ( int i = 0; i < path.size(); i++ ) {
-                ObjectProperty objectProperty = path.get( i );
-                pathBuilder.append( objectProperty.getClassName() ).append( ":" ).append( objectProperty.getName() );
-                if ( i != path.size() - 1 ) {
-                    pathBuilder.append( "-" );
+        if ( comparatorObject != null ) {
+            comparatorObject.removeAnnotation( ComparatorDefinition.class.getName() );
+            comparatorObject.addAnnotation( ComparatorDefinitionAnnotationValueHandler.createAnnotation( objectPropertyPaths, context.getAnnotationDefinitions() ) );
+
+            comparatorDefinitionService.call( new RemoteCallback<JavaClass>() {
+                @Override
+                public void callback( JavaClass updatedComparatorObject ) {
+                    dataObject.removeNestedClass( PlannerDataObjectEditor.this.comparatorObject );
+                    dataObject.addNestedClass( updatedComparatorObject );
+
+                    PlannerDataObjectEditor.this.comparatorObject = updatedComparatorObject;
                 }
-            }
-            pathBuilder.append( "=" ).append( objectPropertyPath.isDescending() ? "desc" : "asc" );
-            objectPropertyPathList.add( pathBuilder.toString() );
+            } ).updateComparatorObject( dataObject, comparatorObject );
+
+        } else {
+            comparatorDefinitionService.call( new RemoteCallback<JavaClass>() {
+                @Override
+                public void callback( JavaClass newComparatorObject ) {
+                    dataObject.addNestedClass( newComparatorObject );
+
+                    PlannerDataObjectEditor.this.comparatorObject = newComparatorObject;
+                }
+            } ).createComparatorObject( dataObject );
+
+
         }
 
-        commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
-                getName(),
-                getDataObject(),
-                ComparatorDefinition.class.getName(),
-                Arrays.asList( new ValuePair( "fieldPaths", objectPropertyPathList ) ) ).execute();
-
-        plannerDataObjectEditorService.call( new RemoteCallback<ComparatorObject>() {
-            @Override
-            public void callback( ComparatorObject comparatorObject ) {
-                PlannerDataObjectEditor.this.comparatorObject = comparatorObject;
-                dataObject.getNestedClasses().clear();
-                commandBuilder.buildDataObjectAddNestedClassCommand( getContext(), getName(), getDataObject(), comparatorObject ).execute();
-            }
-        }, new ErrorCallback<Object>() {
-            @Override
-            public boolean error( Object o, Throwable throwable ) {
-                view.initFieldPicker( getContext().getDataModel(), getDataObject(), comparatorObject );
-                ErrorPopup.showMessage( DomainEditorConstants.INSTANCE.UnexpectedErrorComparatorUpdate() + " " + throwable.getMessage() );
-                return false;
-            }
-        } ).updateComparatorObject( getDataObject(), comparatorObject, objectPropertyPaths );
-
-        List<ValuePair> valuePairList = Arrays.asList( new ValuePair( "difficultyComparatorClass", getDataObject().getName() + "." + getDataObject().getName() + "Comparator.class" ) );
+        List<ValuePair> valuePairList = Arrays.asList( new ValuePair( "difficultyComparatorClass", getDataObject().getName() + ".DifficultyComparator.class" ) );
         commandBuilder.buildDataObjectAddAnnotationCommand( getContext(),
                 getName(),
                 getDataObject(),
@@ -238,6 +333,11 @@ public class PlannerDataObjectEditor
             removeComparatorDefinition( getDataObject(), false );
             view.destroyFieldPicker();
             view.showPlanningSolutionScoreType( false );
+
+            view.showPlanningSolutionBendableScoreInput( false );
+            view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+            view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+            removePlanningSolutionScoreAccessorMethods( view.getPlanningSolutionScoreType() );
         }
     }
 
@@ -266,6 +366,11 @@ public class PlannerDataObjectEditor
                 }
                 view.initFieldPicker( getContext().getDataModel(), getDataObject(), null );
                 view.showPlanningSolutionScoreType( false );
+
+                view.showPlanningSolutionBendableScoreInput( false );
+                view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+                view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+                removePlanningSolutionScoreAccessorMethods( view.getPlanningSolutionScoreType() );
             } else {
                 commandBuilder.buildDataObjectRemoveAnnotationCommand(
                         getContext(),
@@ -312,20 +417,125 @@ public class PlannerDataObjectEditor
                         getDataObject(),
                         null ).execute();
                 view.showPlanningSolutionScoreType( false );
+
+                view.showPlanningSolutionBendableScoreInput( false );
+                view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+                view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+                removePlanningSolutionScoreAccessorMethods( view.getPlanningSolutionScoreType() );
             }
         }
     }
 
     @Override
     public void onPlanningSolutionScoreTypeChange() {
-        String planningSolutionScoreType = view.getPlanningSolutionScoreType();
-        String superClass = buildPlanningSolutionScoreTypeSuperClass( planningSolutionScoreType );
+        String newPlanningSolutionScoreType = view.getPlanningSolutionScoreType();
+        String superClass = buildPlanningSolutionScoreTypeSuperClass( newPlanningSolutionScoreType );
         if ( superClass != null ) {
+            String oldPlanningSolutionScoreType = getSelectedPlanningSolutionTypeFromSource( context.getEditorModelContent().getSource() );
             commandBuilder.buildDataObjectSuperClassChangeCommand( getContext(),
                     getName(),
                     getDataObject(),
                     superClass ).execute();
+            updateScoreMethod( newPlanningSolutionScoreType, oldPlanningSolutionScoreType );
         }
+    }
+
+    @Override
+    public void onPlanningSolutionBendableScoreHardLevelsSizeChange() {
+        updateScoreMethod( view.getPlanningSolutionScoreType(), null );
+    }
+
+    @Override
+    public void onPlanningSolutionBendableScoreSoftLevelsSizeChange() {
+        updateScoreMethod( view.getPlanningSolutionScoreType(), null );
+    }
+
+    private void updateScoreMethod( String newPlanningSolutionScoreType, String oldPlanningSolutionScoreType ) {
+        if ( getDataObject() != null ) {
+
+            if ( isBendableScore( newPlanningSolutionScoreType ) ) {
+
+                Method getScoreMethod = dataObject.getMethod( "getScore", Collections.EMPTY_LIST );
+
+                if ( oldPlanningSolutionScoreType != null ) {
+                    view.setPlanningSolutionBendableScoreHardLevelsSize( 0 );
+                    view.setPlanningSolutionBendableScoreSoftLevelsSize( 0 );
+
+                    removePlanningSolutionScoreAccessorMethods( oldPlanningSolutionScoreType );
+
+                    getScoreMethod = addGetScoreMethod( newPlanningSolutionScoreType );
+                    addSetScoreMethod( newPlanningSolutionScoreType );
+                } else if ( getScoreMethod == null ) {
+                    getScoreMethod = addGetScoreMethod( newPlanningSolutionScoreType );
+                    addSetScoreMethod( newPlanningSolutionScoreType );
+                }
+
+                view.showPlanningSolutionBendableScoreInput( true );
+
+                List<ValuePair> valuePairList = Arrays.asList( new ValuePair( "bendableHardLevelsSize", view.getPlanningSolutionBendableScoreHardLevelsSize() ),
+                        new ValuePair( "bendableSoftLevelsSize", view.getPlanningSolutionBendableScoreSoftLevelsSize() ) );
+
+                commandBuilder.buildMethodAnnotationAddCommand( getContext(),
+                        getName(),
+                        getDataObject(),
+                        getScoreMethod,
+                        PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION,
+                        valuePairList ).execute();
+            } else {
+                view.showPlanningSolutionBendableScoreInput( false );
+
+                removePlanningSolutionScoreAccessorMethods( oldPlanningSolutionScoreType );
+            }
+        }
+    }
+
+    private void removePlanningSolutionScoreAccessorMethods( String solutionScoreType ) {
+        if ( getDataObject() != null ) {
+            Method getScoreMethod = dataObject.getMethod( "getScore", Collections.EMPTY_LIST );
+            if ( getScoreMethod != null ) {
+                commandBuilder.buildMethodRemoveCommand( getContext(), getName(), getDataObject(), getScoreMethod ).execute();
+            }
+
+            Method setScoreMethod = dataObject.getMethod( "setScore", Arrays.asList( solutionScoreType ) );
+            if ( setScoreMethod != null ) {
+                commandBuilder.buildMethodRemoveCommand( getContext(), getName(), getDataObject(), setScoreMethod ).execute();
+            }
+
+        }
+    }
+
+    private Method addGetScoreMethod( String newPlanningSolutionScoreType ) {
+        Type getScoreMethodReturnType = new TypeImpl( newPlanningSolutionScoreType );
+        Method getScoreMethod = new MethodImpl( "getScore", Collections.EMPTY_LIST, "return score;", getScoreMethodReturnType, Visibility.PUBLIC );
+        commandBuilder.buildMethodAddCommand( getContext(),
+                getName(),
+                getDataObject(),
+                getScoreMethod ).execute();
+        commandBuilder.buildMethodAnnotationAddCommand( getContext(),
+                getName(),
+                getDataObject(),
+                getScoreMethod,
+                "javax.annotation.Generated",
+                Arrays.asList( new ValuePair( "value", PlannerDataObjectEditor.class.getName() ) ) ).execute();
+        return getScoreMethod;
+    }
+
+    private Method addSetScoreMethod( String newPlanningSolutionScoreType ) {
+        Parameter setScoreParameter = new ParameterImpl( new TypeImpl( newPlanningSolutionScoreType ), "score" );
+        Type setScoreMethodReturnType = new TypeImpl( void.class.getName() );
+        MethodImpl setScoreMethod = new MethodImpl( "setScore", Arrays.asList( setScoreParameter ), "this.score = score;", setScoreMethodReturnType, Visibility.PUBLIC );
+        commandBuilder.buildMethodAddCommand( getContext(),
+                getName(),
+                getDataObject(),
+                setScoreMethod ).execute();
+        commandBuilder.buildMethodAnnotationAddCommand( getContext(),
+                getName(),
+                getDataObject(),
+                setScoreMethod,
+                "javax.annotation.Generated",
+                Arrays.asList( new ValuePair( "value", PlannerDataObjectEditor.class.getName() ) ) ).execute();
+
+        return setScoreMethod;
     }
 
     protected void onDataObjectChange( @Observes DataObjectChangeEvent event ) {
@@ -355,7 +565,7 @@ public class PlannerDataObjectEditor
 
     private List<Pair<String, String>> getPlanningSolutionScoreTypeOptions() {
         List<Pair<String, String>> planningSolutionScoreTypeOptions = new ArrayList<>( PlannerDomainTypes.SCORE_TYPES.size() );
-        for (Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
+        for ( Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
             planningSolutionScoreTypeOptions.add( new Pair<>( DomainEditorLookupConstants.INSTANCE.getString( scoreClass.getSimpleName() ), scoreClass.getName() ) );
         }
         return planningSolutionScoreTypeOptions;
@@ -382,7 +592,7 @@ public class PlannerDataObjectEditor
         //do not manage parametrized types.
         for ( Class<? extends Score> scoreClass : PlannerDomainTypes.SCORE_TYPES ) {
             if ( source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + scoreClass.getSimpleName() + ">" ) ||
-                    source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + scoreClass.getName() + ">" )) {
+                    source.contains( PlannerDomainTypes.ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME + "<" + scoreClass.getName() + ">" ) ) {
                 return scoreClass.getName();
             }
         }
