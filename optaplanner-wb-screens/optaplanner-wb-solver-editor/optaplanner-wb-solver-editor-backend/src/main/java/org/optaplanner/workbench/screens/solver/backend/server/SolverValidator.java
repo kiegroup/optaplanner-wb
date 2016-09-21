@@ -27,15 +27,16 @@ import com.google.common.base.Charsets;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
-import org.guvnor.common.services.project.builder.service.BuildService;
+import org.guvnor.common.services.backend.validation.GenericValidator;
 import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.workbench.common.services.backend.builder.Builder;
 import org.kie.workbench.common.services.backend.builder.LRUBuilderCache;
+import org.kie.workbench.common.services.backend.validation.asset.DefaultGenericKieValidator;
 import org.kie.workbench.common.services.backend.validation.asset.NoProjectException;
-import org.kie.workbench.common.services.backend.validation.asset.Validator;
+import org.kie.workbench.common.services.backend.validation.asset.ValidatorBuildService;
 import org.kie.workbench.common.services.shared.project.KieProject;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -46,12 +47,8 @@ public class SolverValidator {
     private static final Set<String> SMOKE_TEST_SUPPORTED_PROJECTS = new HashSet<String>();
 
     private KieProjectService projectService;
-
-    @Inject
     private LRUBuilderCache builderCache;
-
-    @Inject
-    private BuildService buildService;
+    private ValidatorBuildService validatorBuildService;
 
     static {
         SMOKE_TEST_SUPPORTED_PROJECTS.add( "optacloud" );
@@ -61,8 +58,12 @@ public class SolverValidator {
     }
 
     @Inject
-    public SolverValidator( final KieProjectService projectService ) {
+    public SolverValidator( final KieProjectService projectService,
+                            final LRUBuilderCache builderCache,
+                            final ValidatorBuildService validatorBuildService ) {
         this.projectService = projectService;
+        this.builderCache = builderCache;
+        this.validatorBuildService = validatorBuildService;
     }
 
     public List<ValidationMessage> validate( final Path resourcePath,
@@ -101,11 +102,11 @@ public class SolverValidator {
         return validationMessages;
     }
 
-    private Validator validator() throws NoProjectException {
-        return new Validator( projectService, buildService ) {
+    private GenericValidator validator() throws NoProjectException {
+        return new DefaultGenericKieValidator( validatorBuildService ) {
             @Override
-            protected boolean isValidatPath( final Path path,
-                                             final ValidationMessage message ) {
+            protected boolean isValidPath( final Path path,
+                                           final ValidationMessage message ) {
                 return true;
             }
         };
@@ -114,7 +115,7 @@ public class SolverValidator {
     private ValidationMessage createSolverFactory( final Path resourcePath,
                                                    final KieProject kieWorkbenchProject ) {
         final Builder builder = builderCache.assertBuilder( kieWorkbenchProject );
-        final InternalKieModule kieModule = (InternalKieModule) builder.getKieModule();
+        final InternalKieModule kieModule = (InternalKieModule) builder.getKieModuleIgnoringErrors();
         final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject( kieModule, null );
         final KieContainer kieContainer = new KieContainerImpl( kieProject, KieServices.Factory.get().getRepository() );
 
