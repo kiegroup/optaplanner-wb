@@ -15,6 +15,18 @@
   <description>OptaPlanner Workbench - Upstream Model</description>
 
   <dependencies>
+
+    <!-- Transitive dependencies -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-codegen</artifactId>
+    </dependency>
+
+    <!-- Regular dependencies -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-marshalling</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-core</artifactId>
