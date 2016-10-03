@@ -66,15 +66,17 @@ public class PlannerDomainHandler implements DomainHandler {
 
     @Override
     public void processDataObject( DataObject dataObject, DataModel dataModel ) {
-        boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
-        boolean hasComparatorDefinition = dataObject.getAnnotation( ComparatorDefinition.class.getName() ) != null;
-        if ( hasPlanningEntity && hasComparatorDefinition ) {
-            try {
-                ComparatorObject comparatorObject = plannerDataObjectEditorService.extractComparatorObject( dataObject, dataModel );
-                dataObject.getNestedClasses().clear();
-                dataObject.getNestedClasses().add( comparatorObject );
-            } catch ( Exception e ) {
-                logger.error( "Unable to extract comparator object from " + dataObject.getClassName() );
+        if ( dataObject != null ) {
+            boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
+            boolean hasComparatorDefinition = dataObject.getAnnotation( ComparatorDefinition.class.getName() ) != null;
+            if ( hasPlanningEntity && hasComparatorDefinition ) {
+                try {
+                    ComparatorObject comparatorObject = plannerDataObjectEditorService.extractComparatorObject( dataObject, dataModel );
+                    dataObject.getNestedClasses().clear();
+                    dataObject.getNestedClasses().add( comparatorObject );
+                } catch ( Exception e ) {
+                    logger.error( "Unable to extract comparator object from " + dataObject.getClassName() );
+                }
             }
         }
     }
