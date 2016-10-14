@@ -1035,6 +1035,7 @@
             <compileSourcesArtifact>org.drools:drools-wb-dtable-xls-editor-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-scorecard-xls-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-scorecard-xls-editor-client</compileSourcesArtifact>
+            <compileSourcesArtifact>org.drools:drools-wb-verifier-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-workitems-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-workitems-editor-client</compileSourcesArtifact>
 
