@@ -19,6 +19,8 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Generated;
+
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -26,6 +28,9 @@ import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObjectProperty;
+import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObjectPropertyPath;
 
 public class PlannerTestUtil {
 
@@ -42,6 +47,21 @@ public class PlannerTestUtil {
                 DriverUtils.buildAnnotationDefinition( ValueRangeProvider.class ) );
         annotations.put( PlanningEntityCollectionProperty.class.getName(),
                 DriverUtils.buildAnnotationDefinition( PlanningEntityCollectionProperty.class ) );
+
+        return annotations;
+    }
+
+    public static Map<String, AnnotationDefinition> getComparatorObjectAnnotations() {
+        Map<String, AnnotationDefinition> annotations = new HashMap<>();
+
+        annotations.put( Generated.class.getName(),
+                DriverUtils.buildAnnotationDefinition( Generated.class ) );
+        annotations.put( ComparatorDefinition.class.getName(),
+                DriverUtils.buildAnnotationDefinition( ComparatorDefinition.class ) );
+        annotations.put( ComparatorObjectPropertyPath.class.getName(),
+                DriverUtils.buildAnnotationDefinition( ComparatorObjectPropertyPath.class ) );
+        annotations.put( ComparatorObjectProperty.class.getName(),
+                DriverUtils.buildAnnotationDefinition( ComparatorObjectProperty.class ) );
 
         return annotations;
     }

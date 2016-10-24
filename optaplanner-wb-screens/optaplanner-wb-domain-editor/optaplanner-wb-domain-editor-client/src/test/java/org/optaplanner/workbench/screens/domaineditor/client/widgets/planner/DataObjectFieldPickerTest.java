@@ -16,6 +16,8 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.Collections;
+
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.junit.Before;
@@ -23,8 +25,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -88,7 +90,7 @@ public class DataObjectFieldPickerTest {
 
         fieldPicker.onFieldPickerItemRemoved( item );
         verify( view, times( 1 ) ).removeFieldPickerItem( anyInt() );
-        verify( editor, times( 1 ) ).objectPropertyPathChanged( anyList() );
+        verify( editor, times( 1 ) ).objectPropertyPathChanged( anyList(), eq( true ) );
     }
 
     @Test
@@ -114,6 +116,6 @@ public class DataObjectFieldPickerTest {
     }
 
     private void initFieldPicker() {
-        fieldPicker.init( mock( DataModel.class ), mock( DataObject.class ), mock( ComparatorObject.class ), editor );
+        fieldPicker.init( mock( DataModel.class ), mock( DataObject.class ), Collections.EMPTY_LIST, editor );
     }
 }

@@ -19,13 +19,14 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 
 public interface DataObjectFieldPickerItemView extends IsWidget {
 
     interface Presenter {
 
-        void onFieldAdded( String field, boolean notify );
+        void onFieldAdded( ObjectProperty field, boolean notify );
 
         void onFieldRemoved( ObjectProperty objectProperty );
 
@@ -43,9 +44,11 @@ public interface DataObjectFieldPickerItemView extends IsWidget {
 
     void setPresenter( Presenter presenter );
 
-    void initSelectFieldDropdownOptions( List<String> options );
+    void initSelectFieldDropdownOptions( List<ObjectProperty> options );
 
-    void addFieldItem( String field, ObjectProperty objectProperty, boolean rootItem );
+    void addRootItem( DataObject rootDataObject );
+
+    void addFieldItem( ObjectProperty objectProperty );
 
     void removeLastFieldItem();
 

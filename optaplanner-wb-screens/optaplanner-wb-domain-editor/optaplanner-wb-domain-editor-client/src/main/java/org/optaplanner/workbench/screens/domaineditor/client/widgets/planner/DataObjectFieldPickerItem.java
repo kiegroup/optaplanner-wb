@@ -16,8 +16,7 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -51,38 +50,18 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
         this.rootDataObject = rootDataObject;
         this.picker = picker;
         initSelectFieldDropdownOptions( rootDataObject );
-        view.addFieldItem( rootDataObject.getName(), null, true );
+        view.addRootItem( rootDataObject );
         view.setOrderSelectDescendingValue( false );
     }
 
     private void initSelectFieldDropdownOptions( DataObject dataObject ) {
-        List<String> selectFieldOptions = new ArrayList<>();
-        for ( ObjectProperty objectProperty : dataObject.getProperties() ) {
-            if ( DataModelerUtils.isManagedProperty( objectProperty ) ) {
-                selectFieldOptions.add( objectProperty.getName() );
-            }
-        }
-        view.initSelectFieldDropdownOptions( selectFieldOptions );
+        view.initSelectFieldDropdownOptions( dataObject.getProperties().stream().filter( p -> DataModelerUtils.isManagedProperty( p ) ).collect( Collectors.toList() ) );
     }
 
     @Override
-    public void onFieldAdded( String field, boolean notify ) {
-        ObjectProperty objectProperty;
-        if ( objectPropertyPath.getObjectPropertyPath().isEmpty() ) {
-            objectProperty = rootDataObject.getProperty( field );
-        } else {
-            ObjectProperty parentObjectProperty = objectPropertyPath.getObjectPropertyPath().get( objectPropertyPath.getObjectPropertyPath().size() - 1 );
-            DataObject dataObject = dataModel.getDataObject( parentObjectProperty.getClassName() );
-            if ( dataObject == null ) {
-                throw new IllegalStateException( "Data object " + parentObjectProperty.getClassName() + " not found in the data model" );
-            }
-            objectProperty = dataObject.getProperty( field );
-            if ( objectProperty == null ) {
-                throw new IllegalStateException( "Object property " + field + " not found in data object " + dataObject.getClassName() );
-            }
-        }
+    public void onFieldAdded( ObjectProperty objectProperty, boolean notify ) {
         objectPropertyPath.appendObjectProperty( objectProperty );
-        view.addFieldItem( field, objectProperty, false );
+        view.addFieldItem( objectProperty );
         if ( objectProperty.isBaseType() || objectProperty.isPrimitiveType() ) {
             view.displaySelectFieldButton( false );
         } else {
@@ -91,7 +70,7 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
             view.displaySelectFieldButton( true );
         }
         if ( notify ) {
-            picker.objectPropertyPathChanged();
+            picker.objectPropertyPathChanged( false );
         }
     }
 
@@ -114,7 +93,7 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
         }
         initSelectFieldDropdownOptions( dataObject );
         view.displaySelectFieldButton( true );
-        picker.objectPropertyPathChanged();
+        picker.objectPropertyPathChanged( true );
     }
 
     @Override
@@ -137,7 +116,7 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
         view.setOrderSelectDescendingValue( descending );
         objectPropertyPath.setDescending( descending );
         if ( notify ) {
-            picker.objectPropertyPathChanged();
+            picker.objectPropertyPathChanged( false );
         }
     }
 

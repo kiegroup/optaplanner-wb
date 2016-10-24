@@ -16,19 +16,15 @@
 
 package org.optaplanner.workbench.screens.domaineditor.service;
 
-import java.util.List;
-
 import org.jboss.errai.bus.server.annotations.Remote;
-import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.optaplanner.workbench.screens.domaineditor.model.ComparatorObject;
-import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
+import org.kie.workbench.common.services.datamodeller.core.JavaClass;
 
 @Remote
-public interface PlannerDataObjectEditorService {
+public interface ComparatorDefinitionService {
 
-    ComparatorObject extractComparatorObject( DataObject dataObject, DataModel dataModel );
+    JavaClass createComparatorObject( DataObject dataObject );
 
-    ComparatorObject updateComparatorObject( DataObject dataObject, ComparatorObject comparatorObject, List<ObjectPropertyPath> objectPropertyPaths );
+    JavaClass updateComparatorObject( DataObject dataObject, JavaClass comparatorClass );
 
 }

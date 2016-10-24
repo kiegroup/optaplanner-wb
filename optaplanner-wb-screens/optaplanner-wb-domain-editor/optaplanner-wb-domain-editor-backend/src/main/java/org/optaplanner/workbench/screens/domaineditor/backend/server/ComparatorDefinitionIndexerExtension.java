@@ -16,15 +16,23 @@
 
 package org.optaplanner.workbench.screens.domaineditor.backend.server;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.forge.roaster.model.Annotation;
 import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.kie.workbench.common.screens.datamodeller.backend.server.indexing.JavaFileIndexerExtension;
+import org.kie.workbench.common.services.datamodeller.util.NamingUtils;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.DefaultIndexBuilder;
 import org.kie.workbench.common.services.refactoring.model.index.ResourceReference;
 import org.kie.workbench.common.services.refactoring.service.PartType;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
+import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,37 +45,55 @@ public class ComparatorDefinitionIndexerExtension implements JavaFileIndexerExte
     @Override
     public void process( DefaultIndexBuilder builder, JavaType javaType ) {
         try {
-            Annotation comparatorDefinition = javaType.getAnnotation( ComparatorDefinition.class.getName() );
+            final List<Annotation> comparatorDefinitions;
 
-            if ( comparatorDefinition == null ) {
+            Annotation planningEntityAnnotation = javaType.getAnnotation( PlanningEntity.class.getName() );
+
+            if ( planningEntityAnnotation == null ) {
+                return;
+            }
+
+            String difficultyComparatorClass = planningEntityAnnotation.getStringValue( "difficultyComparatorClass" );
+
+            if ( difficultyComparatorClass != null && javaType instanceof JavaClassSource && difficultyComparatorClass.matches( "\\w[\\.\\w]+\\.class" ) ) {
+                String[] difficultyComparatorTokens = difficultyComparatorClass.split( "\\." );
+                comparatorDefinitions = ( (JavaClassSource) javaType ).getNestedTypes().stream()
+                        .filter( t -> t instanceof JavaClassSource
+                                && t.getName().equals( difficultyComparatorTokens[difficultyComparatorTokens.length - 2] )
+                                && t.getAnnotation( ComparatorDefinition.class.getName() ) != null
+                                && t.getAnnotation( Generated.class.getName() ) != null
+                                && ( (JavaClassSource) t ).getInterfaces().stream().anyMatch( i -> i.startsWith( Comparator.class.getName() ) ) )
+                        .map( t -> t.getAnnotation( ComparatorDefinition.class.getName() ) )
+                        .collect( Collectors.toList() );
+            } else {
                 return;
             }
 
             if ( javaType.getSyntaxErrors() == null || javaType.getSyntaxErrors().isEmpty() ) {
+                for ( Annotation comparatorDefinition : comparatorDefinitions ) {
+                    Annotation[] fieldPathDefinitions = comparatorDefinition.getAnnotationArrayValue( "objectPropertyPaths" );
 
-                String[] fieldPathDefinitions = comparatorDefinition.getStringArrayValue( "fieldPaths" );
+                    String previousFullyQualifiedClassname = null;
 
-                String previousFullyQualifiedClassname = null;
+                    if ( fieldPathDefinitions != null ) {
+                        for ( Annotation fieldPathDefinition : fieldPathDefinitions ) {
+                            Annotation[] fieldDefinitions = fieldPathDefinition.getAnnotationArrayValue( "objectProperties" );
 
-                if ( fieldPathDefinitions != null ) {
-                    for ( String fieldPathDefinition : fieldPathDefinitions ) {
-                        if ( !fieldPathDefinition.matches( "\\w[\\.\\w]*:\\w[\\-\\w[\\.\\w]*:\\w]*=(asc|desc)" ) ) {
-                            throw new IllegalStateException( "Invalid field path string " + fieldPathDefinition );
-                        }
-                        String[] fieldPathDefinitionParts = fieldPathDefinition.split( "=" );
-                        String[] fieldPath = fieldPathDefinitionParts[0].split( "-" );
+                            if ( fieldDefinitions != null && fieldDefinitions.length > 0 ) {
 
-                        previousFullyQualifiedClassname = fieldPath[0].split( ":" )[0];
+                                previousFullyQualifiedClassname = fieldDefinitions[0].getStringValue( "type" );
 
-                        for (int i = 1; i < fieldPath.length; i++) {
-                            String[] fieldPathElementPair = fieldPath[i].split( ":" );
+                                if ( previousFullyQualifiedClassname != null && previousFullyQualifiedClassname.matches( "\\w[\\.\\w]+\\.class" ) ) {
+                                    for ( int i = 1; i < fieldDefinitions.length; i++ ) {
+                                        ResourceReference resourceReference = new ResourceReference( previousFullyQualifiedClassname.substring( 0, previousFullyQualifiedClassname.indexOf( ".class" ) ), ResourceType.JAVA );
+                                        resourceReference.addPartReference( fieldDefinitions[i].getStringValue( "name" ), PartType.FIELD );
 
-                            ResourceReference resourceReference = new ResourceReference( previousFullyQualifiedClassname, ResourceType.JAVA );
-                            resourceReference.addPartReference( fieldPathElementPair[1], PartType.FIELD );
+                                        previousFullyQualifiedClassname = fieldDefinitions[i].getStringValue( "type" );
 
-                            previousFullyQualifiedClassname = fieldPathElementPair[0];
-
-                            builder.addGenerator( resourceReference );
+                                        builder.addGenerator( resourceReference );
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -20,6 +20,8 @@ public class PlannerDomainAnnotations {
 
     public static final String PLANNING_ENTITY_ANNOTATION = "org.optaplanner.core.api.domain.entity.PlanningEntity";
 
+    public static final String PLANNING_SCORE_ANNOTATION = "org.optaplanner.core.api.domain.solution.PlanningScore";
+
     public static final String PLANNING_SOLUTION_ANNOTATION = "org.optaplanner.core.api.domain.solution.PlanningSolution";
 
     public static final String PLANNING_VARIABLE_ANNOTATION = "org.optaplanner.core.api.domain.variable.PlanningVariable";

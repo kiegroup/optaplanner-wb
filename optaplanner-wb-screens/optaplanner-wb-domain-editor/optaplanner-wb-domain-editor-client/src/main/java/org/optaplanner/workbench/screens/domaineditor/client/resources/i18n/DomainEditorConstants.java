@@ -17,20 +17,17 @@
 package org.optaplanner.workbench.screens.domaineditor.client.resources.i18n;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.Messages;
+import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
 
 /**
  * Domain Editor i18n constants.
  */
-public interface DomainEditorConstants
-        extends Messages {
+public interface DomainEditorConstants {
 
-    DomainEditorConstants INSTANCE = GWT.create( DomainEditorConstants.class );
+    @TranslationKey( defaultValue = "")
+    String PlannerDomainScreenName = "PlannerDomainScreen.name";
 
-    String planner_domain_screen_name();
-
-    String UnexpectedErrorComparatorInit();
-
-    String UnexpectedErrorComparatorUpdate();
+    @TranslationKey( defaultValue = "")
+    String PlannerDataObjectEditorComparatorDefinitionProcessingFailed = "PlannerDataObjectEditor.ComparatorDefinitionProcessingFailed";
 
 }
