@@ -24,7 +24,6 @@ import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
@@ -112,9 +111,8 @@ class ToSolverConfigModel {
                 if ( phaseConfig instanceof ConstructionHeuristicPhaseConfig ) {
                     ConstructionHeuristicPhaseConfigModel phaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
                     ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) phaseConfig;
-                    if ( constructionHeuristicPhaseConfig.getConstructionHeuristicType() != null ) {
-                        phaseConfigModel.setConstructionHeuristicType( ConstructionHeuristicTypeModel.valueOf( constructionHeuristicPhaseConfig.getConstructionHeuristicType().name() ) );
-                    }
+                    phaseConfigModel.setConstructionHeuristicType( constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
+                    phaseConfigModel.setEntitySorterManner( constructionHeuristicPhaseConfig.getEntitySorterManner() );
                     result.add( phaseConfigModel );
                 }
             }

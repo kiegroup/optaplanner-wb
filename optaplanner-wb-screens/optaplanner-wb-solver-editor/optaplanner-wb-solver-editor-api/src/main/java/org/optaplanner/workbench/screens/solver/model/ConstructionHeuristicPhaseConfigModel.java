@@ -16,17 +16,30 @@
 package org.optaplanner.workbench.screens.solver.model;
 
 import org.jboss.errai.common.client.api.annotations.Portable;
+import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.heuristic.selector.entity.EntitySorterManner;
 
 @Portable
 public class ConstructionHeuristicPhaseConfigModel extends PhaseConfigModel {
 
-    private ConstructionHeuristicTypeModel constructionHeuristicType;
+    private ConstructionHeuristicType constructionHeuristicType;
 
-    public ConstructionHeuristicTypeModel getConstructionHeuristicType() {
+    private EntitySorterManner entitySorterManner;
+
+    public ConstructionHeuristicType getConstructionHeuristicType() {
         return constructionHeuristicType;
     }
 
-    public void setConstructionHeuristicType( ConstructionHeuristicTypeModel constructionHeuristicType ) {
+    public void setConstructionHeuristicType( ConstructionHeuristicType constructionHeuristicType ) {
         this.constructionHeuristicType = constructionHeuristicType;
     }
+
+    public EntitySorterManner getEntitySorterManner() {
+        return entitySorterManner;
+    }
+
+    public void setEntitySorterManner( EntitySorterManner entitySorterManner ) {
+        this.entitySorterManner = entitySorterManner;
+    }
+
 }

@@ -33,4 +33,8 @@ public interface SolverEditorLookupConstants extends ConstantsWithLookup {
     String CHEAPEST_INSERTION();
     String ALLOCATE_FROM_POOL();
 
+    String NONE();
+    String DECREASING_DIFFICULTY();
+    String DECREASING_DIFFICULTY_IF_AVAILABLE();
+
 }

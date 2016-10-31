@@ -20,10 +20,10 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.heuristic.selector.entity.EntitySorterManner;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
-import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicTypeModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
@@ -47,6 +47,7 @@ public class ToSolverConfigTest {
         assertEquals( 1, solverConfig.getPhaseConfigList().size() );
         ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) solverConfig.getPhaseConfigList().get( 0 );
         assertEquals( ConstructionHeuristicType.FIRST_FIT, constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
+        assertEquals( EntitySorterManner.DECREASING_DIFFICULTY, constructionHeuristicPhaseConfig.getEntitySorterManner() );
 
     }
 
@@ -65,7 +66,8 @@ public class ToSolverConfigTest {
         solverConfigModel.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfigModel );
 
         ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
-        constructionHeuristicPhaseConfigModel.setConstructionHeuristicType( ConstructionHeuristicTypeModel.FIRST_FIT );
+        constructionHeuristicPhaseConfigModel.setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+        constructionHeuristicPhaseConfigModel.setEntitySorterManner( EntitySorterManner.DECREASING_DIFFICULTY );
         solverConfigModel.setPhaseConfigList( Arrays.asList( constructionHeuristicPhaseConfigModel ) );
 
         return solverConfigModel;
