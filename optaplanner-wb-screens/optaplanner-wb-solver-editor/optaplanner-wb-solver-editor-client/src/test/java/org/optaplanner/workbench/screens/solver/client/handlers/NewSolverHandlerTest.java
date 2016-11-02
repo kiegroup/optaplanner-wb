@@ -15,28 +15,26 @@
  */
 package org.optaplanner.workbench.screens.solver.client.handlers;
 
-import java.util.HashSet;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import org.jboss.errai.security.shared.api.Role;
-import org.jboss.errai.security.shared.api.RoleImpl;
 import org.jboss.errai.security.shared.api.identity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.optaplanner.workbench.screens.common.client.security.WorkbenchFeatures;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.ext.widgets.common.client.common.BusyIndicatorView;
 import org.uberfire.mocks.CallerMock;
+import org.uberfire.rpc.SessionInfo;
+import org.uberfire.security.authz.AuthorizationManager;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class )
 public class NewSolverHandlerTest {
-
 
     @Mock
     private SolverEditorService solverService;
@@ -47,6 +45,12 @@ public class NewSolverHandlerTest {
     @Mock
     private User user;
 
+    @Mock
+    private AuthorizationManager authorizationManager;
+
+    @Mock
+    private SessionInfo sessionInfo;
+
     private NewSolverHandler newSolverHandler;
 
     private SolverResourceType resourceType;
@@ -56,21 +60,25 @@ public class NewSolverHandlerTest {
         newSolverHandler = new NewSolverHandler( new CallerMock<>( solverService ),
                                                  resourceType,
                                                  busyIndicatorView,
-                                                 user );
+                                                 authorizationManager,
+                                                 sessionInfo );
         resourceType = GWT.create( SolverResourceType.class );
     }
 
     @Test
-    public void testNoPermissionToCreate() throws Exception {
-        assertFalse( newSolverHandler.canCreate() );
+    public void noPermissionToCreate() throws Exception {
+        testPerimissionToCreate( false );
     }
 
     @Test
-    public void testHasPermissionToCreate() throws Exception {
-        final HashSet<Role> roles = new HashSet<>();
-        roles.add( new RoleImpl( "plannermgmt" ) );
-        when( user.getRoles() ).thenReturn( roles );
-
-        assertTrue( newSolverHandler.canCreate() );
+    public void hasPermissionToCreate() throws Exception {
+        testPerimissionToCreate( true );
     }
+
+    private void testPerimissionToCreate( boolean hasPermission ) {
+        when( authorizationManager.authorize( WorkbenchFeatures.PLANNER_AVAILABLE, sessionInfo.getIdentity() ) ).thenReturn( hasPermission );
+
+        assertEquals( hasPermission, newSolverHandler.canCreate() );
+    }
+
 }

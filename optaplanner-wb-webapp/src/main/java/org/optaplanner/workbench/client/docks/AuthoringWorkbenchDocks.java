@@ -23,7 +23,8 @@ import org.kie.workbench.common.screens.datamodeller.client.DataModelerContext;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchContext;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchContextChangeEvent;
 import org.kie.workbench.common.screens.datamodeller.client.context.DataModelerWorkbenchFocusEvent;
-import org.optaplanner.workbench.client.resources.AppResource;
+import org.optaplanner.workbench.screens.common.client.resources.PlannerCommonResources;
+import org.optaplanner.workbench.screens.domaineditor.client.widgets.planner.PlannerDomainScreen;
 import org.uberfire.client.workbench.docks.UberfireDock;
 import org.uberfire.client.workbench.docks.UberfireDockPosition;
 import org.uberfire.client.workbench.docks.UberfireDockReadyEvent;
@@ -61,13 +62,13 @@ public class AuthoringWorkbenchDocks {
         projectExplorerDock = new UberfireDock( UberfireDockPosition.WEST, "ADJUST", projectExplorerPlaceRequest, authoringPerspectiveIdentifier ).withSize( 400 ).withLabel( "Project Explorer" );
         uberfireDocks.add(
                 projectExplorerDock,
-                new UberfireDock(UberfireDockPosition.EAST, AppResource.INSTANCE.images().optaPlannerDisabledIcon(), AppResource.INSTANCE.images().optaPlannerEnabledIcon(), new DefaultPlaceRequest("PlannerDomainScreen"), authoringPerspectiveIdentifier).withSize(450).withLabel("OptaPlanner"),
+                new UberfireDock( UberfireDockPosition.EAST, PlannerCommonResources.INSTANCE.images().optaPlannerDisabledIcon(), PlannerCommonResources.INSTANCE.images().optaPlannerEnabledIcon(), new DefaultPlaceRequest( "PlannerDomainScreen" ), authoringPerspectiveIdentifier ).withSize( 450 ).withLabel( "OptaPlanner" ),
                 new UberfireDock( UberfireDockPosition.EAST, "COG", new DefaultPlaceRequest( "AdvancedDomainScreen" ), authoringPerspectiveIdentifier ).withSize( 450 ).withLabel( "Advanced" )
         );
         uberfireDocks.disable( UberfireDockPosition.EAST, authoringPerspectiveIdentifier );
     }
 
-    public void onContextChange(@Observes DataModelerWorkbenchContextChangeEvent contextEvent) {
+    public void onContextChange( @Observes DataModelerWorkbenchContextChangeEvent contextEvent ) {
         handleDocks();
     }
 

@@ -754,6 +754,16 @@
     <!-- OptaPlanner Workbench Screens -->
     <dependency>
       <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-common-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-upstream-model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-api</artifactId>
     </dependency>
     <dependency>
@@ -1016,6 +1026,7 @@
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-workbench-client</compileSourcesArtifact>
 
             <!-- optaplanner-wb -->
+            <compileSourcesArtifact>org.optaplanner:optaplanner-wb-common-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-upstream-model</compileSourcesArtifact>
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.optaplanner:optaplanner-wb-solver-editor-client</compileSourcesArtifact>

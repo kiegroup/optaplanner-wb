@@ -34,6 +34,7 @@ import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
 import static org.kie.workbench.common.workbench.client.PerspectiveIds.*;
+import static org.optaplanner.workbench.screens.common.client.PerspectiveIds.*;
 
 @EntryPoint
 public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {

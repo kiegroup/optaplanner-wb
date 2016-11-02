@@ -15,7 +15,6 @@
 
 package org.optaplanner.workbench.client.home;
 
-import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -27,6 +26,7 @@ import org.kie.workbench.common.screens.home.model.ModelUtils;
 import org.kie.workbench.common.screens.home.model.SectionEntry;
 import org.uberfire.client.mvp.PlaceManager;
 
+import static org.optaplanner.workbench.screens.common.client.PerspectiveIds.*;
 import static org.uberfire.workbench.model.ActivityResourceType.*;
 import static org.kie.workbench.common.workbench.client.PerspectiveIds.*;
 
