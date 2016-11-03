@@ -53,6 +53,7 @@
     <exclude name="org.kie.workbench.common.workbench.client.**"/>
 
     <exclude name="org.optaplanner.workbench.client.**"/>
+    <exclude name="org.optaplanner.workbench.screens.common.client.**"/>
     <exclude name="org.optaplanner.workbench.screens.domaineditor.client.**"/>
     <exclude name="org.optaplanner.workbench.screens.solver.client.**"/>
   </scan>

@@ -27,7 +27,7 @@ import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.annotations.WorkbenchScreen;
 
 @ApplicationScoped
-@WorkbenchScreen( identifier = "PlannerDomainScreen")
+@WorkbenchScreen( identifier = "PlannerDomainScreen" )
 public class PlannerDomainScreen {
 
     private TranslationService translationService;
