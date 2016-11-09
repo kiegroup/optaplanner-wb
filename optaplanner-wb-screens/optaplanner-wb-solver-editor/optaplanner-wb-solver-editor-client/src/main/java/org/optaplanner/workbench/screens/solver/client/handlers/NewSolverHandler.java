@@ -22,8 +22,6 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import org.guvnor.common.services.project.model.Package;
 import org.jboss.errai.common.client.api.Caller;
-import org.jboss.errai.security.shared.api.RoleImpl;
-import org.jboss.errai.security.shared.api.identity.User;
 import org.kie.workbench.common.widgets.client.handlers.DefaultNewResourceHandler;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
@@ -34,6 +32,8 @@ import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
 import org.uberfire.ext.widgets.common.client.common.BusyIndicatorView;
+import org.uberfire.rpc.SessionInfo;
+import org.uberfire.security.authz.AuthorizationManager;
 import org.uberfire.workbench.type.ResourceTypeDefinition;
 
 /**
@@ -43,13 +43,17 @@ import org.uberfire.workbench.type.ResourceTypeDefinition;
 public class NewSolverHandler
         extends DefaultNewResourceHandler {
 
+    public static final String PLANNER_AVAILABLE ="planner.available";
+
     private Caller<SolverEditorService> solverService;
 
     private SolverResourceType resourceType;
 
     private BusyIndicatorView busyIndicatorView;
 
-    private User user;
+    private AuthorizationManager authorizationManager;
+
+    private SessionInfo sessionInfo;
 
     public NewSolverHandler() {
     }
@@ -58,11 +62,13 @@ public class NewSolverHandler
     public NewSolverHandler( final Caller<SolverEditorService> solverService,
                              final SolverResourceType resourceType,
                              final BusyIndicatorView busyIndicatorView,
-                             final User user ) {
+                             final AuthorizationManager authorizationManager,
+                             final SessionInfo sessionInfo ) {
         this.solverService = solverService;
         this.resourceType = resourceType;
         this.busyIndicatorView = busyIndicatorView;
-        this.user = user;
+        this.authorizationManager = authorizationManager;
+        this.sessionInfo = sessionInfo;
     }
 
     @Override
@@ -95,6 +101,6 @@ public class NewSolverHandler
 
     @Override
     public boolean canCreate() {
-        return user.getRoles().contains( new RoleImpl( "plannermgmt" ) );
+        return authorizationManager.authorize( PLANNER_AVAILABLE, sessionInfo.getIdentity() );
     }
 }
