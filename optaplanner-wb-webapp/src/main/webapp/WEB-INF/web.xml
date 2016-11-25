@@ -39,6 +39,7 @@
     <url-pattern>/uf_security_check</url-pattern>
     <url-pattern>*.erraiBus</url-pattern>
     <url-pattern>/org.optaplanner.workbench.OptaPlannerWorkbench/*</url-pattern>
+    <url-pattern>/verifier/*</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -84,6 +85,15 @@ profile in pom.xml to use that. -->
   <servlet-mapping>
     <servlet-name>ErraiServlet</servlet-name>
     <url-pattern>*.erraiBus</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>VerifierWebWorkerServlet</servlet-name>
+    <servlet-class>org.drools.workbench.services.verifier.plugin.backend.VerifierWebWorkerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerifierWebWorkerServlet</servlet-name>
+    <url-pattern>/verifier/*</url-pattern>
   </servlet-mapping>
 
   <servlet>

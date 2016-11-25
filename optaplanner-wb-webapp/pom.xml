@@ -573,6 +573,17 @@
       <artifactId>uberfire-layout-editor-api</artifactId>
     </dependency>
 
+    <!-- Drools Verifier Web Worker -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-verifier-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-verifier-backend</artifactId>
+    </dependency>
+
     <!-- Drools Workbench Screens -->
     <dependency>
       <groupId>org.drools</groupId>
@@ -1046,6 +1057,8 @@
             <compileSourcesArtifact>org.drools:drools-workbench-models-test-scenarios</compileSourcesArtifact>
 
             <!-- drools-wb -->
+            <compileSourcesArtifact>org.drools:drools-wb-verifier-api</compileSourcesArtifact>
+            <compileSourcesArtifact>org.drools:drools-wb-verifier-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-enum-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-enum-editor-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-drl-text-editor-api</compileSourcesArtifact>
