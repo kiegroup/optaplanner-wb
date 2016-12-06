@@ -17,7 +17,7 @@ and configure a _Run/Debug configuration_ like this:
 * Module: `optaplanner-wb-webapp`
 * User Super Dev mode: `yes`
 * GWT Modules to load: `All` (only 1 option, default)
-* VM options: `-Xmx4G -Xms1G -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-8.1.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
+* VM options: `-Xmx4G -Xms1G -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-10.0.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
 * Dev Mode parameters: `-server org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher`
 * Environment variables: (none, default)
 * Start page: `optaplanner-wb.html` (default)
@@ -29,7 +29,6 @@ Add the upstream wb projects too, because you might want to make changes on thos
 * Git clone: `guvnor`, `kie-wb-common`, `drools-wb` too (besides `optaplanner-wb`)
 * Import them all in the *same* IntelliJ project
 * Make sure to use `Maven -> Reimport All Maven Projects` and `Maven -> Generate Sources and Update Folders for All Projects` to update module dependencies
-* GWT-2.8.0 users: Disable "safe writes" `Settings -> Appearance & Behavior -> System Settings -> Use "safe write"` until https://github.com/gwtproject/gwt/issues/9310 is resolved
 * Configure a GWT configuration as mentioned above.
 ** It is likely crash with `Too many open files` in IntelliJ on linux.
 *** Use this to fix that:
