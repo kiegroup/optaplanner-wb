@@ -45,6 +45,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.apache.lucene</groupId>
