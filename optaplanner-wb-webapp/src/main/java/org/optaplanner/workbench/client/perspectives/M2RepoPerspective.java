@@ -20,11 +20,14 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 import org.guvnor.m2repo.client.event.M2RepoRefreshEvent;
 import org.guvnor.m2repo.client.event.M2RepoSearchEvent;
 import org.guvnor.m2repo.client.upload.UploadFormPresenter;
+import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
+import org.jboss.errai.ui.client.local.api.IsElement;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.widgets.client.search.ContextualSearch;
 import org.kie.workbench.common.widgets.client.search.SearchBehavior;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
@@ -41,9 +44,9 @@ import org.uberfire.workbench.model.menu.Menus;
 /**
  * A Perspective to show M2_REPO related screen
  */
-@Dependent
+@Templated
 @WorkbenchPerspective( identifier = PerspectiveIds.GUVNOR_M2REPO )
-public class M2RepoPerspective extends FlowPanel {
+public class M2RepoPerspective implements IsElement {
 
     @Inject
     private ContextualSearch contextualSearch;
@@ -60,14 +63,14 @@ public class M2RepoPerspective extends FlowPanel {
     @Inject
     private ManagedInstance<UploadFormPresenter> uploadFormPresenterProvider;
 
+    @Inject
+    @DataField
     @WorkbenchPanel( parts = "M2RepoEditor" )
-    FlowPanel m2RepoEditor = new FlowPanel();
+    Div m2RepoEditor;
 
     @PostConstruct
     private void init() {
-        Layouts.setToFillParent( m2RepoEditor );
-        add( m2RepoEditor );
-        contextualSearch.setPerspectiveSearchBehavior( PerspectiveIds.GUVNOR_M2REPO, new SearchBehavior() {
+          contextualSearch.setPerspectiveSearchBehavior( PerspectiveIds.GUVNOR_M2REPO, new SearchBehavior() {
             @Override
             public void execute( String searchFilter ) {
                 searchEvents.fire( new M2RepoSearchEvent( searchFilter ) );
