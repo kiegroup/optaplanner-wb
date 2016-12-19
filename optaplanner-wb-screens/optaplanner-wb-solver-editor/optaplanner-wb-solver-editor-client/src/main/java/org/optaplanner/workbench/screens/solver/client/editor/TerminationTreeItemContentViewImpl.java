@@ -22,7 +22,6 @@ import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.user.client.Event;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
@@ -34,7 +33,6 @@ import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.common.client.dom.TextInput;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
-import org.jboss.errai.ui.shared.api.annotations.SinkNative;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
@@ -53,8 +51,12 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     Div view;
 
     @Inject
-    @DataField("addTerminationButtonGroup")
-    Div addTerminationButtonGroup;
+    @DataField("addTerminationDiv")
+    Div addTerminationDiv;
+
+    @Inject
+    @DataField("formLabelDiv")
+    Div formLabelDiv;
 
     @Inject
     @DataField("formLabel")
@@ -74,10 +76,6 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     @Inject
     @DataField("terminationCompositionStyleSelect")
     Select terminationCompositionStyleSelect;
-
-    @Inject
-    @DataField("terminationCompositionStyleDiv")
-    Div terminationCompositionStyleDiv;
 
     @Inject
     @DataField("daysSpentInput")
@@ -435,11 +433,9 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     @Override
     public void setNestedTreeItem( boolean nested ) {
         if ( nested ) {
-            formLabel.setVisible( false );
+            formLabelDiv.getStyle().setProperty( "display", "none" );
         } else {
-            addTerminationButtonGroup.getStyle().setProperty( "display", "none" );
-            terminationCompositionStyleDiv.getStyle().setProperty( "display", "none" );
-            dropDownHelpIcon.setVisible( false );
+            addTerminationDiv.getStyle().setProperty( "display", "none" );
         }
     }
 
