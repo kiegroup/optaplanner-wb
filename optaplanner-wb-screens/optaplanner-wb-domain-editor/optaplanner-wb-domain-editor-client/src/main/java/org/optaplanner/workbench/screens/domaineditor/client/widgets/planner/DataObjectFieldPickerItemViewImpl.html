@@ -14,21 +14,13 @@
   ~ limitations under the License.
   -->
 <div id="view">
-    <label id="sortIndexLabel" for="fieldPickerItemRow"></label>
     <div class="row">
-        <div class="col-md-9">
-            <div id="fieldPickerItemRow" ></div>
+        <div class="col-md-2">
+            <label id="sortIndexLabel" for="fieldPickerItemRow"></label>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-10">
             <span style="float:right;">
-                <div id="moveUpButton"></div>
-                <div id="moveDownButton"></div>
-            </span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="selectFieldButtonGroup" class="btn-group">
+                <div id="selectFieldButtonGroup" class="btn-group">
                 <button id="selectFieldButton" type="button" class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-plus"></span>
@@ -36,15 +28,16 @@
                 </button>
                 <span id="selectFieldDropdown"/>
             </div>
-        </div>
-        <div class="col-md-6">
-            <span style="float:right;">
-                <label for="orderSelect" data-i18n-key="SortOrder"></label>
-                <select id="orderSelect">
-                    <option value="asc" data-i18n-key="Ascending"></option>
-                    <option value="desc" data-i18n-key="Descending"></option>
-                </select>
+                <div id="moveUpButton"></div>
+                <div id="moveDownButton"></div>
+                <div id="ascSortButton"></div>
+                <div id="descSortButton"></div>
             </span>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 5px;">
+        <div class="col-md-12">
+            <div id="fieldPickerItemRow"></div>
         </div>
     </div>
 </div>

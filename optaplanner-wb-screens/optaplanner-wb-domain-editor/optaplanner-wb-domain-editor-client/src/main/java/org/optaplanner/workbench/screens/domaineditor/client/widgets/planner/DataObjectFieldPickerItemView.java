@@ -36,7 +36,7 @@ public interface DataObjectFieldPickerItemView extends IsWidget {
 
         void onMoveFieldItemDown();
 
-        void onOrderSelectValueChange( boolean checked, boolean notify );
+        void onOrderSelectValueChange( boolean descending, boolean notify );
 
         void setFieldPickerItemIndex( int index );
 

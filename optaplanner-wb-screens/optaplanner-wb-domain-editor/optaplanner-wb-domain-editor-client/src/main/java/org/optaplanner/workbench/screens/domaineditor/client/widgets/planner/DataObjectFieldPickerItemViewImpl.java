@@ -17,25 +17,24 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
-import org.gwtbootstrap3.client.ui.Label;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.jboss.errai.common.client.dom.Button;
 import org.jboss.errai.common.client.dom.Div;
-import org.jboss.errai.common.client.dom.Select;
+import org.jboss.errai.common.client.dom.Label;
+import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.uberfire.mvp.Command;
 
 @Templated
 public class DataObjectFieldPickerItemViewImpl extends Composite implements DataObjectFieldPickerItemView {
@@ -44,8 +43,9 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
     @DataField("view")
     Div view;
 
+    @Inject
     @DataField("fieldPickerItemRow")
-    HorizontalPanel fieldPickerItemRow;
+    Div fieldPickerItemRow;
 
     @Inject
     @DataField("selectFieldButton")
@@ -55,38 +55,44 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
     @DataField("selectFieldDropdown")
     DropDownMenu selectFieldDropdown;
 
+    @Inject
     @DataField("moveUpButton")
     org.gwtbootstrap3.client.ui.Button moveUpButton;
 
+    @Inject
     @DataField("moveDownButton")
     org.gwtbootstrap3.client.ui.Button moveDownButton;
 
     @Inject
-    @DataField("orderSelect")
-    Select orderSelect;
+    @DataField("ascSortButton")
+    org.gwtbootstrap3.client.ui.Button ascSortButton;
 
-    private com.google.gwt.user.client.ui.Label sortIndexLabel;
+    @Inject
+    @DataField("descSortButton")
+    org.gwtbootstrap3.client.ui.Button descSortButton;
+
+    @Inject
+    @DataField("sortIndexLabel")
+    Label sortIndexLabel;
+
+    private ManagedInstance<DataObjectFieldPickerItemLabelView> fieldPickerItemLabelViewInstance;
 
     private Presenter presenter;
 
     @Inject
-    public DataObjectFieldPickerItemViewImpl( final HorizontalPanel fieldPickerItemRow,
-                                              final com.google.gwt.user.client.ui.Label sortIndexLabel,
-                                              final org.gwtbootstrap3.client.ui.Button moveUpButton,
-                                              final org.gwtbootstrap3.client.ui.Button moveDownButton ) {
+    public DataObjectFieldPickerItemViewImpl( final Div fieldPickerItemRow,
+                                              final ManagedInstance<DataObjectFieldPickerItemLabelView> fieldPickerItemLabelViewInstance ) {
         this.fieldPickerItemRow = fieldPickerItemRow;
-        this.sortIndexLabel = sortIndexLabel;
-        this.moveUpButton = moveUpButton;
-        this.moveDownButton = moveDownButton;
-
-        sortIndexLabel.getElement().getStyle().setPaddingRight( 5, Style.Unit.PX );
-        sortIndexLabel.getElement().getStyle().setFontWeight( Style.FontWeight.BOLD );
-        fieldPickerItemRow.add( sortIndexLabel );
-
-        moveUpButton.setIcon( IconType.ARROW_UP );
-        moveDownButton.setIcon( IconType.ARROW_DOWN );
+        this.fieldPickerItemLabelViewInstance = fieldPickerItemLabelViewInstance;
     }
 
+    @PostConstruct
+    public void init() {
+        moveUpButton.setIcon( IconType.ARROW_UP );
+        moveDownButton.setIcon( IconType.ARROW_DOWN );
+        ascSortButton.setIcon( IconType.SORT_ALPHA_ASC );
+        descSortButton.setIcon( IconType.SORT_ALPHA_DESC );
+    }
 
     @Override
     public void setPresenter( Presenter presenter ) {
@@ -105,39 +111,40 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
 
     @Override
     public void addRootItem( DataObject rootDataObject ) {
-        Label label = new Label( rootDataObject.getName() );
-        label.addClickHandler( c -> presenter.onRootLabelRemoved() );
-        label.setMarginRight( 5 );
-        fieldPickerItemRow.add( label );
+        createFieldPickerItemLabel( rootDataObject.getName(), () -> presenter.onRootLabelRemoved() );
     }
 
     @Override
     public void addFieldItem( ObjectProperty objectProperty ) {
-        Label label = new Label( objectProperty.getName() );
-        label.addClickHandler( c -> presenter.onFieldRemoved( objectProperty ) );
-        label.setMarginRight( 5 );
-        fieldPickerItemRow.add( label );
+        createFieldPickerItemLabel( objectProperty.getName(), () -> presenter.onFieldRemoved( objectProperty ) );
+    }
+
+    private void createFieldPickerItemLabel( String name, Command removeLabelCommand ) {
+        DataObjectFieldPickerItemLabelView labelView = fieldPickerItemLabelViewInstance.get();
+        labelView.setName( name );
+        labelView.setRemoveLabelCommand( removeLabelCommand );
+        fieldPickerItemRow.appendChild( labelView.getElement() );
     }
 
     @Override
     public void removeLastFieldItem() {
-        Label label = (Label) fieldPickerItemRow.getWidget( fieldPickerItemRow.getWidgetCount() - 1 );
-        fieldPickerItemRow.remove( label );
+        fieldPickerItemRow.removeChild( fieldPickerItemRow.getLastChild() );
     }
 
     @Override
     public void displaySelectFieldButton( boolean display ) {
-        selectFieldButton.getStyle().setProperty( "display", display ? "inline" : "none" );
+        selectFieldButton.setDisabled( !display );
     }
 
     @Override
     public void setOrderSelectDescendingValue( boolean descending ) {
-        orderSelect.setValue( descending ? "desc" : "asc" );
+        ascSortButton.setVisible( !descending );
+        descSortButton.setVisible( descending );
     }
 
     @Override
     public void setFieldPickerItemIndex( int index ) {
-        sortIndexLabel.setText( index + "." );
+        sortIndexLabel.setTextContent( index + ".");
     }
 
     @EventHandler("moveUpButton")
@@ -150,9 +157,14 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
         presenter.onMoveFieldItemDown();
     }
 
-    @EventHandler("orderSelect")
-    public void onOrderSelectValueChange( ChangeEvent event ) {
-        presenter.onOrderSelectValueChange( "desc".equals( orderSelect.getValue() ), true );
+    @EventHandler("ascSortButton")
+    public void onAscSortButtonClicked( ClickEvent event ) {
+        presenter.onOrderSelectValueChange( true, true );
+    }
+
+    @EventHandler("descSortButton")
+    public void onDescSortButtonClicked( ClickEvent event ) {
+        presenter.onOrderSelectValueChange( false, true );
     }
 
 }
