@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2017 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,30 +16,34 @@
 
 package org.optaplanner.workbench.upstream.model.marshalling;
 
+import java.math.BigDecimal;
+
 import org.jboss.errai.codegen.meta.impl.java.JavaReflectionMethod;
 import org.jboss.errai.marshalling.rebind.api.CustomMapping;
 import org.jboss.errai.marshalling.rebind.api.model.MappingDefinition;
 import org.jboss.errai.marshalling.rebind.api.model.impl.ReadMapping;
 import org.jboss.errai.marshalling.rebind.api.model.impl.SimpleFactoryMapping;
-import org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScore;
+import org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScore;
 
-@CustomMapping(HardSoftDoubleScore.class)
-public class HardSoftDoubleScoreMapper extends MappingDefinition {
+@CustomMapping(HardMediumSoftBigDecimalScore.class)
+public class HardMediumSoftBigDecimalScoreMapper extends MappingDefinition {
 
-    public HardSoftDoubleScoreMapper() throws NoSuchMethodException {
-        super( HardSoftDoubleScore.class );
+    public HardMediumSoftBigDecimalScoreMapper() throws NoSuchMethodException {
+        super( HardMediumSoftBigDecimalScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( HardSoftDoubleScore.class.getMethod( "valueOfUninitialized", int.class, double.class, double.class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( HardMediumSoftBigDecimalScore.class.getMethod( "valueOfUninitialized", int.class, BigDecimal.class, BigDecimal.class, BigDecimal.class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "hardScore", 1, double.class );
-        factoryMapping.mapParmToIndex( "softScore", 2, double.class );
+        factoryMapping.mapParmToIndex( "hardScore", 1, BigDecimal.class );
+        factoryMapping.mapParmToIndex( "mediumScore", 2, BigDecimal.class );
+        factoryMapping.mapParmToIndex( "softScore", 3, BigDecimal.class );
 
         setInstantiationMapping( factoryMapping );
 
         addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "hardScore", double.class, "getHardScore" ) );
-        addMemberMapping( new ReadMapping( "softScore", double.class, "getSoftScore" ) );
+        addMemberMapping( new ReadMapping( "hardScore", BigDecimal.class, "getHardScore" ) );
+        addMemberMapping( new ReadMapping( "mediumScore", BigDecimal.class, "getMediumScore" ) );
+        addMemberMapping( new ReadMapping( "softScore", BigDecimal.class, "getSoftScore" ) );
     }
 
 }

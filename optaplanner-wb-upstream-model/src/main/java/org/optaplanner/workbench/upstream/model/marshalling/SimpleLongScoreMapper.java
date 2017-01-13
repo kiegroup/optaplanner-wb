@@ -30,7 +30,7 @@ public class SimpleLongScoreMapper extends MappingDefinition {
         super( SimpleLongScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( SimpleLongScore.class.getMethod( "valueOf", int.class, long.class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( SimpleLongScore.class.getMethod( "valueOfUninitialized", int.class, long.class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
         factoryMapping.mapParmToIndex( "score", 1, long.class );
 
