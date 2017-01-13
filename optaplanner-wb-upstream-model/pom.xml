@@ -71,6 +71,7 @@
           <include>org/optaplanner/core/api/score/buildin/bendablebigdecimal/BendableBigDecimalScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/bendablelong/BendableLongScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/hardmediumsoft/HardMediumSoftScore.java</include>
+          <include>org/optaplanner/core/api/score/buildin/hardmediumsoftbigdecimal/HardMediumSoftBigDecimalScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/hardmediumsoftlong/HardMediumSoftLongScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/hardsoft/HardSoftScore.java</include>
           <include>org/optaplanner/core/api/score/buildin/hardsoftbigdecimal/HardSoftBigDecimalScore.java</include>

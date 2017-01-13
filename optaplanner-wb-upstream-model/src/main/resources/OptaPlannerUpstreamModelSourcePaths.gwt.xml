@@ -27,7 +27,7 @@
   <source path="org/optaplanner/core/api/score/buildin/bendablebigdecimal" includes="BendableBigDecimalScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/bendablelong" includes="BendableLongScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/hardmediumsoft" includes="HardMediumSoftScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftbigdecima" includes="HardMediumSoftBigDecimalScore.java" />
+  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftbigdecimal" includes="HardMediumSoftBigDecimalScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftlong" includes="HardMediumSoftLongScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/hardsoft" includes="HardSoftScore.java" />
   <source path="org/optaplanner/core/api/score/buildin/hardsoftbigdecimal" includes="HardSoftBigDecimalScore.java" />

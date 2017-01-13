@@ -24,6 +24,7 @@ import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
 import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
 import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
+import org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScore;
 import org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScore;
@@ -47,6 +48,7 @@ public class PlannerDomainTypes {
         SCORE_TYPES.add( BendableBigDecimalScore.class );
         SCORE_TYPES.add( BendableLongScore.class );
         SCORE_TYPES.add( HardMediumSoftScore.class );
+        SCORE_TYPES.add( HardMediumSoftBigDecimalScore.class );
         SCORE_TYPES.add( HardMediumSoftLongScore.class );
         SCORE_TYPES.add( HardSoftScore.class );
         SCORE_TYPES.add( HardSoftBigDecimalScore.class );
