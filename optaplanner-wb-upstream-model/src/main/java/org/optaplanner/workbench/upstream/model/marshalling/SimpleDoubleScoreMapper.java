@@ -30,7 +30,7 @@ public class SimpleDoubleScoreMapper extends MappingDefinition {
         super( SimpleDoubleScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( SimpleDoubleScore.class.getMethod( "valueOf", int.class, double.class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( SimpleDoubleScore.class.getMethod( "valueOfUninitialized", int.class, double.class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
         factoryMapping.mapParmToIndex( "score", 1, double.class );
 

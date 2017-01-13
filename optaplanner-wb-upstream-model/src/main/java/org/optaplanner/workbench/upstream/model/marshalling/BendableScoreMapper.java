@@ -30,7 +30,7 @@ public class BendableScoreMapper extends MappingDefinition {
         super( BendableScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( BendableScore.class.getMethod( "valueOf", int.class, int[].class, int[].class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( BendableScore.class.getMethod( "valueOfUninitialized", int.class, int[].class, int[].class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
         factoryMapping.mapParmToIndex( "hardScores", 1, int[].class );
         factoryMapping.mapParmToIndex( "softScores", 2, int[].class );

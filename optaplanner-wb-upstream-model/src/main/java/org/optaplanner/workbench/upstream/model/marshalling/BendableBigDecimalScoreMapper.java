@@ -32,7 +32,7 @@ public class BendableBigDecimalScoreMapper extends MappingDefinition {
         super( BendableBigDecimalScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( BendableBigDecimalScore.class.getMethod( "valueOf", int.class, BigDecimal[].class, BigDecimal[].class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( BendableBigDecimalScore.class.getMethod( "valueOfUninitialized", int.class, BigDecimal[].class, BigDecimal[].class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
         factoryMapping.mapParmToIndex( "hardScores", 1, BigDecimal[].class );
         factoryMapping.mapParmToIndex( "softScores", 2, BigDecimal[].class );

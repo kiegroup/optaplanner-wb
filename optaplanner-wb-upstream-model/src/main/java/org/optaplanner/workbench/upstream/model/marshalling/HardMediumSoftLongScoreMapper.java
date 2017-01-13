@@ -30,7 +30,7 @@ public class HardMediumSoftLongScoreMapper extends MappingDefinition {
         super( HardMediumSoftLongScore.class );
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( HardMediumSoftLongScore.class.getMethod( "valueOf", int.class, long.class, long.class, long.class ) ) );
+        factoryMapping.setMethod( new JavaReflectionMethod( HardMediumSoftLongScore.class.getMethod( "valueOfUninitialized", int.class, long.class, long.class, long.class ) ) );
         factoryMapping.mapParmToIndex( "initScore", 0, int.class );
         factoryMapping.mapParmToIndex( "hardScore", 1, long.class );
         factoryMapping.mapParmToIndex( "mediumScore", 2, long.class );
