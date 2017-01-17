@@ -59,6 +59,8 @@ public interface AppConstants
 
     String MenuManageOrganizationalUnits();
 
+    String Examples();
+
     String Explore();
 
     String Projects();

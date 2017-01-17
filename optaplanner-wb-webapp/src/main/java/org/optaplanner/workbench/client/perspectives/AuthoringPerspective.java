@@ -21,8 +21,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.kie.workbench.common.screens.examples.client.wizard.ExamplesWizard;
 import org.kie.workbench.common.screens.projecteditor.client.menu.ProjectMenu;
-import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcesMenu;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.optaplanner.workbench.client.docks.AuthoringWorkbenchDocks;
@@ -51,7 +51,7 @@ import org.uberfire.workbench.model.menu.Menus;
 public class AuthoringPerspective {
 
     @Inject
-    private NewResourcePresenter newResourcePresenter;
+    private ExamplesWizard wizard;
 
     @Inject
     private NewResourcesMenu newResourcesMenu;
@@ -81,6 +81,9 @@ public class AuthoringPerspective {
     @WorkbenchMenu
     public Menus buildMenuBar() {
         return MenuFactory
+                .newTopLevelMenu( "Examples" )
+                .respondsWith( () -> wizard.start() )
+                .endMenu()
                 .newTopLevelMenu( AppConstants.INSTANCE.Explore() )
                 .withItems( getExploreMenuItems() )
                 .endMenu()
@@ -90,25 +93,20 @@ public class AuthoringPerspective {
                 .newTopLevelMenu( AppConstants.INSTANCE.Project() )
                 .withItems( projectMenu.getMenuItems() )
                 .endMenu()
-                .newTopLevelMenu( AppConstants.INSTANCE.Find() ).position( MenuPosition.RIGHT ).respondsWith( new Command() {
-                    @Override
-                    public void execute() {
-                        placeManager.goTo( "FindForm" );
-                    }
-                } )
+                .newTopLevelMenu( AppConstants.INSTANCE.Find() )
+                .position( MenuPosition.RIGHT )
+                .respondsWith( () -> placeManager.goTo( "FindForm" ) )
                 .endMenu()
                 .build();
     }
 
     private List<? extends MenuItem> getExploreMenuItems() {
-        ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add( MenuFactory.newSimpleItem( AppConstants.INSTANCE.Projects() ).respondsWith(
-                new Command() {
-                    @Override
-                    public void execute() {
-                        placeManager.goTo( "org.kie.guvnor.explorer" );
-                    }
-                } ).endMenu().build().getItems().get( 0 ) );
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add( MenuFactory
+                        .newSimpleItem( AppConstants.INSTANCE.Projects() )
+                        .respondsWith( () -> placeManager.goTo( "org.kie.guvnor.explorer" ) )
+                        .endMenu()
+                        .build().getItems().get( 0 ) );
         return menuItems;
     }
 
