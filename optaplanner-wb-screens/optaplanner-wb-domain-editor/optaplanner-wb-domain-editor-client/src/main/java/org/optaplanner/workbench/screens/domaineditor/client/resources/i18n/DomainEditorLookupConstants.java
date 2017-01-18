@@ -34,6 +34,8 @@ public interface DomainEditorLookupConstants extends ConstantsWithLookup {
 
     String HardMediumSoftScore();
 
+    String HardMediumSoftBigDecimalScore();
+
     String HardMediumSoftLongScore();
 
     String HardSoftScore();
