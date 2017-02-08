@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -27,13 +28,16 @@ import org.gwtbootstrap3.extras.select.client.ui.Select;
 import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.common.client.dom.Input;
 import org.jboss.errai.common.client.dom.NumberInput;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
+import org.uberfire.client.views.pfly.widgets.HelpIcon;
 import org.uberfire.commons.data.Pair;
 
 @Dependent
@@ -53,6 +57,10 @@ public class PlannerDataObjectEditorViewImpl
     @Inject
     @DataField("planningSolutionRadioButton")
     Input planningSolutionRadioButton;
+
+    @Inject
+    @DataField("planningSolutionHelpIcon")
+    HelpIcon planningSolutionHelpIcon;
 
     @Inject
     @DataField("planningSolutionScoreTypeGroup")
@@ -78,9 +86,18 @@ public class PlannerDataObjectEditorViewImpl
     @DataField("fieldPicker")
     DataObjectFieldPicker fieldPicker;
 
+    @Inject
+    private TranslationService translationService;
+
     private Presenter presenter;
 
     public PlannerDataObjectEditorViewImpl() {
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        planningSolutionHelpIcon.setVisible( false );
+        planningSolutionHelpIcon.setHelpContent( translationService.getTranslation( DomainEditorConstants.PlannerDataObjectEditorViewImplPlanningSolutionHelpIconContent ) );
     }
 
     @Override
@@ -116,6 +133,16 @@ public class PlannerDataObjectEditorViewImpl
     @Override
     public boolean getPlanningSolutionValue() {
         return planningSolutionRadioButton.getChecked();
+    }
+
+    @Override
+    public void enablePlanningSolutionCheckBox( boolean enable ) {
+        planningSolutionRadioButton.setDisabled( !enable );
+    }
+
+    @Override
+    public void showPlanningSolutionHelpIcon( boolean show ) {
+        planningSolutionHelpIcon.setVisible( show );
     }
 
     @Override

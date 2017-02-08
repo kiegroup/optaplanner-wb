@@ -66,6 +66,8 @@ public class SolverEditorPresenter
 
     private XMLViewer xmlViewer;
 
+    private ValidationPopup validationPopup;
+
     private SolverEditorView view;
     private SolverConfigModel model;
 
@@ -74,7 +76,8 @@ public class SolverEditorPresenter
                                   final SolverResourceType solverResourceType,
                                   final XMLViewer xmlViewer,
                                   final Event<NotificationEvent> notification,
-                                  final Caller<SolverEditorService> solverService ) {
+                                  final Caller<SolverEditorService> solverService,
+                                  final ValidationPopup validationPopup ) {
         super( view );
 
         this.xmlViewer = xmlViewer;
@@ -82,6 +85,7 @@ public class SolverEditorPresenter
         this.solverResourceType = solverResourceType;
         this.notification = notification;
         this.solverService = solverService;
+        this.validationPopup = validationPopup;
     }
 
     @OnStartup
@@ -191,7 +195,7 @@ public class SolverEditorPresenter
                     notification.fire( new NotificationEvent( message,
                                                               NotificationEvent.NotificationType.SUCCESS ) );
                 } else {
-                    ValidationPopup.showMessages( results );
+                    validationPopup.showMessages( results );
                 }
             }
         };

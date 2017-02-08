@@ -38,6 +38,7 @@ import org.kie.workbench.common.screens.datamodeller.client.widgets.common.domai
 import org.kie.workbench.common.screens.datamodeller.events.ChangeType;
 import org.kie.workbench.common.screens.datamodeller.events.DataModelerEvent;
 import org.kie.workbench.common.screens.datamodeller.events.DataObjectChangeEvent;
+import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
@@ -63,6 +64,7 @@ import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPathImpl;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.uberfire.backend.vfs.Path;
 import org.uberfire.commons.data.Pair;
 
 @Dependent
@@ -78,17 +80,21 @@ public class PlannerDataObjectEditor
 
     private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
+    private Caller<DataModelerService> dataModelerService;
+
     @Inject
     public PlannerDataObjectEditor( PlannerDataObjectEditorView view,
                                     DomainHandlerRegistry handlerRegistry,
                                     Event<DataModelerEvent> dataModelerEvent,
                                     DataModelCommandBuilder commandBuilder,
                                     TranslationService translationService,
-                                    Caller<ComparatorDefinitionService> comparatorDefinitionService ) {
+                                    Caller<ComparatorDefinitionService> comparatorDefinitionService,
+                                    Caller<DataModelerService> dataModelerService ) {
         super( handlerRegistry, dataModelerEvent, commandBuilder );
         this.view = view;
         this.translationService = translationService;
         this.comparatorDefinitionService = comparatorDefinitionService;
+        this.dataModelerService = dataModelerService;
 
         view.init( this );
     }
@@ -122,6 +128,21 @@ public class PlannerDataObjectEditor
         if ( dataObject != null ) {
             boolean hasPlanningEntity = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null;
             boolean hasPlanningSolution = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION ) != null;
+
+            if ( !hasPlanningSolution ) {
+                view.enablePlanningSolutionCheckBox( false );
+                view.showPlanningSolutionHelpIcon( false );
+                dataModelerService.call( new RemoteCallback<List<Path>>() {
+                    @Override
+                    public void callback( List<Path> paths ) {
+                        view.enablePlanningSolutionCheckBox( paths.isEmpty() );
+                        view.showPlanningSolutionHelpIcon( !paths.isEmpty() );
+                    }
+                } ).findClassUsages( context.getCurrentProject().getRootPath(), PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION );
+            } else {
+                view.enablePlanningSolutionCheckBox( true );
+                view.showPlanningSolutionHelpIcon( false );
+            }
 
             view.setPlanningEntityValue( hasPlanningEntity );
             view.setPlanningSolutionValue( hasPlanningSolution );
