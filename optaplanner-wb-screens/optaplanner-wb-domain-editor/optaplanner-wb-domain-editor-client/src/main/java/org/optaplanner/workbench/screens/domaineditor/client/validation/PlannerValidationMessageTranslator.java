@@ -24,6 +24,9 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationMessageTranslator;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningSolutionToBeDuplicatedMessage;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeRemovedMessage;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeNotRecognizedMessage;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeToBeChangedMessage;
 
 @ApplicationScoped
 public class PlannerValidationMessageTranslator implements ValidationMessageTranslator {
@@ -37,16 +40,34 @@ public class PlannerValidationMessageTranslator implements ValidationMessageTran
 
     @Override
     public boolean accept( final ValidationMessage message ) {
-        return message instanceof PlanningSolutionToBeDuplicatedMessage;
+        return message instanceof PlanningSolutionToBeDuplicatedMessage
+                || message instanceof ScoreHolderGlobalToBeRemovedMessage
+                || message instanceof ScoreHolderGlobalTypeToBeChangedMessage
+                || message instanceof ScoreHolderGlobalTypeNotRecognizedMessage;
     }
 
     @Override
     public ValidationMessage translate( final ValidationMessage messageToTranslate ) {
         if ( messageToTranslate instanceof PlanningSolutionToBeDuplicatedMessage ) {
-            ValidationMessage translatedMessage = new ValidationMessage( messageToTranslate );
-            translatedMessage.setText( translationService.getTranslation( DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated ) );
-            return translatedMessage;
+            return getMessageTranslation( messageToTranslate,
+                                          DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated );
+        } else if ( messageToTranslate instanceof ScoreHolderGlobalToBeRemovedMessage ) {
+            return getMessageTranslation( messageToTranslate,
+                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDeleted );
+        } else if ( messageToTranslate instanceof ScoreHolderGlobalTypeToBeChangedMessage ) {
+            return getMessageTranslation( messageToTranslate,
+                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeChanged );
+        } else if ( messageToTranslate instanceof ScoreHolderGlobalTypeNotRecognizedMessage ) {
+            return getMessageTranslation( messageToTranslate,
+                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized );
         }
         throw new IllegalStateException( "No translation found for message " + messageToTranslate );
+    }
+
+    private ValidationMessage getMessageTranslation( final ValidationMessage messageToTranslate,
+                                                     final String translationKey ) {
+        ValidationMessage translatedMessage = new ValidationMessage( messageToTranslate );
+        translatedMessage.setText( translationService.getTranslation( translationKey ) );
+        return translatedMessage;
     }
 }
