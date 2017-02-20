@@ -27,6 +27,7 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.DataModelerEditorsTestHelper;
+import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
@@ -47,6 +48,7 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.impl.domain.solution.AbstractSolution;
 import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.uberfire.backend.vfs.Path;
 import org.uberfire.commons.data.Pair;
 
 import static org.junit.Assert.*;
@@ -65,13 +67,24 @@ public class PlannerDataObjectEditorTest
     @Mock
     private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
+    @Mock
+    private Caller<DataModelerService> dataModelerServiceCallerMock;
+
+    @Mock
+    private DataModelerService dataModelerServiceMock;
+
     protected PlannerDataObjectEditor createObjectEditor() {
+        when( dataModelerServiceCallerMock.call( any() ) ).thenReturn( dataModelerServiceMock );
+        when( dataModelerServiceMock.findClassUsages( any( Path.class),
+                                                      anyString() ) ).thenReturn( Collections.emptyList() );
+
         PlannerDataObjectEditor objectEditor = new PlannerDataObjectEditor( view,
                 handlerRegistry,
                 dataModelerEvent,
                 commandBuilder,
                 translationService,
-                comparatorDefinitionService );
+                comparatorDefinitionService,
+                dataModelerServiceCallerMock );
         return objectEditor;
     }
 
@@ -92,6 +105,22 @@ public class PlannerDataObjectEditorTest
         verify( view, times( 2 ) ).setNotInPlanningValue( true );
         verify( view, times( 1 ) ).destroyFieldPicker();
         verify( view, times( 1 ) ).showPlanningSolutionBendableScoreInput( false );
+
+        verify( dataModelerServiceMock, times( 1 ) ).findClassUsages( any( Path.class ), anyString() );
+    }
+
+    @Test
+    public void loadDataObjectPlanningSolution() {
+        DataObject dataObject = context.getDataObject();
+        dataObject.addAnnotation( DataModelerEditorsTestHelper.createAnnotation( PlanningSolution.class, null, null ) );
+
+        PlannerDataObjectEditor objectEditor = createObjectEditor();
+        objectEditor.onContextChange( context );
+
+        verify( view, times( 1 ) ).enablePlanningSolutionCheckBox( true );
+        verify( view, times( 1 ) ).showPlanningSolutionHelpIcon( false );
+
+        verify( dataModelerServiceMock, never() ).findClassUsages( any( Path.class ), anyString() );
     }
 
     @Test

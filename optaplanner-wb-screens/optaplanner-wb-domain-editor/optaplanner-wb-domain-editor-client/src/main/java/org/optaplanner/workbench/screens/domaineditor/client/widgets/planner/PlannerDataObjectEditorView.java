@@ -58,6 +58,10 @@ public interface PlannerDataObjectEditorView
 
     boolean getPlanningSolutionValue( );
 
+    void enablePlanningSolutionCheckBox( boolean enable );
+
+    void showPlanningSolutionHelpIcon( boolean show );
+
     void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> planningSolutionScoreTypeOptions,
             String selectedScoreType );
 

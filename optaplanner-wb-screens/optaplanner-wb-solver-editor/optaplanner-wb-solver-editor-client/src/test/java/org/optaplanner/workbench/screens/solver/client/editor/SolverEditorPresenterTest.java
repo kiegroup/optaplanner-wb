@@ -31,6 +31,7 @@ import org.jboss.errai.common.client.api.RemoteCallback;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.workbench.common.widgets.client.popups.validation.ValidationPopup;
 import org.kie.workbench.common.widgets.metadata.client.KieEditorWrapperView;
 import org.kie.workbench.common.widgets.metadata.client.widget.OverviewWidgetPresenter;
 import org.mockito.Mock;
@@ -96,7 +97,8 @@ public class SolverEditorPresenterTest {
                                                resourceType,
                                                mock( XMLViewer.class ),
                                                new NotificationEventMock(),
-                                               new ServiceMock() ) {
+                                               new ServiceMock(),
+                                               mock( ValidationPopup.class )) {
             {
                 kieView = mock( KieEditorWrapperView.class );
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
@@ -134,6 +136,7 @@ public class SolverEditorPresenterTest {
 
         @Override public <U extends NotificationEvent> Event<U> select( Class<U> aClass, Annotation... annotations ) {
             return null;
+
         }
     }
 

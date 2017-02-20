@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.resources.i18n;
 
-import com.google.gwt.core.client.GWT;
 import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
 
 /**
@@ -30,4 +29,9 @@ public interface DomainEditorConstants {
     @TranslationKey( defaultValue = "")
     String PlannerDataObjectEditorComparatorDefinitionProcessingFailed = "PlannerDataObjectEditor.ComparatorDefinitionProcessingFailed";
 
+    @TranslationKey( defaultValue = "")
+    String PlannerDataObjectEditorViewImplPlanningSolutionHelpIconContent = "PlannerDataObjectEditorViewImpl.PlanningSolutionHelpIconContent";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated = "PlannerCheckTranslator.MultiplePlanningSolutionsToBeCreated";
 }
