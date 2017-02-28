@@ -34,4 +34,13 @@ public interface DomainEditorConstants {
 
     @TranslationKey( defaultValue = "")
     String PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated = "PlannerCheckTranslator.MultiplePlanningSolutionsToBeCreated";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorScoreHolderGlobalToBeDeleted = "PlannerCheckTranslator.ScoreHolderGlobalToBeDeleted";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorScoreHolderGlobalToBeChanged = "PlannerCheckTranslator.ScoreHolderGlobalToBeChanged";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized = "PlannerCheckTranslator.ScoreHolderGlobalTypeNotRecognized";
 }
