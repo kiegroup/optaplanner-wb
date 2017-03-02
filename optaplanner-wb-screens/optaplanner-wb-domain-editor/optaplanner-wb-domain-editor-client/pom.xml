@@ -120,6 +120,12 @@
     <dependency>
       <groupId>org.kie.workbench.services</groupId>
       <artifactId>kie-wb-common-data-modeller-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>jakarta-regexp</groupId>
+          <artifactId>jakarta-regexp</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -151,6 +157,12 @@
       <groupId>com.google.gwt.gwtmockito</groupId>
       <artifactId>gwtmockito</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -165,7 +177,6 @@
       <artifactId>uberfire-testing-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
 
   </dependencies>
 

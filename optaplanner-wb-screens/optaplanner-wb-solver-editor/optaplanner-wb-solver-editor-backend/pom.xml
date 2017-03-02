@@ -118,6 +118,16 @@
       <groupId>com.google.gwt.gwtmockito</groupId>
       <artifactId>gwtmockito</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
   </dependencies>
