@@ -148,9 +148,10 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
         GlobalsModel globalsModel = new GlobalsModel();
         globalsModel.setGlobals( Arrays.asList( new Global( SCORE_HOLDER,
                                                             scoreHolderTypeFqn ) ) );
-        globalsEditorService.create( folderPath,
-                                     solutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX,
-                                     globalsModel,
-                                     "Auto generate Score holder global variable based on a @PlanningSolution " + solutionFileName );
+
+        globalsEditorService.generate( folderPath,
+                                       solutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX,
+                                       globalsModel,
+                                       "Auto generate Score holder global variable based on a @PlanningSolution " + solutionFileName );
     }
 }

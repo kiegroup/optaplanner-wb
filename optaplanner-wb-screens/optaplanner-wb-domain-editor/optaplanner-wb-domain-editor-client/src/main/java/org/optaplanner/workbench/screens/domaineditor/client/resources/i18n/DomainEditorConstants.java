@@ -43,4 +43,10 @@ public interface DomainEditorConstants {
 
     @TranslationKey( defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized = "PlannerCheckTranslator.ScoreHolderGlobalTypeNotRecognized";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage = "PlannerCheckTranslator.ScoreHolderGlobalFileToBeRemovedMessage";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage = "PlannerCheckTranslator.ScoreHolderGlobalToBeDefinedManuallyMessage";
 }
