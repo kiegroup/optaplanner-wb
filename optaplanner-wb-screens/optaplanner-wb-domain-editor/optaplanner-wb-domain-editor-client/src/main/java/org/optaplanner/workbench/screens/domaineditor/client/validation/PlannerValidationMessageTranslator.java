@@ -16,6 +16,8 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.validation;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -24,6 +26,8 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationMessageTranslator;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningSolutionToBeDuplicatedMessage;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalFileToBeRemovedMessage;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeDefinedManuallyMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeRemovedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeNotRecognizedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeToBeChangedMessage;
@@ -33,6 +37,24 @@ public class PlannerValidationMessageTranslator implements ValidationMessageTran
 
     private TranslationService translationService;
 
+    private static Map<String, String> MESSAGE_CLASS_KEY_MAPPING;
+
+    static {
+        MESSAGE_CLASS_KEY_MAPPING = new HashMap<>();
+        MESSAGE_CLASS_KEY_MAPPING.put( PlanningSolutionToBeDuplicatedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated );
+        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalToBeRemovedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDeleted );
+        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalTypeToBeChangedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeChanged );
+        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalTypeNotRecognizedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized );
+        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalFileToBeRemovedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage );
+        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalToBeDefinedManuallyMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage );
+    }
+
     @Inject
     public PlannerValidationMessageTranslator( final TranslationService translationService ) {
         this.translationService = translationService;
@@ -40,28 +62,19 @@ public class PlannerValidationMessageTranslator implements ValidationMessageTran
 
     @Override
     public boolean accept( final ValidationMessage message ) {
-        return message instanceof PlanningSolutionToBeDuplicatedMessage
-                || message instanceof ScoreHolderGlobalToBeRemovedMessage
-                || message instanceof ScoreHolderGlobalTypeToBeChangedMessage
-                || message instanceof ScoreHolderGlobalTypeNotRecognizedMessage;
+        return MESSAGE_CLASS_KEY_MAPPING.containsKey( message.getClass().getName() );
     }
 
     @Override
     public ValidationMessage translate( final ValidationMessage messageToTranslate ) {
-        if ( messageToTranslate instanceof PlanningSolutionToBeDuplicatedMessage ) {
-            return getMessageTranslation( messageToTranslate,
-                                          DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated );
-        } else if ( messageToTranslate instanceof ScoreHolderGlobalToBeRemovedMessage ) {
-            return getMessageTranslation( messageToTranslate,
-                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDeleted );
-        } else if ( messageToTranslate instanceof ScoreHolderGlobalTypeToBeChangedMessage ) {
-            return getMessageTranslation( messageToTranslate,
-                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeChanged );
-        } else if ( messageToTranslate instanceof ScoreHolderGlobalTypeNotRecognizedMessage ) {
-            return getMessageTranslation( messageToTranslate,
-                                          DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized );
+        String translationKey = MESSAGE_CLASS_KEY_MAPPING.get( messageToTranslate.getClass().getName() );
+
+        if ( translationKey == null ) {
+            throw new IllegalStateException( "No translation found for message " + messageToTranslate );
         }
-        throw new IllegalStateException( "No translation found for message " + messageToTranslate );
+
+        return getMessageTranslation( messageToTranslate,
+                                      translationKey );
     }
 
     private ValidationMessage getMessageTranslation( final ValidationMessage messageToTranslate,

@@ -142,7 +142,6 @@ public class PlanningSolutionSaveHelperTest {
                                 destinationPath );
 
         if ( sourcePath.equals( destinationPath ) ) {
-
             if ( scoreHolderGlobalFileExists ) {
                 verify( globalsEditorService,
                         times( 1 ) ).save( any( Path.class ),
@@ -151,18 +150,13 @@ public class PlanningSolutionSaveHelperTest {
                                            anyString() );
             } else {
                 verify( globalsEditorService,
-                        times( 1 ) ).create( any( Path.class ),
-                                             anyString(),
-                                             any( GlobalsModel.class ),
-                                             anyString() );
+                        times( 1 ) ).generate( any( Path.class ),
+                                               anyString(),
+                                               any( GlobalsModel.class ),
+                                               anyString() );
             }
         } else {
             verify( ioService ).deleteIfExists( any( org.uberfire.java.nio.file.Path.class ) );
-            verify( globalsEditorService,
-                    times( 1 ) ).create( any( Path.class ),
-                                         anyString(),
-                                         any( GlobalsModel.class ),
-                                         anyString() );
         }
     }
 
