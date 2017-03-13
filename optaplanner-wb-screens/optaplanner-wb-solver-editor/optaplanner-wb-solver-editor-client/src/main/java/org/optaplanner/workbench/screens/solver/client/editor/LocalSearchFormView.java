@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,16 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import org.jboss.errai.common.client.dom.HTMLElement;
+import java.util.List;
 
-public interface PhaseConfigFormView extends IsWidget {
+import org.jboss.errai.common.client.api.IsElement;
+import org.uberfire.commons.data.Pair;
 
-    void setPresenter( final PhaseConfigForm presenter );
+public interface LocalSearchFormView extends IsElement {
 
-    void addConstructionHeuristic( final HTMLElement element );
+    void setPresenter( final LocalSearchForm presenter );
 
-    void removeConstructionHeuristic( final HTMLElement element );
+    void initLocalSearchTypeSelectOptions( final List<Pair<String, String>> options );
 
-    void addLocalSearch( final HTMLElement element );
-
-    void removeLocalSearch( final HTMLElement element );
-
-    void displayEmptyPhaseConfigurationLabel( final boolean visible );
+    void setSelectedLocalSearchType( final String localSearchType );
 }

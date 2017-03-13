@@ -28,6 +28,7 @@ import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,7 +99,8 @@ public class SolverEditorPresenterTest {
                                                mock( XMLViewer.class ),
                                                new NotificationEventMock(),
                                                new ServiceMock(),
-                                               mock( ValidationPopup.class )) {
+                                               mock( ValidationPopup.class ),
+                                               mock( TranslationService.class ) ) {
             {
                 kieView = mock( KieEditorWrapperView.class );
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;

@@ -22,8 +22,10 @@ import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
 import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.common.client.dom.HTMLElement;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
+import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 
 @Templated
 public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFormView {
@@ -46,31 +48,49 @@ public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFor
     private PhaseConfigForm presenter;
 
     @Inject
-    public PhaseConfigFormViewImpl( final DropDownMenu dropdownMenuList ) {
+    public PhaseConfigFormViewImpl( final DropDownMenu dropdownMenuList,
+                                    final TranslationService translationService ) {
         this.dropdownMenuList = dropdownMenuList;
-        AnchorListItem constructionHeuristicListItem = new AnchorListItem( "Construction heuristic" );
+        AnchorListItem constructionHeuristicListItem = new AnchorListItem( translationService.getTranslation( SolverEditorConstants.PhaseConfigFormViewImplConstructionHeuristic ) );
         constructionHeuristicListItem.addClickHandler( h -> presenter.addConstructionHeuristic() );
         this.dropdownMenuList.add( constructionHeuristicListItem );
-        // TODO add Local search, Exhaustive search, ...
+
+        AnchorListItem localSearchListItem = new AnchorListItem( translationService.getTranslation( SolverEditorConstants.PhaseConfigFormViewImplLocalSearch ) );
+        localSearchListItem.addClickHandler( h -> presenter.addLocalSearch() );
+        this.dropdownMenuList.add( localSearchListItem );
+
+        // TODO add Exhaustive search, ...
     }
 
     @Override
-    public void setPresenter( PhaseConfigForm presenter ) {
+    public void setPresenter( final PhaseConfigForm presenter ) {
         this.presenter = presenter;
     }
 
     @Override
-    public void addConstructionHeuristic( HTMLElement element ) {
-        view.insertBefore( element, addPhaseButtonGroup );
+    public void addConstructionHeuristic( final HTMLElement element ) {
+        view.insertBefore( element,
+                           addPhaseButtonGroup );
     }
 
     @Override
-    public void removeConstructionHeuristic( HTMLElement element ) {
+    public void removeConstructionHeuristic( final HTMLElement element ) {
         view.removeChild( element );
     }
 
     @Override
-    public void displayEmptyPhaseConfigurationLabel( boolean visible ) {
+    public void addLocalSearch( final HTMLElement element ) {
+        view.insertBefore( element,
+                           addPhaseButtonGroup );
+    }
+
+    @Override
+    public void removeLocalSearch( final HTMLElement element ) {
+        view.removeChild( element );
+    }
+
+    @Override
+    public void displayEmptyPhaseConfigurationLabel( final boolean visible ) {
         emptyPhaseConfigurationLabel.setHidden( !visible );
     }
 }

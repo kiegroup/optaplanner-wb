@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import org.guvnor.common.services.project.model.Package;
 import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.handlers.DefaultNewResourceHandler;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
@@ -43,7 +44,7 @@ import org.uberfire.workbench.type.ResourceTypeDefinition;
 public class NewSolverHandler
         extends DefaultNewResourceHandler {
 
-    public static final String PLANNER_AVAILABLE ="planner.available";
+    public static final String PLANNER_AVAILABLE = "planner.available";
 
     private Caller<SolverEditorService> solverService;
 
@@ -55,6 +56,8 @@ public class NewSolverHandler
 
     private SessionInfo sessionInfo;
 
+    private TranslationService translationService;
+
     public NewSolverHandler() {
     }
 
@@ -63,17 +66,19 @@ public class NewSolverHandler
                              final SolverResourceType resourceType,
                              final BusyIndicatorView busyIndicatorView,
                              final AuthorizationManager authorizationManager,
-                             final SessionInfo sessionInfo ) {
+                             final SessionInfo sessionInfo,
+                             final TranslationService translationService ) {
         this.solverService = solverService;
         this.resourceType = resourceType;
         this.busyIndicatorView = busyIndicatorView;
         this.authorizationManager = authorizationManager;
         this.sessionInfo = sessionInfo;
+        this.translationService = translationService;
     }
 
     @Override
     public String getDescription() {
-        return SolverEditorConstants.INSTANCE.newSolverDescription();
+        return translationService.getTranslation( SolverEditorConstants.NewSolverHandlerDescription );
     }
 
     @Override
@@ -101,6 +106,7 @@ public class NewSolverHandler
 
     @Override
     public boolean canCreate() {
-        return authorizationManager.authorize( PLANNER_AVAILABLE, sessionInfo.getIdentity() );
+        return authorizationManager.authorize( PLANNER_AVAILABLE,
+                                               sessionInfo.getIdentity() );
     }
 }

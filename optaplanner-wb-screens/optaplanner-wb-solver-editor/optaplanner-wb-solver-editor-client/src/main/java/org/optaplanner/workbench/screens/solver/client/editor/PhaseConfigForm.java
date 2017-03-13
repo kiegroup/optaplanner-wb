@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
+import org.optaplanner.workbench.screens.solver.model.LocalSearchPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 
 public class PhaseConfigForm implements IsWidget {
@@ -35,11 +36,15 @@ public class PhaseConfigForm implements IsWidget {
 
     private ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider;
 
+    private ManagedInstance<LocalSearchForm> localSearchFormProvider;
+
     @Inject
     public PhaseConfigForm( final PhaseConfigFormView view,
-                            final ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider ) {
+                            final ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider,
+                            final ManagedInstance<LocalSearchForm> localSearchFormProvider ) {
         this.view = view;
         this.constructionHeuristicFormProvider = constructionHeuristicFormProvider;
+        this.localSearchFormProvider = localSearchFormProvider;
 
         view.setPresenter( this );
     }
@@ -50,7 +55,7 @@ public class PhaseConfigForm implements IsWidget {
         addConstructionHeuristic( constructionHeuristicPhaseConfigModel );
     }
 
-    public void addConstructionHeuristic( ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel ) {
+    public void addConstructionHeuristic( final ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel ) {
         if ( phaseFormList.isEmpty() ) {
             view.displayEmptyPhaseConfigurationLabel( false );
         }
@@ -61,7 +66,7 @@ public class PhaseConfigForm implements IsWidget {
         view.addConstructionHeuristic( constructionHeuristicForm.getElement() );
     }
 
-    public void removeConstructionHeuristic( ConstructionHeuristicForm constructionHeuristicForm ) {
+    public void removeConstructionHeuristic( final ConstructionHeuristicForm constructionHeuristicForm ) {
         phaseFormList.remove( constructionHeuristicForm );
         view.removeConstructionHeuristic( constructionHeuristicForm.getElement() );
         model.remove( constructionHeuristicForm.getModel() );
@@ -71,15 +76,44 @@ public class PhaseConfigForm implements IsWidget {
         }
     }
 
+    public void addLocalSearch() {
+        LocalSearchPhaseConfigModel localSearchPhaseConfigModel = new LocalSearchPhaseConfigModel();
+        model.add( localSearchPhaseConfigModel );
+        addLocalSearch( localSearchPhaseConfigModel );
+    }
+
+    public void addLocalSearch( final LocalSearchPhaseConfigModel localSearchPhaseConfigModel ) {
+        if ( phaseFormList.isEmpty() ) {
+            view.displayEmptyPhaseConfigurationLabel( false );
+        }
+        LocalSearchForm localSearchForm = localSearchFormProvider.get();
+        localSearchForm.setPhaseConfigForm( this );
+        localSearchForm.setModel( localSearchPhaseConfigModel );
+        phaseFormList.add( localSearchForm );
+        view.addLocalSearch( localSearchForm.getElement() );
+    }
+
+    public void removeLocalSearch( final LocalSearchForm localSearchForm ) {
+        phaseFormList.remove( localSearchForm );
+        view.removeLocalSearch( localSearchForm.getElement() );
+        model.remove( localSearchForm.getModel() );
+        localSearchFormProvider.destroy( localSearchForm );
+        if ( phaseFormList.isEmpty() ) {
+            view.displayEmptyPhaseConfigurationLabel( true );
+        }
+    }
+
     public List<PhaseConfigModel> getModel() {
         return model;
     }
 
-    public void setModel( List<PhaseConfigModel> model ) {
+    public void setModel( final List<PhaseConfigModel> model ) {
         this.model = model;
         for ( PhaseConfigModel phaseConfigModel : model ) {
             if ( phaseConfigModel instanceof ConstructionHeuristicPhaseConfigModel ) {
                 addConstructionHeuristic( (ConstructionHeuristicPhaseConfigModel) phaseConfigModel );
+            } else if ( phaseConfigModel instanceof LocalSearchPhaseConfigModel ) {
+                addLocalSearch( (LocalSearchPhaseConfigModel) phaseConfigModel );
             }
         }
     }

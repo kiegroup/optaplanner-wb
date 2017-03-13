@@ -24,14 +24,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
+import org.optaplanner.workbench.screens.solver.model.LocalSearchPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class PhaseConfigFormTest {
@@ -43,7 +41,13 @@ public class PhaseConfigFormTest {
     private ManagedInstance<ConstructionHeuristicForm> constructionHeuristicFormProvider;
 
     @Mock
+    private ManagedInstance<LocalSearchForm> localSearchFormProvider;
+
+    @Mock
     private ConstructionHeuristicForm constructionHeuristicForm;
+
+    @Mock
+    private LocalSearchForm localSearchForm;
 
     @Mock
     private List model;
@@ -52,13 +56,15 @@ public class PhaseConfigFormTest {
 
     @Before
     public void setUp() {
-        phaseConfigForm = new PhaseConfigForm( view, constructionHeuristicFormProvider );
+        phaseConfigForm = new PhaseConfigForm( view,
+                                               constructionHeuristicFormProvider,
+                                               localSearchFormProvider );
         phaseConfigForm.setModel( new ArrayList<>() );
     }
 
     @Test
     public void setPresenter() {
-        Mockito.verify( view ).setPresenter( phaseConfigForm );
+        verify( view ).setPresenter( phaseConfigForm );
     }
 
     @Test
@@ -67,11 +73,18 @@ public class PhaseConfigFormTest {
         phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
         phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
 
+        phaseConfigModelList.add( new LocalSearchPhaseConfigModel() );
+        phaseConfigModelList.add( new LocalSearchPhaseConfigModel() );
+
         when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
+        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
 
         phaseConfigForm.setModel( phaseConfigModelList );
 
-        verify( view, times( 2 ) ).addConstructionHeuristic( any() );
+        verify( view,
+                times( 2 ) ).addConstructionHeuristic( any() );
+        verify( view,
+                times( 2 ) ).addLocalSearch( any() );
     }
 
     @Test
@@ -84,15 +97,15 @@ public class PhaseConfigFormTest {
         addConstructionHeuristic( false );
     }
 
-    private void addConstructionHeuristic( boolean newConstructionHeuristic ) {
-        when( constructionHeuristicFormProvider.get()).thenReturn( constructionHeuristicForm );
+    private void addConstructionHeuristic( final boolean newConstructionHeuristic ) {
+        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
 
         if ( newConstructionHeuristic ) {
             phaseConfigForm.addConstructionHeuristic();
         } else {
             phaseConfigForm.addConstructionHeuristic( new ConstructionHeuristicPhaseConfigModel() );
         }
-        Mockito.verify( view ).addConstructionHeuristic( any() );
+        verify( view ).addConstructionHeuristic( any() );
     }
 
     @Test
@@ -102,12 +115,49 @@ public class PhaseConfigFormTest {
     }
 
     @Test
-    public void displayEmptyPhaseConfigurationLabel() {
+    public void addLocalSearch() {
+        addLocalSearch( true );
+    }
+
+    @Test
+    public void addLocalSearchExisting() {
+        addLocalSearch( false );
+    }
+
+    private void addLocalSearch( final boolean newLocalSearch ) {
+        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
+
+        if ( newLocalSearch ) {
+            phaseConfigForm.addLocalSearch();
+        } else {
+            phaseConfigForm.addLocalSearch( new LocalSearchPhaseConfigModel() );
+        }
+        verify( view ).addLocalSearch( any() );
+    }
+
+    @Test
+    public void removeLocalSearch() {
+        phaseConfigForm.removeLocalSearch( localSearchForm );
+        verify( view ).removeLocalSearch( localSearchForm.getElement() );
+    }
+
+    @Test
+    public void displayEmptyPhaseConfigurationLabelConstructionHeuristic() {
         when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
         phaseConfigForm.addConstructionHeuristic();
         verify( view ).displayEmptyPhaseConfigurationLabel( false );
 
         phaseConfigForm.removeConstructionHeuristic( constructionHeuristicForm );
+        verify( view ).displayEmptyPhaseConfigurationLabel( true );
+    }
+
+    @Test
+    public void displayEmptyPhaseConfigurationLabelLocalSearch() {
+        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
+        phaseConfigForm.addLocalSearch();
+        verify( view ).displayEmptyPhaseConfigurationLabel( false );
+
+        phaseConfigForm.removeLocalSearch( localSearchForm );
         verify( view ).displayEmptyPhaseConfigurationLabel( true );
     }
 }

@@ -24,6 +24,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.TreeItem;
 import org.jboss.errai.common.client.api.IsElement;
 import org.jboss.errai.common.client.dom.HTMLElement;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
@@ -33,8 +34,6 @@ import static org.optaplanner.workbench.screens.solver.model.TerminationConfigOp
 
 @Dependent
 public class TerminationTreeItemContent implements IsElement {
-
-    public static final SolverEditorConstants I18N_CONSTANTS = GWT.create( SolverEditorConstants.class );
 
     public static final long MINUTES_SPENT_DEFAULT_VALUE = 5l;
 
@@ -49,11 +48,15 @@ public class TerminationTreeItemContent implements IsElement {
     private TerminationConfigModel model;
     private TerminationTreeItemContentView view;
 
+    private TranslationService translationService;
+
     private Map<TerminationConfigOption, TerminationManager> terminationManagerMap = new HashMap<>();
 
     @Inject
-    public TerminationTreeItemContent( final TerminationTreeItemContentView view ) {
+    public TerminationTreeItemContent( final TerminationTreeItemContentView view,
+                                       final TranslationService translationService ) {
         this.view = view;
+        this.translationService = translationService;
         view.setPresenter( this );
         initTerminationManagerMap();
     }
@@ -88,7 +91,7 @@ public class TerminationTreeItemContent implements IsElement {
         this.terminationConfigOption = terminationConfigOption;
         view.setNestedTreeItem( terminationConfigOption == NESTED );
         if ( terminationConfigOption == NESTED ) {
-            view.setDropDownHelpContent( I18N_CONSTANTS.TerminationCompositionStyleHelp() );
+            view.setDropDownHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentTerminationCompositionStyleHelp ) );
         }
         setLabelStrings( terminationConfigOption );
         hideViewInputs( terminationConfigOption );
@@ -283,8 +286,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.TimeSpent() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.TimeSpentHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentTimeSpent ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentTimeSpentHelp ) );
             }
         } );
         terminationManagerMap.put( UNIMPROVED_MILLISECONDS_SPENT_LIMIT, new TerminationManager() {
@@ -337,8 +340,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.UnimprovedTimeSpent() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.UnimprovedTimeSpentHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedTimeSpent ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedTimeSpentHelp ) );
             }
         } );
         terminationManagerMap.put( BEST_SCORE_LIMIT, new TerminationManager() {
@@ -359,8 +362,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.BestScoreLimit() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.BestScoreLimitHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreLimit ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreLimitHelp ) );
             }
 
             @Override
@@ -391,8 +394,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.BestScoreFeasible() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.BestScoreFeasibleHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreFeasible ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreFeasibleHelp ) );
             }
         } );
         terminationManagerMap.put( STEP_COUNT_LIMIT, new TerminationManager() {
@@ -414,8 +417,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.StepCountLimit() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.StepCountLimitHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentStepCountLimit ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentStepCountLimitHelp ) );
             }
 
             @Override
@@ -443,8 +446,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.UnimprovedStepCountLimit() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.UnimprovedStepCountLimitHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedStepCountLimit ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedStepCountLimitHelp ) );
             }
 
             @Override
@@ -472,8 +475,8 @@ public class TerminationTreeItemContent implements IsElement {
 
             @Override
             public void setLabelStrings() {
-                view.setFormLabelText( I18N_CONSTANTS.ScoreCalculationCountLimit() );
-                view.setFormLabelHelpContent( I18N_CONSTANTS.ScoreCalculationCountLimitHelp() );
+                view.setFormLabelText( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentScoreCalculationCountLimit ) );
+                view.setFormLabelHelpContent( translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentScoreCalculationCountLimitHelp ) );
             }
 
             @Override

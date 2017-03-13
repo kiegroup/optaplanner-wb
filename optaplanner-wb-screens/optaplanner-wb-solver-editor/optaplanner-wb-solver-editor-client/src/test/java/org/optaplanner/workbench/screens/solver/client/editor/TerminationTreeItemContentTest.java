@@ -2,6 +2,7 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,7 @@ import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyl
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigOption;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
@@ -18,6 +19,9 @@ public class TerminationTreeItemContentTest {
 
     @Mock
     private TerminationTreeItemContentView view;
+
+    @Mock
+    private TranslationService translationService;
 
     @Mock
     private TerminationConfigModel terminationConfigModel;
@@ -29,7 +33,8 @@ public class TerminationTreeItemContentTest {
 
     @Before
     public void setUp() {
-        terminationTreeItemContent = new TerminationTreeItemContent( view );
+        terminationTreeItemContent = new TerminationTreeItemContent( view,
+                                                                     translationService );
         terminationTreeItemContent.setTerminationConfigForm( terminationConfigForm );
         terminationTreeItemContent.setModel( terminationConfigModel );
     }
@@ -42,7 +47,8 @@ public class TerminationTreeItemContentTest {
     @Test
     public void removeNestedDropDownOption() {
         terminationTreeItemContent.removeDropDownOption( TerminationConfigOption.NESTED );
-        verify( view, times( 0 ) ).removeDropDownOption( any() );
+        verify( view,
+                times( 0 ) ).removeDropDownOption( any() );
     }
 
     @Test
@@ -54,14 +60,16 @@ public class TerminationTreeItemContentTest {
     @Test
     public void setNestedTerminationConfigOption() {
         terminationTreeItemContent.setTerminationConfigOption( TerminationConfigOption.NESTED );
-        verify( view, times( 1 ) ).setDropDownHelpContent( any() );
+        verify( view,
+                times( 1 ) ).setDropDownHelpContent( any() );
     }
 
     @Test
     public void setNonNestedTerminationConfigOption() {
         terminationTreeItemContent.setTerminationConfigOption( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
         verify( view ).setNestedTreeItem( false );
-        verify( view, times( 0 ) ).setDropDownHelpContent( any() );
+        verify( view,
+                times( 0 ) ).setDropDownHelpContent( any() );
         verify( view ).setFormLabelText( any() );
         verify( view ).setFormLabelHelpContent( any() );
     }
@@ -70,7 +78,8 @@ public class TerminationTreeItemContentTest {
     public void setTreeItem() {
         TreeItem treeItem = new TreeItem();
         terminationTreeItemContent.setTreeItem( treeItem );
-        verify( view, times( 1 ) ).setRoot( true );
+        verify( view,
+                times( 1 ) ).setRoot( true );
     }
 
     @Test
@@ -84,20 +93,29 @@ public class TerminationTreeItemContentTest {
 
         terminationTreeItemContent.removeTreeItem();
 
-        verify( terminationConfigModel, times( 1 ) ).setMillisecondsSpentLimit( null );
-        verify( view, times( 1 ) ).addDropDownOption( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
-        verify( terminationConfigForm, times( 1 ) ).displayEmptyTreeLabel( true );
+        verify( terminationConfigModel,
+                times( 1 ) ).setMillisecondsSpentLimit( null );
+        verify( view,
+                times( 1 ) ).addDropDownOption( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
+        verify( terminationConfigForm,
+                times( 1 ) ).displayEmptyTreeLabel( true );
     }
 
     @Test
     public void setExistingTimeSpentValue() {
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.MILLISECONDS_SPENT_LIMIT ) ).thenReturn( 1l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.SECONDS_SPENT_LIMIT ) ).thenReturn( 2l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.MINUTES_SPENT_LIMIT ) ).thenReturn( 3l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.HOURS_SPENT_LIMIT ) ).thenReturn( 4l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.DAYS_SPENT_LIMIT ) ).thenReturn( 5l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.MILLISECONDS_SPENT_LIMIT ) ).thenReturn( 1l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.SECONDS_SPENT_LIMIT ) ).thenReturn( 2l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.MINUTES_SPENT_LIMIT ) ).thenReturn( 3l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.HOURS_SPENT_LIMIT ) ).thenReturn( 4l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.DAYS_SPENT_LIMIT ) ).thenReturn( 5l );
 
-        terminationTreeItemContent.setExistingValue( 1l, TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
+        terminationTreeItemContent.setExistingValue( 1l,
+                                                     TerminationConfigOption.MILLISECONDS_SPENT_LIMIT );
 
         verify( view ).setMillisecondsSpent( 1l );
         verify( view ).setSecondsSpent( 2l );
@@ -124,13 +142,19 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingUnimprovedTimeSpentValue() {
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT ) ).thenReturn( 1l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.UNIMPROVED_SECONDS_SPENT_LIMIT ) ).thenReturn( 2l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.UNIMPROVED_MINUTES_SPENT_LIMIT ) ).thenReturn( 3l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.UNIMPROVED_HOURS_SPENT_LIMIT ) ).thenReturn( 4l );
-        when( terminationConfigForm.getTerminationValue( terminationConfigModel, TerminationConfigOption.UNIMPROVED_DAYS_SPENT_LIMIT ) ).thenReturn( 5l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT ) ).thenReturn( 1l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.UNIMPROVED_SECONDS_SPENT_LIMIT ) ).thenReturn( 2l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.UNIMPROVED_MINUTES_SPENT_LIMIT ) ).thenReturn( 3l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.UNIMPROVED_HOURS_SPENT_LIMIT ) ).thenReturn( 4l );
+        when( terminationConfigForm.getTerminationValue( terminationConfigModel,
+                                                         TerminationConfigOption.UNIMPROVED_DAYS_SPENT_LIMIT ) ).thenReturn( 5l );
 
-        terminationTreeItemContent.setExistingValue( 1l, TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT );
+        terminationTreeItemContent.setExistingValue( 1l,
+                                                     TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT );
 
         verify( view ).setUnimprovedMillisecondsSpent( 1l );
         verify( view ).setUnimprovedSecondsSpent( 2l );
@@ -157,21 +181,23 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingBestScoreLimitValue() {
-        terminationTreeItemContent.setExistingValue( "0", TerminationConfigOption.BEST_SCORE_LIMIT );
+        terminationTreeItemContent.setExistingValue( "0",
+                                                     TerminationConfigOption.BEST_SCORE_LIMIT );
 
         verify( view ).setBestScoreLimit( "0" );
     }
 
     @Test
     public void setExistingBestScoreFeasibleValue() {
-        terminationTreeItemContent.setExistingValue( true, TerminationConfigOption.BEST_SCORE_FEASIBLE );
+        terminationTreeItemContent.setExistingValue( true,
+                                                     TerminationConfigOption.BEST_SCORE_FEASIBLE );
 
         verify( view ).setBestScoreFeasible( true );
     }
 
     @Test
     public void setNewBestScoreFeasibleValue() {
-        terminationTreeItemContent.setNewValue( TerminationConfigOption.BEST_SCORE_FEASIBLE);
+        terminationTreeItemContent.setNewValue( TerminationConfigOption.BEST_SCORE_FEASIBLE );
 
         verify( view ).setBestScoreFeasible( true );
         verify( terminationConfigModel ).setBestScoreFeasible( true );
@@ -179,14 +205,15 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingStepCountLimitValue() {
-        terminationTreeItemContent.setExistingValue( 1, TerminationConfigOption.STEP_COUNT_LIMIT );
+        terminationTreeItemContent.setExistingValue( 1,
+                                                     TerminationConfigOption.STEP_COUNT_LIMIT );
 
         verify( view ).setStepCountLimit( 1 );
     }
 
     @Test
     public void setNewStepCountLimitValue() {
-        terminationTreeItemContent.setNewValue( TerminationConfigOption.STEP_COUNT_LIMIT);
+        terminationTreeItemContent.setNewValue( TerminationConfigOption.STEP_COUNT_LIMIT );
 
         verify( view ).setStepCountLimit( 0 );
         verify( terminationConfigModel ).setStepCountLimit( 0 );
@@ -194,14 +221,15 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingUnimprovedStepCountLimitValue() {
-        terminationTreeItemContent.setExistingValue( 1, TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT );
+        terminationTreeItemContent.setExistingValue( 1,
+                                                     TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT );
 
         verify( view ).setUnimprovedStepCountLimit( 1 );
     }
 
     @Test
     public void setNewUnimprovedStepCountLimitValue() {
-        terminationTreeItemContent.setNewValue( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT);
+        terminationTreeItemContent.setNewValue( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT );
 
         verify( view ).setUnimprovedStepCountLimit( 0 );
         verify( terminationConfigModel ).setUnimprovedStepCountLimit( 0 );
@@ -209,14 +237,15 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingScoreCalculationCountLimitValue() {
-        terminationTreeItemContent.setExistingValue( 1, TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT );
+        terminationTreeItemContent.setExistingValue( 1,
+                                                     TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT );
 
         verify( view ).setScoreCalculationCountLimit( 1l );
     }
 
     @Test
     public void setNewScoreCalculationCountLimitValue() {
-        terminationTreeItemContent.setNewValue( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT);
+        terminationTreeItemContent.setNewValue( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT );
 
         verify( view ).setScoreCalculationCountLimit( 0l );
         verify( terminationConfigModel ).setScoreCalculationCountLimit( 0l );
@@ -224,7 +253,8 @@ public class TerminationTreeItemContentTest {
 
     @Test
     public void setExistingTerminationCompositionStyleValue() {
-        terminationTreeItemContent.setExistingValue( TerminationCompositionStyleModel.AND, TerminationConfigOption.TERMINATION_COMPOSITION_STYLE );
+        terminationTreeItemContent.setExistingValue( TerminationCompositionStyleModel.AND,
+                                                     TerminationConfigOption.TERMINATION_COMPOSITION_STYLE );
 
         verify( view ).setTerminationCompositionStyle( TerminationCompositionStyleModel.AND );
     }

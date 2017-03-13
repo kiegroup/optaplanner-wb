@@ -16,9 +16,11 @@
 package org.optaplanner.workbench.screens.solver.client.type;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
@@ -31,6 +33,9 @@ public class SolverResourceType
 
     private final Image IMAGE = new Image( SolverEditorResources.INSTANCE.images().typeSolver() );
 
+    @Inject
+    private TranslationService translationService;
+
     @Override
     public IsWidget getIcon() {
         return IMAGE;
@@ -38,7 +43,7 @@ public class SolverResourceType
 
     @Override
     public String getDescription() {
-        String desc = SolverEditorConstants.INSTANCE.solverResourceTypeDescription();
+        String desc = translationService.getTranslation( SolverEditorConstants.SolverResourceTypeDescription );
         if ( desc == null || desc.isEmpty() ) {
             return super.getDescription();
         }

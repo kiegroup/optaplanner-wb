@@ -15,58 +15,80 @@
  */
 package org.optaplanner.workbench.screens.solver.client.resources.i18n;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.Messages;
+import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
 
 /**
  * Solver Editor i18n constants
  */
-public interface SolverEditorConstants
-        extends
-        Messages {
+public interface SolverEditorConstants {
 
-    public static final SolverEditorConstants INSTANCE = GWT.create( SolverEditorConstants.class );
+    @TranslationKey( defaultValue = "")
+    String SolverEditorPresenterSmokeTest = "SolverEditorPresenter.SmokeTest";
 
-    String SmokeTest();
+    @TranslationKey( defaultValue = "")
+    String SolverEditorPresenterSmokeTestSuccess = "SolverEditorPresenter.SmokeTestSuccess";
 
-    String SmokeTestSuccess();
+    @TranslationKey( defaultValue = "")
+    String SolverEditorPresenterSource = "SolverEditorPresenter.Source";
 
-    String solverResourceTypeDescription();
+    @TranslationKey( defaultValue = "")
+    String SolverResourceTypeDescription = "SolverResourceType.Description";
 
-    String newSolverDescription();
+    @TranslationKey( defaultValue = "")
+    String NewSolverHandlerDescription = "NewSolverHandler.Description";
 
-    String Source();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentTerminationCompositionStyleHelp = "TerminationTreeItemContent.TerminationCompositionStyleHelp";
 
-    String TerminationCompositionStyleHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentTimeSpent = "TerminationTreeItemContent.TimeSpent";
 
-    String TimeSpent();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentTimeSpentHelp = "TerminationTreeItemContent.TimeSpentHelp";
 
-    String TimeSpentHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentUnimprovedTimeSpent = "TerminationTreeItemContent.UnimprovedTimeSpent";
 
-    String UnimprovedTimeSpent();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentUnimprovedTimeSpentHelp = "TerminationTreeItemContent.UnimprovedTimeSpentHelp";
 
-    String UnimprovedTimeSpentHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentBestScoreLimit = "TerminationTreeItemContent.BestScoreLimit";
 
-    String BestScoreLimit();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentBestScoreLimitHelp = "TerminationTreeItemContent.BestScoreLimitHelp";
 
-    String BestScoreLimitHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentBestScoreFeasible = "TerminationTreeItemContent.BestScoreFeasible";
 
-    String BestScoreFeasible();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentBestScoreFeasibleHelp = "TerminationTreeItemContent.BestScoreFeasibleHelp";
 
-    String BestScoreFeasibleHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentStepCountLimit = "TerminationTreeItemContent.StepCountLimit";
 
-    String StepCountLimit();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentStepCountLimitHelp = "TerminationTreeItemContent.StepCountLimitHelp";
 
-    String StepCountLimitHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentUnimprovedStepCountLimit = "TerminationTreeItemContent.UnimprovedStepCountLimit";
 
-    String UnimprovedStepCountLimit();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentUnimprovedStepCountLimitHelp = "TerminationTreeItemContent.UnimprovedStepCountLimitHelp";
 
-    String UnimprovedStepCountLimitHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentScoreCalculationCountLimit = "TerminationTreeItemContent.ScoreCalculationCountLimit";
 
-    String ScoreCalculationCountLimit();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentScoreCalculationCountLimitHelp = "TerminationTreeItemContent.ScoreCalculationCountLimitHelp";
 
-    String ScoreCalculationCountLimitHelp();
+    @TranslationKey( defaultValue = "")
+    String TerminationTreeItemContentViewImplNestedTermination = "TerminationTreeItemContentViewImpl.NestedTermination";
 
-    String NestedTermination();
+    @TranslationKey( defaultValue = "")
+    String PhaseConfigFormViewImplConstructionHeuristic = "PhaseConfigFormViewImpl.ConstructionHeuristic";
+
+    @TranslationKey( defaultValue = "")
+    String PhaseConfigFormViewImplLocalSearch = "PhaseConfigFormViewImpl.LocalSearch";
 
 }

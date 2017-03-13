@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationPopup;
 import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
 import org.kie.workbench.common.widgets.metadata.client.KieEditor;
@@ -68,6 +69,8 @@ public class SolverEditorPresenter
 
     private ValidationPopup validationPopup;
 
+    private TranslationService translationService;
+
     private SolverEditorView view;
     private SolverConfigModel model;
 
@@ -77,7 +80,8 @@ public class SolverEditorPresenter
                                   final XMLViewer xmlViewer,
                                   final Event<NotificationEvent> notification,
                                   final Caller<SolverEditorService> solverService,
-                                  final ValidationPopup validationPopup ) {
+                                  final ValidationPopup validationPopup,
+                                  final TranslationService translationService ) {
         super( view );
 
         this.xmlViewer = xmlViewer;
@@ -86,6 +90,7 @@ public class SolverEditorPresenter
         this.notification = notification;
         this.solverService = solverService;
         this.validationPopup = validationPopup;
+        this.translationService = translationService;
     }
 
     @OnStartup
@@ -108,12 +113,13 @@ public class SolverEditorPresenter
                         }
                     } ) )
                     .addCopy( versionRecordManager.getCurrentPath(),
-                            fileNameValidator )
+                              fileNameValidator )
                     .addRename( versionRecordManager.getPathToLatest(),
-                            fileNameValidator )
+                                fileNameValidator )
                     .addDelete( versionRecordManager.getPathToLatest() )
                     .addValidate( onValidate() )
-                    .addCommand( SolverEditorConstants.INSTANCE.SmokeTest(), onSmokeTest() )
+                    .addCommand( translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSmokeTest ),
+                                 onSmokeTest() )
                     .addNewTopLevelMenu( versionRecordManager.buildMenu() )
                     .build();
         } else {
@@ -151,13 +157,12 @@ public class SolverEditorPresenter
                 view.hideBusyIndicator();
                 createOriginalHash( model );
             }
-
         };
     }
 
     private void addXMLSourcePage() {
         addPage( new PageImpl( xmlViewer,
-                               SolverEditorConstants.INSTANCE.Source() ) {
+                               translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSource ) ) {
 
             @Override
             public void onFocus() {
@@ -203,7 +208,7 @@ public class SolverEditorPresenter
 
     protected Command onSmokeTest() {
         return () -> {
-            solverService.call( getRemoteCallback( SolverEditorConstants.INSTANCE.SmokeTestSuccess() ) )
+            solverService.call( getRemoteCallback( translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSmokeTestSuccess ) ) )
                     .smokeTest( versionRecordManager.getCurrentPath(),
                                 model );
         };
@@ -247,5 +252,4 @@ public class SolverEditorPresenter
     public Menus getMenus() {
         return menus;
     }
-
 }

@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
@@ -31,6 +30,7 @@ import org.jboss.errai.common.client.dom.HTMLElement;
 import org.jboss.errai.common.client.dom.NumberInput;
 import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.common.client.dom.TextInput;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
@@ -43,8 +43,6 @@ import org.uberfire.client.views.pfly.widgets.HelpIcon;
 @Dependent
 @Templated
 public class TerminationTreeItemContentViewImpl implements TerminationTreeItemContentView {
-
-    private static final SolverEditorConstants I18N_CONSTANTS = GWT.create( SolverEditorConstants.class );
 
     @Inject
     @DataField("view")
@@ -144,14 +142,18 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     @DataField("removeTerminationButton")
     Button removeTerminationButton;
 
+    private TranslationService translationService;
+
     private TerminationTreeItemContent presenter;
     private Map<TerminationConfigOption, String> dropDownNameMap = new HashMap<>();
 
     @Inject
     public TerminationTreeItemContentViewImpl( final Button removeTerminationButton,
-                                               final DropDownMenu dropdownMenuList) {
+                                               final DropDownMenu dropdownMenuList,
+                                               final TranslationService translationService ) {
         this.removeTerminationButton = removeTerminationButton;
         this.dropdownMenuList = dropdownMenuList;
+        this.translationService = translationService;
 
         removeTerminationButton.addClickHandler( h -> {
             presenter.removeTreeItem();
@@ -160,60 +162,69 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     }
 
     private void initDropDownList() {
-        dropDownNameMap.put( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT, I18N_CONSTANTS.TimeSpent() );
-        AnchorListItem li1 = new AnchorListItem( I18N_CONSTANTS.TimeSpent() );
-        li1.addClickHandler( h -> {
+        String itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentTimeSpent );
+        dropDownNameMap.put( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT, itemMessage );
+        AnchorListItem listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT.name() );
         } );
-        dropdownMenuList.add( li1 );
-        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT, I18N_CONSTANTS.UnimprovedTimeSpent() );
-        AnchorListItem li2 = new AnchorListItem( I18N_CONSTANTS.UnimprovedTimeSpent() );
-        li2.addClickHandler( h -> {
+        dropdownMenuList.add( listItem );
+
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedTimeSpent );
+        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT.name() );
         } );
-        dropdownMenuList.add( li2 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_LIMIT, I18N_CONSTANTS.BestScoreLimit() );
-        AnchorListItem li4 = new AnchorListItem( I18N_CONSTANTS.BestScoreLimit() );
-        li4.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreLimit );
+        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_LIMIT, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.BEST_SCORE_LIMIT.name() );
         } );
-        dropdownMenuList.add( li4 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_FEASIBLE, I18N_CONSTANTS.BestScoreFeasible() );
-        AnchorListItem li3 = new AnchorListItem( I18N_CONSTANTS.BestScoreFeasible() );
-        li3.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreFeasible );
+        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_FEASIBLE, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.BEST_SCORE_FEASIBLE.name() );
         } );
-        dropdownMenuList.add( li3 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.STEP_COUNT_LIMIT, I18N_CONSTANTS.StepCountLimit() );
-        AnchorListItem li6 = new AnchorListItem( I18N_CONSTANTS.StepCountLimit() );
-        li6.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentStepCountLimit );
+        dropDownNameMap.put( TerminationConfigOption.STEP_COUNT_LIMIT, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.STEP_COUNT_LIMIT.name() );
         } );
-        dropdownMenuList.add( li6 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT, I18N_CONSTANTS.UnimprovedStepCountLimit() );
-        AnchorListItem li7 = new AnchorListItem( I18N_CONSTANTS.UnimprovedStepCountLimit() );
-        li7.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedStepCountLimit );
+        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT.name() );
         } );
-        dropdownMenuList.add( li7 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT, I18N_CONSTANTS.ScoreCalculationCountLimit() );
-        AnchorListItem li5 = new AnchorListItem( I18N_CONSTANTS.ScoreCalculationCountLimit() );
-        li5.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentScoreCalculationCountLimit );
+        dropDownNameMap.put( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT.name() );
         } );
-        dropdownMenuList.add( li5 );
+        dropdownMenuList.add( listItem );
 
-        dropDownNameMap.put( TerminationConfigOption.NESTED, I18N_CONSTANTS.NestedTermination() );
-        AnchorListItem li8 = new AnchorListItem( I18N_CONSTANTS.NestedTermination() );
-        li8.addClickHandler( h -> {
+        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentViewImplNestedTermination );
+        dropDownNameMap.put( TerminationConfigOption.NESTED, itemMessage );
+        listItem = new AnchorListItem( itemMessage );
+        listItem.addClickHandler( h -> {
             presenter.onTerminationTypeSelected( TerminationConfigOption.NESTED.name() );
         } );
-        dropdownMenuList.add( li8 );
+        dropdownMenuList.add( listItem );
     }
 
     @EventHandler("daysSpentInput")
