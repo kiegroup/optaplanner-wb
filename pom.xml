@@ -51,9 +51,9 @@
   </repositories>
 
   <scm>
-    <connection>scm:git:git@github.com:droolsjbpm/optaplanner-wb.git</connection>
-    <developerConnection>scm:git:git@github.com:droolsjbpm/optaplanner-wb.git</developerConnection>
-    <url>https://github.com/droolsjbpm/optaplanner-wb</url>
+    <connection>scm:git:git@github.com:kiegroup/optaplanner-wb.git</connection>
+    <developerConnection>scm:git:git@github.com:kiegroup/optaplanner-wb.git</developerConnection>
+    <url>https://github.com/kiegroup/optaplanner-wb</url>
   </scm>
   <issueManagement>
     <system>jira</system>
