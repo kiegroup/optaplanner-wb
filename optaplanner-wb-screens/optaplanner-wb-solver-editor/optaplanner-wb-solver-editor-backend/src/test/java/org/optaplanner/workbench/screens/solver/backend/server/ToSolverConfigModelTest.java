@@ -20,14 +20,17 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicType;
+import org.optaplanner.core.config.localsearch.LocalSearchPhaseConfig;
+import org.optaplanner.core.config.localsearch.LocalSearchType;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
+import org.optaplanner.workbench.screens.solver.model.LocalSearchPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ToSolverConfigModelTest {
 
@@ -37,16 +40,24 @@ public class ToSolverConfigModelTest {
         SolverConfigModel solverConfigModel = toSolverConfigModel.get();
 
         TerminationConfigModel terminationConfigModel = solverConfigModel.getTermination();
-        assertEquals( Long.valueOf( 1 ), terminationConfigModel.getMillisecondsSpentLimit() );
-        assertEquals( 1, terminationConfigModel.getTerminationConfigList().size() );
-        assertEquals( Boolean.TRUE, terminationConfigModel.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
+        assertEquals( Long.valueOf( 1 ),
+                      terminationConfigModel.getMillisecondsSpentLimit() );
+        assertEquals( 1,
+                      terminationConfigModel.getTerminationConfigList().size() );
+        assertEquals( Boolean.TRUE,
+                      terminationConfigModel.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
 
-        assertEquals( "testKsession", solverConfigModel.getScoreDirectorFactoryConfig().getKSessionName() );
+        assertEquals( "testKsession",
+                      solverConfigModel.getScoreDirectorFactoryConfig().getKSessionName() );
 
-        assertEquals( 1, solverConfigModel.getPhaseConfigList().size() );
+        assertEquals( 2,
+                      solverConfigModel.getPhaseConfigList().size() );
         ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 0 );
-        assertEquals( ConstructionHeuristicType.FIRST_FIT, constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() );
-
+        assertEquals( ConstructionHeuristicType.FIRST_FIT,
+                      constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() );
+        LocalSearchPhaseConfigModel localSearchPhaseConfigModel = (LocalSearchPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 1 );
+        assertEquals( LocalSearchType.TABU_SEARCH,
+                      localSearchPhaseConfigModel.getLocalSearchType() );
     }
 
     private SolverConfig getSolverConfig() {
@@ -65,7 +76,12 @@ public class ToSolverConfigModelTest {
 
         ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = new ConstructionHeuristicPhaseConfig();
         constructionHeuristicPhaseConfig.setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
-        solverConfig.setPhaseConfigList( Arrays.asList( constructionHeuristicPhaseConfig ) );
+
+        LocalSearchPhaseConfig localSearchPhaseConfig = new LocalSearchPhaseConfig();
+        localSearchPhaseConfig.setLocalSearchType( LocalSearchType.TABU_SEARCH );
+
+        solverConfig.setPhaseConfigList( Arrays.asList( constructionHeuristicPhaseConfig,
+                                                        localSearchPhaseConfig ) );
 
         return solverConfig;
     }

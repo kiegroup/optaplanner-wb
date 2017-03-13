@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.solver.client.handlers;
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.security.shared.api.identity.User;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,9 @@ public class NewSolverHandlerTest {
     @Mock
     private SessionInfo sessionInfo;
 
+    @Mock
+    private TranslationService translationService;
+
     private NewSolverHandler newSolverHandler;
 
     private SolverResourceType resourceType;
@@ -60,7 +64,8 @@ public class NewSolverHandlerTest {
                                                  resourceType,
                                                  busyIndicatorView,
                                                  authorizationManager,
-                                                 sessionInfo );
+                                                 sessionInfo,
+                                                 translationService );
         resourceType = GWT.create( SolverResourceType.class );
     }
 

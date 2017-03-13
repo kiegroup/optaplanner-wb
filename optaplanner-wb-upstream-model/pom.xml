@@ -84,6 +84,7 @@
           <include>org/optaplanner/core/config/constructionheuristic/ConstructionHeuristicType.java</include>
           <include>org/optaplanner/core/config/heuristic/selector/entity/EntitySorterManner.java</include>
           <include>org/optaplanner/core/config/heuristic/selector/value/ValueSorterManner.java</include>
+          <include>org/optaplanner/core/config/localsearch/LocalSearchType.java</include>
         </includes>
       </resource>
       <resource>

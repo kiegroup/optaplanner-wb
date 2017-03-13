@@ -16,27 +16,27 @@
 
 package org.optaplanner.workbench.screens.solver.client.editor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.WithClassesToStub;
 import org.jboss.errai.common.client.ui.ElementWrapperWidget;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-@WithClassesToStub({ElementWrapperWidget.class})
+@WithClassesToStub({ ElementWrapperWidget.class })
 public class TerminationConfigFormTest {
 
     @Mock
@@ -45,14 +45,22 @@ public class TerminationConfigFormTest {
     @Mock
     private ManagedInstance<TerminationTreeItemContent> terminationTreeItemContentProvider;
 
+    @Mock
+    private TerminationTreeItemContentView terminationTreeItemContentView;
+
+    @Mock
+    private TranslationService translationService;
+
     private TerminationTreeItemContent terminationTreeItemContent;
 
     private TerminationConfigForm form;
 
     @Before
     public void setUp() throws Exception {
-        form = new TerminationConfigForm( view, terminationTreeItemContentProvider );
-        terminationTreeItemContent = new TerminationTreeItemContent( Mockito.mock( TerminationTreeItemContentView.class ) );
+        form = new TerminationConfigForm( view,
+                                          terminationTreeItemContentProvider );
+        terminationTreeItemContent = new TerminationTreeItemContent( terminationTreeItemContentView,
+                                                                     translationService );
     }
 
     @Test
@@ -70,7 +78,7 @@ public class TerminationConfigFormTest {
         verify( view ).initTree( treeItemArgumentCaptor.capture() );
 
         TreeItem treeItem = treeItemArgumentCaptor.getValue();
-        Assert.assertEquals( 3, treeItem.getChildCount() );
+        Assert.assertEquals( 3,
+                             treeItem.getChildCount() );
     }
-
 }

@@ -7,6 +7,7 @@ import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
 import org.gwtbootstrap3.client.ui.base.AbstractAnchorListItem;
 import org.gwtbootstrap3.client.ui.html.Text;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,18 +26,20 @@ public class TerminationTreeItemContentViewImplTest {
     private Button removeTerminationButton;
 
     @Mock
-    TerminationTreeItemContent presenter;
+    private TranslationService translationService;
 
     private TerminationTreeItemContentViewImpl view;
 
     @Before
     public void setUp() {
-        view = new TerminationTreeItemContentViewImpl( removeTerminationButton, dropDownMenu );
+        view = new TerminationTreeItemContentViewImpl( removeTerminationButton,
+                                                       dropDownMenu,
+                                                       translationService );
     }
 
     @Test
     public void initDropDownList() {
-        verify( dropDownMenu, atLeastOnce() ).add( any() );
+        verify( dropDownMenu,
+                atLeastOnce() ).add( any() );
     }
-
 }

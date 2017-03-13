@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.optaplanner.core.config.constructionheuristic.ConstructionHeuristicPhaseConfig;
+import org.optaplanner.core.config.localsearch.LocalSearchPhaseConfig;
 import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.workbench.screens.solver.model.ConstructionHeuristicPhaseConfigModel;
+import org.optaplanner.workbench.screens.solver.model.LocalSearchPhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.PhaseConfigModel;
 import org.optaplanner.workbench.screens.solver.model.ScoreDirectorFactoryConfigModel;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
@@ -109,10 +111,15 @@ class ToSolverConfigModel {
             List<PhaseConfigModel> result = new ArrayList<>( phaseConfigList.size() );
             for ( PhaseConfig phaseConfig : phaseConfigList ) {
                 if ( phaseConfig instanceof ConstructionHeuristicPhaseConfig ) {
-                    ConstructionHeuristicPhaseConfigModel phaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
                     ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) phaseConfig;
+                    ConstructionHeuristicPhaseConfigModel phaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
                     phaseConfigModel.setConstructionHeuristicType( constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
                     phaseConfigModel.setEntitySorterManner( constructionHeuristicPhaseConfig.getEntitySorterManner() );
+                    result.add( phaseConfigModel );
+                } else if ( phaseConfig instanceof LocalSearchPhaseConfig ) {
+                    LocalSearchPhaseConfig localSearchPhaseConfig = (LocalSearchPhaseConfig) phaseConfig;
+                    LocalSearchPhaseConfigModel phaseConfigModel = new LocalSearchPhaseConfigModel();
+                    phaseConfigModel.setLocalSearchType( localSearchPhaseConfig.getLocalSearchType() );
                     result.add( phaseConfigModel );
                 }
             }

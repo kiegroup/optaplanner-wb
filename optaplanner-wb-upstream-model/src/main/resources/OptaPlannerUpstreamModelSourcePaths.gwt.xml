@@ -40,5 +40,6 @@
   <source path="org/optaplanner/core/config/constructionheuristic"  includes="ConstructionHeuristicType.java"/>
   <source path="org/optaplanner/core/config/heuristic/selector/entity"  includes="EntitySorterManner.java"/>
   <source path="org/optaplanner/core/config/heuristic/selector/value"  includes="ValueSorterManner.java"/>
+  <source path="org/optaplanner/core/config/localsearch"  includes="LocalSearchType.java"/>
 
 </module>
