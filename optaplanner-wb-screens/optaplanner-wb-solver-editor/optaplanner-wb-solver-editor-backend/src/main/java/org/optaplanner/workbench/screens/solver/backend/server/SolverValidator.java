@@ -33,8 +33,7 @@ import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
-import org.kie.workbench.common.services.backend.builder.Builder;
-import org.kie.workbench.common.services.backend.builder.LRUBuilderCache;
+import org.kie.workbench.common.services.backend.builder.service.BuildInfoService;
 import org.kie.workbench.common.services.backend.validation.asset.DefaultGenericKieValidator;
 import org.kie.workbench.common.services.backend.validation.asset.NoProjectException;
 import org.kie.workbench.common.services.backend.validation.asset.ValidatorBuildService;
@@ -51,7 +50,7 @@ public class SolverValidator {
     private static final Set<String> SMOKE_TEST_SUPPORTED_PROJECTS = new HashSet<>();
 
     private KieProjectService projectService;
-    private LRUBuilderCache builderCache;
+    private BuildInfoService buildInfoService;
     private ValidatorBuildService validatorBuildService;
 
     static {
@@ -63,10 +62,10 @@ public class SolverValidator {
 
     @Inject
     public SolverValidator( final KieProjectService projectService,
-                            final LRUBuilderCache builderCache,
+                            final BuildInfoService buildInfoService,
                             final ValidatorBuildService validatorBuildService ) {
         this.projectService = projectService;
-        this.builderCache = builderCache;
+        this.buildInfoService = buildInfoService;
         this.validatorBuildService = validatorBuildService;
     }
 
@@ -131,8 +130,7 @@ public class SolverValidator {
     private ValidationMessage createSolverFactory( final Path resourcePath,
                                                    final KieProject kieWorkbenchProject,
                                                    final boolean runSolver ) {
-        final Builder builder = builderCache.assertBuilder( kieWorkbenchProject );
-        final InternalKieModule kieModule = (InternalKieModule) builder.getKieModuleIgnoringErrors();
+        final InternalKieModule kieModule = (InternalKieModule) buildInfoService.getBuildInfo( kieWorkbenchProject ).getKieModuleIgnoringErrors();
         final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject( kieModule, null );
         final KieContainer kieContainer = new KieContainerImpl( kieProject, KieServices.Factory.get().getRepository() );
 
