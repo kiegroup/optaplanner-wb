@@ -47,6 +47,8 @@
   <!-- OptaPlanner Workbench Screens -->
   <inherits name="org.optaplanner.workbench.screens.solver.OptaPlannerWorkbenchSolverEditorAPI"/>
   <inherits name="org.optaplanner.workbench.screens.solver.OptaPlannerWorkbenchSolverEditorClient"/>
+  <inherits name="org.optaplanner.workbench.screens.guidedrule.OptaPlannerWorkbenchGuidedRuleEditorAPI"/>
+  <inherits name="org.optaplanner.workbench.screens.guidedrule.OptaPlannerWorkbenchGuidedRuleEditorClient"/>
   <inherits name="org.optaplanner.workbench.screens.domaineditor.OptaPlannerWorkbenchDomainEditorAPI"/>
   <inherits name="org.optaplanner.workbench.screens.domaineditor.OptaPlannerWorkbenchDomainEditorClient"/>
 
