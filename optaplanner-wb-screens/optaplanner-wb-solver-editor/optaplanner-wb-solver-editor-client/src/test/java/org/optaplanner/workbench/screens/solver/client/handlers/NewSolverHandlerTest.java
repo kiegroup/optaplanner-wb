@@ -66,15 +66,15 @@ public class NewSolverHandlerTest {
 
     @Test
     public void noPermissionToCreate() throws Exception {
-        testPerimissionToCreate( false );
+        testPermissionToCreate( false );
     }
 
     @Test
     public void hasPermissionToCreate() throws Exception {
-        testPerimissionToCreate( true );
+        testPermissionToCreate( true );
     }
 
-    private void testPerimissionToCreate( boolean hasPermission ) {
+    private void testPermissionToCreate( boolean hasPermission ) {
         when( authorizationManager.authorize( NewSolverHandler.PLANNER_AVAILABLE, sessionInfo.getIdentity() ) ).thenReturn( hasPermission );
 
         assertEquals( hasPermission, newSolverHandler.canCreate() );
