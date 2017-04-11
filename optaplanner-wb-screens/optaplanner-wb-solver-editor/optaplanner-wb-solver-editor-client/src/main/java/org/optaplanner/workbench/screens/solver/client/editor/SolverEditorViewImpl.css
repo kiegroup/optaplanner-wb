@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,6 @@
  * limitations under the License.
  */
 
-.termination-tree {
-    border-top: 1px solid #e5e5e5;
-    border-bottom: 1px solid #e5e5e5;
-    border-right: 1px solid #e5e5e5;
-}
-
-.termination-tree table {
-    width: 100%;
-    padding: 3px 3px 3px 0px;
-    border-collapse: separate;
-}
-
-.termination-tree td:first-child {
-    width: 23px;
-}
-
-.termination-tree td:first-child + td {
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 3px;
+.solver-editor-well {
+    height: 100% !important;
 }

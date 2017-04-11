@@ -47,25 +47,25 @@ public class SolverEditorViewImpl
     }
 
     @Override
-    public void setTerminationConfigModel( TerminationConfigModel terminationConfigModel ) {
-        terminationConfigForm.setModel( terminationConfigModel );
+    public void setTerminationConfigModel(TerminationConfigModel terminationConfigModel) {
+        terminationConfigForm.setModel(terminationConfigModel);
     }
 
     @Override
-    public void setPhaseConfigModel( List<PhaseConfigModel> phaseConfigModel ) {
-        phaseConfigForm.setModel( phaseConfigModel );
+    public void setPhaseConfigModel(List<PhaseConfigModel> phaseConfigModel) {
+        phaseConfigForm.setModel(phaseConfigModel);
     }
 
     @Override
-    public void setScoreDirectorFactoryConfig( final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
-                                               final Path path ) {
-        scoreDirectorFactoryForm.setModel( scoreDirectorFactoryConfig,
-                                           path );
+    public void setScoreDirectorFactoryConfig(final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
+                                              final Path path) {
+        scoreDirectorFactoryForm.setModel(scoreDirectorFactoryConfig,
+                                          path);
     }
 
     @Override
     public void onResize() {
         int height = getParent().getOffsetHeight();
-        setHeight( height + "px" );
+        setHeight(height + "px");
     }
 }
