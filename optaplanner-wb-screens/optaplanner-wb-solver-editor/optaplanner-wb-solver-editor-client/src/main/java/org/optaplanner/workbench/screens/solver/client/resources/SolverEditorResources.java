@@ -24,7 +24,7 @@ public interface SolverEditorResources
         extends
         ClientBundle {
 
-    public static final SolverEditorResources INSTANCE = GWT.create( SolverEditorResources.class );
+    SolverEditorResources INSTANCE = GWT.create( SolverEditorResources.class );
 
     @Source("css/Styles.css")
     StylesCss CSS();

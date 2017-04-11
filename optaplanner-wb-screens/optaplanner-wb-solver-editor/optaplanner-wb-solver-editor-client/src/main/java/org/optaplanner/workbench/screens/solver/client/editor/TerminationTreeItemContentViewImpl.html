@@ -14,26 +14,26 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<div id="view" class="container-fluid">
-    <div class="row">
+<div id="view" class="container-fluid termination-content-view">
+    <div class="row termination-content-row">
 
         <div id="formLabelDiv" class="row col-xs-3 col-sm-3 col-md-3">
-            <label id="formLabel" style="white-space: normal; display: inline-block;">
+            <label id="formLabel" class="form-label">
             </label>
         </div>
 
-        <div id="addTerminationDiv" class="row col-xs-3 col-sm-3 col-md-3">
-            <div id="addTerminationButtonGroup" class="btn-group" style="display: inline-block;">
+        <div id="addTerminationDiv" class="row col-xs-3 col-sm-3 col-md-3 add-termination-div">
+            <div id="addTerminationButtonGroup" class="btn-group add-termination-div-item">
                 <button id="addTerminationButton" type="button" class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-plus" ></span>
+                    <span class="glyphicon glyphicon-plus"></span>
                     <span data-i18n-key="Add"></span>
                 </button>
-                <span id="dropdownMenuList" />
+                <span id="dropdownMenuList"/>
             </div>
 
-            <div id="terminationCompositionStyleDiv" class="" style="display: inline-block;">
-                <select id="terminationCompositionStyleSelect" class="form-control" style="width: auto">
+            <div id="terminationCompositionStyleDiv" class="add-termination-div-item-with-tooltip">
+                <select id="terminationCompositionStyleSelect" class="form-control">
                     <option id="orOption" value="or" data-i18n-key="Or"></option>
                     <option id="andOption" value="and" data-i18n-key="And"></option>
                 </select>
@@ -43,74 +43,70 @@
             </div>
         </div>
 
-        <div id="terminationValuesDiv" class="col-xs-7 col-sm-7 col-md-7">
-            <div id="timeSpentDiv" style="white-space: normal;">
-                <form>
-                    <div style="display: inline-block">
-                        <input id="daysSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;" />
-                        <label for="daysSpentInput" data-i18n-key="Days"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="hoursSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="hoursSpentInput" data-i18n-key="Hours"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="minutesSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="minutesSpentInput" data-i18n-key="Minutes"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="secondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="secondsSpentInput" data-i18n-key="Seconds"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="millisecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="millisecondsSpentInput" data-i18n-key="Milliseconds"></label>
-                    </div>
-                </form>
+        <div id="terminationValuesDiv" class="col-xs-9 col-sm-9 col-md-9 termination-values-div">
+            <div id="timeSpentDiv" class="time-spent-input-wrapper-div">
+                <div class="time-div">
+                    <input id="daysSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="daysSpentInput" data-i18n-key="Days"></label>
+                </div>
+                <div class="time-div">
+                    <input id="hoursSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="hoursSpentInput" data-i18n-key="Hours"></label>
+                </div>
+                <div class="time-div">
+                    <input id="minutesSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="minutesSpentInput" data-i18n-key="Minutes"></label>
+                </div>
+                <div class="time-div">
+                    <input id="secondsSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="secondsSpentInput" data-i18n-key="Seconds"></label>
+                </div>
+                <div class="time-div-last">
+                    <input id="millisecondsSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="millisecondsSpentInput" data-i18n-key="Milliseconds"></label>
+                </div>
             </div>
 
-            <div id="unimprovedTimeSpentDiv" style="white-space: normal;">
-                <form>
-                    <div style="display: inline-block">
-                        <input id="unimprovedDaysSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="unimprovedDaysSpentInput" data-i18n-key="Days"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="unimprovedHoursSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="unimprovedHoursSpentInput" data-i18n-key="Hours"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="unimprovedMinutesSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="unimprovedMinutesSpentInput" data-i18n-key="Minutes"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="unimprovedSecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="unimprovedSecondsSpentInput" data-i18n-key="Seconds"></label>
-                    </div>
-                    <div style="display: inline-block">
-                        <input id="unimprovedMillisecondsSpentInput" type="number" min="0" max="9223372036854775807" style="width: 50px;"/>
-                        <label for="unimprovedMillisecondsSpentInput" data-i18n-key="Milliseconds"></label>
-                    </div>
-                </form>
+            <div id="unimprovedTimeSpentDiv" class="time-spent-input-wrapper-div">
+                <div class="time-div">
+                    <input id="unimprovedDaysSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="unimprovedDaysSpentInput" data-i18n-key="Days"></label>
+                </div>
+                <div class="time-div">
+                    <input id="unimprovedHoursSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="unimprovedHoursSpentInput" data-i18n-key="Hours"></label>
+                </div>
+                <div class="time-div">
+                    <input id="unimprovedMinutesSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="unimprovedMinutesSpentInput" data-i18n-key="Minutes"></label>
+                </div>
+                <div class="time-div">
+                    <input id="unimprovedSecondsSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="unimprovedSecondsSpentInput" data-i18n-key="Seconds"></label>
+                </div>
+                <div class="time-div-last">
+                    <input id="unimprovedMillisecondsSpentInput" type="number" min="0" max="9223372036854775807" class="time-input"/>
+                    <label for="unimprovedMillisecondsSpentInput" data-i18n-key="Milliseconds"></label>
+                </div>
             </div>
 
-            <input id="stepCountLimitInput" type="number" min="0" max="2147483647" style="width: 150px;"/>
+            <input id="stepCountLimitInput" type="number" min="0" max="2147483647" class="non-time-input"/>
 
-            <input id="unimprovedStepCountLimitInput" type="number" min="0" max="2147483647" style="width: 150px;"/>
+            <input id="unimprovedStepCountLimitInput" type="number" min="0" max="2147483647" class="non-time-input"/>
 
-            <input id="scoreCalculationCountLimitInput" type="number" min="0" max="9223372036854775807" style="width: 150px;"/>
+            <input id="scoreCalculationCountLimitInput" type="number" min="0" max="9223372036854775807" class="non-time-input"/>
 
-            <input id="bestScoreInput" type="text"/>
+            <input id="bestScoreInput" type="text" class="non-time-input"/>
 
             <input id="bestScoreFeasibleInput" type="checkbox"/>
 
         </div>
+    </div>
 
-        <div id="removeTerminationDiv" class="col-xs-2 col-sm-2 col-md-2" style="text-align: right;">
-            <button id="removeTerminationButton" type="button">
-                <span class="glyphicon glyphicon-remove"></span>
-                <span data-i18n-key="Remove"></span>
-            </button>
-        </div>
+    <div id="removeTerminationDiv">
+        <button id="removeTerminationButton" type="button">
+            <span class="glyphicon glyphicon-remove"></span>
+            <span data-i18n-key="Remove"></span>
+        </button>
     </div>
 </div>
