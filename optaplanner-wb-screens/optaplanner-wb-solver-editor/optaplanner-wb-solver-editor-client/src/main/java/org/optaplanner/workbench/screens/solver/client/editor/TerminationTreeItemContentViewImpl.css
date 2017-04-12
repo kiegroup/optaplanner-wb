@@ -1,0 +1,71 @@
+/*
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.termination-content-view {
+    padding-right: 16px;
+    display: flex;
+}
+
+.termination-content-row {
+    width: 100%;
+}
+
+.form-label {
+    white-space: normal;
+}
+
+.add-termination-div {
+    display: flex;
+    align-items: center;
+}
+
+.add-termination-div-item {
+    padding-right: 10px;
+}
+
+.add-termination-div-item-with-tooltip {
+    padding-right: 5px;
+}
+
+.termination-values-div {
+    padding-right: 0px;
+}
+
+.remove-termination-div {
+    padding-right: 10px;
+    float: right;
+}
+
+.time-spent-input-wrapper-div {
+    white-space: normal;
+}
+
+.time-div {
+    display: inline-block;
+    padding-right: 10px;
+}
+
+.time-div-last {
+    display: inline-block;
+    padding-right: 0px;
+}
+
+.time-input {
+    width: 50px;
+}
+
+.non-time-input {
+    width: 100%;
+}

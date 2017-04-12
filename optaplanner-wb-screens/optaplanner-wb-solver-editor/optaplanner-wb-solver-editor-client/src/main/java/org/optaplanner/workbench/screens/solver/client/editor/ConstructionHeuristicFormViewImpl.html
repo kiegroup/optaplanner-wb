@@ -14,31 +14,30 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<div id="view" class="container-fluid well">
-    <div class="row">
-        <div class="col-md-11">
-            <legend data-i18n-key="ConstructionHeuristic"></legend>
-        </div>
-        <div class="col-md-1">
-            <span id="removeConstructionHeuristic" class="glyphicon glyphicon-remove"
-                  style="cursor: pointer; float:right;"></span>
+<div id="view" class="container-fluid well ch-well">
+    <div class="title-div">
+        <legend data-i18n-key="ConstructionHeuristic" class="ch-legend"></legend>
+        <div>
+            <button id="removeConstructionHeuristic" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span data-i18n-key="Remove"></span>
+            </button>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
-            <label for="constructionHeuristicTypeSelect" data-i18n-key="Type"></label>
+    <form>
+        <div class="form-group row">
+            <label for="constructionHeuristicTypeSelect" class="control-label col-md-3" data-i18n-key="Type"></label>
+            <div class="col-md-9">
+                <select id="constructionHeuristicTypeSelect" class="form-control"></select>
+            </div>
         </div>
-        <div class="col-md-10">
-            <span id="constructionHeuristicTypeSelect"></span>
+        <div class="form-group row">
+            <label for="entitySorterMannerSelect" class="control-label col-md-3" data-i18n-key="EntitySorterManner"></label>
+            <div class="col-md-9">
+                <select id="entitySorterMannerSelect" class="form-control"></select>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            <label for="entitySorterMannerSelect" data-i18n-key="EntitySorterManner"></label>
-        </div>
-        <div class="col-md-10">
-            <span id="entitySorterMannerSelect"></span>
-        </div>
-    </div>
+    </form>
+</div>
 </div>
