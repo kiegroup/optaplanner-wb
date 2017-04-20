@@ -21,19 +21,23 @@ import javax.inject.Inject;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import org.gwtbootstrap3.extras.select.client.ui.Select;
+import org.jboss.errai.common.client.dom.Button;
 import org.jboss.errai.common.client.dom.Div;
+import org.jboss.errai.common.client.dom.Document;
 import org.jboss.errai.common.client.dom.HTMLElement;
-import org.jboss.errai.common.client.dom.Span;
+import org.jboss.errai.common.client.dom.Option;
+import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.uberfire.commons.data.Pair;
 
 @Dependent
 @Templated
 public class LocalSearchFormViewImpl implements LocalSearchFormView {
+
+    @Inject
+    Document document;
 
     @DataField("view")
     @Inject
@@ -44,43 +48,47 @@ public class LocalSearchFormViewImpl implements LocalSearchFormView {
 
     @DataField("removeLocalSearch")
     @Inject
-    Span removeLocalSearch;
+    Button removeLocalSearch;
 
     private LocalSearchForm presenter;
 
     @Inject
-    public LocalSearchFormViewImpl( final Select localSearchTypeSelect ) {
+    public LocalSearchFormViewImpl(final Select localSearchTypeSelect) {
         this.localSearchTypeSelect = localSearchTypeSelect;
-
-        this.localSearchTypeSelect.setWidth( "auto" );
     }
 
     @Override
-    public void setPresenter( final LocalSearchForm presenter ) {
+    public void setPresenter(final LocalSearchForm presenter) {
         this.presenter = presenter;
     }
 
     @EventHandler("localSearchTypeSelect")
-    public void onLocalSearchTypeSelected( final ChangeEvent event ) {
-        presenter.onLocalSearchTypeSelected( localSearchTypeSelect.getValue() );
+    public void onLocalSearchTypeSelected(final ChangeEvent event) {
+        presenter.onLocalSearchTypeSelected(localSearchTypeSelect.getValue());
     }
 
     @EventHandler("removeLocalSearch")
-    public void onRemoveLocalSearchClicked( final ClickEvent event ) {
+    public void onRemoveLocalSearchClicked(final ClickEvent event) {
         presenter.onLocalSearchRemoved();
     }
 
     @Override
-    public void initLocalSearchTypeSelectOptions( final List<Pair<String, String>> options ) {
-        UIUtil.initList( localSearchTypeSelect,
-                         options,
-                         false );
+    public void initLocalSearchTypeSelectOptions(final List<Pair<String, String>> optionPairs) {
+        for (Pair<String, String> optionPair : optionPairs) {
+            localSearchTypeSelect.add(createOption(optionPair));
+        }
     }
 
     @Override
-    public void setSelectedLocalSearchType( final String localSearchType ) {
-        UIUtil.setSelectedValue( localSearchTypeSelect,
-                                 localSearchType );
+    public void setSelectedLocalSearchType(final String localSearchType) {
+        localSearchTypeSelect.setValue(localSearchType);
+    }
+
+    private Option createOption(final Pair<String, String> optionPair) {
+        Option option = (Option) document.createElement("option");
+        option.setText(optionPair.getK1());
+        option.setValue(optionPair.getK2());
+        return option;
     }
 
     @Override

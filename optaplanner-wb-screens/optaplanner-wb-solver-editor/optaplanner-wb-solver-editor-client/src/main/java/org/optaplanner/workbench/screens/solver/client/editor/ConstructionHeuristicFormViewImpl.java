@@ -21,19 +21,23 @@ import javax.inject.Inject;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import org.gwtbootstrap3.extras.select.client.ui.Select;
+import org.jboss.errai.common.client.dom.Button;
 import org.jboss.errai.common.client.dom.Div;
+import org.jboss.errai.common.client.dom.Document;
 import org.jboss.errai.common.client.dom.HTMLElement;
-import org.jboss.errai.common.client.dom.Span;
+import org.jboss.errai.common.client.dom.Option;
+import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.uberfire.commons.data.Pair;
 
 @Dependent
 @Templated
 public class ConstructionHeuristicFormViewImpl implements ConstructionHeuristicFormView {
+
+    @Inject
+    Document document;
 
     @DataField("view")
     @Inject
@@ -47,58 +51,68 @@ public class ConstructionHeuristicFormViewImpl implements ConstructionHeuristicF
 
     @DataField("removeConstructionHeuristic")
     @Inject
-    Span removeConstructionHeuristic;
+    Button removeConstructionHeuristic;
 
     private ConstructionHeuristicForm presenter;
 
     @Inject
-    public ConstructionHeuristicFormViewImpl( final Select constructionHeuristicTypeSelect,
-                                              final Select entitySorterMannerSelect ) {
+    public ConstructionHeuristicFormViewImpl(final Select constructionHeuristicTypeSelect,
+                                             final Select entitySorterMannerSelect) {
         this.constructionHeuristicTypeSelect = constructionHeuristicTypeSelect;
         this.entitySorterMannerSelect = entitySorterMannerSelect;
-
-        this.constructionHeuristicTypeSelect.setWidth( "auto" );
-        this.entitySorterMannerSelect.setWidth( "auto" );
     }
 
     @Override
-    public void setPresenter( ConstructionHeuristicForm presenter ) {
+    public void setPresenter(final ConstructionHeuristicForm presenter) {
         this.presenter = presenter;
     }
 
     @EventHandler("constructionHeuristicTypeSelect")
-    public void onConstructionHeuristicTypeSelected( ChangeEvent event ) {
-        presenter.onConstructionHeuristicTypeSelected( constructionHeuristicTypeSelect.getValue() );
+    public void onConstructionHeuristicTypeSelected(ChangeEvent event) {
+        presenter.onConstructionHeuristicTypeSelected(constructionHeuristicTypeSelect.getValue());
     }
 
     @EventHandler("entitySorterMannerSelect")
-    public void onEntitySorterMannerSelected( ChangeEvent event ) {
-        presenter.onEntitySorterMannerSelected( entitySorterMannerSelect.getValue() );
+    public void onEntitySorterMannerSelected(final ChangeEvent event) {
+        presenter.onEntitySorterMannerSelected(entitySorterMannerSelect.getValue());
     }
 
     @EventHandler("removeConstructionHeuristic")
-    public void onRemoveConstructionHeuristicClicked( ClickEvent event ) {
+    public void onRemoveConstructionHeuristicClicked(final ClickEvent event) {
         presenter.onConstructionHeuristicRemoved();
     }
 
     @Override
-    public void initConstructionHeuristicTypeSelectOptions( List<Pair<String, String>> options ) {
-        UIUtil.initList( constructionHeuristicTypeSelect, options, false );
+    public void initConstructionHeuristicTypeSelectOptions(final List<Pair<String, String>> optionPairs) {
+        for (Pair<String, String> optionPair : optionPairs) {
+            Option option = createOption(optionPair);
+            constructionHeuristicTypeSelect.add(option);
+        }
     }
 
     @Override
-    public void initEntitySorterMannerSelectOptions( List<Pair<String, String>> options ) {
-        UIUtil.initList( entitySorterMannerSelect, options, false );
+    public void initEntitySorterMannerSelectOptions(final List<Pair<String, String>> optionPairs) {
+        for (Pair<String, String> optionPair : optionPairs) {
+            Option option = createOption(optionPair);
+            entitySorterMannerSelect.add(option);
+        }
+    }
+
+    private Option createOption(final Pair<String, String> optionPair) {
+        Option option = (Option) document.createElement("option");
+        option.setText(optionPair.getK1());
+        option.setValue(optionPair.getK2());
+        return option;
     }
 
     @Override
-    public void setSelectedConstructionHeuristicType( String constructionHeuristicType ) {
-        UIUtil.setSelectedValue( constructionHeuristicTypeSelect, constructionHeuristicType );
+    public void setSelectedConstructionHeuristicType(final String constructionHeuristicType) {
+        constructionHeuristicTypeSelect.setValue(constructionHeuristicType);
     }
 
     @Override
-    public void setSelectedEntitySorterManner( String entitySorterManner ) {
-        UIUtil.setSelectedValue( entitySorterMannerSelect, entitySorterManner );
+    public void setSelectedEntitySorterManner(final String entitySorterManner) {
+        entitySorterMannerSelect.setValue(entitySorterManner);
     }
 
     @Override

@@ -14,23 +14,23 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<div id="view" class="container-fluid well">
-    <div class="row">
-        <div class="col-md-11">
-            <legend data-i18n-key="LocalSearch"></legend>
-        </div>
-        <div class="col-md-1">
-            <span id="removeLocalSearch" class="glyphicon glyphicon-remove"
-                  style="cursor: pointer; float:right;"></span>
+<div id="view" class="container-fluid well local-search-well">
+    <div class="title-div">
+        <legend class="local-search-legend" data-i18n-key="LocalSearch"></legend>
+        <div>
+            <button id="removeLocalSearch" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span data-i18n-key="Remove"></span>
+            </button>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
-            <label for="localSearchTypeSelect" data-i18n-key="Type"></label>
+    <form>
+        <div class="form-group row">
+            <label for="localSearchTypeSelect" class="control-label col-md-3" data-i18n-key="Type"></label>
+            <div class="col-md-9">
+                <select id="localSearchTypeSelect" class="form-control"></select>
+            </div>
         </div>
-        <div class="col-md-10">
-            <span id="localSearchTypeSelect"></span>
-        </div>
-    </div>
+    </form>
 </div>
