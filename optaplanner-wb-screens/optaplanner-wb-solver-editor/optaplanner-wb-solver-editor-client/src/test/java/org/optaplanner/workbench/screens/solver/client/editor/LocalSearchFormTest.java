@@ -25,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.optaplanner.core.config.localsearch.LocalSearchType;
 import org.optaplanner.workbench.screens.solver.model.LocalSearchPhaseConfigModel;
+import org.uberfire.commons.data.Pair;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -57,7 +58,8 @@ public class LocalSearchFormTest {
         verify( view ).initLocalSearchTypeSelectOptions( localSearchTypeSelectOptionsCaptor.capture() );
 
         List value = localSearchTypeSelectOptionsCaptor.getValue();
-        assertEquals( LocalSearchType.values().length,
+        // TODO Value count reduced by 1 as SA is ignored until PLANNER-780 is resolved
+        assertEquals( LocalSearchType.values().length - 1,
                       value.size() );
     }
 
@@ -96,5 +98,18 @@ public class LocalSearchFormTest {
 
         verify( model,
                 times( 0 ) ).setLocalSearchType( LocalSearchType.LATE_ACCEPTANCE );
+    }
+
+    // TODO Remove once PLANNER-780 is resolved
+    @Test
+    public void simulatedAnnealingIsIgnored() {
+        ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+
+        verify(view, times(1)).initLocalSearchTypeSelectOptions(listArgumentCaptor.capture());
+
+        List<Pair<String, String>> value = listArgumentCaptor.getValue();
+        boolean simulatedAnnealingPresent = value.stream().anyMatch(p -> LocalSearchType.SIMULATED_ANNEALING.toString().equals(p.getK2()));
+
+        assertFalse(simulatedAnnealingPresent);
     }
 }
