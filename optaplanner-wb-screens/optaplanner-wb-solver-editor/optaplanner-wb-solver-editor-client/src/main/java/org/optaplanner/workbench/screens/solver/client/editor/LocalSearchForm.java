@@ -48,6 +48,11 @@ public class LocalSearchForm implements IsElement {
     private void initLocalSearchTypeSelectOptions() {
         List<Pair<String, String>> localSearchTypeOptions = new ArrayList<>();
         for ( LocalSearchType localSearchType : LocalSearchType.values() ) {
+            // TODO Remove once PLANNER-780 is resolved
+            if ( LocalSearchType.SIMULATED_ANNEALING == localSearchType ) {
+                continue;
+            }
+
             Pair<String, String> option = new Pair<>( solverEditorLookupConstants.getString( localSearchType.name() ),
                                                       localSearchType.name() );
             localSearchTypeOptions.add( option );
