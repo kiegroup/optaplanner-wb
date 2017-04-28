@@ -24,15 +24,16 @@ import javax.inject.Inject;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Composite;
-import org.gwtbootstrap3.extras.select.client.ui.Select;
 import org.jboss.errai.common.client.dom.Div;
+import org.jboss.errai.common.client.dom.Document;
 import org.jboss.errai.common.client.dom.Input;
 import org.jboss.errai.common.client.dom.NumberInput;
+import org.jboss.errai.common.client.dom.Option;
+import org.jboss.errai.common.client.dom.Select;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.kie.workbench.common.screens.datamodeller.client.util.UIUtil;
 import org.kie.workbench.common.services.datamodeller.core.DataModel;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
@@ -45,6 +46,9 @@ import org.uberfire.commons.data.Pair;
 public class PlannerDataObjectEditorViewImpl
         extends Composite
         implements PlannerDataObjectEditorView {
+
+    @Inject
+    Document document;
 
     @Inject
     @DataField("notInPlanningRadioButton")
@@ -96,18 +100,18 @@ public class PlannerDataObjectEditorViewImpl
 
     @PostConstruct
     public void postConstruct() {
-        planningSolutionHelpIcon.setVisible( false );
-        planningSolutionHelpIcon.setHelpContent( translationService.getTranslation( DomainEditorConstants.PlannerDataObjectEditorViewImplPlanningSolutionHelpIconContent ) );
+        planningSolutionHelpIcon.setVisible(false);
+        planningSolutionHelpIcon.setHelpContent(translationService.getTranslation(DomainEditorConstants.PlannerDataObjectEditorViewImplPlanningSolutionHelpIconContent));
     }
 
     @Override
-    public void init( Presenter presenter ) {
+    public void init(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void setNotInPlanningValue( boolean value ) {
-        notInPlanningRadioButton.setChecked( value );
+    public void setNotInPlanningValue(boolean value) {
+        notInPlanningRadioButton.setChecked(value);
     }
 
     @Override
@@ -116,8 +120,8 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void setPlanningEntityValue( boolean value ) {
-        planningEntityRadioButton.setChecked( value );
+    public void setPlanningEntityValue(boolean value) {
+        planningEntityRadioButton.setChecked(value);
     }
 
     @Override
@@ -126,8 +130,8 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void setPlanningSolutionValue( boolean value ) {
-        planningSolutionRadioButton.setChecked( value );
+    public void setPlanningSolutionValue(boolean value) {
+        planningSolutionRadioButton.setChecked(value);
     }
 
     @Override
@@ -136,25 +140,30 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void enablePlanningSolutionCheckBox( boolean enable ) {
-        planningSolutionRadioButton.setDisabled( !enable );
+    public void enablePlanningSolutionCheckBox(boolean enable) {
+        planningSolutionRadioButton.setDisabled(!enable);
     }
 
     @Override
-    public void showPlanningSolutionHelpIcon( boolean show ) {
-        planningSolutionHelpIcon.setVisible( show );
+    public void showPlanningSolutionHelpIcon(boolean show) {
+        planningSolutionHelpIcon.setVisible(show);
     }
 
     @Override
     public void clear() {
-        setNotInPlanningValue( false );
-        setPlanningEntityValue( false );
-        setPlanningSolutionValue( false );
+        setNotInPlanningValue(false);
+        setPlanningEntityValue(false);
+        setPlanningSolutionValue(false);
     }
 
     @Override
-    public void initFieldPicker( DataModel dataModel, DataObject rootDataObject, List<ObjectPropertyPath> objectPropertyPaths ) {
-        fieldPicker.init( dataModel, rootDataObject, objectPropertyPaths, presenter );
+    public void initFieldPicker(DataModel dataModel,
+                                DataObject rootDataObject,
+                                List<ObjectPropertyPath> objectPropertyPaths) {
+        fieldPicker.init(dataModel,
+                         rootDataObject,
+                         objectPropertyPaths,
+                         presenter);
     }
 
     @Override
@@ -168,8 +177,18 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> options, String selectedScoreType ) {
-        UIUtil.initList( planningSolutionScoreTypeSelector, options, selectedScoreType, false );
+    public void initPlanningSolutionScoreTypeOptions(List<Pair<String, String>> optionPairs) {
+        for (Pair<String, String> optionPair : optionPairs) {
+            Option option = createOption(optionPair);
+            planningSolutionScoreTypeSelector.add(option);
+        }
+    }
+
+    private Option createOption(final Pair<String, String> optionPair) {
+        Option option = (Option) document.createElement("option");
+        option.setText(optionPair.getK1());
+        option.setValue(optionPair.getK2());
+        return option;
     }
 
     @Override
@@ -178,76 +197,75 @@ public class PlannerDataObjectEditorViewImpl
     }
 
     @Override
-    public void showPlanningSolutionScoreType( boolean show ) {
-        planningSolutionScoreTypeGroup.setHidden( !show );
+    public void showPlanningSolutionScoreType(boolean show) {
+        planningSolutionScoreTypeGroup.setHidden(!show);
     }
 
     @Override
     public int getPlanningSolutionBendableScoreHardLevelsSize() {
-        boolean isNumeric = planningSolutionBendableScoreHardLevelsSizeInput.getValue().matches( "\\d+" );
+        boolean isNumeric = planningSolutionBendableScoreHardLevelsSizeInput.getValue().matches("\\d+");
         if (!isNumeric) {
-            planningSolutionBendableScoreHardLevelsSizeInput.setValue( "0" );
+            planningSolutionBendableScoreHardLevelsSizeInput.setValue("0");
         }
-        return Integer.parseInt( planningSolutionBendableScoreHardLevelsSizeInput.getValue() );
+        return Integer.parseInt(planningSolutionBendableScoreHardLevelsSizeInput.getValue());
     }
 
     @Override
-    public void setPlanningSolutionBendableScoreHardLevelsSize( int hardLevelsSize ) {
-        planningSolutionBendableScoreHardLevelsSizeInput.setValue( String.valueOf( hardLevelsSize ) );
+    public void setPlanningSolutionBendableScoreHardLevelsSize(int hardLevelsSize) {
+        planningSolutionBendableScoreHardLevelsSizeInput.setValue(String.valueOf(hardLevelsSize));
     }
 
     @Override
     public int getPlanningSolutionBendableScoreSoftLevelsSize() {
-        boolean isNumeric = planningSolutionBendableScoreSoftLevelsSizeInput.getValue().matches( "\\d+" );
+        boolean isNumeric = planningSolutionBendableScoreSoftLevelsSizeInput.getValue().matches("\\d+");
         if (!isNumeric) {
-            planningSolutionBendableScoreSoftLevelsSizeInput.setValue( "0" );
+            planningSolutionBendableScoreSoftLevelsSizeInput.setValue("0");
         }
-        return Integer.parseInt( planningSolutionBendableScoreSoftLevelsSizeInput.getValue() );
+        return Integer.parseInt(planningSolutionBendableScoreSoftLevelsSizeInput.getValue());
     }
 
     @Override
-    public void setPlanningSolutionBendableScoreSoftLevelsSize( int softLevelsSize ) {
-        planningSolutionBendableScoreSoftLevelsSizeInput.setValue( String.valueOf( softLevelsSize ) );
+    public void setPlanningSolutionBendableScoreSoftLevelsSize(int softLevelsSize) {
+        planningSolutionBendableScoreSoftLevelsSizeInput.setValue(String.valueOf(softLevelsSize));
     }
 
     @Override
-    public void showPlanningSolutionBendableScoreInput( boolean show ) {
-        planningSolutionBendableScoreInputGroup.setHidden( !show );
+    public void showPlanningSolutionBendableScoreInput(boolean show) {
+        planningSolutionBendableScoreInputGroup.setHidden(!show);
     }
 
     @Override
-    public void setPlanningSolutionScoreType( String scoreType ) {
-        UIUtil.setSelectedValue( planningSolutionScoreTypeSelector, scoreType );
+    public void setPlanningSolutionScoreType(String scoreType) {
+        planningSolutionScoreTypeSelector.setValue(scoreType);
     }
 
     @EventHandler("notInPlanningRadioButton")
-    void onNotInPlanningChange( ClickEvent event ) {
+    void onNotInPlanningChange(ClickEvent event) {
         presenter.onNotInPlanningChange();
     }
 
     @EventHandler("planningEntityRadioButton")
-    void onPlanningEntityChange( ClickEvent event ) {
+    void onPlanningEntityChange(ClickEvent event) {
         presenter.onPlanningEntityChange();
     }
 
     @EventHandler("planningSolutionRadioButton")
-    void onPlanningSolutionChange( ClickEvent event ) {
+    void onPlanningSolutionChange(ClickEvent event) {
         presenter.onPlanningSolutionChange();
     }
 
     @EventHandler("planningSolutionScoreTypeSelector")
-    void setPlanningSolutionScoreTypeChange( ChangeEvent event ) {
+    void setPlanningSolutionScoreTypeChange(ChangeEvent event) {
         presenter.onPlanningSolutionScoreTypeChange();
     }
 
     @EventHandler("planningSolutionBendableScoreHardLevelsSizeInput")
-    void onPlanningSolutionBendableScoreHardLevelsSizeInputChange( ChangeEvent event ) {
+    void onPlanningSolutionBendableScoreHardLevelsSizeInputChange(ChangeEvent event) {
         presenter.onPlanningSolutionBendableScoreHardLevelsSizeChange();
     }
 
     @EventHandler("planningSolutionBendableScoreSoftLevelsSizeInput")
-    void onPlanningSolutionBendableScoreSoftLevelsSizeInputChange( ChangeEvent event ) {
+    void onPlanningSolutionBendableScoreSoftLevelsSizeInputChange(ChangeEvent event) {
         presenter.onPlanningSolutionBendableScoreSoftLevelsSizeChange();
     }
-
 }
