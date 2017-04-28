@@ -29,11 +29,11 @@ public interface PlannerDataObjectEditorView
 
     interface Presenter {
 
-        void onNotInPlanningChange( );
+        void onNotInPlanningChange();
 
-        void onPlanningEntityChange( );
+        void onPlanningEntityChange();
 
-        void onPlanningSolutionChange( );
+        void onPlanningSolutionChange();
 
         void onPlanningSolutionScoreTypeChange();
 
@@ -41,52 +41,54 @@ public interface PlannerDataObjectEditorView
 
         void onPlanningSolutionBendableScoreSoftLevelsSizeChange();
 
-        void objectPropertyPathChanged( List<ObjectPropertyPath> objectPropertyPaths, boolean itemsRemoved );
+        void objectPropertyPathChanged(List<ObjectPropertyPath> objectPropertyPaths,
+                                       boolean itemsRemoved);
 
-        void removeComparatorDefinition(DataObject dataObject, boolean resetPlanningEntityAnnotation);
+        void removeComparatorDefinition(DataObject dataObject,
+                                        boolean resetPlanningEntityAnnotation);
     }
 
-    void setNotInPlanningValue( boolean value );
+    void setNotInPlanningValue(boolean value);
 
-    boolean getNotInPlanningValue( );
+    boolean getNotInPlanningValue();
 
-    void setPlanningEntityValue( boolean value );
+    void setPlanningEntityValue(boolean value);
 
-    boolean getPlanningEntityValue( );
+    boolean getPlanningEntityValue();
 
-    void setPlanningSolutionValue( boolean value );
+    void setPlanningSolutionValue(boolean value);
 
-    boolean getPlanningSolutionValue( );
+    boolean getPlanningSolutionValue();
 
-    void enablePlanningSolutionCheckBox( boolean enable );
+    void enablePlanningSolutionCheckBox(boolean enable);
 
-    void showPlanningSolutionHelpIcon( boolean show );
+    void showPlanningSolutionHelpIcon(boolean show);
 
-    void initPlanningSolutionScoreTypeOptions( List<Pair<String, String>> planningSolutionScoreTypeOptions,
-            String selectedScoreType );
+    void initPlanningSolutionScoreTypeOptions(List<Pair<String, String>> planningSolutionScoreTypeOptions);
 
     String getPlanningSolutionScoreType();
 
-    void setPlanningSolutionScoreType( String scoreType );
+    void setPlanningSolutionScoreType(String scoreType);
 
-    void showPlanningSolutionScoreType( boolean show );
+    void showPlanningSolutionScoreType(boolean show);
 
     int getPlanningSolutionBendableScoreHardLevelsSize();
 
-    void setPlanningSolutionBendableScoreHardLevelsSize( int hardLevelsSize );
+    void setPlanningSolutionBendableScoreHardLevelsSize(int hardLevelsSize);
 
     int getPlanningSolutionBendableScoreSoftLevelsSize();
 
-    void setPlanningSolutionBendableScoreSoftLevelsSize( int softLevelsSize );
+    void setPlanningSolutionBendableScoreSoftLevelsSize(int softLevelsSize);
 
-    void showPlanningSolutionBendableScoreInput( boolean show );
+    void showPlanningSolutionBendableScoreInput(boolean show);
 
-    void clear( );
+    void clear();
 
-    void initFieldPicker( DataModel dataModel, DataObject rootDataObject, List<ObjectPropertyPath> objectPropertyPaths );
+    void initFieldPicker(DataModel dataModel,
+                         DataObject rootDataObject,
+                         List<ObjectPropertyPath> objectPropertyPaths);
 
     void destroyFieldPicker();
 
     boolean isFieldPickerEmpty();
-
 }
