@@ -51,44 +51,20 @@ public class ScoreHolderUtilsTest {
 
     @Before
     public void setUp() {
-        scoreHolderUtils = new ScoreHolderUtils( kieProjectService,
-                                                 classLoaderHelper );
+        scoreHolderUtils = new ScoreHolderUtils(kieProjectService,
+                                                classLoaderHelper);
     }
 
     @Test
-    public void extractScoreTypeFqnFullScoreType() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
-        dataObject.setSuperClassName( String.format( "%s<%s>",
-                                                     AbstractSolution.class.getName(),
-                                                     HardSoftScore.class.getName() ) );
+    public void extractScoreTypeFqn() {
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
+        dataObject.addProperty("score", HardSoftScore.class.getName());
 
-        String result = scoreHolderUtils.extractScoreTypeFqn( dataObject,
-                                                              mock( Path.class ) );
+        String result = scoreHolderUtils.extractScoreTypeFqn(dataObject);
 
-        assertEquals( HardSoftScore.class.getName(),
-                      result );
-    }
-
-    @Test
-    public void extractScoreTypeFqnSimpleScoreType() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
-        dataObject.setSuperClassName( String.format( "%s<%s>",
-                                                     AbstractSolution.class.getName(),
-                                                     HardSoftScore.class.getSimpleName() ) );
-        dataObject.addImport( new ImportImpl( HardSoftScore.class.getName() ) );
-
-        KieProject kieProject = mock( KieProject.class );
-        when( kieProjectService.resolveProject( any( Path.class ) ) ).thenReturn( kieProject );
-        when( classLoaderHelper.getProjectClassLoader( kieProject ) ).thenReturn( getClass().getClassLoader() );
-
-        String result = scoreHolderUtils.extractScoreTypeFqn( dataObject,
-                                                              mock( Path.class ) );
-
-        assertEquals( HardSoftScore.class.getName(),
-                      result );
+        assertEquals(HardSoftScore.class.getName(),
+                     result);
     }
 }

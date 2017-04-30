@@ -28,9 +28,7 @@ import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.workbench.common.screens.datamodeller.model.GenerationResult;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
-import org.kie.workbench.common.services.backend.project.ProjectClassLoaderHelper;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.kie.workbench.common.services.shared.validation.DeleteValidator;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeRemovedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeNotRecognizedMessage;
@@ -55,52 +53,51 @@ public class PlanningSolutionScoreHolderDeleteValidator implements DeleteValidat
     private ScoreHolderUtils scoreHolderUtils;
 
     @Inject
-    public PlanningSolutionScoreHolderDeleteValidator( final DataModelerService dataModelerService,
-                                                       @Named("ioStrategy") final IOService ioService,
-                                                       final ScoreHolderUtils scoreHolderUtils ) {
+    public PlanningSolutionScoreHolderDeleteValidator(final DataModelerService dataModelerService,
+                                                      @Named("ioStrategy") final IOService ioService,
+                                                      final ScoreHolderUtils scoreHolderUtils) {
         this.dataModelerService = dataModelerService;
         this.ioService = ioService;
         this.scoreHolderUtils = scoreHolderUtils;
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path dataObjectPath,
-                                                   final DataObject dataObject ) {
-        return validatePath( dataObjectPath );
+    public Collection<ValidationMessage> validate(final Path dataObjectPath,
+                                                  final DataObject dataObject) {
+        return validatePath(dataObjectPath);
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path dataObjectPath ) {
-        return validatePath( dataObjectPath );
+    public Collection<ValidationMessage> validate(final Path dataObjectPath) {
+        return validatePath(dataObjectPath);
     }
 
-    private Collection<ValidationMessage> validatePath( final Path dataObjectPath ) {
-        if ( dataObjectPath != null ) {
-            String dataObjectSource = ioService.readAllString( Paths.convert( dataObjectPath ) );
-            GenerationResult generationResult = dataModelerService.loadDataObject( dataObjectPath,
-                                                                                   dataObjectSource,
-                                                                                   dataObjectPath );
-            if ( generationResult.hasErrors() ) {
+    private Collection<ValidationMessage> validatePath(final Path dataObjectPath) {
+        if (dataObjectPath != null) {
+            String dataObjectSource = ioService.readAllString(Paths.convert(dataObjectPath));
+            GenerationResult generationResult = dataModelerService.loadDataObject(dataObjectPath,
+                                                                                  dataObjectSource,
+                                                                                  dataObjectPath);
+            if (generationResult.hasErrors()) {
                 return Collections.emptyList();
             } else {
                 DataObject originalDataObject = generationResult.getDataObject();
 
-                if ( originalDataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                    String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                                                                  dataObjectPath );
+                if (originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                    String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(originalDataObject);
 
-                    String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn( originalDataObjectScoreTypeFqn );
+                    String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(originalDataObjectScoreTypeFqn);
 
-                    if ( originalDataObjectScoreHolderTypeFqn == null ) {
-                        return Arrays.asList( new ScoreHolderGlobalTypeNotRecognizedMessage( Level.WARNING ) );
+                    if (originalDataObjectScoreHolderTypeFqn == null) {
+                        return Arrays.asList(new ScoreHolderGlobalTypeNotRecognizedMessage(Level.WARNING));
                     }
 
-                    List<Path> scoreHolderGlobalUsages = dataModelerService.findClassUsages( dataObjectPath,
-                                                                                             originalDataObjectScoreHolderTypeFqn );
-                    if ( scoreHolderGlobalUsages.isEmpty() ) {
+                    List<Path> scoreHolderGlobalUsages = dataModelerService.findClassUsages(dataObjectPath,
+                                                                                            originalDataObjectScoreHolderTypeFqn);
+                    if (scoreHolderGlobalUsages.isEmpty()) {
                         return Collections.emptyList();
                     } else {
-                        return Arrays.asList( new ScoreHolderGlobalToBeRemovedMessage( Level.WARNING ) );
+                        return Arrays.asList(new ScoreHolderGlobalToBeRemovedMessage(Level.WARNING));
                     }
                 }
             }
@@ -109,7 +106,7 @@ public class PlanningSolutionScoreHolderDeleteValidator implements DeleteValidat
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".java" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".java");
     }
 }
