@@ -48,12 +48,14 @@ import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
+import org.optaplanner.core.api.domain.solution.PlanningScore;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.workbench.screens.domaineditor.client.widgets.planner.PlannerTestUtil;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPathImpl;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
+import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -72,168 +74,218 @@ public class PlannerDomainHandlerTest {
 
     @Before
     public void setUp() {
-        when( comparatorDefinitionService.call( any() ) ).thenReturn( mock( ComparatorDefinitionService.class ) );
-        this.plannerDomainHandler = new PlannerDomainHandler( comparatorDefinitionService );
+        when(comparatorDefinitionService.call(any())).thenReturn(mock(ComparatorDefinitionService.class));
+        this.plannerDomainHandler = new PlannerDomainHandler(comparatorDefinitionService);
         initDataObjects();
     }
 
     @Test
     public void postEventProcessingDataObjectFieldDeleted() {
         DataObjectFieldDeletedEvent event = (DataObjectFieldDeletedEvent) new DataObjectFieldDeletedEvent()
-                .withCurrentDataObject( dataObject )
-                .withCurrentField( dataObject.getProperty( "dataObject1Property2" ) );
+                .withCurrentDataObject(dataObject)
+                .withCurrentField(dataObject.getProperty("dataObject1Property2"));
 
-        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation( ComparatorDefinition.class.getName() );
+        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation(ComparatorDefinition.class.getName());
 
-        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinitionAnnotation );
+        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler(comparatorDefinitionAnnotation);
 
-        assertFalse( comparatorAnnotationHandler.getObjectPropertyPaths().isEmpty() );
+        assertFalse(comparatorAnnotationHandler.getObjectPropertyPaths().isEmpty());
 
-        plannerDomainHandler.onDataObjectFieldDeletedEvent( event );
+        plannerDomainHandler.onDataObjectFieldDeletedEvent(event);
 
-        assertTrue( comparatorAnnotationHandler.getObjectPropertyPaths().isEmpty() );
+        assertTrue(comparatorAnnotationHandler.getObjectPropertyPaths().isEmpty());
     }
 
     @Test
     public void postEventProcessingDataObjectNameChanged() {
-        DataObjectChangeEvent event = new DataObjectChangeEvent( ChangeType.OBJECT_NAME_CHANGE,
-                "testContextId",
-                "testSource",
-                dataObject,
-                null,
-                dataObject.getName(),
-                "DataObject1NewName" );
+        DataObjectChangeEvent event = new DataObjectChangeEvent(ChangeType.OBJECT_NAME_CHANGE,
+                                                                "testContextId",
+                                                                "testSource",
+                                                                dataObject,
+                                                                null,
+                                                                dataObject.getName(),
+                                                                "DataObject1NewName");
 
-        Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-        assertNotNull( planningEntityAnnotation );
-        Object difficultyComparatorClass = planningEntityAnnotation.getValue( "difficultyComparatorClass" );
+        Annotation planningEntityAnnotation = dataObject.getAnnotation(PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION);
+        assertNotNull(planningEntityAnnotation);
+        Object difficultyComparatorClass = planningEntityAnnotation.getValue("difficultyComparatorClass");
 
-        assertEquals( dataObject.getName() + ".DifficultyComparator.class", difficultyComparatorClass );
+        assertEquals(dataObject.getName() + ".DifficultyComparator.class",
+                     difficultyComparatorClass);
 
-        dataObject.setName( "DataObject1NewName" );
+        dataObject.setName("DataObject1NewName");
 
-        plannerDomainHandler.onDataModelerValueChangeEvent( event );
+        plannerDomainHandler.onDataModelerValueChangeEvent(event);
 
-        planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-        assertNotNull( planningEntityAnnotation );
-        difficultyComparatorClass = planningEntityAnnotation.getValue( "difficultyComparatorClass" );
+        planningEntityAnnotation = dataObject.getAnnotation(PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION);
+        assertNotNull(planningEntityAnnotation);
+        difficultyComparatorClass = planningEntityAnnotation.getValue("difficultyComparatorClass");
 
-        assertEquals( "DataObject1NewName.DifficultyComparator.class", difficultyComparatorClass );
+        assertEquals("DataObject1NewName.DifficultyComparator.class",
+                     difficultyComparatorClass);
     }
 
     @Test
     public void postEventProcessingFieldNameChanged() {
-        ObjectProperty objectProperty = dataObject.getProperty( "dataObject1Property2" );
+        ObjectProperty objectProperty = dataObject.getProperty("dataObject1Property2");
 
-        DataObjectFieldChangeEvent event = new DataObjectFieldChangeEvent( ChangeType.FIELD_NAME_CHANGE,
-                "testContextId",
-                "testSource",
-                dataObject,
-                objectProperty,
-                null,
-                "dataObject1Property2",
-                "dataObject1Property2NewName" );
+        DataObjectFieldChangeEvent event = new DataObjectFieldChangeEvent(ChangeType.FIELD_NAME_CHANGE,
+                                                                          "testContextId",
+                                                                          "testSource",
+                                                                          dataObject,
+                                                                          objectProperty,
+                                                                          null,
+                                                                          "dataObject1Property2",
+                                                                          "dataObject1Property2NewName");
 
-        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation( ComparatorDefinition.class.getName() );
+        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation(ComparatorDefinition.class.getName());
 
-        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinitionAnnotation );
+        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler(comparatorDefinitionAnnotation);
 
-        assertEquals( 1, comparatorAnnotationHandler.getObjectPropertyPaths().size() );
-        Annotation objectPropertyPath = comparatorAnnotationHandler.getObjectPropertyPaths().get( 0 );
+        assertEquals(1,
+                     comparatorAnnotationHandler.getObjectPropertyPaths().size());
+        Annotation objectPropertyPath = comparatorAnnotationHandler.getObjectPropertyPaths().get(0);
 
-        assertEquals( 2, comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).size() );
-        Annotation comparatorObjectProperty = comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).get( 0 );
+        assertEquals(2,
+                     comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).size());
+        Annotation comparatorObjectProperty = comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).get(0);
 
-        assertEquals( "dataObject1Property2", comparatorAnnotationHandler.getName( comparatorObjectProperty ) );
+        assertEquals("dataObject1Property2",
+                     comparatorAnnotationHandler.getName(comparatorObjectProperty));
 
-        objectProperty.setName( "dataObject1Property2NewName" );
+        objectProperty.setName("dataObject1Property2NewName");
 
-        plannerDomainHandler.onDataModelerValueChangeEvent( event );
+        plannerDomainHandler.onDataModelerValueChangeEvent(event);
 
-        assertEquals( "dataObject1Property2NewName", comparatorAnnotationHandler.getName( comparatorObjectProperty ) );
+        assertEquals("dataObject1Property2NewName",
+                     comparatorAnnotationHandler.getName(comparatorObjectProperty));
 
-        assertEquals( 1, comparatorAnnotationHandler.getObjectPropertyPaths().size() );
-        assertEquals( 2, comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).size() );
+        assertEquals(1,
+                     comparatorAnnotationHandler.getObjectPropertyPaths().size());
+        assertEquals(2,
+                     comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).size());
     }
 
     @Test
     public void postEventProcessingFieldTypeChanged() {
-        ObjectProperty objectProperty = dataObject.getProperty( "dataObject1Property2" );
+        ObjectProperty objectProperty = dataObject.getProperty("dataObject1Property2");
 
         String oldType = objectProperty.getClassName();
 
-        DataObjectFieldChangeEvent event = new DataObjectFieldChangeEvent( ChangeType.FIELD_TYPE_CHANGE,
-                "testContextId",
-                "testSource",
-                dataObject,
-                objectProperty,
-                null,
-                oldType,
-                oldType + "NewType" );
+        DataObjectFieldChangeEvent event = new DataObjectFieldChangeEvent(ChangeType.FIELD_TYPE_CHANGE,
+                                                                          "testContextId",
+                                                                          "testSource",
+                                                                          dataObject,
+                                                                          objectProperty,
+                                                                          null,
+                                                                          oldType,
+                                                                          oldType + "NewType");
 
-        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation( ComparatorDefinition.class.getName() );
+        Annotation comparatorDefinitionAnnotation = comparatorObject.getAnnotation(ComparatorDefinition.class.getName());
 
-        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler( comparatorDefinitionAnnotation );
+        ComparatorDefinitionAnnotationValueHandler comparatorAnnotationHandler = new ComparatorDefinitionAnnotationValueHandler(comparatorDefinitionAnnotation);
 
-        assertEquals( 1, comparatorAnnotationHandler.getObjectPropertyPaths().size() );
-        Annotation objectPropertyPath = comparatorAnnotationHandler.getObjectPropertyPaths().get( 0 );
+        assertEquals(1,
+                     comparatorAnnotationHandler.getObjectPropertyPaths().size());
+        Annotation objectPropertyPath = comparatorAnnotationHandler.getObjectPropertyPaths().get(0);
 
-        assertEquals( 2, comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).size() );
-        Annotation comparatorObjectProperty = comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).get( 0 );
+        assertEquals(2,
+                     comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).size());
+        Annotation comparatorObjectProperty = comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).get(0);
 
-        assertEquals( oldType, comparatorAnnotationHandler.getType( comparatorObjectProperty ) );
+        assertEquals(oldType,
+                     comparatorAnnotationHandler.getType(comparatorObjectProperty));
 
-        objectProperty.setClassName( oldType + "NewType" );
+        objectProperty.setClassName(oldType + "NewType");
 
-        plannerDomainHandler.onDataModelerValueChangeEvent( event );
+        plannerDomainHandler.onDataModelerValueChangeEvent(event);
 
-        assertEquals( oldType + "NewType", comparatorAnnotationHandler.getType( comparatorObjectProperty ) );
+        assertEquals(oldType + "NewType",
+                     comparatorAnnotationHandler.getType(comparatorObjectProperty));
 
-        assertEquals( 1, comparatorAnnotationHandler.getObjectPropertyPaths().size() );
-        assertEquals( 1, comparatorAnnotationHandler.getObjectProperties( objectPropertyPath ).size() );
+        assertEquals(1,
+                     comparatorAnnotationHandler.getObjectPropertyPaths().size());
+        assertEquals(1,
+                     comparatorAnnotationHandler.getObjectProperties(objectPropertyPath).size());
     }
 
     private void initDataObjects() {
         Map<String, AnnotationDefinition> annotationDefinitionMap = PlannerTestUtil.getComparatorObjectAnnotations();
 
-        DataObject dataObject1 = new DataObjectImpl( "bar.foo", "DataObject1" );
+        DataObject dataObject1 = new DataObjectImpl("bar.foo",
+                                                    "DataObject1");
 
-        ObjectProperty dataObject1Property1 = new ObjectPropertyImpl( "dataObject1Property1", "java.lang.Integer", false );
-        ObjectProperty dataObject1Property2 = new ObjectPropertyImpl( "dataObject1Property2", "bar.foo.DataObject2", false );
+        ObjectProperty dataObject1Property1 = new ObjectPropertyImpl("dataObject1Property1",
+                                                                     "java.lang.Integer",
+                                                                     false);
+        ObjectProperty dataObject1Property2 = new ObjectPropertyImpl("dataObject1Property2",
+                                                                     "bar.foo.DataObject2",
+                                                                     false);
 
-        dataObject1.addProperty( dataObject1Property1 );
-        dataObject1.addProperty( dataObject1Property2 );
+        dataObject1.addProperty(dataObject1Property1);
+        dataObject1.addProperty(dataObject1Property2);
 
-        JavaClassImpl comparatorObject = new JavaClassImpl( "", "DifficultyComparator" );
-        comparatorObject.addInterface( Comparator.class.getName() );
-        comparatorObject.addAnnotation( new AnnotationImpl( annotationDefinitionMap.get( Generated.class.getName() ) ) );
+        JavaClassImpl comparatorObject = new JavaClassImpl("",
+                                                           "DifficultyComparator");
+        comparatorObject.addInterface(Comparator.class.getName());
+        comparatorObject.addAnnotation(new AnnotationImpl(annotationDefinitionMap.get(Generated.class.getName())));
 
-        Method compareMethod = new MethodImpl( "compare", Arrays.asList( new ParameterImpl( new TypeImpl( dataObject1.getClassName() ), "o1" ), new ParameterImpl( new TypeImpl( dataObject1.getClassName() ), "o2" ) ), "foo", new TypeImpl( "int" ), Visibility.PUBLIC );
-        comparatorObject.addMethod( compareMethod );
+        Method compareMethod = new MethodImpl("compare",
+                                              Arrays.asList(new ParameterImpl(new TypeImpl(dataObject1.getClassName()),
+                                                                              "o1"),
+                                                            new ParameterImpl(new TypeImpl(dataObject1.getClassName()),
+                                                                              "o2")),
+                                              "foo",
+                                              new TypeImpl("int"),
+                                              Visibility.PUBLIC);
+        comparatorObject.addMethod(compareMethod);
 
-        dataObject1.addNestedClass( comparatorObject );
+        dataObject1.addNestedClass(comparatorObject);
 
-        AnnotationImpl planningEntityAnnotation = new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningEntity.class ) );
-        planningEntityAnnotation.setValue( "difficultyComparatorClass", dataObject1.getName() + "." + "DifficultyComparator.class" );
-        dataObject1.addAnnotation( planningEntityAnnotation );
+        AnnotationImpl planningEntityAnnotation = new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningEntity.class));
+        planningEntityAnnotation.setValue("difficultyComparatorClass",
+                                          dataObject1.getName() + "." + "DifficultyComparator.class");
+        dataObject1.addAnnotation(planningEntityAnnotation);
 
         ObjectPropertyPath objectPropertyPath = new ObjectPropertyPathImpl();
-        objectPropertyPath.appendObjectProperty( dataObject1Property2 );
-        objectPropertyPath.appendObjectProperty( dataObject1Property1 );
+        objectPropertyPath.appendObjectProperty(dataObject1Property2);
+        objectPropertyPath.appendObjectProperty(dataObject1Property1);
 
-        List<ObjectPropertyPath> objectPropertyPathList = new ArrayList<>( 1 );
-        objectPropertyPathList.add( objectPropertyPath );
+        List<ObjectPropertyPath> objectPropertyPathList = new ArrayList<>(1);
+        objectPropertyPathList.add(objectPropertyPath);
 
-        Annotation comparatorDefinitionAnnotation = ComparatorDefinitionAnnotationValueHandler.createAnnotation( objectPropertyPathList, annotationDefinitionMap );
+        Annotation comparatorDefinitionAnnotation = ComparatorDefinitionAnnotationValueHandler.createAnnotation(objectPropertyPathList,
+                                                                                                                annotationDefinitionMap);
 
-        comparatorObject.addAnnotation( comparatorDefinitionAnnotation );
+        comparatorObject.addAnnotation(comparatorDefinitionAnnotation);
 
-        DataObject dataObject2 = new DataObjectImpl( "bar.foo", "DataObject2" );
-        ObjectProperty dataObject2Property1 = new ObjectPropertyImpl( "dataObject2Property1", "java.lang.Double", false );
-        dataObject2.addProperty( dataObject2Property1 );
+        DataObject dataObject2 = new DataObjectImpl("bar.foo",
+                                                    "DataObject2");
+        ObjectProperty dataObject2Property1 = new ObjectPropertyImpl("dataObject2Property1",
+                                                                     "java.lang.Double",
+                                                                     false);
+        dataObject2.addProperty(dataObject2Property1);
 
         this.dataObject = dataObject1;
         this.comparatorObject = comparatorObject;
     }
 
+    @Test
+    public void isDomainSpecificPropertyPlanningScore() {
+        ObjectProperty objectProperty = new ObjectPropertyImpl("score",
+                                                               HardSoftScore.class.getName(),
+                                                               false);
+        objectProperty.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningScore.class)));
+
+        assertTrue(plannerDomainHandler.isDomainSpecificProperty(objectProperty));
+    }
+
+    @Test
+    public void isDomainSpecificPropertyNotAPlanningScore() {
+        ObjectProperty objectProperty = new ObjectPropertyImpl("notAPlanningScore",
+                                                               Integer.class.getName(),
+                                                               false);
+
+        assertFalse(plannerDomainHandler.isDomainSpecificProperty(objectProperty));
+    }
 }

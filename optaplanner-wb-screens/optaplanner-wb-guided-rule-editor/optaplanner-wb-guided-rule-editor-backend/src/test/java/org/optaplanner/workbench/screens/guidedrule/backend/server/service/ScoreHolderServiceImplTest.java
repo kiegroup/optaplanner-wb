@@ -18,7 +18,6 @@ package org.optaplanner.workbench.screens.guidedrule.backend.server.service;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import org.drools.workbench.screens.globals.model.Global;
 import org.drools.workbench.screens.globals.model.GlobalsModel;
@@ -30,12 +29,10 @@ import org.kie.workbench.common.screens.datamodeller.model.GenerationResult;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.screens.javaeditor.type.JavaResourceTypeDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.datamodeller.core.Method;
-import org.kie.workbench.common.services.datamodeller.core.Visibility;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
-import org.kie.workbench.common.services.datamodeller.core.impl.MethodImpl;
-import org.kie.workbench.common.services.datamodeller.core.impl.TypeImpl;
+import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.mockito.InjectMocks;
@@ -131,19 +128,17 @@ public class ScoreHolderServiceImplTest {
         AnnotationImpl planningSolutionAnnotation = new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class));
         dataObject.addAnnotation(planningSolutionAnnotation);
 
-        Method getScoreMethod = new MethodImpl("getScore",
-                                               Collections.EMPTY_LIST,
-                                               "return score;",
-                                               new TypeImpl(BendableScore.class.getName()),
-                                               Visibility.PUBLIC);
-        dataObject.addMethod(getScoreMethod);
+        ObjectProperty scoreObjectProperty = new ObjectPropertyImpl("score",
+                                                                    BendableScore.class.getName(),
+                                                                    false);
+        dataObject.addProperty(scoreObjectProperty);
 
         AnnotationImpl planningScoreAnnotation = new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningScore.class));
         planningScoreAnnotation.setValue("bendableHardLevelsSize",
                                          1);
         planningScoreAnnotation.setValue("bendableSoftLevelsSize",
                                          2);
-        getScoreMethod.addAnnotation(planningScoreAnnotation);
+        scoreObjectProperty.addAnnotation(planningScoreAnnotation);
 
         return dataObject;
     }

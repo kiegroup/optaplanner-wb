@@ -30,4 +30,9 @@ public class PlannerDomainAnnotations {
 
     public static final String PLANNING_ENTITY_COLLECTION_PROPERTY_ANNOTATION = "org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty";
 
+    public static final String JAXB_XML_JAVA_TYPE_ADAPTER_ANNOTATION = "javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter";
+
+    public static final String JAXB_XML_ROOT_ELEMENT = "javax.xml.bind.annotation.XmlRootElement";
+
+    public static final String JAXB_XML_ACCESSOR_TYPE = "javax.xml.bind.annotation.XmlAccessorType";
 }

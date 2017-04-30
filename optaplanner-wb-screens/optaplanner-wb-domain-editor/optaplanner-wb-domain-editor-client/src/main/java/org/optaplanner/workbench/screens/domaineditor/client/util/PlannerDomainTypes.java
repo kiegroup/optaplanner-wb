@@ -16,8 +16,8 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
@@ -37,26 +37,53 @@ import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScore;
 
 public class PlannerDomainTypes {
 
-    public static final String ABSTRACT_SOLUTION_CLASS_NAME = "org.optaplanner.core.impl.domain.solution.AbstractSolution";
-
-    public static final String ABSTRACT_SOLUTION_SIMPLE_CLASS_NAME = "AbstractSolution";
-
-    public static final List<Class<? extends Score>> SCORE_TYPES = new ArrayList<>(  );
+    public static final Map<Class<? extends Score>, ScoreConfigurationHolder> SCORE_CONFIGURATION_MAP = new HashMap<>();
 
     static {
-        SCORE_TYPES.add( BendableScore.class );
-        SCORE_TYPES.add( BendableBigDecimalScore.class );
-        SCORE_TYPES.add( BendableLongScore.class );
-        SCORE_TYPES.add( HardMediumSoftScore.class );
-        SCORE_TYPES.add( HardMediumSoftBigDecimalScore.class );
-        SCORE_TYPES.add( HardMediumSoftLongScore.class );
-        SCORE_TYPES.add( HardSoftScore.class );
-        SCORE_TYPES.add( HardSoftBigDecimalScore.class );
-        SCORE_TYPES.add( HardSoftDoubleScore.class );
-        SCORE_TYPES.add( HardSoftLongScore.class );
-        SCORE_TYPES.add( SimpleScore.class );
-        SCORE_TYPES.add( SimpleBigDecimalScore.class );
-        SCORE_TYPES.add( SimpleDoubleScore.class );
-        SCORE_TYPES.add( SimpleLongScore.class );
+        SCORE_CONFIGURATION_MAP.put(BendableScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.bendable.BendableScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(BendableBigDecimalScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.bendablebigdecimal.BendableBigDecimalScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(BendableLongScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.bendablelong.BendableLongScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardMediumSoftScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardmediumsoft.HardMediumSoftScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardMediumSoftBigDecimalScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardMediumSoftLongScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardSoftScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardsoft.HardSoftScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardSoftBigDecimalScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardSoftDoubleScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardsoftdouble.HardSoftDoubleScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(HardSoftLongScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.hardsoftlong.HardSoftLongScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(SimpleScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.simple.SimpleScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(SimpleBigDecimalScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.simplebigdecimal.SimpleBigDecimalScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(SimpleDoubleScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.simpledouble.SimpleDoubleScoreJaxbXmlAdapter"));
+        SCORE_CONFIGURATION_MAP.put(SimpleLongScore.class,
+                                    ScoreConfigurationHolder.create("org.optaplanner.persistence.jaxb.api.score.buildin.simplelong.SimpleLongScoreJaxbXmlAdapter"));
+    }
+
+    public static class ScoreConfigurationHolder {
+
+        private String jaxbXmlAdapterClass;
+
+        private ScoreConfigurationHolder(final String jaxbXmlAdapterClass) {
+            this.jaxbXmlAdapterClass = jaxbXmlAdapterClass;
+        }
+
+        public static ScoreConfigurationHolder create(final String jaxbXmlAdapterClass) {
+            return new ScoreConfigurationHolder(jaxbXmlAdapterClass);
+        }
+
+        public String getJaxbXmlAdapterClass() {
+            return jaxbXmlAdapterClass;
+        }
     }
 }

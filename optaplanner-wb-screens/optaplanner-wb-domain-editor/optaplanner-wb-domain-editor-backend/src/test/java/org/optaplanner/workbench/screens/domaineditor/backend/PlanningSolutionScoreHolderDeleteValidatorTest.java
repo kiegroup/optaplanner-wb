@@ -64,99 +64,97 @@ public class PlanningSolutionScoreHolderDeleteValidatorTest {
 
     @Before
     public void setUp() {
-        validator = new PlanningSolutionScoreHolderDeleteValidator( dataModelerService,
-                                                                    ioService,
-                                                                    scoreHolderUtils );
+        validator = new PlanningSolutionScoreHolderDeleteValidator(dataModelerService,
+                                                                   ioService,
+                                                                   scoreHolderUtils);
     }
 
     @Test
     public void planningSolution() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = new DataObjectImpl( "test",
-                                                            "Test" );
-        originalDataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject originalDataObject = new DataObjectImpl("test",
+                                                           "Test");
+        originalDataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        when( scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                    dataObjectPath ) ).thenReturn( HardSoftScore.class.getName() );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( HardSoftScore.class.getName() ) ).thenReturn( HardSoftScoreHolder.class.getName() );
+        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
 
-        when( dataModelerService.findClassUsages( dataObjectPath,
-                                                  HardSoftScoreHolder.class.getName() ) ).thenReturn( Arrays.asList( mock( Path.class ) ) );
+        when(dataModelerService.findClassUsages(dataObjectPath,
+                                                HardSoftScoreHolder.class.getName())).thenReturn(Arrays.asList(mock(Path.class)));
 
-        DataObject updatedDataObject = new DataObjectImpl( "test",
-                                                           "Test" );
-        updatedDataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject updatedDataObject = new DataObjectImpl("test",
+                                                          "Test");
+        updatedDataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertEquals( 1,
-                      result.size() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertEquals(1,
+                     result.size());
 
         ValidationMessage message = result.iterator().next();
-        assertTrue( message instanceof ScoreHolderGlobalToBeRemovedMessage );
+        assertTrue(message instanceof ScoreHolderGlobalToBeRemovedMessage);
     }
 
     @Test
     public void notAPlanningSolution() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = new DataObjectImpl( "test",
-                                                            "Test" );
+        DataObject originalDataObject = new DataObjectImpl("test",
+                                                           "Test");
 
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        DataObject updatedDataObject = new DataObjectImpl( "test",
-                                                           "Test" );
+        DataObject updatedDataObject = new DataObjectImpl("test",
+                                                          "Test");
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void scoreHolderTypeNotRecognized() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = new DataObjectImpl( "test",
-                                                            "Test" );
-        originalDataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject originalDataObject = new DataObjectImpl("test",
+                                                           "Test");
+        originalDataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        when( scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                    dataObjectPath ) ).thenReturn( "UnknownScoreClassName" );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( "UnknownScoreClassName" ) ).thenReturn( null );
+        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn("UnknownScoreClassName");
+        when(scoreHolderUtils.getScoreHolderTypeFqn("UnknownScoreClassName")).thenReturn(null);
 
-        DataObject updatedDataObject = new DataObjectImpl( "test",
-                                                           "Test" );
+        DataObject updatedDataObject = new DataObjectImpl("test",
+                                                          "Test");
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertEquals( 1,
-                      result.size() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertEquals(1,
+                     result.size());
 
         ValidationMessage message = result.iterator().next();
-        assertTrue( message instanceof ScoreHolderGlobalTypeNotRecognizedMessage );
+        assertTrue(message instanceof ScoreHolderGlobalTypeNotRecognizedMessage);
     }
 }

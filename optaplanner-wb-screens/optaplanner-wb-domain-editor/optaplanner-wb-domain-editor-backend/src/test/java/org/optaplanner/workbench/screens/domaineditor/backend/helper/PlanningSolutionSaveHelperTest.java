@@ -72,119 +72,118 @@ public class PlanningSolutionSaveHelperTest {
 
     @Before
     public void setUp() {
-        saveHelper = new PlanningSolutionSaveHelper( ioService,
-                                                     dataModelerService,
-                                                     globalsEditorService,
-                                                     kieProjectService,
-                                                     scoreHolderUtils,
-                                                     metadataService );
+        saveHelper = new PlanningSolutionSaveHelper(ioService,
+                                                    dataModelerService,
+                                                    globalsEditorService,
+                                                    kieProjectService,
+                                                    scoreHolderUtils,
+                                                    metadataService);
     }
 
     @Test
     public void scoreTypeChangedScoreHolderGlobalFileExisting() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects" );
-        Path destinationPath = PathFactory.newPath( "TestSource.java",
-                                                    "file:///dataObjects" );
-        testPlanningSolutionSaved( true,
-                                   sourcePath,
-                                   destinationPath );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
+        Path destinationPath = PathFactory.newPath("TestSource.java",
+                                                   "file:///dataObjects");
+        testPlanningSolutionSaved(true,
+                                  sourcePath,
+                                  destinationPath);
     }
 
     @Test
     public void scoreTypeChangedScoreHolderGlobalFileNonExisting() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects" );
-        Path destinationPath = PathFactory.newPath( "TestSource.java",
-                                                    "file:///dataObjects" );
-        testPlanningSolutionSaved( false,
-                                   sourcePath,
-                                   destinationPath );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
+        Path destinationPath = PathFactory.newPath("TestSource.java",
+                                                   "file:///dataObjects");
+        testPlanningSolutionSaved(false,
+                                  sourcePath,
+                                  destinationPath);
     }
 
     @Test
     public void planningSolutionDataObjectRenamed() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects1" );
-        Path destinationPath = PathFactory.newPath( "TestDestination.java",
-                                                    "file:///dataObjects2" );
-        testPlanningSolutionSaved( false,
-                                   sourcePath,
-                                   destinationPath );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects1");
+        Path destinationPath = PathFactory.newPath("TestDestination.java",
+                                                   "file:///dataObjects2");
+        testPlanningSolutionSaved(false,
+                                  sourcePath,
+                                  destinationPath);
     }
 
-    private void testPlanningSolutionSaved( boolean scoreHolderGlobalFileExists,
-                                            Path sourcePath,
-                                            Path destinationPath ) {
-        when( ioService.readAllString( Paths.convert( sourcePath ) ) ).thenReturn( "test source" );
+    private void testPlanningSolutionSaved(boolean scoreHolderGlobalFileExists,
+                                           Path sourcePath,
+                                           Path destinationPath) {
+        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
 
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "TestSource" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "TestSource");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( dataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
-
-        Package _package = mock( Package.class );
-        when( _package.getPackageMainResourcesPath() ).thenReturn( PathFactory.newPath( "dataObjects",
-                                                                                        "file:///dataObjects" ) );
-        when( kieProjectService.resolvePackage( any( Path.class ) ) ).thenReturn( _package );
-
-        when( scoreHolderUtils.extractScoreTypeFqn( dataObject,
-                                                    destinationPath ) ).thenReturn( HardSoftScore.class.getName() );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( HardSoftScore.class.getName() ) ).thenReturn( HardSoftScoreHolder.class.getName() );
-        when( ioService.exists( any() ) ).thenReturn( scoreHolderGlobalFileExists );
-        when( globalsEditorService.load( any( Path.class ) ) ).thenReturn( mock( GlobalsModel.class ) );
-
-        saveHelper.postProcess( sourcePath,
-                                destinationPath );
-
-        if ( sourcePath.equals( destinationPath ) ) {
-            if ( scoreHolderGlobalFileExists ) {
-                verify( globalsEditorService,
-                        times( 1 ) ).save( any( Path.class ),
-                                           any( GlobalsModel.class ),
-                                           any( Metadata.class ),
-                                           anyString() );
-            } else {
-                verify( globalsEditorService,
-                        times( 1 ) ).generate( any( Path.class ),
+        generationResult.setDataObject(dataObject);
+        when(dataModelerService.loadDataObject(any(),
                                                anyString(),
-                                               any( GlobalsModel.class ),
-                                               anyString() );
+                                               any())).thenReturn(generationResult);
+
+        Package _package = mock(Package.class);
+        when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
+                                                                                    "file:///dataObjects"));
+        when(kieProjectService.resolvePackage(any(Path.class))).thenReturn(_package);
+
+        when(scoreHolderUtils.extractScoreTypeFqn(dataObject)).thenReturn(HardSoftScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
+        when(ioService.exists(any())).thenReturn(scoreHolderGlobalFileExists);
+        when(globalsEditorService.load(any(Path.class))).thenReturn(mock(GlobalsModel.class));
+
+        saveHelper.postProcess(sourcePath,
+                               destinationPath);
+
+        if (sourcePath.equals(destinationPath)) {
+            if (scoreHolderGlobalFileExists) {
+                verify(globalsEditorService,
+                       times(1)).save(any(Path.class),
+                                      any(GlobalsModel.class),
+                                      any(Metadata.class),
+                                      anyString());
+            } else {
+                verify(globalsEditorService,
+                       times(1)).generate(any(Path.class),
+                                          anyString(),
+                                          any(GlobalsModel.class),
+                                          anyString());
             }
         } else {
-            verify( ioService ).deleteIfExists( any( org.uberfire.java.nio.file.Path.class ) );
+            verify(ioService).deleteIfExists(any(org.uberfire.java.nio.file.Path.class));
         }
     }
 
     @Test
     public void saveDataObjectNotAPlanningSolution() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects" );
-        Path destinationPath = PathFactory.newPath( "TestSource.java",
-                                                    "file:///dataObjects" );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
+        Path destinationPath = PathFactory.newPath("TestSource.java",
+                                                   "file:///dataObjects");
 
-        when( ioService.readAllString( Paths.convert( sourcePath ) ) ).thenReturn( "test source" );
+        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
 
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "TestSource" );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "TestSource");
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( dataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(dataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        Package _package = mock( Package.class );
-        when( _package.getPackageMainResourcesPath() ).thenReturn( PathFactory.newPath( "dataObjects",
-                                                                                        "file:///dataObjects" ) );
-        when( kieProjectService.resolvePackage( any( Path.class ) ) ).thenReturn( _package );
+        Package _package = mock(Package.class);
+        when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
+                                                                                    "file:///dataObjects"));
+        when(kieProjectService.resolvePackage(any(Path.class))).thenReturn(_package);
 
-        saveHelper.postProcess( sourcePath,
-                                destinationPath );
+        saveHelper.postProcess(sourcePath,
+                               destinationPath);
 
-        verify( ioService ).deleteIfExists( any( org.uberfire.java.nio.file.Path.class ) );
+        verify(ioService).deleteIfExists(any(org.uberfire.java.nio.file.Path.class));
     }
 }
