@@ -39,11 +39,14 @@ import org.uberfire.mvp.Command;
 @ApplicationScoped
 public class MultiConstraintHardSoftMatchRuleModellerActionPlugin implements RuleModellerActionPlugin {
 
-    private static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
+    static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
 
     static {
-        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(1);
+        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(4);
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScoreHolder");
     }
 
     @Inject

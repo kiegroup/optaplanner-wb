@@ -37,11 +37,14 @@ import org.uberfire.mvp.Command;
 @ApplicationScoped
 public class SimpleConstraintMatchRuleModellerActionPlugin implements RuleModellerActionPlugin {
 
-    private static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
+    static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
 
     static {
-        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(1);
+        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(4);
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simple.SimpleScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simplebigdecimal.SimpleBigDecimalScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder");
     }
 
     @Inject

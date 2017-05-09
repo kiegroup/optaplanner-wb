@@ -37,12 +37,17 @@ import org.uberfire.mvp.Command;
 @ApplicationScoped
 public class SoftConstraintMatchRuleModellerActionPlugin implements RuleModellerActionPlugin {
 
-    private static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
+    static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
 
     static {
-        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(2);
-        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(7);
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScoreHolder");
+        SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScoreHolder");
     }
 
     @Inject
