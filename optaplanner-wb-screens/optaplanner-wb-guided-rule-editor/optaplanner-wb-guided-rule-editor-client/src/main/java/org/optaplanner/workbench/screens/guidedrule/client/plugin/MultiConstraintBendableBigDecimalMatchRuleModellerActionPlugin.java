@@ -39,7 +39,7 @@ import org.uberfire.mvp.Command;
 @ApplicationScoped
 public class MultiConstraintBendableBigDecimalMatchRuleModellerActionPlugin implements RuleModellerActionPlugin {
 
-    private static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
+    static final Set<String> SUPPORTED_SCORE_HOLDER_TYPES;
 
     static {
         SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(1);
