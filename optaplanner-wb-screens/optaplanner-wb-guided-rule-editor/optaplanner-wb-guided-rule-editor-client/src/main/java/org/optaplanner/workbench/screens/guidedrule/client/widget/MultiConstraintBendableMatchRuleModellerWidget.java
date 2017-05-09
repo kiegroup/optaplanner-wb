@@ -122,7 +122,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         HelpIcon constraintLevelSelectHelpIcon = new HelpIcon();
         hardConstraintMatchHelpIcons.add(constraintLevelSelectHelpIcon);
         constraintLevelSelectHelpIcon.setVisible(false);
-        constraintLevelSelectHelpIcon.setHelpContent(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded);
+        constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded));
         constraintLevelSelectHelpIcon.getElement().getStyle().setPaddingLeft(5,
                                                                              Style.Unit.PX);
         selectPanel.add(constraintLevelSelectHelpIcon);
