@@ -18,7 +18,6 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
@@ -27,9 +26,8 @@ import org.jboss.forge.roaster.model.Annotation;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.kie.workbench.common.screens.datamodeller.backend.server.indexing.JavaFileIndexerExtension;
-import org.kie.workbench.common.services.datamodeller.util.NamingUtils;
+import org.kie.workbench.common.services.refactoring.ResourceReference;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.DefaultIndexBuilder;
-import org.kie.workbench.common.services.refactoring.model.index.ResourceReference;
 import org.kie.workbench.common.services.refactoring.service.PartType;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -85,7 +83,7 @@ public class ComparatorDefinitionIndexerExtension implements JavaFileIndexerExte
 
                                 if ( previousFullyQualifiedClassname != null && previousFullyQualifiedClassname.matches( "\\w[\\.\\w]+\\.class" ) ) {
                                     for ( int i = 1; i < fieldDefinitions.length; i++ ) {
-                                        ResourceReference resourceReference = new ResourceReference( previousFullyQualifiedClassname.substring( 0, previousFullyQualifiedClassname.indexOf( ".class" ) ), ResourceType.JAVA );
+                                        ResourceReference resourceReference = new ResourceReference(previousFullyQualifiedClassname.substring(0, previousFullyQualifiedClassname.indexOf(".class" ) ), ResourceType.JAVA );
                                         resourceReference.addPartReference( fieldDefinitions[i].getStringValue( "name" ), PartType.FIELD );
 
                                         previousFullyQualifiedClassname = fieldDefinitions[i].getStringValue( "type" );
