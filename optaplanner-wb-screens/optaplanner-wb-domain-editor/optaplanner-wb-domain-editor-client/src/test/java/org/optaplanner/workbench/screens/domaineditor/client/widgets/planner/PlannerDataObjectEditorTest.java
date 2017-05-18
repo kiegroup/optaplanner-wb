@@ -16,9 +16,9 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import java.util.Arrays;
 import java.util.Collections;
 import javax.annotation.Generated;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.common.client.api.Caller;
@@ -30,21 +30,17 @@ import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.datamodeller.core.Method;
-import org.kie.workbench.common.services.datamodeller.core.Parameter;
-import org.kie.workbench.common.services.datamodeller.core.Type;
-import org.kie.workbench.common.services.datamodeller.core.Visibility;
-import org.kie.workbench.common.services.datamodeller.core.impl.MethodImpl;
-import org.kie.workbench.common.services.datamodeller.core.impl.ParameterImpl;
-import org.kie.workbench.common.services.datamodeller.core.impl.TypeImpl;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyImpl;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
+import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.core.impl.domain.solution.AbstractSolution;
+import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 import org.uberfire.backend.vfs.Path;
@@ -157,34 +153,19 @@ public class PlannerDataObjectEditorTest
                                                                                null,
                                                                                null));
 
-        Type getScoreMethodReturnType = new TypeImpl(BendableScore.class.getName());
-        Method getScoreMethod = new MethodImpl("getScore",
-                                               Collections.EMPTY_LIST,
-                                               "return score;",
-                                               getScoreMethodReturnType,
-                                               Visibility.PUBLIC);
-        getScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(PlanningScore.class,
-                                                                                   new Pair("bendableHardLevelsSize",
-                                                                                            5),
-                                                                                   new Pair("bendableSoftLevelsSize",
-                                                                                            10)));
-        getScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
-                                                                                   null,
-                                                                                   null));
-        dataObject.addMethod(getScoreMethod);
+        ObjectProperty scoreObjectProperty = new ObjectPropertyImpl("score",
+                                                                    BendableScore.class.getName(),
+                                                                    false);
+        dataObject.addProperty(scoreObjectProperty);
 
-        Parameter setScoreParameter = new ParameterImpl(new TypeImpl(BendableScore.class.getName()),
-                                                        "score");
-        Type setScoreParameterReturnType = new TypeImpl(void.class.getName());
-        Method setScoreMethod = new MethodImpl("setScore",
-                                               Arrays.asList(setScoreParameter),
-                                               "this.score = score;",
-                                               setScoreParameterReturnType,
-                                               Visibility.PUBLIC);
-        setScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
-                                                                                   null,
-                                                                                   null));
-        dataObject.addMethod(setScoreMethod);
+        scoreObjectProperty.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(PlanningScore.class,
+                                                                                        new Pair("bendableHardLevelsSize",
+                                                                                                 5),
+                                                                                        new Pair("bendableSoftLevelsSize",
+                                                                                                 10)));
+        scoreObjectProperty.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
+                                                                                        null,
+                                                                                        null));
 
         objectEditor.onContextChange(context);
 
@@ -241,11 +222,23 @@ public class PlannerDataObjectEditorTest
         //load the editor.
         objectEditor.onContextChange(context);
 
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_ROOT_ELEMENT,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_ACCESSOR_TYPE,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_JAVA_TYPE_ADAPTER_ANNOTATION,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(Generated.class.getName(),
+                                               mock(AnnotationDefinition.class));
+
         // reset state changed by onContextChange
         Mockito.reset(view);
 
         //emulate user input.
         when(view.getPlanningSolutionValue()).thenReturn(true);
+        when(view.getPlanningSolutionScoreType()).thenReturn(HardSoftScore.class.getName());
 
         //notify the presenter about the changes in the UI
         objectEditor.onPlanningSolutionChange();
@@ -263,9 +256,12 @@ public class PlannerDataObjectEditorTest
 
         //the dataObject should have been now configured as a HardSoftCore PlanningSolution by default.
         assertNotNull(dataObject.getAnnotation(PlanningSolution.class.getName()));
-        assertEquals("org.optaplanner.core.impl.domain.solution.AbstractSolution<" + HardSoftScore.class.getName() + ">"
-                ,
-                     dataObject.getSuperClassName());
+        assertNotNull(dataObject.getAnnotation(XmlRootElement.class.getName()));
+
+        ObjectProperty scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertEquals(HardSoftScore.class.getName(),
+                     scoreObjectProperty.getClassName());
     }
 
     @Test
@@ -280,28 +276,23 @@ public class PlannerDataObjectEditorTest
 
         context.getAnnotationDefinitions().put(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION,
                                                mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_ROOT_ELEMENT,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_ACCESSOR_TYPE,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_JAVA_TYPE_ADAPTER_ANNOTATION,
+                                               mock(AnnotationDefinition.class));
         context.getAnnotationDefinitions().put(Generated.class.getName(),
                                                mock(AnnotationDefinition.class));
-
-        context.getEditorModelContent().setSource(AbstractSolution.class.getName() + "<" + HardSoftScore.class.getName() + ">");
 
         objectEditor.onPlanningSolutionScoreTypeChange();
 
         DataObject dataObject = context.getDataObject();
 
-        assertEquals(AbstractSolution.class.getName() + "<" + BendableScore.class.getName() + ">",
-                     dataObject.getSuperClassName());
-
-        // getScore and setScore methods of BendableScore type should be present in the data object
-        Method getScoreMethod = dataObject.getMethod("getScore",
-                                                     Collections.EMPTY_LIST);
-        assertNotNull(getScoreMethod);
+        ObjectProperty scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
         assertEquals(BendableScore.class.getName(),
-                     getScoreMethod.getReturnType().getName());
-
-        Method setScoreMethod = dataObject.getMethod("setScore",
-                                                     Arrays.asList(BendableScore.class.getName()));
-        assertNotNull(setScoreMethod);
+                     scoreObjectProperty.getClassName());
     }
 
     @Test
@@ -333,34 +324,19 @@ public class PlannerDataObjectEditorTest
         context.getAnnotationDefinitions().put(Generated.class.getName(),
                                                mock(AnnotationDefinition.class));
 
-        Type getScoreMethodReturnType = new TypeImpl(BendableScore.class.getName());
-        Method getScoreMethod = new MethodImpl("getScore",
-                                               Collections.EMPTY_LIST,
-                                               "return score;",
-                                               getScoreMethodReturnType,
-                                               Visibility.PUBLIC);
-        getScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(PlanningScore.class,
-                                                                                   new Pair("bendableHardLevelsSize",
-                                                                                            5),
-                                                                                   new Pair("bendableSoftLevelsSize",
-                                                                                            5)));
-        getScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
-                                                                                   null,
-                                                                                   null));
-        dataObject.addMethod(getScoreMethod);
+        ObjectProperty scoreObjectProperty = new ObjectPropertyImpl("score",
+                                                                    BendableScore.class.getName(),
+                                                                    false);
+        dataObject.addProperty(scoreObjectProperty);
 
-        Parameter setScoreParameter = new ParameterImpl(new TypeImpl(BendableScore.class.getName()),
-                                                        "score");
-        Type setScoreParameterReturnType = new TypeImpl(void.class.getName());
-        Method setScoreMethod = new MethodImpl("setScore",
-                                               Arrays.asList(setScoreParameter),
-                                               "this.score = score;",
-                                               setScoreParameterReturnType,
-                                               Visibility.PUBLIC);
-        setScoreMethod.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
-                                                                                   null,
-                                                                                   null));
-        dataObject.addMethod(setScoreMethod);
+        scoreObjectProperty.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(PlanningScore.class,
+                                                                                        new Pair("bendableHardLevelsSize",
+                                                                                                 5),
+                                                                                        new Pair("bendableSoftLevelsSize",
+                                                                                                 5)));
+        scoreObjectProperty.addAnnotation(DataModelerEditorsTestHelper.createAnnotation(Generated.class,
+                                                                                        null,
+                                                                                        null));
 
         if (isHardScore) {
             when(view.getPlanningSolutionBendableScoreHardLevelsSize()).thenReturn(1);
@@ -372,12 +348,11 @@ public class PlannerDataObjectEditorTest
 
         objectEditor.onPlanningSolutionBendableScoreHardLevelsSizeChange();
 
-        getScoreMethod = dataObject.getMethod("getScore",
-                                              Collections.EMPTY_LIST);
+        scoreObjectProperty = dataObject.getProperty("score");
 
-        assertNotNull(getScoreMethod);
+        assertNotNull(scoreObjectProperty);
 
-        Annotation planningScoreAnnotation = getScoreMethod.getAnnotation(PlanningScore.class.getName());
+        Annotation planningScoreAnnotation = scoreObjectProperty.getAnnotation(PlanningScore.class.getName());
 
         assertNotNull(planningScoreAnnotation);
 
@@ -389,5 +364,102 @@ public class PlannerDataObjectEditorTest
             assertEquals(1,
                          planningScoreAnnotation.getValue("bendableSoftLevelsSize"));
         }
+    }
+
+    @Test
+    public void updatePlanningScoreProperty() {
+        PlannerDataObjectEditor objectEditor = createObjectEditor();
+
+        AnnotationDefinition planningScoreAnnotationDefinition = mock(AnnotationDefinition.class);
+        when(planningScoreAnnotationDefinition.getClassName()).thenReturn(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION);
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION,
+                                               planningScoreAnnotationDefinition);
+        context.getAnnotationDefinitions().put(PlannerDomainAnnotations.JAXB_XML_JAVA_TYPE_ADAPTER_ANNOTATION,
+                                               mock(AnnotationDefinition.class));
+        context.getAnnotationDefinitions().put(Generated.class.getName(),
+                                               mock(AnnotationDefinition.class));
+
+        objectEditor.onContextChange(context);
+
+        DataObject dataObject = context.getDataObject();
+
+        Mockito.reset(view);
+
+        // Data object -> Planning Solution
+        objectEditor.updatePlanningScoreProperty(HardSoftScore.class.getName());
+
+        ObjectProperty scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertEquals(HardSoftScore.class.getName(),
+                     scoreObjectProperty.getClassName());
+
+        Mockito.reset(view);
+
+        // Planning Solution (non-bendable score type 1) -> Planning Solution (non-bendable score type 2)
+        when(view.getPlanningSolutionScoreType()).thenReturn(HardSoftScore.class.getName());
+
+        objectEditor.onPlanningSolutionScoreTypeChange();
+
+        scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertEquals(HardSoftScore.class.getName(),
+                     scoreObjectProperty.getClassName());
+
+        Mockito.reset(view);
+
+        // Planning Solution (non-bendable score type) -> Planning Solution (bendable score type)
+        when(view.getPlanningSolutionScoreType()).thenReturn(BendableScore.class.getName());
+
+        objectEditor.onPlanningSolutionScoreTypeChange();
+
+        scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertNotNull(scoreObjectProperty.getAnnotation(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION));
+        assertEquals(BendableScore.class.getName(),
+                     scoreObjectProperty.getClassName());
+        verify(view,
+               times(1)).showPlanningSolutionBendableScoreInput(true);
+
+        Mockito.reset(view);
+
+        // Planning Solution (bendable score type1) -> Planning Solution (bendable score type 2)
+        when(view.getPlanningSolutionScoreType()).thenReturn(BendableLongScore.class.getName());
+
+        objectEditor.onPlanningSolutionScoreTypeChange();
+
+        scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertNotNull(scoreObjectProperty.getAnnotation(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION));
+        assertEquals(BendableLongScore.class.getName(),
+                     scoreObjectProperty.getClassName());
+        verify(view,
+               times(1)).showPlanningSolutionBendableScoreInput(true);
+
+        Mockito.reset(view);
+
+        // Planing Solution (bendable score type) -> Planning Solution (non-bendable score type)
+        when(view.getPlanningSolutionScoreType()).thenReturn(SimpleScore.class.getName());
+
+        objectEditor.onPlanningSolutionScoreTypeChange();
+
+        scoreObjectProperty = dataObject.getProperty("score");
+        assertNotNull(scoreObjectProperty);
+        assertNotNull(scoreObjectProperty.getAnnotation(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION));
+        assertEquals(SimpleScore.class.getName(),
+                     scoreObjectProperty.getClassName());
+        verify(view,
+               times(1)).showPlanningSolutionBendableScoreInput(false);
+
+        Mockito.reset(view);
+
+        // Planning Solution -> Data Object/Planning Entity
+        when(view.getNotInPlanningValue()).thenReturn(true);
+
+        objectEditor.onNotInPlanningChange();
+
+        scoreObjectProperty = dataObject.getProperty("score");
+        assertNull(scoreObjectProperty);
+        verify(view,
+               times(1)).showPlanningSolutionScoreType(false);
     }
 }

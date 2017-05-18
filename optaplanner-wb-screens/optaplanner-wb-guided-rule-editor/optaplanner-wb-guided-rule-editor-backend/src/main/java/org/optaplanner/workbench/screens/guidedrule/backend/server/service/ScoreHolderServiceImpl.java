@@ -31,8 +31,7 @@ import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.screens.javaeditor.type.JavaResourceTypeDefinition;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.datamodeller.core.Method;
-import org.kie.workbench.common.services.datamodeller.core.Type;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -123,12 +122,10 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
         if (!generationResult.hasErrors()) {
             DataObject dataObject = generationResult.getDataObject();
 
-            Method getScoreMethod = dataObject.getMethod("getScore",
-                                                         Collections.emptyList());
-            if (getScoreMethod != null) {
-                Type getScoreMethodReturnType = getScoreMethod.getReturnType();
-                if (getScoreMethodReturnType != null && isBendableScore(getScoreMethod.getReturnType().getName())) {
-                    Annotation annotation = getScoreMethod.getAnnotation(PlanningScore.class.getName());
+            ObjectProperty scoreObjectProperty = dataObject.getProperty("score");
+            if (scoreObjectProperty != null) {
+                if (isBendableScore(scoreObjectProperty.getClassName())) {
+                    Annotation annotation = scoreObjectProperty.getAnnotation(PlanningScore.class.getName());
                     if (annotation != null) {
                         Object hardLevelsSize = annotation.getValue("bendableHardLevelsSize");
                         Object softLevelsSize = annotation.getValue("bendableSoftLevelsSize");

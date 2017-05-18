@@ -112,7 +112,7 @@ public class PlannerDataObjectFieldEditorTest
         //first configure the DataObject as a PlanningSolution
         DataObject dataObject = context.getDataObject();
         dataObject.addAnnotation( new AnnotationImpl( context.getAnnotationDefinition( PlanningSolution.class.getName() ) ) );
-        dataObject.setSuperClassName( AbstractSolution.class.getName()+ "<" + HardSoftScore.class.getName() + ">" );
+        dataObject.addProperty("score", HardSoftScore.class.getName());
 
         ObjectProperty field1 = dataObject.getProperty( "field1" );
         //emulates the selection of field1

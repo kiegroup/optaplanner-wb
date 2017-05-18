@@ -43,7 +43,7 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
 @ApplicationScoped
 public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( PlanningSolutionSaveHelper.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlanningSolutionSaveHelper.class);
 
     private static final String SCORE_HOLDER = "scoreHolder";
 
@@ -65,12 +65,12 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
     }
 
     @Inject
-    public PlanningSolutionSaveHelper( @Named("ioStrategy") final IOService ioService,
-                                       final DataModelerService dataModelerService,
-                                       final GlobalsEditorService globalsEditorService,
-                                       final KieProjectService kieProjectService,
-                                       final ScoreHolderUtils scoreHolderUtils,
-                                       final MetadataService metadataService ) {
+    public PlanningSolutionSaveHelper(@Named("ioStrategy") final IOService ioService,
+                                      final DataModelerService dataModelerService,
+                                      final GlobalsEditorService globalsEditorService,
+                                      final KieProjectService kieProjectService,
+                                      final ScoreHolderUtils scoreHolderUtils,
+                                      final MetadataService metadataService) {
         this.ioService = ioService;
         this.dataModelerService = dataModelerService;
         this.globalsEditorService = globalsEditorService;
@@ -80,78 +80,77 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
     }
 
     @Override
-    public void postProcess( final Path sourcePath,
-                             final Path destinationPath ) {
+    public void postProcess(final Path sourcePath,
+                            final Path destinationPath) {
 
-        String dataObjectSource = ioService.readAllString( Paths.convert( destinationPath ) );
-        GenerationResult generationResult = dataModelerService.loadDataObject( destinationPath,
-                                                                               dataObjectSource,
-                                                                               destinationPath );
-        org.uberfire.java.nio.file.Path source = Paths.convert( kieProjectService.resolvePackage( sourcePath ).getPackageMainResourcesPath() );
-        org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory( source ) ? source : source.getParent();
+        String dataObjectSource = ioService.readAllString(Paths.convert(destinationPath));
+        GenerationResult generationResult = dataModelerService.loadDataObject(destinationPath,
+                                                                              dataObjectSource,
+                                                                              destinationPath);
+        org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(sourcePath).getPackageMainResourcesPath());
+        org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
 
-        String sourceSolutionFileName = sourcePath.getFileName().substring( 0,
-                                                                            sourcePath.getFileName().indexOf( "." ) );
-        org.uberfire.java.nio.file.Path sourceScoreHolderGlobalPath = sourcePackage.resolve( sourceSolutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX );
+        String sourceSolutionFileName = sourcePath.getFileName().substring(0,
+                                                                           sourcePath.getFileName().indexOf("."));
+        org.uberfire.java.nio.file.Path sourceScoreHolderGlobalPath = sourcePackage.resolve(sourceSolutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX);
 
-        if ( generationResult.hasErrors() ) {
-            LOGGER.warn( "Path " + destinationPath + " parsing as a data object has failed. Score holder global generation will be skipped." );
+        if (generationResult.hasErrors()) {
+            LOGGER.warn("Path " + destinationPath + " parsing as a data object has failed. Score holder global generation will be skipped.");
         } else {
             DataObject dataObject = generationResult.getDataObject();
-            if ( dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                String sourceScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn( dataObject,
-                                                                                  destinationPath );
-                String scoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn( sourceScoreTypeFqn );
+            if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                String sourceScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(dataObject);
+                String scoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(sourceScoreTypeFqn);
 
-                if ( scoreHolderTypeFqn == null ) {
-                    LOGGER.warn( "'scoreHolder' global variable will not be generated, as the selected score type is not supported" );
+                if (scoreHolderTypeFqn == null) {
+                    LOGGER.warn("'scoreHolder' global variable will not be generated, as the selected score type is not supported");
                     return;
                 }
 
-                if ( sourcePath.equals( destinationPath ) ) {
-                    boolean scoreHolderGlobalFileExists = ioService.exists( sourceScoreHolderGlobalPath );
+                if (sourcePath.equals(destinationPath)) {
+                    boolean scoreHolderGlobalFileExists = ioService.exists(sourceScoreHolderGlobalPath);
 
-                    if ( scoreHolderGlobalFileExists ) {
-                        GlobalsModel globalsModel = globalsEditorService.load( Paths.convert( sourceScoreHolderGlobalPath ) );
-                        globalsModel.setGlobals( Arrays.asList( new Global( SCORE_HOLDER,
-                                                                            scoreHolderTypeFqn ) ) );
-                        globalsEditorService.save( Paths.convert( sourceScoreHolderGlobalPath ),
-                                                   globalsModel,
-                                                   metadataService.getMetadata( Paths.convert( sourceScoreHolderGlobalPath ) ),
-                                                   "Auto generate scoreHolder global" );
+                    if (scoreHolderGlobalFileExists) {
+                        GlobalsModel globalsModel = globalsEditorService.load(Paths.convert(sourceScoreHolderGlobalPath));
+                        globalsModel.setGlobals(Arrays.asList(new Global(SCORE_HOLDER,
+                                                                         scoreHolderTypeFqn)));
+                        globalsEditorService.save(Paths.convert(sourceScoreHolderGlobalPath),
+                                                  globalsModel,
+                                                  metadataService.getMetadata(Paths.convert(sourceScoreHolderGlobalPath)),
+                                                  "Auto generate scoreHolder global");
                     } else {
-                        createScoreHolderGlobalFile( Paths.convert( sourcePackage ),
-                                                     scoreHolderTypeFqn,
-                                                     sourceSolutionFileName );
+                        createScoreHolderGlobalFile(Paths.convert(sourcePackage),
+                                                    scoreHolderTypeFqn,
+                                                    sourceSolutionFileName);
                     }
                 } else {
-                    org.uberfire.java.nio.file.Path destination = Paths.convert( kieProjectService.resolvePackage( destinationPath ).getPackageMainResourcesPath() );
-                    org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory( destination ) ? destination : destination.getParent();
+                    org.uberfire.java.nio.file.Path destination = Paths.convert(kieProjectService.resolvePackage(destinationPath).getPackageMainResourcesPath());
+                    org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory(destination) ? destination : destination.getParent();
 
-                    ioService.deleteIfExists( sourceScoreHolderGlobalPath );
+                    ioService.deleteIfExists(sourceScoreHolderGlobalPath);
 
-                    String destinationScoreHolderFileSimpleName = destinationPath.getFileName().substring( 0,
-                                                                                                           destinationPath.getFileName().indexOf( "." ) );
-                    createScoreHolderGlobalFile( Paths.convert( destinationPackage ),
-                                                 scoreHolderTypeFqn,
-                                                 destinationScoreHolderFileSimpleName );
+                    String destinationScoreHolderFileSimpleName = destinationPath.getFileName().substring(0,
+                                                                                                          destinationPath.getFileName().indexOf("."));
+                    createScoreHolderGlobalFile(Paths.convert(destinationPackage),
+                                                scoreHolderTypeFqn,
+                                                destinationScoreHolderFileSimpleName);
                 }
             } else {
-                ioService.deleteIfExists( sourceScoreHolderGlobalPath );
+                ioService.deleteIfExists(sourceScoreHolderGlobalPath);
             }
         }
     }
 
-    private void createScoreHolderGlobalFile( final Path folderPath,
-                                              final String scoreHolderTypeFqn,
-                                              final String solutionFileName ) {
+    private void createScoreHolderGlobalFile(final Path folderPath,
+                                             final String scoreHolderTypeFqn,
+                                             final String solutionFileName) {
         GlobalsModel globalsModel = new GlobalsModel();
-        globalsModel.setGlobals( Arrays.asList( new Global( SCORE_HOLDER,
-                                                            scoreHolderTypeFqn ) ) );
+        globalsModel.setGlobals(Arrays.asList(new Global(SCORE_HOLDER,
+                                                         scoreHolderTypeFqn)));
 
-        globalsEditorService.generate( folderPath,
-                                       solutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX,
-                                       globalsModel,
-                                       "Auto generate Score holder global variable based on a @PlanningSolution " + solutionFileName );
+        globalsEditorService.generate(folderPath,
+                                      solutionFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX,
+                                      globalsModel,
+                                      "Auto generate Score holder global variable based on a @PlanningSolution " + solutionFileName);
     }
 }
