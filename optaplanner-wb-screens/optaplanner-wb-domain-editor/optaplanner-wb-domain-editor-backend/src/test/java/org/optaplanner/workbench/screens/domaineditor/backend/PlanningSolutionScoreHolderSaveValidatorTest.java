@@ -37,7 +37,6 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScoreHolder;
-import org.optaplanner.core.impl.domain.solution.AbstractSolution;
 import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.PlanningSolutionScoreHolderSaveValidator;
 import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.ScoreHolderUtils;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeToBeChangedMessage;
@@ -67,117 +66,112 @@ public class PlanningSolutionScoreHolderSaveValidatorTest {
 
     @Before
     public void setUp() {
-        validator = new PlanningSolutionScoreHolderSaveValidator( dataModelerService,
-                                                                  ioService,
-                                                                  scoreHolderUtils );
+        validator = new PlanningSolutionScoreHolderSaveValidator(dataModelerService,
+                                                                 ioService,
+                                                                 scoreHolderUtils);
     }
 
     @Test
     public void scoreTypeChanged() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = createDataObject( HardSoftScore.class );
+        DataObject originalDataObject = createDataObject(HardSoftScore.class);
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
-        when( scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                    dataObjectPath ) ).thenReturn( HardSoftScore.class.getName() );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( HardSoftScore.class.getName() ) ).thenReturn( HardSoftScoreHolder.class.getName() );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
+        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
 
-        when( dataModelerService.findClassUsages( dataObjectPath,
-                                                  HardSoftScoreHolder.class.getName() ) ).thenReturn( Arrays.asList( mock( Path.class ) ) );
+        when(dataModelerService.findClassUsages(dataObjectPath,
+                                                HardSoftScoreHolder.class.getName())).thenReturn(Arrays.asList(mock(Path.class)));
 
-        DataObject updatedDataObject = createDataObject( SimpleScore.class );
-        when( scoreHolderUtils.extractScoreTypeFqn( updatedDataObject,
-                                                    dataObjectPath ) ).thenReturn( SimpleScore.class.getName() );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( SimpleScore.class.getName() ) ).thenReturn( SimpleScoreHolder.class.getName() );
+        DataObject updatedDataObject = createDataObject(SimpleScore.class);
+        when(scoreHolderUtils.extractScoreTypeFqn(updatedDataObject)).thenReturn(SimpleScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(SimpleScore.class.getName())).thenReturn(SimpleScoreHolder.class.getName());
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertEquals( 1,
-                      result.size() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertEquals(1,
+                     result.size());
 
         ValidationMessage message = result.iterator().next();
-        assertTrue( message instanceof ScoreHolderGlobalTypeToBeChangedMessage );
+        assertTrue(message instanceof ScoreHolderGlobalTypeToBeChangedMessage);
     }
 
     @Test
     public void dataObjectToAPlanningSolution() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = createDataObject( null );
+        DataObject originalDataObject = createDataObject(null);
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        DataObject updatedDataObject = createDataObject( SimpleScore.class );
+        DataObject updatedDataObject = createDataObject(SimpleScore.class);
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void dataObjectToADataObject() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = createDataObject( null );
+        DataObject originalDataObject = createDataObject(null);
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        DataObject updatedDataObject = createDataObject( null );
+        DataObject updatedDataObject = createDataObject(null);
 
-        Collection<ValidationMessage> result = validator.validate( dataObjectPath,
-                                                                   updatedDataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void scoreHolderTypeNotRecognized() {
-        Path dataObjectPath = PathFactory.newPath( "Test.java",
-                                                   "file:///dataObjects" );
-        when( ioService.readAllString( Paths.convert( dataObjectPath ) ) ).thenReturn( "testResult" );
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
 
-        DataObject originalDataObject = createDataObject( HardSoftScore.class );
+        DataObject originalDataObject = createDataObject(HardSoftScore.class);
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( originalDataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
-        when( scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                    dataObjectPath ) ).thenReturn( HardSoftScore.class.getName() );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( HardSoftScore.class.getName() ) ).thenReturn( HardSoftScoreHolder.class.getName() );
+        generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
+        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
 
-        when( dataModelerService.findClassUsages( dataObjectPath,
-                                                  HardSoftScoreHolder.class.getName() ) ).thenReturn( Arrays.asList( mock( Path.class ) ) );
+        when(dataModelerService.findClassUsages(dataObjectPath,
+                                                HardSoftScoreHolder.class.getName())).thenReturn(Arrays.asList(mock(Path.class)));
 
-        DataObject updatedDataObject = createDataObject( SimpleScore.class );
-        when( scoreHolderUtils.extractScoreTypeFqn( updatedDataObject,
-                                                    dataObjectPath ) ).thenReturn( "UnknownScoreClassName" );
-        when( scoreHolderUtils.getScoreHolderTypeFqn( "UnknownScoreClassName" ) ).thenReturn( null );
+        DataObject updatedDataObject = createDataObject(SimpleScore.class);
+        when(scoreHolderUtils.extractScoreTypeFqn(updatedDataObject)).thenReturn("UnknownScoreClassName");
+        when(scoreHolderUtils.getScoreHolderTypeFqn("UnknownScoreClassName")).thenReturn(null);
     }
 
-    private DataObject createDataObject( Class<? extends Score> scoreClass ) {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        if ( scoreClass != null ) {
-            dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
-            dataObject.setSuperClassName( String.format( "%s<%s>",
-                                                         AbstractSolution.class.getName(),
-                                                         scoreClass.getName() ) );
+    private DataObject createDataObject(Class<? extends Score> scoreClass) {
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        if (scoreClass != null) {
+            dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
+            dataObject.addProperty("score",
+                                   scoreClass.getName());
         }
         return dataObject;
     }

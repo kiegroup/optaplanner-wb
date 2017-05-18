@@ -16,18 +16,14 @@
 
 package org.optaplanner.workbench.screens.domaineditor.backend.server.validation;
 
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.drools.core.base.ClassTypeResolver;
 import org.kie.workbench.common.services.backend.project.ProjectClassLoaderHelper;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.shared.project.KieProject;
+import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScoreHolder;
 import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
@@ -56,12 +52,9 @@ import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScore;
 import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScoreHolder;
 import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScore;
 import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder;
-import org.uberfire.backend.vfs.Path;
 
 @ApplicationScoped
 public class ScoreHolderUtils {
-
-    private static final Pattern ABSTRACT_SOLUTION_PATTERN = Pattern.compile( "[\\w+\\.]*AbstractSolution<([\\w+\\.]*\\w+)>" );
 
     private KieProjectService kieProjectService;
 
@@ -71,67 +64,50 @@ public class ScoreHolderUtils {
     }
 
     @Inject
-    public ScoreHolderUtils( final KieProjectService kieProjectService,
-                             final ProjectClassLoaderHelper classLoaderHelper ) {
+    public ScoreHolderUtils(final KieProjectService kieProjectService,
+                            final ProjectClassLoaderHelper classLoaderHelper) {
         this.kieProjectService = kieProjectService;
         this.classLoaderHelper = classLoaderHelper;
     }
 
-    public String extractScoreTypeFqn( final DataObject dataObject,
-                                       final Path dataObjectPath ) {
-        Matcher matcher = ABSTRACT_SOLUTION_PATTERN.matcher( dataObject.getSuperClassName() );
-
-        if ( matcher.matches() ) {
-            String scoreType = matcher.group( 1 );
-
-            final String scoreTypeFqn;
-            if ( scoreType.contains( "." ) ) {
-                scoreTypeFqn = scoreType;
-            } else {
-                KieProject kieProject = kieProjectService.resolveProject( dataObjectPath );
-                Set<String> imports = dataObject.getImports().stream().map( i -> i.getName() ).collect( Collectors.toSet() );
-                ClassLoader projectClassLoader = classLoaderHelper.getProjectClassLoader( kieProject );
-                ClassTypeResolver classTypeResolver = new ClassTypeResolver( imports,
-                                                                             projectClassLoader );
-                try {
-                    scoreTypeFqn = classTypeResolver.getFullTypeName( scoreType );
-                } catch ( ClassNotFoundException e ) {
-                    return null;
-                }
+    public String extractScoreTypeFqn(final DataObject dataObject) {
+        if (dataObject.getAnnotation(PlanningSolution.class.getName()) != null) {
+            final ObjectProperty scoreObjectProperty = dataObject.getProperty("score");
+            if (scoreObjectProperty != null) {
+                return scoreObjectProperty.getClassName();
             }
-            return scoreTypeFqn;
         }
         return null;
     }
 
-    public String getScoreHolderTypeFqn( final String scoreTypeFqn ) {
-        if ( BendableScore.class.getName().equals( scoreTypeFqn ) ) {
+    public String getScoreHolderTypeFqn(final String scoreTypeFqn) {
+        if (BendableScore.class.getName().equals(scoreTypeFqn)) {
             return BendableScoreHolder.class.getName();
-        } else if ( BendableBigDecimalScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (BendableBigDecimalScore.class.getName().equals(scoreTypeFqn)) {
             return BendableBigDecimalScoreHolder.class.getName();
-        } else if ( BendableLongScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (BendableLongScore.class.getName().equals(scoreTypeFqn)) {
             return BendableLongScoreHolder.class.getName();
-        } else if ( HardMediumSoftScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardMediumSoftScore.class.getName().equals(scoreTypeFqn)) {
             return HardMediumSoftScoreHolder.class.getName();
-        } else if ( HardMediumSoftBigDecimalScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardMediumSoftBigDecimalScore.class.getName().equals(scoreTypeFqn)) {
             return HardMediumSoftBigDecimalScoreHolder.class.getName();
-        } else if ( HardMediumSoftLongScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardMediumSoftLongScore.class.getName().equals(scoreTypeFqn)) {
             return HardMediumSoftLongScoreHolder.class.getName();
-        } else if ( HardSoftScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardSoftScore.class.getName().equals(scoreTypeFqn)) {
             return HardSoftScoreHolder.class.getName();
-        } else if ( HardSoftBigDecimalScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardSoftBigDecimalScore.class.getName().equals(scoreTypeFqn)) {
             return HardSoftBigDecimalScoreHolder.class.getName();
-        } else if ( HardSoftDoubleScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardSoftDoubleScore.class.getName().equals(scoreTypeFqn)) {
             return HardSoftDoubleScoreHolder.class.getName();
-        } else if ( HardSoftLongScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (HardSoftLongScore.class.getName().equals(scoreTypeFqn)) {
             return HardSoftLongScoreHolder.class.getName();
-        } else if ( SimpleScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (SimpleScore.class.getName().equals(scoreTypeFqn)) {
             return SimpleScoreHolder.class.getName();
-        } else if ( SimpleBigDecimalScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (SimpleBigDecimalScore.class.getName().equals(scoreTypeFqn)) {
             return SimpleBigDecimalScoreHolder.class.getName();
-        } else if ( SimpleDoubleScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (SimpleDoubleScore.class.getName().equals(scoreTypeFqn)) {
             return SimpleDoubleScoreHolder.class.getName();
-        } else if ( SimpleLongScore.class.getName().equals( scoreTypeFqn ) ) {
+        } else if (SimpleLongScore.class.getName().equals(scoreTypeFqn)) {
             return SimpleLongScoreHolder.class.getName();
         }
         return null;

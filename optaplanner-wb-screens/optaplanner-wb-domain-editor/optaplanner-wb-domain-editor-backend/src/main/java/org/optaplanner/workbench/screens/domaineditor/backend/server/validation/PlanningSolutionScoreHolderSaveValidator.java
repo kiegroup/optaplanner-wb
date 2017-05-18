@@ -45,7 +45,7 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
  * <li>Is a Planning Solution and score type has changed.</li>
  * <li>Changes from a Planning Solution to a different data object type</li>
  * </ol>
- *
+ * <p>
  * Display warning message as the type of 'scoreHolder' global variable associated with a score type defined in the Planning Solution
  * will be changed (or the score holder global will be deleted) as a consequence. This potentially breaks all the rules where
  * the 'scoreHolder' global variable is referenced.
@@ -60,59 +60,57 @@ public class PlanningSolutionScoreHolderSaveValidator implements SaveValidator<D
     private ScoreHolderUtils scoreHolderUtils;
 
     @Inject
-    public PlanningSolutionScoreHolderSaveValidator( final DataModelerService dataModelerService,
-                                                     @Named("ioStrategy") final IOService ioService,
-                                                     final ScoreHolderUtils scoreHolderUtils ) {
+    public PlanningSolutionScoreHolderSaveValidator(final DataModelerService dataModelerService,
+                                                    @Named("ioStrategy") final IOService ioService,
+                                                    final ScoreHolderUtils scoreHolderUtils) {
         this.dataModelerService = dataModelerService;
         this.ioService = ioService;
         this.scoreHolderUtils = scoreHolderUtils;
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path dataObjectPath,
-                                                   final DataObject dataObject ) {
-        if ( dataObjectPath != null ) {
-            String dataObjectSource = ioService.readAllString( Paths.convert( dataObjectPath ) );
-            GenerationResult generationResult = dataModelerService.loadDataObject( dataObjectPath,
-                                                                                   dataObjectSource,
-                                                                                   dataObjectPath );
-            if ( generationResult.hasErrors() ) {
+    public Collection<ValidationMessage> validate(final Path dataObjectPath,
+                                                  final DataObject dataObject) {
+        if (dataObjectPath != null) {
+            String dataObjectSource = ioService.readAllString(Paths.convert(dataObjectPath));
+            GenerationResult generationResult = dataModelerService.loadDataObject(dataObjectPath,
+                                                                                  dataObjectSource,
+                                                                                  dataObjectPath);
+            if (generationResult.hasErrors()) {
                 return Collections.emptyList();
             } else {
                 DataObject originalDataObject = generationResult.getDataObject();
 
-                if ( originalDataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                    String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn( originalDataObject,
-                                                                                                  dataObjectPath );
+                if (originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                    String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(originalDataObject);
 
-                    String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn( originalDataObjectScoreTypeFqn );
+                    String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(originalDataObjectScoreTypeFqn);
 
-                    if ( originalDataObjectScoreHolderTypeFqn == null ) {
-                        return Arrays.asList( new ScoreHolderGlobalTypeNotRecognizedMessage( Level.WARNING ) );
+                    if (originalDataObjectScoreHolderTypeFqn == null) {
+                        return Arrays.asList(new ScoreHolderGlobalTypeNotRecognizedMessage(Level.WARNING));
                     }
 
-                    List<Path> scoreHolderGlobalUsages = dataModelerService.findClassUsages( dataObjectPath,
-                                                                                             originalDataObjectScoreHolderTypeFqn );
-                    if ( scoreHolderGlobalUsages.isEmpty() ) {
+                    List<Path> scoreHolderGlobalUsages = dataModelerService.findClassUsages(dataObjectPath,
+                                                                                            originalDataObjectScoreHolderTypeFqn);
+                    if (scoreHolderGlobalUsages.isEmpty()) {
                         return Collections.emptyList();
                     } else {
                         // Planning Solution -> No Planning Solution
-                        if ( dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) == null ) {
-                            return Arrays.asList( new ScoreHolderGlobalToBeRemovedMessage( Level.WARNING ) );
+                        if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) == null) {
+                            return Arrays.asList(new ScoreHolderGlobalToBeRemovedMessage(Level.WARNING));
                         } else {
                             // Planning Solution Type T1 -> Planning Solution Type T2
-                            String dataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn( dataObject,
-                                                                                                  dataObjectPath );
+                            String dataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(dataObject);
 
-                            String dataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn( dataObjectScoreTypeFqn );
+                            String dataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(dataObjectScoreTypeFqn);
 
-                            if ( dataObjectScoreHolderTypeFqn == null ) {
-                                return Arrays.asList( new ScoreHolderGlobalTypeNotRecognizedMessage( Level.WARNING ) );
+                            if (dataObjectScoreHolderTypeFqn == null) {
+                                return Arrays.asList(new ScoreHolderGlobalTypeNotRecognizedMessage(Level.WARNING));
                             }
 
                             // Planning solution has changed
-                            if ( !originalDataObjectScoreHolderTypeFqn.equals( dataObjectScoreHolderTypeFqn ) ) {
-                                return Arrays.asList( new ScoreHolderGlobalTypeToBeChangedMessage( Level.WARNING ) );
+                            if (!originalDataObjectScoreHolderTypeFqn.equals(dataObjectScoreHolderTypeFqn)) {
+                                return Arrays.asList(new ScoreHolderGlobalTypeToBeChangedMessage(Level.WARNING));
                             }
                         }
                     }
@@ -123,7 +121,7 @@ public class PlanningSolutionScoreHolderSaveValidator implements SaveValidator<D
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".java" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".java");
     }
 }

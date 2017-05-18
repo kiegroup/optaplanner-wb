@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kie.workbench.common.screens.datamodeller.backend.server.handler.DomainHandler;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
@@ -43,20 +46,24 @@ public class PlannerDomainHandler implements DomainHandler {
 
     static {
         //Planner managed annotations
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningEntity.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningScore.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningVariable.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ValueRangeProvider.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( PlanningEntityCollectionProperty.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ComparatorDefinition.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ComparatorObjectPropertyPath.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( ComparatorObjectProperty.class ) );
-        domainAnnotations.add( DriverUtils.buildAnnotationDefinition( Generated.class ) );
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningEntity.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningScore.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningSolution.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningVariable.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ValueRangeProvider.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningEntityCollectionProperty.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorDefinition.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorObjectPropertyPath.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorObjectProperty.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(Generated.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(XmlJavaTypeAdapter.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(XmlRootElement.class));
+        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(XmlAccessorType.class));
     }
 
     @Override
-    public void setDefaultValues( DataObject dataObject, Map<String, Object> options ) {
+    public void setDefaultValues(DataObject dataObject,
+                                 Map<String, Object> options) {
         //This domain doesn't do any by default processing at data object creation time
     }
 
@@ -64,5 +71,4 @@ public class PlannerDomainHandler implements DomainHandler {
     public List<AnnotationDefinition> getManagedAnnotations() {
         return domainAnnotations;
     }
-
 }
