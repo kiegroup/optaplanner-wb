@@ -16,12 +16,17 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Generated;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +36,7 @@ import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyImpl;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -44,6 +50,7 @@ import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 import org.uberfire.backend.vfs.Path;
+import org.uberfire.backend.vfs.PathFactory;
 import org.uberfire.commons.data.Pair;
 
 import static org.junit.Assert.*;
@@ -461,5 +468,65 @@ public class PlannerDataObjectEditorTest
         assertNull(scoreObjectProperty);
         verify(view,
                times(1)).showPlanningSolutionScoreType(false);
+    }
+
+    @Test
+    public void getFindClassUsagesCallbackObjectIsAPlanningSolution() {
+        PlannerDataObjectEditor objectEditor = createObjectEditor();
+
+        Path solutionPath = PathFactory.newPath("PlanningSolution.java",
+                                                "default:///test/PlanningSolution.java");
+        Map<String, Path> dataObjectPaths = new HashMap<>();
+        dataObjectPaths.put("test.PlanningSolution",
+                            solutionPath);
+        context.getEditorModelContent().setDataObjectPaths(dataObjectPaths);
+
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "PlanningSolution");
+        context.setDataObject(dataObject);
+
+        objectEditor.onContextChange(context);
+
+        RemoteCallback<List<Path>> callback = objectEditor.getFindClassUsagesCallback();
+
+        Mockito.reset(view);
+
+        callback.callback(Arrays.asList(solutionPath));
+
+        verify(view,
+               times(1)).enablePlanningSolutionCheckBox(true);
+        verify(view,
+               times(1)).showPlanningSolutionHelpIcon(false);
+    }
+
+    @Test
+    public void getFindClassUsagesCallbackObjectIsNotAPlanningSolution() {
+        PlannerDataObjectEditor objectEditor = createObjectEditor();
+
+        Path solutionPath = PathFactory.newPath("PlanningSolution.java",
+                                                "default:///test/PlanningSolution.java");
+        Path entityPath = PathFactory.newPath("PlanningEntity.java",
+                                              "default:///test/PlanningEntity.java");
+        Map<String, Path> dataObjectPaths = new HashMap<>();
+        dataObjectPaths.put("test.PlanningSolution",
+                            solutionPath);
+        context.getEditorModelContent().setDataObjectPaths(dataObjectPaths);
+
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "PlanningEntity");
+        context.setDataObject(dataObject);
+
+        objectEditor.onContextChange(context);
+
+        RemoteCallback<List<Path>> callback = objectEditor.getFindClassUsagesCallback();
+
+        Mockito.reset(view);
+
+        callback.callback(Arrays.asList(solutionPath));
+
+        verify(view,
+               times(1)).enablePlanningSolutionCheckBox(false);
+        verify(view,
+               times(1)).showPlanningSolutionHelpIcon(true);
     }
 }

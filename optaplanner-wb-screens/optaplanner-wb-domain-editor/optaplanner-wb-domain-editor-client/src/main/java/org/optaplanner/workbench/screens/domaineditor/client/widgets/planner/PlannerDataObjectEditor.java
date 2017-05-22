@@ -118,13 +118,7 @@ public class PlannerDataObjectEditor
             if (!hasPlanningSolution) {
                 view.enablePlanningSolutionCheckBox(false);
                 view.showPlanningSolutionHelpIcon(false);
-                dataModelerService.call(new RemoteCallback<List<Path>>() {
-                    @Override
-                    public void callback(List<Path> paths) {
-                        view.enablePlanningSolutionCheckBox(paths.isEmpty());
-                        view.showPlanningSolutionHelpIcon(!paths.isEmpty());
-                    }
-                }).findClassUsages(context.getCurrentProject().getRootPath(),
+                dataModelerService.call(getFindClassUsagesCallback()).findClassUsages(context.getCurrentProject().getRootPath(),
                                    PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION);
             } else {
                 view.enablePlanningSolutionCheckBox(true);
@@ -192,6 +186,22 @@ public class PlannerDataObjectEditor
                 }
             }
         }
+    }
+
+    RemoteCallback<List<Path>> getFindClassUsagesCallback() {
+        return new RemoteCallback<List<Path>>() {
+            @Override
+            public void callback(List<Path> paths) {
+                // Remove current data object from the path list
+                List<Path> pathsCopy = new ArrayList<>(paths);
+
+                Path currentDataObjectPath = context.getDataObjectPath(dataObject.getClassName());
+                pathsCopy.remove(currentDataObjectPath);
+
+                view.enablePlanningSolutionCheckBox(pathsCopy.isEmpty());
+                view.showPlanningSolutionHelpIcon(!pathsCopy.isEmpty());
+            }
+        };
     }
 
     private List<ObjectPropertyPath> getObjectPropertyPathList(Annotation comparatorDefinition) {
