@@ -39,7 +39,6 @@ import org.kie.workbench.common.screens.datamodeller.events.DataObjectFieldDelet
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
-import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations;
 import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
@@ -266,10 +265,5 @@ public class PlannerDomainHandler implements DomainHandler {
             }
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public boolean isDomainSpecificProperty(ObjectProperty objectProperty) {
-        return objectProperty != null && "score".equals(objectProperty.getName()) && objectProperty.getAnnotation(PlannerDomainAnnotations.PLANNING_SCORE_ANNOTATION) != null;
     }
 }

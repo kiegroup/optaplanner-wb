@@ -459,6 +459,13 @@ public class PlannerDataObjectEditorTest
 
         Mockito.reset(view);
 
+        // Planning Score field removed
+        when(view.getPlanningSolutionScoreType()).thenReturn("");
+
+        objectEditor.onPlanningSolutionScoreTypeChange();
+
+        assertNull(dataObject.getProperty("score"));
+
         // Planning Solution -> Data Object/Planning Entity
         when(view.getNotInPlanningValue()).thenReturn(true);
 

@@ -25,6 +25,7 @@ import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationMessageTranslator;
 import org.optaplanner.workbench.screens.domaineditor.client.resources.i18n.DomainEditorConstants;
+import org.optaplanner.workbench.screens.domaineditor.validation.PlanningScoreToBeDeletedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningSolutionToBeDuplicatedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalFileToBeRemovedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeDefinedManuallyMessage;
@@ -53,6 +54,8 @@ public class PlannerValidationMessageTranslator implements ValidationMessageTran
                                        DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage );
         MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalToBeDefinedManuallyMessage.class.getName(),
                                        DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage );
+        MESSAGE_CLASS_KEY_MAPPING.put( PlanningScoreToBeDeletedMessage.class.getName(),
+                                       DomainEditorConstants.PlannerCheckTranslatorPlanningScoreToBeDeletedMessage);
     }
 
     @Inject

@@ -119,7 +119,7 @@ public class PlannerDataObjectEditor
                 view.enablePlanningSolutionCheckBox(false);
                 view.showPlanningSolutionHelpIcon(false);
                 dataModelerService.call(getFindClassUsagesCallback()).findClassUsages(context.getCurrentProject().getRootPath(),
-                                   PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION);
+                                                                                      PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION);
             } else {
                 view.enablePlanningSolutionCheckBox(true);
                 view.showPlanningSolutionHelpIcon(false);
@@ -533,6 +533,10 @@ public class PlannerDataObjectEditor
     }
 
     private void addPlanningScoreProperty(final String newPlanningSolutionScoreType) {
+        if (newPlanningSolutionScoreType.isEmpty()) {
+            return;
+        }
+
         commandBuilder.buildAddPropertyCommand(getContext(),
                                                getName(),
                                                getDataObject(),
@@ -608,9 +612,7 @@ public class PlannerDataObjectEditor
     private void adjustSelectedPlanningSolutionScoreType() {
         if (getDataObject() != null) {
             ObjectProperty scoreObjectProperty = getDataObject().getProperty("score");
-            if (scoreObjectProperty != null) {
-                view.setPlanningSolutionScoreType(scoreObjectProperty.getClassName());
-            }
+            view.setPlanningSolutionScoreType(scoreObjectProperty == null ? "" : scoreObjectProperty.getClassName());
         }
     }
 

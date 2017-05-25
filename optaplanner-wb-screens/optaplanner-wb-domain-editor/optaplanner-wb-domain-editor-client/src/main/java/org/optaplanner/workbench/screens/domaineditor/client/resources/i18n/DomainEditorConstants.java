@@ -49,4 +49,7 @@ public interface DomainEditorConstants {
 
     @TranslationKey( defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage = "PlannerCheckTranslator.ScoreHolderGlobalToBeDefinedManuallyMessage";
+
+    @TranslationKey( defaultValue = "")
+    String PlannerCheckTranslatorPlanningScoreToBeDeletedMessage = "PlannerCheckTranslator.PlanningScoreToBeDeletedMessage";
 }

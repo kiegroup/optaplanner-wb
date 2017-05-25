@@ -48,8 +48,6 @@ import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.solution.PlanningScore;
-import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.workbench.screens.domaineditor.client.widgets.planner.PlannerTestUtil;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
@@ -268,24 +266,5 @@ public class PlannerDomainHandlerTest {
 
         this.dataObject = dataObject1;
         this.comparatorObject = comparatorObject;
-    }
-
-    @Test
-    public void isDomainSpecificPropertyPlanningScore() {
-        ObjectProperty objectProperty = new ObjectPropertyImpl("score",
-                                                               HardSoftScore.class.getName(),
-                                                               false);
-        objectProperty.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningScore.class)));
-
-        assertTrue(plannerDomainHandler.isDomainSpecificProperty(objectProperty));
-    }
-
-    @Test
-    public void isDomainSpecificPropertyNotAPlanningScore() {
-        ObjectProperty objectProperty = new ObjectPropertyImpl("notAPlanningScore",
-                                                               Integer.class.getName(),
-                                                               false);
-
-        assertFalse(plannerDomainHandler.isDomainSpecificProperty(objectProperty));
     }
 }
