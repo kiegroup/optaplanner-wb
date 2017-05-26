@@ -28,7 +28,6 @@ import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.mockito.Mock;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
@@ -122,16 +121,13 @@ public class PlannerDataObjectFieldEditorTest
         //when the context changes the editor will typically be reloaded.
         fieldEditor.onContextChange( context );
 
-        when( view.getPlanningEntityCollectionValue() ).thenReturn( true );
         when( view.getValueRangeProviderValue() ).thenReturn( true );
         when( view.getValueRangeProviderIdValue() ).thenReturn( "valueRangeProviderIdValue" );
 
         //emulate the user input
-        fieldEditor.onPlanningEntityCollectionChange();
         fieldEditor.onValueRangeProviderChange();
         fieldEditor.onValueRangeProviderIdChange();
 
-        assertNotNull( field1.getAnnotation( PlanningEntityCollectionProperty.class.getName() ) );
         assertNotNull( field1.getAnnotation( ValueRangeProvider.class.getName() ) );
         assertEquals( "valueRangeProviderIdValue",
                 AnnotationValueHandler.getStringValue( field1, ValueRangeProvider.class.getName(), "id" ) );
