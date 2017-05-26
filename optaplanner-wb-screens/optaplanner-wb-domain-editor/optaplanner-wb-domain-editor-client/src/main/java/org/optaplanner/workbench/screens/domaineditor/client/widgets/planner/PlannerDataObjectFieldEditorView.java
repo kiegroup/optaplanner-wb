@@ -27,8 +27,6 @@ public interface PlannerDataObjectFieldEditorView
 
         void onValueRangeProviderIdChange();
 
-        void onPlanningEntityCollectionChange();
-
         void onPlanningVariableChange();
 
         void onValueRangeProviderRefsChange();
@@ -44,10 +42,6 @@ public interface PlannerDataObjectFieldEditorView
     void setValueRangeProviderIdValue( String value );
 
     String getValueRangeProviderIdValue();
-
-    void setPlanningEntityCollectionValue( boolean value );
-
-    boolean getPlanningEntityCollectionValue();
 
     void setPlanningVariableValue( boolean value );
 

@@ -50,10 +50,6 @@ public class PlannerDataObjectFieldEditorViewImpl
     TextBox valueRangeProviderIdTextBox;
 
     @Inject
-    @DataField("planningEntityCollectionCheckBox")
-    CheckboxInput planningEntityCollectionCheckBox;
-
-    @Inject
     @DataField("planningEntitySettingsPanelDiv")
     Div planningEntitySettingsPanelDiv;
 
@@ -103,16 +99,6 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void setPlanningEntityCollectionValue( boolean value ) {
-        planningEntityCollectionCheckBox.setChecked( value );
-    }
-
-    @Override
-    public boolean getPlanningEntityCollectionValue() {
-        return planningEntityCollectionCheckBox.getChecked();
-    }
-
-    @Override
     public void setPlanningVariableValue( boolean value ) {
         planningVariableCheckBox.setChecked( value );
     }
@@ -159,7 +145,6 @@ public class PlannerDataObjectFieldEditorViewImpl
         setValueRangeProviderValue( false );
         setValueRangeProviderIdValue( null );
         enableValueRangeProviderId( false );
-        setPlanningEntityCollectionValue( false );
         setPlanningVariableValue( false );
         setValueRangeProviderRefsValue( null );
         enableValueRangeProviderRefs( false );
@@ -173,11 +158,6 @@ public class PlannerDataObjectFieldEditorViewImpl
     @EventHandler("valueRangeProviderIdTextBox")
     void onValueRangeProviderId( ChangeEvent event ) {
         presenter.onValueRangeProviderIdChange();
-    }
-
-    @EventHandler("planningEntityCollectionCheckBox")
-    void onPlanningEntityCollection( ClickEvent event ) {
-        presenter.onPlanningEntityCollectionChange();
     }
 
     @EventHandler("planningVariableCheckBox")

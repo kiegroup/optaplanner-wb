@@ -24,7 +24,6 @@ import javax.annotation.Generated;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
@@ -45,8 +44,6 @@ public class PlannerTestUtil {
                 DriverUtils.buildAnnotationDefinition( PlanningVariable.class ) );
         annotations.put( ValueRangeProvider.class.getName(),
                 DriverUtils.buildAnnotationDefinition( ValueRangeProvider.class ) );
-        annotations.put( PlanningEntityCollectionProperty.class.getName(),
-                DriverUtils.buildAnnotationDefinition( PlanningEntityCollectionProperty.class ) );
 
         return annotations;
     }

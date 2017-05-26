@@ -30,7 +30,6 @@ import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
@@ -51,7 +50,6 @@ public class PlannerDomainHandler implements DomainHandler {
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningSolution.class));
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningVariable.class));
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ValueRangeProvider.class));
-        domainAnnotations.add(DriverUtils.buildAnnotationDefinition(PlanningEntityCollectionProperty.class));
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorDefinition.class));
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorObjectPropertyPath.class));
         domainAnnotations.add(DriverUtils.buildAnnotationDefinition(ComparatorObjectProperty.class));

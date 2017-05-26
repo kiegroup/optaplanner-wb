@@ -122,26 +122,6 @@ public class PlannerDataObjectFieldEditor
     }
 
     @Override
-    public void onPlanningEntityCollectionChange() {
-        boolean isSet = view.getPlanningEntityCollectionValue();
-        if ( isSet ) {
-            commandBuilder.buildFieldAnnotationAddCommand(
-                    getContext(),
-                    getName(),
-                    getDataObject(),
-                    getObjectField(),
-                    PlannerDomainAnnotations.PLANNING_ENTITY_COLLECTION_PROPERTY_ANNOTATION ).execute();
-        } else {
-            commandBuilder.buildFieldAnnotationRemoveCommand(
-                    getContext(),
-                    getName(),
-                    getDataObject(),
-                    getObjectField(),
-                    PlannerDomainAnnotations.PLANNING_ENTITY_COLLECTION_PROPERTY_ANNOTATION ).execute();
-        }
-    }
-
-    @Override
     public void onPlanningVariableChange() {
         boolean isSet = view.getPlanningVariableValue();
         if ( isSet ) {
@@ -225,10 +205,6 @@ public class PlannerDataObjectFieldEditor
             } else {
                 view.enableValueRangeProviderId( false );
             }
-
-            //set the PlanningEntityCollection
-            annotation = objectField.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_COLLECTION_PROPERTY_ANNOTATION );
-            view.setPlanningEntityCollectionValue( annotation != null );
         }
 
     }
