@@ -22,6 +22,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.guvnor.common.services.shared.config.AppConfigService;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.security.shared.service.AuthenticationService;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,10 +33,11 @@ import org.mockito.Mock;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
 import org.uberfire.client.mvp.ActivityBeansCache;
+import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
+import org.uberfire.ext.preferences.client.admin.page.AdminPage;
 import org.uberfire.mocks.CallerMock;
-import org.uberfire.mocks.ConstantsAnswerMock;
 import org.uberfire.workbench.model.menu.MenuItem;
 import org.uberfire.workbench.model.menu.Menus;
 
@@ -68,54 +70,66 @@ public class OptaPlannerWorkbenchEntryPointTest {
     @Mock
     private UserMenu userMenu;
 
+    @Mock
+    private PlaceManager placeManager;
+
+    @Mock
+    private AdminPage adminPage;
+
+    @Mock
+    private TranslationService translationService;
+
     private OptaPlannerWorkbenchEntryPoint optaPlannerWorkbenchEntryPoint;
 
     @Before
     public void setup() {
-        appConfigServiceCallerMock = new CallerMock<>( appConfigService );
-        pmasCallerMock = new CallerMock<>( pmas );
+        appConfigServiceCallerMock = new CallerMock<>(appConfigService);
+        pmasCallerMock = new CallerMock<>(pmas);
 
-        optaPlannerWorkbenchEntryPoint = spy( new OptaPlannerWorkbenchEntryPoint( appConfigServiceCallerMock,
-                                                                                  pmasCallerMock,
-                                                                                  activityBeansCache,
-                                                                                  menusHelper,
-                                                                                  menuBar,
-                                                                                  authService,
-                                                                                  userMenu ) );
+        optaPlannerWorkbenchEntryPoint = spy(new OptaPlannerWorkbenchEntryPoint(appConfigServiceCallerMock,
+                                                                                pmasCallerMock,
+                                                                                activityBeansCache,
+                                                                                menusHelper,
+                                                                                menuBar,
+                                                                                userMenu,
+                                                                                adminPage,
+                                                                                translationService));
         mockMenuHelper();
-        mockConstants();
     }
 
     @Test
     public void setupMenu() {
+        when(translationService.getTranslation(anyString())).thenReturn("translation");
+        when(translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Home)).thenReturn("Home");
+        when(translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Authoring)).thenReturn("Authoring");
+        when(translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Deploy)).thenReturn("Deploy");
+
         optaPlannerWorkbenchEntryPoint.setupMenu();
 
-        ArgumentCaptor<Menus> menusCaptor = ArgumentCaptor.forClass( Menus.class );
-        verify( menuBar ).addMenus( menusCaptor.capture() );
+        ArgumentCaptor<Menus> menusCaptor = ArgumentCaptor.forClass(Menus.class);
+        verify(menuBar).addMenus(menusCaptor.capture());
 
         Menus menus = menusCaptor.getValue();
 
-        assertEquals( 4, menus.getItems().size() );
+        assertEquals(3,
+                     menus.getItems().size());
 
-        assertEquals( optaPlannerWorkbenchEntryPoint.constants.Home(), menus.getItems().get( 0 ).getCaption() );
-        assertEquals( optaPlannerWorkbenchEntryPoint.constants.Authoring(), menus.getItems().get( 1 ).getCaption() );
-        assertEquals( optaPlannerWorkbenchEntryPoint.constants.MenuRepositories(), menus.getItems().get( 2 ).getCaption() );
-        assertEquals( optaPlannerWorkbenchEntryPoint.constants.AdministrationPerspectiveName(), menus.getItems().get( 3 ).getCaption() );
+        assertEquals("Home",
+                     menus.getItems().get(0).getCaption());
+        assertEquals("Authoring",
+                     menus.getItems().get(1).getCaption());
+        assertEquals("Deploy",
+                     menus.getItems().get(2).getCaption());
 
-        verify( menusHelper ).addUtilitiesMenuItems();
-        verify( menusHelper ).addLogoutMenuItem();
+        verify(menusHelper).addRolesMenuItems();
+        verify(menusHelper).addUtilitiesMenuItems();
     }
 
     private void mockMenuHelper() {
         final ArrayList<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add( mock( MenuItem.class ) );
-        doReturn( menuItems ).when( menusHelper ).getPerspectivesMenuItems();
+        menuItems.add(mock(MenuItem.class));
+        doReturn(menuItems).when(menusHelper).getPerspectivesMenuItems();
 
-        doReturn( mock( AbstractWorkbenchPerspectiveActivity.class ) ).when( menusHelper ).getDefaultPerspectiveActivity();
+        doReturn(mock(AbstractWorkbenchPerspectiveActivity.class)).when(menusHelper).getDefaultPerspectiveActivity();
     }
-
-    private void mockConstants() {
-        optaPlannerWorkbenchEntryPoint.constants = mock( AppConstants.class, new ConstantsAnswerMock() );
-    }
-
 }

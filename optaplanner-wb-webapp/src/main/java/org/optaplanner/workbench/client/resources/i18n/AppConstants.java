@@ -16,78 +16,97 @@
 
 package org.optaplanner.workbench.client.resources.i18n;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.Messages;
-import org.uberfire.workbench.model.menu.MenuItem;
+import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
 
-/**
- * This uses GWT to provide client side compile time resolving of locales. See:
- * http://code.google.com/docreader/#p=google-web-toolkit-doc-1-5&s=google-web-
- * toolkit-doc-1-5&t=DevGuideInternationalization (for more information).
- * <p/>
- * Each method name matches up with a key in HomeConstants.properties (the
- * properties file can still be used on the server). To use this, use
- * <code>GWT.create(HomeConstants.class)</code>.
- */
-public interface AppConstants
-        extends
-        Messages {
+public interface AppConstants {
 
-    AppConstants INSTANCE = GWT.create( AppConstants.class );
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_AdministrationPerspective = "AdministrationPerspective.AdministrationPerspective";
 
-    String SignOut();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuExplore = "AdministrationPerspective.MenuExplore";
 
-    String WelcomeUser();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuExploreFiles = "AdministrationPerspective.MenuExploreFiles";
 
-    String newItem();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuRepositories = "AdministrationPerspective.MenuRepositories";
 
-    String AdministrationPerspectiveName();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuListRepositories = "AdministrationPerspective.MenuListRepositories";
 
-    String MenuExplore();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuCloneRepository = "AdministrationPerspective.MenuCloneRepository";
 
-    String MenuExploreFiles();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuNewRepository = "AdministrationPerspective.MenuNewRepository";
 
-    String MenuRepositories();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuOrganizationalUnits = "AdministrationPerspective.MenuOrganizationalUnits";
 
-    String MenuListRepositories();
+    @TranslationKey(defaultValue = "")
+    String AdministrationPerspective_MenuManageOrganizationalUnits = "AdministrationPerspective.MenuManageOrganizationalUnits";
 
-    String MenuCloneRepository();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_KieKnowledgeDevelopmentCycle = "HomeProducer.KieKnowledgeDevelopmentCycle";
 
-    String MenuNewRepository();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_Author = "HomeProducer.Author";
 
-    String MenuOrganizationalUnits();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_FormalizeYourBusinessKnowledge = "HomeProducer.FormalizeYourBusinessKnowledge";
 
-    String MenuManageOrganizationalUnits();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_ConfigureYourEnvironment = "HomeProducer.ConfigureYourEnvironment";
 
-    String Examples();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_Deploy = "HomeProducer.Deploy";
 
-    String Explore();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_ProjectAuthoring = "HomeProducer.ProjectAuthoring";
 
-    String Projects();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_ArtifactRepository = "HomeProducer.ArtifactRepository";
 
-    String IncomingChanges();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_Administration = "HomeProducer.Administration";
 
-    String RecentlyEdited();
+    @TranslationKey(defaultValue = "")
+    String HomeProducer_DeployYourArtifacts = "HomeProducer.DeployYourArtifacts";
 
-    String RecentlyOpened();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Administration = "OptaPlannerWorkbenchEntryPoint.Administration";
 
-    String New();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Home = "OptaPlannerWorkbenchEntryPoint.Home";
 
-    String Project();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Authoring = "OptaPlannerWorkbenchEntryPoint.Authoring";
 
-    String Repository();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_ProjectAuthoring = "OptaPlannerWorkbenchEntryPoint.ProjectAuthoring";
 
-    String Home();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Settings = "OptaPlannerWorkbenchEntryPoint.Settings";
 
-    String Perspectives();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Library = "OptaPlannerWorkbenchEntryPoint.Library";
 
-    String Logout();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_ArtifactRepository = "OptaPlannerWorkbenchEntryPoint.ArtifactRepository";
 
-    String Find();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Deploy = "OptaPlannerWorkbenchEntryPoint.Deploy";
 
-    String Upload();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_Admin = "OptaPlannerWorkbenchEntryPoint.Admin";
 
-    String Refresh();
+    @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_ExecutionServers = "OptaPlannerWorkbenchEntryPoint.ExecutionServers";
 
-    String Authoring();
+    @TranslationKey(defaultValue = "")
+    String M2RepoPerspective_Upload = "M2RepoPerspective.Upload";
+
+    @TranslationKey(defaultValue = "")
+    String M2RepoPerspective_Refresh = "M2RepoPerspective.Refresh";
 }
