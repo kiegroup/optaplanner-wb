@@ -15,20 +15,24 @@
 
 package org.optaplanner.workbench.client.home;
 
-import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.screens.home.model.HomeModel;
 import org.kie.workbench.common.screens.home.model.ModelUtils;
 import org.kie.workbench.common.screens.home.model.SectionEntry;
+import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.PlaceManager;
 
-import static org.uberfire.workbench.model.ActivityResourceType.*;
-import static org.kie.workbench.common.workbench.client.PerspectiveIds.*;
+import static org.kie.workbench.common.workbench.client.PerspectiveIds.GUVNOR_M2REPO;
+import static org.kie.workbench.common.workbench.client.PerspectiveIds.LIBRARY;
+import static org.kie.workbench.common.workbench.client.PerspectiveIds.PLANNER_ADMIN;
+import static org.kie.workbench.common.workbench.client.PerspectiveIds.SERVER_MANAGEMENT;
+import static org.uberfire.workbench.model.ActivityResourceType.PERSPECTIVE;
 
 /**
  * Producer method for the Home Page content
@@ -41,40 +45,46 @@ public class HomeProducer {
     @Inject
     private PlaceManager placeManager;
 
+    @Inject
+    private TranslationService translationService;
+
     @PostConstruct
     public void init() {
         final String url = GWT.getModuleBaseURL();
-        model = new HomeModel( "The KIE Knowledge Development Cycle" );
-        model.addCarouselEntry( ModelUtils.makeCarouselEntry( "Author",
-                                                              "Formalize your Business Knowledge",
-                                                              url + "/images/HandHome.jpg" ) );
-        model.addCarouselEntry( ModelUtils.makeCarouselEntry( "Deploy",
-                                                              "Learn how to configure your environment",
-                                                              url + "/images/HandHome.jpg" ) );
-        final SectionEntry s1 = ModelUtils.makeSectionEntry( "Discover and Author:" );
+        model = new HomeModel(translationService.getTranslation(AppConstants.HomeProducer_KieKnowledgeDevelopmentCycle));
+        model.addCarouselEntry(ModelUtils.makeCarouselEntry(translationService.getTranslation(AppConstants.HomeProducer_Author),
+                                                            translationService.getTranslation(AppConstants.HomeProducer_FormalizeYourBusinessKnowledge),
+                                                            url + "/images/HandHome.jpg"));
+        model.addCarouselEntry(ModelUtils.makeCarouselEntry(translationService.getTranslation(AppConstants.HomeProducer_Deploy),
+                                                            translationService.getTranslation(AppConstants.HomeProducer_ConfigureYourEnvironment),
+                                                            url + "/images/HandHome.jpg"));
+        final SectionEntry s1 = ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_Author) + ":");
 
-        s1.addChild( ModelUtils.makeSectionEntry( "Author",
-                () -> placeManager.goTo( AUTHORING ),
-                AUTHORING, PERSPECTIVE ) );
+        s1.addChild(ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_ProjectAuthoring),
+                                                () -> placeManager.goTo(LIBRARY),
+                                                LIBRARY,
+                                                PERSPECTIVE));
+        s1.addChild(ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_ArtifactRepository),
+                                                () -> placeManager.goTo(GUVNOR_M2REPO),
+                                                GUVNOR_M2REPO,
+                                                PERSPECTIVE));
+        s1.addChild(ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_Administration),
+                                                () -> placeManager.goTo(PLANNER_ADMIN),
+                                                PLANNER_ADMIN,
+                                                PERSPECTIVE));
+        model.addSection(s1);
 
-        model.addSection( s1 );
+        final SectionEntry s2 = ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_Deploy) + ":");
 
-        final SectionEntry s2 = ModelUtils.makeSectionEntry( "Deploy:" );
-
-        s2.addChild( ModelUtils.makeSectionEntry( "Manage and Deploy Your Assets",
-                () -> placeManager.goTo( PLANNER_ADMIN ),
-                PLANNER_ADMIN, PERSPECTIVE ) );
-
-        s2.addChild( ModelUtils.makeSectionEntry( "Assets Repository",
-                () -> placeManager.goTo( GUVNOR_M2REPO ),
-                GUVNOR_M2REPO, PERSPECTIVE ) );
-
-        model.addSection( s2 );
+        s2.addChild(ModelUtils.makeSectionEntry(translationService.getTranslation(AppConstants.HomeProducer_DeployYourArtifacts),
+                                                () -> placeManager.goTo(SERVER_MANAGEMENT),
+                                                SERVER_MANAGEMENT,
+                                                PERSPECTIVE));
+        model.addSection(s2);
     }
 
     @Produces
     public HomeModel getModel() {
         return model;
     }
-
 }
