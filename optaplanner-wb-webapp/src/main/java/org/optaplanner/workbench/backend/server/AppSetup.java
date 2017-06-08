@@ -18,6 +18,7 @@ package org.optaplanner.workbench.backend.server;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -29,6 +30,7 @@ import org.guvnor.structure.server.config.ConfigurationFactory;
 import org.guvnor.structure.server.config.ConfigurationService;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.kie.workbench.screens.workbench.backend.BaseAppSetup;
+import org.uberfire.commons.services.cdi.ApplicationStarted;
 import org.uberfire.commons.services.cdi.Startup;
 import org.uberfire.commons.services.cdi.StartupType;
 import org.uberfire.io.IOService;
@@ -40,6 +42,8 @@ import org.uberfire.io.IOService;
 @ApplicationScoped
 public class AppSetup extends BaseAppSetup {
 
+    private Event<ApplicationStarted> applicationStartedEvent;
+
     protected AppSetup() {
     }
 
@@ -49,17 +53,20 @@ public class AppSetup extends BaseAppSetup {
                     final OrganizationalUnitService organizationalUnitService,
                     final KieProjectService projectService,
                     final ConfigurationService configurationService,
-                    final ConfigurationFactory configurationFactory) {
+                    final ConfigurationFactory configurationFactory,
+                    final Event<ApplicationStarted> applicationStartedEvent) {
         super(ioService,
               repositoryService,
               organizationalUnitService,
               projectService,
               configurationService,
               configurationFactory);
+
+        this.applicationStartedEvent = applicationStartedEvent;
     }
 
     @PostConstruct
-    public void assertPlayground() {
+    void init() {
         try {
             configurationService.startBatch();
 
@@ -67,6 +74,8 @@ public class AppSetup extends BaseAppSetup {
             setupConfigurationGroup(ConfigType.GLOBAL,
                                     GLOBAL_SETTINGS,
                                     getGlobalConfiguration());
+
+            applicationStartedEvent.fire(new ApplicationStarted());
         } catch (final Exception e) {
             logger.error("Error during update config",
                          e);
