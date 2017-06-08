@@ -55,7 +55,7 @@ import org.uberfire.workbench.model.menu.Menus;
  * Uberfire Editor for OptaPlanner Solver Configuration
  */
 @Dependent
-@WorkbenchEditor(identifier = "OptaPlannerSolverEditor", supportedTypes = { SolverResourceType.class }, priority = 10)
+@WorkbenchEditor(identifier = "OptaPlannerSolverEditor", supportedTypes = {SolverResourceType.class}, priority = 10)
 public class SolverEditorPresenter
         extends KieEditor {
 
@@ -75,14 +75,14 @@ public class SolverEditorPresenter
     private SolverConfigModel model;
 
     @Inject
-    public SolverEditorPresenter( final SolverEditorView view,
-                                  final SolverResourceType solverResourceType,
-                                  final XMLViewer xmlViewer,
-                                  final Event<NotificationEvent> notification,
-                                  final Caller<SolverEditorService> solverService,
-                                  final ValidationPopup validationPopup,
-                                  final TranslationService translationService ) {
-        super( view );
+    public SolverEditorPresenter(final SolverEditorView view,
+                                 final SolverResourceType solverResourceType,
+                                 final XMLViewer xmlViewer,
+                                 final Event<NotificationEvent> notification,
+                                 final Caller<SolverEditorService> solverService,
+                                 final ValidationPopup validationPopup,
+                                 final TranslationService translationService) {
+        super(view);
 
         this.xmlViewer = xmlViewer;
         this.view = view;
@@ -94,34 +94,33 @@ public class SolverEditorPresenter
     }
 
     @OnStartup
-    public void onStartup( final ObservablePath path,
-                           final PlaceRequest place ) {
-        super.init( path,
-                    place,
-                    solverResourceType );
+    public void onStartup(final ObservablePath path,
+                          final PlaceRequest place) {
+        super.init(path,
+                   place,
+                   solverResourceType);
     }
 
     @Override
     protected void makeMenuBar() {
-        SuperDevModeFlag superDevModeFlag = GWT.create( SuperDevModeFlag.class );
-        if ( superDevModeFlag.isSuperDevModeUsed() ) {
-            menus = menuBuilder
-                    .addSave( versionRecordManager.newSaveMenuItem( new Command() {
+        SuperDevModeFlag superDevModeFlag = GWT.create(SuperDevModeFlag.class);
+        if (superDevModeFlag.isSuperDevModeUsed()) {
+            fileMenuBuilder
+                    .addSave(versionRecordManager.newSaveMenuItem(new Command() {
                         @Override
                         public void execute() {
                             onSave();
                         }
-                    } ) )
-                    .addCopy( versionRecordManager.getCurrentPath(),
-                              fileNameValidator )
-                    .addRename( versionRecordManager.getPathToLatest(),
-                                fileNameValidator )
-                    .addDelete( versionRecordManager.getPathToLatest() )
-                    .addValidate( onValidate() )
-                    .addCommand( translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSmokeTest ),
-                                 onSmokeTest() )
-                    .addNewTopLevelMenu( versionRecordManager.buildMenu() )
-                    .build();
+                    }))
+                    .addCopy(versionRecordManager.getCurrentPath(),
+                             fileNameValidator)
+                    .addRename(versionRecordManager.getPathToLatest(),
+                               fileNameValidator)
+                    .addDelete(versionRecordManager.getPathToLatest())
+                    .addValidate(onValidate())
+                    .addCommand(translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSmokeTest),
+                                onSmokeTest())
+                    .addNewTopLevelMenu(versionRecordManager.buildMenu());
         } else {
             super.makeMenuBar();
         }
@@ -129,54 +128,54 @@ public class SolverEditorPresenter
 
     protected void loadContent() {
         view.showLoading();
-        solverService.call( getLoadContentSuccessCallback(),
-                            getNoSuchFileExceptionErrorCallback() ).loadContent( versionRecordManager.getCurrentPath() );
+        solverService.call(getLoadContentSuccessCallback(),
+                           getNoSuchFileExceptionErrorCallback()).loadContent(versionRecordManager.getCurrentPath());
     }
 
     private RemoteCallback<SolverModelContent> getLoadContentSuccessCallback() {
         return new RemoteCallback<SolverModelContent>() {
 
             @Override
-            public void callback( final SolverModelContent content ) {
+            public void callback(final SolverModelContent content) {
                 //Path is set to null when the Editor is closed (which can happen before async calls complete).
-                if ( versionRecordManager.getCurrentPath() == null ) {
+                if (versionRecordManager.getCurrentPath() == null) {
                     return;
                 }
 
-                resetEditorPages( content.getOverview() );
+                resetEditorPages(content.getOverview());
 
                 addXMLSourcePage();
 
                 model = content.getConfig();
 
-                view.setTerminationConfigModel( model.getTermination() );
-                view.setScoreDirectorFactoryConfig( model.getScoreDirectorFactoryConfig(),
-                                                    versionRecordManager.getCurrentPath() );
-                view.setPhaseConfigModel( model.getPhaseConfigList() );
+                view.setTerminationConfigModel(model.getTermination());
+                view.setScoreDirectorFactoryConfig(model.getScoreDirectorFactoryConfig(),
+                                                   versionRecordManager.getCurrentPath());
+                view.setPhaseConfigModel(model.getPhaseConfigList());
 
                 view.hideBusyIndicator();
-                createOriginalHash( model );
+                createOriginalHash(model);
             }
         };
     }
 
     private void addXMLSourcePage() {
-        addPage( new PageImpl( xmlViewer,
-                               translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSource ) ) {
+        addPage(new PageImpl(xmlViewer,
+                             translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSource)) {
 
             @Override
             public void onFocus() {
-                solverService.call( getToSourceRemoteCallback() ).toSource( versionRecordManager.getCurrentPath(),
-                                                                            model );
+                solverService.call(getToSourceRemoteCallback()).toSource(versionRecordManager.getCurrentPath(),
+                                                                         model);
             }
-        } );
+        });
     }
 
     private RemoteCallback<String> getToSourceRemoteCallback() {
         return new RemoteCallback<String>() {
             @Override
-            public void callback( String xml ) {
-                xmlViewer.setContent( xml );
+            public void callback(String xml) {
+                xmlViewer.setContent(xml);
             }
         };
     }
@@ -185,22 +184,22 @@ public class SolverEditorPresenter
         return new Command() {
             @Override
             public void execute() {
-                solverService.call( getRemoteCallback( CommonConstants.INSTANCE.ItemValidatedSuccessfully() ) )
-                        .validate( versionRecordManager.getCurrentPath(),
-                                   model );
+                solverService.call(getRemoteCallback(CommonConstants.INSTANCE.ItemValidatedSuccessfully()))
+                        .validate(versionRecordManager.getCurrentPath(),
+                                  model);
             }
         };
     }
 
-    private RemoteCallback<List<ValidationMessage>> getRemoteCallback( String message ) {
+    private RemoteCallback<List<ValidationMessage>> getRemoteCallback(String message) {
         return new RemoteCallback<List<ValidationMessage>>() {
             @Override
-            public void callback( final List<ValidationMessage> results ) {
-                if ( results == null || results.isEmpty() ) {
-                    notification.fire( new NotificationEvent( message,
-                                                              NotificationEvent.NotificationType.SUCCESS ) );
+            public void callback(final List<ValidationMessage> results) {
+                if (results == null || results.isEmpty()) {
+                    notification.fire(new NotificationEvent(message,
+                                                            NotificationEvent.NotificationType.SUCCESS));
                 } else {
-                    validationPopup.showMessages( results );
+                    validationPopup.showMessages(results);
                 }
             }
         };
@@ -208,19 +207,19 @@ public class SolverEditorPresenter
 
     protected Command onSmokeTest() {
         return () -> {
-            solverService.call( getRemoteCallback( translationService.getTranslation( SolverEditorConstants.SolverEditorPresenterSmokeTestSuccess ) ) )
-                    .smokeTest( versionRecordManager.getCurrentPath(),
-                                model );
+            solverService.call(getRemoteCallback(translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSmokeTestSuccess)))
+                    .smokeTest(versionRecordManager.getCurrentPath(),
+                               model);
         };
     }
 
     @Override
-    protected void save( String commitMessage ) {
-        solverService.call( getSaveSuccessCallback( model.hashCode() ),
-                            new HasBusyIndicatorDefaultErrorCallback( view ) ).save( versionRecordManager.getCurrentPath(),
-                                                                                     model,
-                                                                                     metadata,
-                                                                                     commitMessage );
+    protected void save(String commitMessage) {
+        solverService.call(getSaveSuccessCallback(model.hashCode()),
+                           new HasBusyIndicatorDefaultErrorCallback(view)).save(versionRecordManager.getCurrentPath(),
+                                                                                model,
+                                                                                metadata,
+                                                                                commitMessage);
     }
 
     @OnClose
@@ -230,7 +229,7 @@ public class SolverEditorPresenter
 
     @OnMayClose
     public boolean mayClose() {
-        return super.mayClose( model );
+        return super.mayClose(model);
     }
 
     @WorkbenchPartTitleDecoration
