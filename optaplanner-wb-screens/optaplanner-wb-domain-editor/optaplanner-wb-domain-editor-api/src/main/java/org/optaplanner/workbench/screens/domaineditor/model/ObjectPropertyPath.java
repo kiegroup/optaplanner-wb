@@ -27,9 +27,9 @@ public interface ObjectPropertyPath {
 
     List<ObjectProperty> getObjectPropertyPath();
 
-    void appendObjectProperty( ObjectProperty objectProperty );
+    void appendObjectProperty(ObjectProperty objectProperty);
 
-    void setDescending( boolean descending );
+    void setDescending(boolean descending);
 
     boolean isDescending();
 }

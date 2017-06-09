@@ -51,91 +51,117 @@ public class DataObjectFieldPickerItemTest {
 
     @Before
     public void setUp() {
-        fieldPickerItem = new DataObjectFieldPickerItem( view );
+        fieldPickerItem = new DataObjectFieldPickerItem(view);
     }
 
     @Test
     public void setPresenter() {
-        verify( view, times( 1 ) ).setPresenter( fieldPickerItem );
+        verify(view,
+               times(1)).setPresenter(fieldPickerItem);
     }
 
     @Test
     public void init() {
-        fieldPickerItem.init( dataModel, dataObject, fieldPicker );
-        verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( view, times( 1 ) ).addRootItem( any( DataObject.class ) );
+        fieldPickerItem.init(dataModel,
+                             dataObject,
+                             fieldPicker);
+        verify(view,
+               times(1)).initSelectFieldDropdownOptions(anyList());
+        verify(view,
+               times(1)).addRootItem(any(DataObject.class));
     }
 
     @Test
     public void onFieldAddedObjectType() {
-        fieldPickerItem.init( dataModel, dataObject, fieldPicker );
+        fieldPickerItem.init(dataModel,
+                             dataObject,
+                             fieldPicker);
 
-        ObjectProperty objectProperty = mock( ObjectProperty.class );
-        when( objectProperty.getName() ).thenReturn( "testProperty" );
-        when( objectProperty.getClassName() ).thenReturn( "bar.foo.TestProperty" );
-        when( objectProperty.isBaseType() ).thenReturn( false );
-        when( objectProperty.isPrimitiveType() ).thenReturn( false );
+        ObjectProperty objectProperty = mock(ObjectProperty.class);
+        when(objectProperty.getName()).thenReturn("testProperty");
+        when(objectProperty.getClassName()).thenReturn("bar.foo.TestProperty");
+        when(objectProperty.isBaseType()).thenReturn(false);
+        when(objectProperty.isPrimitiveType()).thenReturn(false);
 
-        DataObject nestedDataObject = mock( DataObject.class );
-        when( nestedDataObject.getProperties() ).thenReturn( Arrays.asList( mock( ObjectProperty.class ) ) );
+        DataObject nestedDataObject = mock(DataObject.class);
+        when(nestedDataObject.getProperties()).thenReturn(Arrays.asList(mock(ObjectProperty.class)));
 
+        when(dataObject.getProperty("testProperty")).thenReturn(objectProperty);
+        when(dataModel.getDataObject("bar.foo.TestProperty")).thenReturn(nestedDataObject);
 
-        when( dataObject.getProperty( "testProperty" ) ).thenReturn( objectProperty );
-        when( dataModel.getDataObject( "bar.foo.TestProperty" ) ).thenReturn( nestedDataObject );
+        Mockito.reset(view);
 
-        Mockito.reset( view );
+        fieldPickerItem.onFieldAdded(objectProperty,
+                                     true);
 
-        fieldPickerItem.onFieldAdded( objectProperty, true );
-
-        verify( view, times( 1 ) ).addFieldItem( objectProperty );
-        verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( view, times( 1 ) ).displaySelectFieldButton( true );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( false );
+        verify(view,
+               times(1)).addFieldItem(objectProperty);
+        verify(view,
+               times(1)).initSelectFieldDropdownOptions(anyList());
+        verify(view,
+               times(1)).displaySelectFieldButton(true);
+        verify(fieldPicker,
+               times(1)).objectPropertyPathChanged(false);
     }
 
     @Test
     public void onFieldAddedPrimitive() {
-        fieldPickerItem.init( dataModel, dataObject, fieldPicker );
+        fieldPickerItem.init(dataModel,
+                             dataObject,
+                             fieldPicker);
 
-        ObjectProperty objectProperty = mock( ObjectProperty.class );
-        when( objectProperty.getName() ).thenReturn( "testProperty" );
-        when( objectProperty.getClassName() ).thenReturn( "java.lang.Integer" );
-        when( objectProperty.isBaseType() ).thenReturn( true );
-        when( objectProperty.isPrimitiveType() ).thenReturn( false );
+        ObjectProperty objectProperty = mock(ObjectProperty.class);
+        when(objectProperty.getName()).thenReturn("testProperty");
+        when(objectProperty.getClassName()).thenReturn("java.lang.Integer");
+        when(objectProperty.isBaseType()).thenReturn(true);
+        when(objectProperty.isPrimitiveType()).thenReturn(false);
 
-        when( dataObject.getProperty( "testProperty" ) ).thenReturn( objectProperty );
+        when(dataObject.getProperty("testProperty")).thenReturn(objectProperty);
 
-        Mockito.reset( view );
+        Mockito.reset(view);
 
-        fieldPickerItem.onFieldAdded( objectProperty, true );
+        fieldPickerItem.onFieldAdded(objectProperty,
+                                     true);
 
-        verify( view, times( 1 ) ).addFieldItem( objectProperty );
-        verify( view, times( 0 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( view, times( 1 ) ).displaySelectFieldButton( false );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( false );
+        verify(view,
+               times(1)).addFieldItem(objectProperty);
+        verify(view,
+               times(0)).initSelectFieldDropdownOptions(anyList());
+        verify(view,
+               times(1)).displaySelectFieldButton(false);
+        verify(fieldPicker,
+               times(1)).objectPropertyPathChanged(false);
     }
 
     @Test
     public void onFieldRemoved() {
-        fieldPickerItem.init( dataModel, dataObject, fieldPicker );
+        fieldPickerItem.init(dataModel,
+                             dataObject,
+                             fieldPicker);
 
-        ObjectProperty objectProperty = mock( ObjectProperty.class );
-        when( objectProperty.getName() ).thenReturn( "testProperty" );
-        when( objectProperty.getClassName() ).thenReturn( "java.lang.Integer" );
-        when( objectProperty.isBaseType() ).thenReturn( true );
-        when( objectProperty.isPrimitiveType() ).thenReturn( false );
+        ObjectProperty objectProperty = mock(ObjectProperty.class);
+        when(objectProperty.getName()).thenReturn("testProperty");
+        when(objectProperty.getClassName()).thenReturn("java.lang.Integer");
+        when(objectProperty.isBaseType()).thenReturn(true);
+        when(objectProperty.isPrimitiveType()).thenReturn(false);
 
-        when( dataObject.getProperty( "testProperty" ) ).thenReturn( objectProperty );
+        when(dataObject.getProperty("testProperty")).thenReturn(objectProperty);
 
-        fieldPickerItem.onFieldAdded( objectProperty, true );
+        fieldPickerItem.onFieldAdded(objectProperty,
+                                     true);
 
-        Mockito.reset( view, fieldPicker );
+        Mockito.reset(view,
+                      fieldPicker);
 
-        fieldPickerItem.onFieldRemoved( objectProperty );
+        fieldPickerItem.onFieldRemoved(objectProperty);
 
-        verify( view, times( 1 ) ).removeLastFieldItem();
-        verify( view, times( 1 ) ).displaySelectFieldButton( true );
-        verify( view, times( 1 ) ).initSelectFieldDropdownOptions( anyList() );
-        verify( fieldPicker, times( 1 ) ).objectPropertyPathChanged( true );
+        verify(view,
+               times(1)).removeLastFieldItem();
+        verify(view,
+               times(1)).displaySelectFieldButton(true);
+        verify(view,
+               times(1)).initSelectFieldDropdownOptions(anyList());
+        verify(fieldPicker,
+               times(1)).objectPropertyPathChanged(true);
     }
 }

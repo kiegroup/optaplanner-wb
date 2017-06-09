@@ -27,41 +27,41 @@ import org.optaplanner.workbench.screens.guidedrule.model.ActionSimpleConstraint
 @ApplicationScoped
 public class SimpleConstraintMatchPersistenceExtension implements RuleModelIActionPersistenceExtension {
 
-    private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile( "scoreHolder\\.addConstraintMatch\\(\\s*kcontext\\s*,.+\\);" );
+    private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile("scoreHolder\\.addConstraintMatch\\(\\s*kcontext\\s*,.+\\);");
 
     @Override
-    public boolean accept( final IAction iAction ) {
+    public boolean accept(final IAction iAction) {
         return iAction instanceof ActionSimpleConstraintMatch;
     }
 
     @Override
-    public String marshal( final IAction iAction ) {
-        if ( iAction instanceof ActionSimpleConstraintMatch ) {
+    public String marshal(final IAction iAction) {
+        if (iAction instanceof ActionSimpleConstraintMatch) {
             ActionSimpleConstraintMatch actionConstraintMatch = (ActionSimpleConstraintMatch) iAction;
             return String.format("scoreHolder.addConstraintMatch(kcontext, %s);",
                                  actionConstraintMatch.getConstraintMatch());
         }
-        throw new IllegalArgumentException( "Action " + iAction + " is not supported by this extension" );
+        throw new IllegalArgumentException("Action " + iAction + " is not supported by this extension");
     }
 
     @Override
-    public boolean accept( final String iActionString ) {
-        return CONSTRAINT_MATCH_PATTERN.matcher( iActionString ).matches();
+    public boolean accept(final String iActionString) {
+        return CONSTRAINT_MATCH_PATTERN.matcher(iActionString).matches();
     }
 
     @Override
-    public IAction unmarshal( final String iActionString ) {
-        String[] parameters = PersistenceExtensionUtils.unwrapParenthesis( iActionString ).split( "\\s*,\\s*" );
+    public IAction unmarshal(final String iActionString) {
+        String[] parameters = PersistenceExtensionUtils.unwrapParenthesis(iActionString).split("\\s*,\\s*");
 
-        if ( "kcontext".equals( parameters[0] ) ) {
-            if ( parameters.length == 2 ) {
-                return new ActionSimpleConstraintMatch( PersistenceExtensionUtils.extractConstraintMatchValue( parameters[1] ) );
+        if ("kcontext".equals(parameters[0])) {
+            if (parameters.length == 2) {
+                return new ActionSimpleConstraintMatch(PersistenceExtensionUtils.extractConstraintMatchValue(parameters[1]));
             }
         }
 
         // Line can't be parsed as an ActionSimpleConstraintMatch, return a FreeFormLine
         FreeFormLine freeFormLine = new FreeFormLine();
-        freeFormLine.setText( iActionString );
+        freeFormLine.setText(iActionString);
 
         return freeFormLine;
     }

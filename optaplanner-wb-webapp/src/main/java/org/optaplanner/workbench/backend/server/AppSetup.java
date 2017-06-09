@@ -44,13 +44,18 @@ public class AppSetup extends BaseAppSetup {
     }
 
     @Inject
-    public AppSetup( @Named("ioStrategy") final IOService ioService,
-                     final RepositoryService repositoryService,
-                     final OrganizationalUnitService organizationalUnitService,
-                     final KieProjectService projectService,
-                     final ConfigurationService configurationService,
-                     final ConfigurationFactory configurationFactory ) {
-        super( ioService, repositoryService, organizationalUnitService, projectService, configurationService, configurationFactory );
+    public AppSetup(@Named("ioStrategy") final IOService ioService,
+                    final RepositoryService repositoryService,
+                    final OrganizationalUnitService organizationalUnitService,
+                    final KieProjectService projectService,
+                    final ConfigurationService configurationService,
+                    final ConfigurationFactory configurationFactory) {
+        super(ioService,
+              repositoryService,
+              organizationalUnitService,
+              projectService,
+              configurationService,
+              configurationFactory);
     }
 
     @PostConstruct
@@ -59,34 +64,34 @@ public class AppSetup extends BaseAppSetup {
             configurationService.startBatch();
 
             //Define mandatory properties
-            setupConfigurationGroup( ConfigType.GLOBAL,
-                                     GLOBAL_SETTINGS,
-                                     getGlobalConfiguration() );
-
-        } catch ( final Exception e ) {
-            logger.error( "Error during update config", e );
-            throw new RuntimeException( e );
+            setupConfigurationGroup(ConfigType.GLOBAL,
+                                    GLOBAL_SETTINGS,
+                                    getGlobalConfiguration());
+        } catch (final Exception e) {
+            logger.error("Error during update config",
+                         e);
+            throw new RuntimeException(e);
         } finally {
             configurationService.endBatch();
         }
     }
 
     protected ConfigGroup getGlobalConfiguration() {
-        final ConfigGroup group = configurationFactory.newConfigGroup( ConfigType.GLOBAL,
-                                                                       GLOBAL_SETTINGS,
-                                                                       "" );
-        group.addConfigItem( configurationFactory.newConfigItem( "drools.dateformat",
-                                                                 "dd-MMM-yyyy" ) );
-        group.addConfigItem( configurationFactory.newConfigItem( "drools.datetimeformat",
-                                                                 "dd-MMM-yyyy hh:mm:ss" ) );
-        group.addConfigItem( configurationFactory.newConfigItem( "drools.defaultlanguage",
-                                                                 "en" ) );
-        group.addConfigItem( configurationFactory.newConfigItem( "drools.defaultcountry",
-                                                                 "US" ) );
-        group.addConfigItem( configurationFactory.newConfigItem( "build.enable-incremental",
-                                                                 "true" ) );
-        group.addConfigItem( configurationFactory.newConfigItem( "rule-modeller-onlyShowDSLStatements",
-                                                                 "false" ) );
+        final ConfigGroup group = configurationFactory.newConfigGroup(ConfigType.GLOBAL,
+                                                                      GLOBAL_SETTINGS,
+                                                                      "");
+        group.addConfigItem(configurationFactory.newConfigItem("drools.dateformat",
+                                                               "dd-MMM-yyyy"));
+        group.addConfigItem(configurationFactory.newConfigItem("drools.datetimeformat",
+                                                               "dd-MMM-yyyy hh:mm:ss"));
+        group.addConfigItem(configurationFactory.newConfigItem("drools.defaultlanguage",
+                                                               "en"));
+        group.addConfigItem(configurationFactory.newConfigItem("drools.defaultcountry",
+                                                               "US"));
+        group.addConfigItem(configurationFactory.newConfigItem("build.enable-incremental",
+                                                               "true"));
+        group.addConfigItem(configurationFactory.newConfigItem("rule-modeller-onlyShowDSLStatements",
+                                                               "false"));
         return group;
     }
 }

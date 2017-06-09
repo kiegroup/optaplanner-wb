@@ -26,8 +26,8 @@ public class ScoreHolderGlobalFileToBeRemovedMessage extends ValidationMessage {
     public ScoreHolderGlobalFileToBeRemovedMessage() {
     }
 
-    public ScoreHolderGlobalFileToBeRemovedMessage( final Level level ) {
-        super( level,
-               null );
+    public ScoreHolderGlobalFileToBeRemovedMessage(final Level level) {
+        super(level,
+              null);
     }
 }

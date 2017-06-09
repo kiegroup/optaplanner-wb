@@ -41,13 +41,15 @@ public class PlannerDataObjectFieldEditor
     private PlannerDataObjectFieldEditorView view;
 
     @Inject
-    public PlannerDataObjectFieldEditor( PlannerDataObjectFieldEditorView view,
-            DomainHandlerRegistry handlerRegistry,
-            Event<DataModelerEvent> dataModelerEvent,
-            DataModelCommandBuilder commandBuilder ) {
-        super( handlerRegistry, dataModelerEvent, commandBuilder );
+    public PlannerDataObjectFieldEditor(PlannerDataObjectFieldEditorView view,
+                                        DomainHandlerRegistry handlerRegistry,
+                                        Event<DataModelerEvent> dataModelerEvent,
+                                        DataModelCommandBuilder commandBuilder) {
+        super(handlerRegistry,
+              dataModelerEvent,
+              commandBuilder);
         this.view = view;
-        view.init( this );
+        view.init(this);
     }
 
     @Override
@@ -66,41 +68,43 @@ public class PlannerDataObjectFieldEditor
     }
 
     @Override
-    protected void loadDataObjectField( DataObject dataObject, ObjectProperty objectField ) {
+    protected void loadDataObjectField(DataObject dataObject,
+                                       ObjectProperty objectField) {
         view.clear();
-        view.showPlanningFieldPropertiesNotAvailable( true );
+        view.showPlanningFieldPropertiesNotAvailable(true);
         this.dataObject = dataObject;
         this.objectField = objectField;
 
-        if ( dataObject != null && objectField != null ) {
-            loadPlanningSolution( );
-            loadPlanningEntitySettings( );
+        if (dataObject != null && objectField != null) {
+            loadPlanningSolution();
+            loadPlanningEntitySettings();
         }
     }
 
     @Override
     public void onValueRangeProviderChange() {
         boolean isSet = view.getValueRangeProviderValue();
-        if ( isSet ) {
-            List<ValuePair> initialValue = new ArrayList<ValuePair>(  );
-            initialValue.add( new ValuePair( "id", "" ) );
+        if (isSet) {
+            List<ValuePair> initialValue = new ArrayList<ValuePair>();
+            initialValue.add(new ValuePair("id",
+                                           ""));
             commandBuilder.buildFieldAnnotationAddCommand(
                     getContext(),
                     getName(),
                     getDataObject(),
                     getObjectField(),
                     PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION,
-                    initialValue ).execute();
+                    initialValue).execute();
         } else {
             commandBuilder.buildFieldAnnotationRemoveCommand(
                     getContext(),
                     getName(),
                     getDataObject(),
                     getObjectField(),
-                    PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION ).execute();
-            view.setValueRangeProviderIdValue( null );
+                    PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION).execute();
+            view.setValueRangeProviderIdValue(null);
         }
-        view.enableValueRangeProviderId( isSet );
+        view.enableValueRangeProviderId(isSet);
     }
 
     @Override
@@ -108,7 +112,7 @@ public class PlannerDataObjectFieldEditor
         String value = view.getValueRangeProviderIdValue();
         value = value == null ? "" : value;
 
-        if ( getObjectField().getAnnotation( PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION ) != null ) {
+        if (getObjectField().getAnnotation(PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION) != null) {
             commandBuilder.buildFieldAnnotationValueChangeCommand(
                     getContext(),
                     getName(),
@@ -117,30 +121,30 @@ public class PlannerDataObjectFieldEditor
                     PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION,
                     "id",
                     value,
-                    false ).execute();
+                    false).execute();
         }
     }
 
     @Override
     public void onPlanningVariableChange() {
         boolean isSet = view.getPlanningVariableValue();
-        if ( isSet ) {
+        if (isSet) {
             commandBuilder.buildFieldAnnotationAddCommand(
                     getContext(),
                     getName(),
                     getDataObject(),
                     getObjectField(),
-                    PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION ).execute();
+                    PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION).execute();
         } else {
             commandBuilder.buildFieldAnnotationRemoveCommand(
                     getContext(),
                     getName(),
                     getDataObject(),
                     getObjectField(),
-                    PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION ).execute();
-            view.setValueRangeProviderRefsValue( null );
+                    PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION).execute();
+            view.setValueRangeProviderRefsValue(null);
         }
-        view.enableValueRangeProviderRefs( isSet );
+        view.enableValueRangeProviderRefs(isSet);
     }
 
     @Override
@@ -148,12 +152,12 @@ public class PlannerDataObjectFieldEditor
         String textValue = view.getValueRangeProviderRefsValue();
         List<String> listValue = null;
 
-        if ( textValue != null && !"".equals( textValue ) ) {
-            listValue = new ArrayList<String>(  );
-            listValue.add( textValue );
+        if (textValue != null && !"".equals(textValue)) {
+            listValue = new ArrayList<String>();
+            listValue.add(textValue);
         }
 
-        if ( getObjectField().getAnnotation( PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION ) != null ) {
+        if (getObjectField().getAnnotation(PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION) != null) {
             commandBuilder.buildFieldAnnotationValueChangeCommand(
                     getContext(),
                     getName(),
@@ -162,7 +166,7 @@ public class PlannerDataObjectFieldEditor
                     PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION,
                     "valueRangeProviderRefs",
                     listValue,
-                    false ).execute();
+                    false).execute();
         }
     }
 
@@ -171,42 +175,40 @@ public class PlannerDataObjectFieldEditor
         view.clear();
     }
 
-    private void loadPlanningEntitySettings( ) {
-        if ( dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION ) != null ) {
-            view.showPlanningEntitySettingsPanel( true );
-            view.showPlanningFieldPropertiesNotAvailable( false );
-            Annotation annotation = objectField.getAnnotation( PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION );
-            if ( annotation != null ) {
-                view.setPlanningVariableValue( true );
-                view.enableValueRangeProviderRefs( true );
-                List valueRangeProviderRefs = (List) annotation.getValue( "valueRangeProviderRefs" );
-                if ( valueRangeProviderRefs != null && valueRangeProviderRefs.size() > 0 ) {
-                    String value = valueRangeProviderRefs.get( 0 ) != null ? valueRangeProviderRefs.get( 0 ).toString() : null;
-                    view.setValueRangeProviderRefsValue( value );
+    private void loadPlanningEntitySettings() {
+        if (dataObject.getAnnotation(PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION) != null) {
+            view.showPlanningEntitySettingsPanel(true);
+            view.showPlanningFieldPropertiesNotAvailable(false);
+            Annotation annotation = objectField.getAnnotation(PlannerDomainAnnotations.PLANNING_VARIABLE_ANNOTATION);
+            if (annotation != null) {
+                view.setPlanningVariableValue(true);
+                view.enableValueRangeProviderRefs(true);
+                List valueRangeProviderRefs = (List) annotation.getValue("valueRangeProviderRefs");
+                if (valueRangeProviderRefs != null && valueRangeProviderRefs.size() > 0) {
+                    String value = valueRangeProviderRefs.get(0) != null ? valueRangeProviderRefs.get(0).toString() : null;
+                    view.setValueRangeProviderRefsValue(value);
                 }
             } else {
-                view.enableValueRangeProviderRefs( false );
+                view.enableValueRangeProviderRefs(false);
             }
         }
     }
 
-    private void loadPlanningSolution( ) {
-        if ( dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION  ) != null ) {
-            view.showPlanningSolutionSettingsPanel( true );
-            view.showPlanningFieldPropertiesNotAvailable( false );
+    private void loadPlanningSolution() {
+        if (dataObject.getAnnotation(PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION) != null) {
+            view.showPlanningSolutionSettingsPanel(true);
+            view.showPlanningFieldPropertiesNotAvailable(false);
 
             //set the ValueRangeProvider
-            Annotation annotation = objectField.getAnnotation( PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION );
-            if ( annotation != null ) {
-                view.setValueRangeProviderValue( true );
-                view.enableValueRangeProviderId( true );
-                String id = (String) annotation.getValue( "id" );
-                view.setValueRangeProviderIdValue( id );
+            Annotation annotation = objectField.getAnnotation(PlannerDomainAnnotations.VALUE_RANGE_PROVIDER_ANNOTATION);
+            if (annotation != null) {
+                view.setValueRangeProviderValue(true);
+                view.enableValueRangeProviderId(true);
+                String id = (String) annotation.getValue("id");
+                view.setValueRangeProviderIdValue(id);
             } else {
-                view.enableValueRangeProviderId( false );
+                view.enableValueRangeProviderId(false);
             }
         }
-
     }
-
 }

@@ -31,7 +31,7 @@ public class SolverResourceType
         extends SolverResourceTypeDefinition
         implements ClientResourceType {
 
-    private final Image IMAGE = new Image( SolverEditorResources.INSTANCE.images().typeSolver() );
+    private final Image IMAGE = new Image(SolverEditorResources.INSTANCE.images().typeSolver());
 
     @Inject
     private TranslationService translationService;
@@ -43,8 +43,8 @@ public class SolverResourceType
 
     @Override
     public String getDescription() {
-        String desc = translationService.getTranslation( SolverEditorConstants.SolverResourceTypeDescription );
-        if ( desc == null || desc.isEmpty() ) {
+        String desc = translationService.getTranslation(SolverEditorConstants.SolverResourceTypeDescription);
+        if (desc == null || desc.isEmpty()) {
             return super.getDescription();
         }
         return desc;

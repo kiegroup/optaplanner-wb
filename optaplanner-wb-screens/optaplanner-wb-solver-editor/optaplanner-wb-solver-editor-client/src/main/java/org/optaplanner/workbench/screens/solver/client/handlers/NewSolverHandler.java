@@ -62,12 +62,12 @@ public class NewSolverHandler
     }
 
     @Inject
-    public NewSolverHandler( final Caller<SolverEditorService> solverService,
-                             final SolverResourceType resourceType,
-                             final BusyIndicatorView busyIndicatorView,
-                             final AuthorizationManager authorizationManager,
-                             final SessionInfo sessionInfo,
-                             final TranslationService translationService ) {
+    public NewSolverHandler(final Caller<SolverEditorService> solverService,
+                            final SolverResourceType resourceType,
+                            final BusyIndicatorView busyIndicatorView,
+                            final AuthorizationManager authorizationManager,
+                            final SessionInfo sessionInfo,
+                            final TranslationService translationService) {
         this.solverService = solverService;
         this.resourceType = resourceType;
         this.busyIndicatorView = busyIndicatorView;
@@ -78,12 +78,12 @@ public class NewSolverHandler
 
     @Override
     public String getDescription() {
-        return translationService.getTranslation( SolverEditorConstants.NewSolverHandlerDescription );
+        return translationService.getTranslation(SolverEditorConstants.NewSolverHandlerDescription);
     }
 
     @Override
     public IsWidget getIcon() {
-        return new Image( SolverEditorResources.INSTANCE.images().typeSolver() );
+        return new Image(SolverEditorResources.INSTANCE.images().typeSolver());
     }
 
     @Override
@@ -92,21 +92,21 @@ public class NewSolverHandler
     }
 
     @Override
-    public void create( final Package pkg,
-                        final String baseFileName,
-                        final NewResourcePresenter presenter ) {
-        busyIndicatorView.showBusyIndicator( CommonConstants.INSTANCE.Saving() );
-        solverService.call( getSuccessCallback( presenter ),
-                            new HasBusyIndicatorDefaultErrorCallback( busyIndicatorView ) ).create( pkg.getPackageMainResourcesPath(),
-                                                                                                    buildFileName( baseFileName,
-                                                                                                                   resourceType ),
-                                                                                                    new SolverConfigModel(),
-                                                                                                    "" );
+    public void create(final Package pkg,
+                       final String baseFileName,
+                       final NewResourcePresenter presenter) {
+        busyIndicatorView.showBusyIndicator(CommonConstants.INSTANCE.Saving());
+        solverService.call(getSuccessCallback(presenter),
+                           new HasBusyIndicatorDefaultErrorCallback(busyIndicatorView)).create(pkg.getPackageMainResourcesPath(),
+                                                                                               buildFileName(baseFileName,
+                                                                                                             resourceType),
+                                                                                               new SolverConfigModel(),
+                                                                                               "");
     }
 
     @Override
     public boolean canCreate() {
-        return authorizationManager.authorize( PLANNER_AVAILABLE,
-                                               sessionInfo.getIdentity() );
+        return authorizationManager.authorize(PLANNER_AVAILABLE,
+                                              sessionInfo.getIdentity());
     }
 }

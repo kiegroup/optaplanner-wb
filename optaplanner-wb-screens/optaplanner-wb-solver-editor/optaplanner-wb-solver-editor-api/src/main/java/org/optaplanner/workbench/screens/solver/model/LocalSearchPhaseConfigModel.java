@@ -27,8 +27,7 @@ public class LocalSearchPhaseConfigModel extends PhaseConfigModel {
         return localSearchType;
     }
 
-    public void setLocalSearchType( LocalSearchType localSearchType ) {
+    public void setLocalSearchType(LocalSearchType localSearchType) {
         this.localSearchType = localSearchType;
     }
-
 }

@@ -42,76 +42,85 @@ public class ComparatorDefinitionAnnotationValueHandler extends AnnotationValueH
 
     private static final String TYPE = "type";
 
-    public ComparatorDefinitionAnnotationValueHandler( Annotation annotation ) {
-        super( annotation );
+    public ComparatorDefinitionAnnotationValueHandler(Annotation annotation) {
+        super(annotation);
     }
 
     public List<Annotation> getObjectPropertyPaths() {
-        Object objectPropertyPaths = annotation.getValue( OBJECT_PROPERTY_PATHS );
-        return objectPropertyPaths == null ? new ArrayList<>( 0 ) : (List<Annotation>) objectPropertyPaths;
+        Object objectPropertyPaths = annotation.getValue(OBJECT_PROPERTY_PATHS);
+        return objectPropertyPaths == null ? new ArrayList<>(0) : (List<Annotation>) objectPropertyPaths;
     }
 
-    public List<Annotation> getObjectProperties( Annotation objectPropertyPath ) {
-        Object objectProperties = objectPropertyPath.getValue( OBJECT_PROPERTIES );
-        return objectProperties == null ? new ArrayList<>( 0 ) : (List<Annotation>) objectProperties;
+    public List<Annotation> getObjectProperties(Annotation objectPropertyPath) {
+        Object objectProperties = objectPropertyPath.getValue(OBJECT_PROPERTIES);
+        return objectProperties == null ? new ArrayList<>(0) : (List<Annotation>) objectProperties;
     }
 
-    public boolean isAscending( Annotation objectPropertyPath ) {
-        return (boolean) objectPropertyPath.getValue( ASCENDING );
+    public boolean isAscending(Annotation objectPropertyPath) {
+        return (boolean) objectPropertyPath.getValue(ASCENDING);
     }
 
-    public String getName( Annotation comparatorObjectProperty ) {
-        return (String) comparatorObjectProperty.getValue( NAME );
+    public String getName(Annotation comparatorObjectProperty) {
+        return (String) comparatorObjectProperty.getValue(NAME);
     }
 
-    public void setName( Annotation comparatorObjectProperty, String name ) {
-        if ( name == null ) {
-            comparatorObjectProperty.removeValue( NAME );
+    public void setName(Annotation comparatorObjectProperty,
+                        String name) {
+        if (name == null) {
+            comparatorObjectProperty.removeValue(NAME);
         } else {
-            comparatorObjectProperty.setValue( NAME, name );
+            comparatorObjectProperty.setValue(NAME,
+                                              name);
         }
     }
 
-    public String getType( Annotation comparatorObjectProperty ) {
-        return (String) comparatorObjectProperty.getValue( TYPE );
+    public String getType(Annotation comparatorObjectProperty) {
+        return (String) comparatorObjectProperty.getValue(TYPE);
     }
 
-    public void setType( Annotation comparatorObjectProperty, String type ) {
-        if ( type == null ) {
-            comparatorObjectProperty.removeValue( TYPE );
+    public void setType(Annotation comparatorObjectProperty,
+                        String type) {
+        if (type == null) {
+            comparatorObjectProperty.removeValue(TYPE);
         } else {
-            comparatorObjectProperty.setValue( TYPE, type );
+            comparatorObjectProperty.setValue(TYPE,
+                                              type);
         }
     }
 
-    public static Annotation createAnnotation( List<ObjectPropertyPath> objectPropertyPathList, Map<String, AnnotationDefinition> annotationDefinitions ) {
+    public static Annotation createAnnotation(List<ObjectPropertyPath> objectPropertyPathList,
+                                              Map<String, AnnotationDefinition> annotationDefinitions) {
 
-        Annotation annotation = new AnnotationImpl( annotationDefinitions.get( ComparatorDefinition.class.getName() ) );
+        Annotation annotation = new AnnotationImpl(annotationDefinitions.get(ComparatorDefinition.class.getName()));
 
-        List<Annotation> objectPropertyPathAnnotations = objectPropertyPathList == null ? new ArrayList<>( 0 ) : new ArrayList<>( objectPropertyPathList.size() );
+        List<Annotation> objectPropertyPathAnnotations = objectPropertyPathList == null ? new ArrayList<>(0) : new ArrayList<>(objectPropertyPathList.size());
 
-        if ( objectPropertyPathList != null ) {
-            for ( ObjectPropertyPath objectPropertyPath : objectPropertyPathList ) {
-                AnnotationImpl comparatorFieldPath = new AnnotationImpl( annotationDefinitions.get( ComparatorObjectPropertyPath.class.getName() ) );
+        if (objectPropertyPathList != null) {
+            for (ObjectPropertyPath objectPropertyPath : objectPropertyPathList) {
+                AnnotationImpl comparatorFieldPath = new AnnotationImpl(annotationDefinitions.get(ComparatorObjectPropertyPath.class.getName()));
                 List<ObjectProperty> path = objectPropertyPath.getObjectPropertyPath();
                 List<Annotation> comparatorFieldPaths = new ArrayList<>();
-                for ( int i = 0; i < path.size(); i++ ) {
-                    ObjectProperty objectProperty = path.get( i );
-                    AnnotationImpl comparatorField = new AnnotationImpl( annotationDefinitions.get( ComparatorObjectProperty.class.getName() ) );
-                    comparatorField.setValue( NAME, objectProperty.getName() );
-                    comparatorField.setValue( TYPE, objectProperty.getClassName() );
-                    comparatorFieldPaths.add( comparatorField );
+                for (int i = 0; i < path.size(); i++) {
+                    ObjectProperty objectProperty = path.get(i);
+                    AnnotationImpl comparatorField = new AnnotationImpl(annotationDefinitions.get(ComparatorObjectProperty.class.getName()));
+                    comparatorField.setValue(NAME,
+                                             objectProperty.getName());
+                    comparatorField.setValue(TYPE,
+                                             objectProperty.getClassName());
+                    comparatorFieldPaths.add(comparatorField);
                 }
-                comparatorFieldPath.setValue( OBJECT_PROPERTIES, comparatorFieldPaths );
-                comparatorFieldPath.setValue( ASCENDING, !objectPropertyPath.isDescending() );
+                comparatorFieldPath.setValue(OBJECT_PROPERTIES,
+                                             comparatorFieldPaths);
+                comparatorFieldPath.setValue(ASCENDING,
+                                             !objectPropertyPath.isDescending());
 
-                objectPropertyPathAnnotations.add( comparatorFieldPath );
+                objectPropertyPathAnnotations.add(comparatorFieldPath);
             }
         }
 
-        annotation.setValue( OBJECT_PROPERTY_PATHS, objectPropertyPathAnnotations );
+        annotation.setValue(OBJECT_PROPERTY_PATHS,
+                            objectPropertyPathAnnotations);
 
         return annotation;
     }
-
 }

@@ -44,25 +44,26 @@ public class PlanningSolutionCopyValidatorTest {
 
     @Test
     public void checkDataObjectIsNotAPlanningSolution() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
 
-        Collection<ValidationMessage> result = copyValidator.validate( mock( Path.class ),
-                                                                       dataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = copyValidator.validate(mock(Path.class),
+                                                                      dataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void checkDataObjectIsAPlanningSolution() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
-        Collection<ValidationMessage> result = copyValidator.validate( mock( Path.class ),
-                                                                       dataObject );
-        assertEquals( 1, result.size() );
+        Collection<ValidationMessage> result = copyValidator.validate(mock(Path.class),
+                                                                      dataObject);
+        assertEquals(1,
+                     result.size());
 
         ValidationMessage message = result.iterator().next();
-        assertTrue( message instanceof PlanningSolutionToBeDuplicatedMessage );
+        assertTrue(message instanceof PlanningSolutionToBeDuplicatedMessage);
     }
 }

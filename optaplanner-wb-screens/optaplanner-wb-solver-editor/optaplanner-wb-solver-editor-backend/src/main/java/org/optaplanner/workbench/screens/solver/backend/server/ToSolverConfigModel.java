@@ -36,91 +36,91 @@ class ToSolverConfigModel {
 
     private SolverConfig solverConfig;
 
-    public ToSolverConfigModel( final SolverConfig solverConfig ) {
+    public ToSolverConfigModel(final SolverConfig solverConfig) {
         this.solverConfig = solverConfig;
     }
 
     public SolverConfigModel get() {
         SolverConfigModel model = new SolverConfigModel();
-        model.setTerminationConfig( create( solverConfig.getTerminationConfig() ) );
-        model.setScoreDirectorFactoryConfig( create( solverConfig.getScoreDirectorFactoryConfig() ) );
-        model.setPhaseConfigList( create( solverConfig.getPhaseConfigList() ) );
+        model.setTerminationConfig(create(solverConfig.getTerminationConfig()));
+        model.setScoreDirectorFactoryConfig(create(solverConfig.getScoreDirectorFactoryConfig()));
+        model.setPhaseConfigList(create(solverConfig.getPhaseConfigList()));
 
         return model;
     }
 
-    private ScoreDirectorFactoryConfigModel create( final ScoreDirectorFactoryConfig scoreDirectorFactoryConfig ) {
+    private ScoreDirectorFactoryConfigModel create(final ScoreDirectorFactoryConfig scoreDirectorFactoryConfig) {
 
-        if ( scoreDirectorFactoryConfig == null ) {
+        if (scoreDirectorFactoryConfig == null) {
             return new ScoreDirectorFactoryConfigModel();
         } else {
             ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-            model.setKSessionName( scoreDirectorFactoryConfig.getKsessionName() );
+            model.setKSessionName(scoreDirectorFactoryConfig.getKsessionName());
 
             return model;
         }
     }
 
-    private TerminationConfigModel create( final TerminationConfig terminationConfig ) {
+    private TerminationConfigModel create(final TerminationConfig terminationConfig) {
 
-        if ( terminationConfig == null ) {
+        if (terminationConfig == null) {
             return new TerminationConfigModel();
         } else {
             TerminationConfigModel model = new TerminationConfigModel();
 
-            if ( terminationConfig.getTerminationCompositionStyle() != null ) {
-                model.setTerminationCompositionStyle( TerminationCompositionStyleModel.valueOf( terminationConfig.getTerminationCompositionStyle().name() ) );
+            if (terminationConfig.getTerminationCompositionStyle() != null) {
+                model.setTerminationCompositionStyle(TerminationCompositionStyleModel.valueOf(terminationConfig.getTerminationCompositionStyle().name()));
             }
 
-            model.setDaysSpentLimit( terminationConfig.getDaysSpentLimit() );
-            model.setHoursSpentLimit( terminationConfig.getHoursSpentLimit() );
-            model.setMinutesSpentLimit( terminationConfig.getMinutesSpentLimit() );
-            model.setSecondsSpentLimit( terminationConfig.getSecondsSpentLimit() );
-            model.setMillisecondsSpentLimit( terminationConfig.getMillisecondsSpentLimit() );
+            model.setDaysSpentLimit(terminationConfig.getDaysSpentLimit());
+            model.setHoursSpentLimit(terminationConfig.getHoursSpentLimit());
+            model.setMinutesSpentLimit(terminationConfig.getMinutesSpentLimit());
+            model.setSecondsSpentLimit(terminationConfig.getSecondsSpentLimit());
+            model.setMillisecondsSpentLimit(terminationConfig.getMillisecondsSpentLimit());
 
-            model.setUnimprovedDaysSpentLimit( terminationConfig.getUnimprovedDaysSpentLimit() );
-            model.setUnimprovedHoursSpentLimit( terminationConfig.getUnimprovedHoursSpentLimit() );
-            model.setUnimprovedMinutesSpentLimit( terminationConfig.getUnimprovedMinutesSpentLimit() );
-            model.setUnimprovedSecondsSpentLimit( terminationConfig.getUnimprovedSecondsSpentLimit() );
-            model.setUnimprovedMillisecondsSpentLimit( terminationConfig.getUnimprovedMillisecondsSpentLimit() );
+            model.setUnimprovedDaysSpentLimit(terminationConfig.getUnimprovedDaysSpentLimit());
+            model.setUnimprovedHoursSpentLimit(terminationConfig.getUnimprovedHoursSpentLimit());
+            model.setUnimprovedMinutesSpentLimit(terminationConfig.getUnimprovedMinutesSpentLimit());
+            model.setUnimprovedSecondsSpentLimit(terminationConfig.getUnimprovedSecondsSpentLimit());
+            model.setUnimprovedMillisecondsSpentLimit(terminationConfig.getUnimprovedMillisecondsSpentLimit());
 
-            model.setBestScoreLimit( terminationConfig.getBestScoreLimit() );
-            model.setBestScoreFeasible( terminationConfig.getBestScoreFeasible() );
+            model.setBestScoreLimit(terminationConfig.getBestScoreLimit());
+            model.setBestScoreFeasible(terminationConfig.getBestScoreFeasible());
 
-            model.setStepCountLimit( terminationConfig.getStepCountLimit() );
-            model.setUnimprovedStepCountLimit( terminationConfig.getUnimprovedStepCountLimit() );
+            model.setStepCountLimit(terminationConfig.getStepCountLimit());
+            model.setUnimprovedStepCountLimit(terminationConfig.getUnimprovedStepCountLimit());
 
-            model.setScoreCalculationCountLimit( terminationConfig.getScoreCalculationCountLimit() );
+            model.setScoreCalculationCountLimit(terminationConfig.getScoreCalculationCountLimit());
 
-            if ( terminationConfig.getTerminationConfigList() != null ) {
+            if (terminationConfig.getTerminationConfigList() != null) {
                 List<TerminationConfigModel> nestedTerminationList = new ArrayList<>();
-                for ( TerminationConfig termination : terminationConfig.getTerminationConfigList() ) {
-                    nestedTerminationList.add( create( termination ) );
+                for (TerminationConfig termination : terminationConfig.getTerminationConfigList()) {
+                    nestedTerminationList.add(create(termination));
                 }
-                model.setTerminationConfigList( nestedTerminationList );
+                model.setTerminationConfigList(nestedTerminationList);
             }
             return model;
         }
     }
 
-    private List<PhaseConfigModel> create( final List<PhaseConfig> phaseConfigList ) {
-        if ( phaseConfigList == null ) {
+    private List<PhaseConfigModel> create(final List<PhaseConfig> phaseConfigList) {
+        if (phaseConfigList == null) {
             return new ArrayList<>();
         } else {
-            List<PhaseConfigModel> result = new ArrayList<>( phaseConfigList.size() );
-            for ( PhaseConfig phaseConfig : phaseConfigList ) {
-                if ( phaseConfig instanceof ConstructionHeuristicPhaseConfig ) {
+            List<PhaseConfigModel> result = new ArrayList<>(phaseConfigList.size());
+            for (PhaseConfig phaseConfig : phaseConfigList) {
+                if (phaseConfig instanceof ConstructionHeuristicPhaseConfig) {
                     ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) phaseConfig;
                     ConstructionHeuristicPhaseConfigModel phaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
-                    phaseConfigModel.setConstructionHeuristicType( constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
-                    phaseConfigModel.setEntitySorterManner( constructionHeuristicPhaseConfig.getEntitySorterManner() );
-                    result.add( phaseConfigModel );
-                } else if ( phaseConfig instanceof LocalSearchPhaseConfig ) {
+                    phaseConfigModel.setConstructionHeuristicType(constructionHeuristicPhaseConfig.getConstructionHeuristicType());
+                    phaseConfigModel.setEntitySorterManner(constructionHeuristicPhaseConfig.getEntitySorterManner());
+                    result.add(phaseConfigModel);
+                } else if (phaseConfig instanceof LocalSearchPhaseConfig) {
                     LocalSearchPhaseConfig localSearchPhaseConfig = (LocalSearchPhaseConfig) phaseConfig;
                     LocalSearchPhaseConfigModel phaseConfigModel = new LocalSearchPhaseConfigModel();
-                    phaseConfigModel.setLocalSearchType( localSearchPhaseConfig.getLocalSearchType() );
-                    result.add( phaseConfigModel );
+                    phaseConfigModel.setLocalSearchType(localSearchPhaseConfig.getLocalSearchType());
+                    result.add(phaseConfigModel);
                 }
             }
             return result;

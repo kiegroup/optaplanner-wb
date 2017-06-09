@@ -26,8 +26,8 @@ public class ScoreHolderGlobalToBeDefinedManuallyMessage extends ValidationMessa
     public ScoreHolderGlobalToBeDefinedManuallyMessage() {
     }
 
-    public ScoreHolderGlobalToBeDefinedManuallyMessage( final Level level ) {
-        super( level,
-               null );
+    public ScoreHolderGlobalToBeDefinedManuallyMessage(final Level level) {
+        super(level,
+              null);
     }
 }

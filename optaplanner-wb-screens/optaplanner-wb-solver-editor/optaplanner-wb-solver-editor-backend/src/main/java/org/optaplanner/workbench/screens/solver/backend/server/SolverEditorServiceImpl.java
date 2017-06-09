@@ -81,161 +81,155 @@ public class SolverEditorServiceImpl
     private CommentedOptionFactory commentedOptionFactory;
 
     @Override
-    public Path create( final Path context,
-                        final String fileName,
-                        final SolverConfigModel config,
-                        final String comment ) {
+    public Path create(final Path context,
+                       final String fileName,
+                       final SolverConfigModel config,
+                       final String comment) {
         try {
-            final org.uberfire.java.nio.file.Path nioPath = Paths.convert( context ).resolve( fileName );
-            final Path newPath = Paths.convert( nioPath );
+            final org.uberfire.java.nio.file.Path nioPath = Paths.convert(context).resolve(fileName);
+            final Path newPath = Paths.convert(nioPath);
 
-            if ( ioService.exists( nioPath ) ) {
-                throw new FileAlreadyExistsException( nioPath.toString() );
+            if (ioService.exists(nioPath)) {
+                throw new FileAlreadyExistsException(nioPath.toString());
             }
 
-            ioService.write( nioPath,
-                             configPersistence.toXML( config ),
-                             commentedOptionFactory.makeCommentedOption( comment ) );
+            ioService.write(nioPath,
+                            configPersistence.toXML(config),
+                            commentedOptionFactory.makeCommentedOption(comment));
 
             return newPath;
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
         }
     }
 
     @Override
-    public SolverConfigModel load( final Path path ) {
-        String xml = ioService.readAllString( Paths.convert( path ) );
-        return configPersistence.toConfig( xml );
+    public SolverConfigModel load(final Path path) {
+        String xml = ioService.readAllString(Paths.convert(path));
+        return configPersistence.toConfig(xml);
     }
 
     @Override
-    public SolverModelContent loadContent( final Path path ) {
-        return super.loadContent( path );
+    public SolverModelContent loadContent(final Path path) {
+        return super.loadContent(path);
     }
 
     @Override
-    protected SolverModelContent constructContent( Path path,
-                                                   Overview overview ) {
+    protected SolverModelContent constructContent(Path path,
+                                                  Overview overview) {
 
         //Signal opening to interested parties
-        resourceOpenedEvent.fire( new ResourceOpenedEvent( path,
-                                                           sessionInfo ) );
+        resourceOpenedEvent.fire(new ResourceOpenedEvent(path,
+                                                         sessionInfo));
 
-        return new SolverModelContent( load( path ),
-                                       overview );
+        return new SolverModelContent(load(path),
+                                      overview);
     }
 
     @Override
-    public String toSource( final Path path,
-                            final SolverConfigModel model ) {
-        return configPersistence.toXML( model );
+    public String toSource(final Path path,
+                           final SolverConfigModel model) {
+        return configPersistence.toXML(model);
     }
 
     @Override
-    public Path save( final Path resource,
-                      final SolverConfigModel config,
-                      final Metadata metadata,
-                      final String comment ) {
+    public Path save(final Path resource,
+                     final SolverConfigModel config,
+                     final Metadata metadata,
+                     final String comment) {
         try {
-            Metadata currentMetadata = metadataService.getMetadata( resource );
-            ioService.write( Paths.convert( resource ),
-                             configPersistence.toXML( config ),
-                             metadataService.setUpAttributes( resource,
-                                                              metadata ),
-                             commentedOptionFactory.makeCommentedOption( comment ) );
+            Metadata currentMetadata = metadataService.getMetadata(resource);
+            ioService.write(Paths.convert(resource),
+                            configPersistence.toXML(config),
+                            metadataService.setUpAttributes(resource,
+                                                            metadata),
+                            commentedOptionFactory.makeCommentedOption(comment));
 
-            fireMetadataSocialEvents( resource,
-                                      currentMetadata,
-                                      metadata );
+            fireMetadataSocialEvents(resource,
+                                     currentMetadata,
+                                     metadata);
 
             return resource;
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
-        }
-    }
-
-    @Override
-    public void delete( final Path path,
-                        final String comment ) {
-        try {
-            deleteService.delete( path,
-                                  comment );
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
-        }
-    }
-
-    @Override
-    public Path rename( final Path path,
-                        final String newName,
-                        final String comment ) {
-        try {
-            return renameService.rename( path,
-                                         newName,
-                                         comment );
-
         } catch (Exception e) {
-            throw ExceptionUtilities.handleException( e );
+            throw ExceptionUtilities.handleException(e);
         }
     }
 
     @Override
-    public Path copy( final Path path,
-                      final String newName,
-                      final String comment ) {
+    public void delete(final Path path,
+                       final String comment) {
         try {
-            return copyService.copy( path,
-                                     newName,
-                                     comment );
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
+            deleteService.delete(path,
+                                 comment);
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
         }
     }
 
     @Override
-    public Path copy( final Path path,
-                      final String newName,
-                      final Path targetDirectory,
-                      final String comment ) {
+    public Path rename(final Path path,
+                       final String newName,
+                       final String comment) {
         try {
-            return copyService.copy( path,
-                                     newName,
-                                     targetDirectory,
-                                     comment );
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
+            return renameService.rename(path,
+                                        newName,
+                                        comment);
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
         }
     }
 
     @Override
-    public List<ValidationMessage> validate( final Path path,
-                                             final SolverConfigModel config ) {
+    public Path copy(final Path path,
+                     final String newName,
+                     final String comment) {
         try {
-
-            return solverValidator.validate( path,
-                                             toSource( path, config ) );
-
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
+            return copyService.copy(path,
+                                    newName,
+                                    comment);
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
         }
     }
 
     @Override
-    public List<ValidationMessage> smokeTest( final Path path,
-                                              final SolverConfigModel config ) {
+    public Path copy(final Path path,
+                     final String newName,
+                     final Path targetDirectory,
+                     final String comment) {
+        try {
+            return copyService.copy(path,
+                                    newName,
+                                    targetDirectory,
+                                    comment);
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
+        }
+    }
+
+    @Override
+    public List<ValidationMessage> validate(final Path path,
+                                            final SolverConfigModel config) {
         try {
 
-            return solverValidator.validateAndRun( path,
-                                                   toSource( path, config ) );
+            return solverValidator.validate(path,
+                                            toSource(path,
+                                                     config));
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
+        }
+    }
 
-        } catch ( Exception e ) {
-            throw ExceptionUtilities.handleException( e );
+    @Override
+    public List<ValidationMessage> smokeTest(final Path path,
+                                             final SolverConfigModel config) {
+        try {
+
+            return solverValidator.validateAndRun(path,
+                                                  toSource(path,
+                                                           config));
+        } catch (Exception e) {
+            throw ExceptionUtilities.handleException(e);
         }
     }
 }

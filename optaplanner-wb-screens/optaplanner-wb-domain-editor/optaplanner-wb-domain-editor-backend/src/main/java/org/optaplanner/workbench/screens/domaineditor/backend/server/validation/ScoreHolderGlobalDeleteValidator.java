@@ -40,27 +40,27 @@ public class ScoreHolderGlobalDeleteValidator implements DeleteValidator<Globals
     }
 
     @Inject
-    public ScoreHolderGlobalDeleteValidator( final MetadataService metadataService ) {
+    public ScoreHolderGlobalDeleteValidator(final MetadataService metadataService) {
         this.metadataService = metadataService;
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path path,
-                                                   final GlobalsModel content ) {
-        return validate( path );
+    public Collection<ValidationMessage> validate(final Path path,
+                                                  final GlobalsModel content) {
+        return validate(path);
     }
 
     @Override
-    public Collection<ValidationMessage> validate( Path path ) {
-        Metadata metadata = metadataService.getMetadata( path );
-        if ( metadata.isGenerated() ) {
-            return Arrays.asList( new ScoreHolderGlobalFileToBeRemovedMessage(Level.ERROR) );
+    public Collection<ValidationMessage> validate(Path path) {
+        Metadata metadata = metadataService.getMetadata(path);
+        if (metadata.isGenerated()) {
+            return Arrays.asList(new ScoreHolderGlobalFileToBeRemovedMessage(Level.ERROR));
         }
         return Collections.emptyList();
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".gdrl" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".gdrl");
     }
 }

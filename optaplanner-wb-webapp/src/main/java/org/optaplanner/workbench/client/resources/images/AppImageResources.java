@@ -25,5 +25,4 @@ public interface AppImageResources extends ClientBundle {
 
     @Source("optaPlannerEnabledIcon.png")
     ImageResource optaPlannerEnabledIcon();
-
 }

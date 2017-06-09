@@ -38,21 +38,21 @@ public class ScoreHolderGlobalSaveValidator implements SaveValidator<GlobalsMode
     private MetadataService metadataService;
 
     @Override
-    public Collection<ValidationMessage> validate( final Path path,
-                                                   final GlobalsModel content ) {
+    public Collection<ValidationMessage> validate(final Path path,
+                                                  final GlobalsModel content) {
 
-        Metadata metadata = metadataService.getMetadata( path );
-        if ( content != null && !metadata.isGenerated() ) {
-            final boolean containsScoreHolderGlobal = content.getGlobals().stream().anyMatch( g -> "scoreHolder".equals( g.getAlias() ) );
-            if ( containsScoreHolderGlobal ) {
-                return Arrays.asList( new ScoreHolderGlobalToBeDefinedManuallyMessage( Level.ERROR ) );
+        Metadata metadata = metadataService.getMetadata(path);
+        if (content != null && !metadata.isGenerated()) {
+            final boolean containsScoreHolderGlobal = content.getGlobals().stream().anyMatch(g -> "scoreHolder".equals(g.getAlias()));
+            if (containsScoreHolderGlobal) {
+                return Arrays.asList(new ScoreHolderGlobalToBeDefinedManuallyMessage(Level.ERROR));
             }
         }
         return Collections.emptyList();
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".gdrl" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".gdrl");
     }
 }

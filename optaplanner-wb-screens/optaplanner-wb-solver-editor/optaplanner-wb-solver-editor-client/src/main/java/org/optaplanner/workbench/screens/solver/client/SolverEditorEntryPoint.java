@@ -28,5 +28,4 @@ public class SolverEditorEntryPoint {
     public void startApp() {
         SolverEditorResources.INSTANCE.CSS().ensureInjected();
     }
-
 }

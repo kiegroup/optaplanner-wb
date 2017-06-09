@@ -30,35 +30,33 @@ public interface PlannerDataObjectFieldEditorView
         void onPlanningVariableChange();
 
         void onValueRangeProviderRefsChange();
-
     }
 
-    void setValueRangeProviderValue( boolean value );
+    void setValueRangeProviderValue(boolean value);
 
     boolean getValueRangeProviderValue();
 
-    void enableValueRangeProviderId( boolean enabled );
+    void enableValueRangeProviderId(boolean enabled);
 
-    void setValueRangeProviderIdValue( String value );
+    void setValueRangeProviderIdValue(String value);
 
     String getValueRangeProviderIdValue();
 
-    void setPlanningVariableValue( boolean value );
+    void setPlanningVariableValue(boolean value);
 
     boolean getPlanningVariableValue();
 
-    void enableValueRangeProviderRefs( boolean enabled );
+    void enableValueRangeProviderRefs(boolean enabled);
 
-    void setValueRangeProviderRefsValue( String value );
+    void setValueRangeProviderRefsValue(String value);
 
     String getValueRangeProviderRefsValue();
 
-    void showPlanningSolutionSettingsPanel( boolean show );
+    void showPlanningSolutionSettingsPanel(boolean show);
 
-    void showPlanningEntitySettingsPanel( boolean show );
+    void showPlanningEntitySettingsPanel(boolean show);
 
-    void showPlanningFieldPropertiesNotAvailable( boolean show );
+    void showPlanningFieldPropertiesNotAvailable(boolean show);
 
     void clear();
-
 }

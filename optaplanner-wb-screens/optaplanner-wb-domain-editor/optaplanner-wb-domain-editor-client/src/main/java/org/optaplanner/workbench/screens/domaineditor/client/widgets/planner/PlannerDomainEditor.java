@@ -30,8 +30,9 @@ public class PlannerDomainEditor extends ContextAwareBaseDomainEditor {
     }
 
     @Inject
-    public PlannerDomainEditor( PlannerDataObjectEditor objectEditor, PlannerDataObjectFieldEditor fieldEditor ) {
-        super( objectEditor, fieldEditor );
+    public PlannerDomainEditor(PlannerDataObjectEditor objectEditor,
+                               PlannerDataObjectFieldEditor fieldEditor) {
+        super(objectEditor,
+              fieldEditor);
     }
-
 }

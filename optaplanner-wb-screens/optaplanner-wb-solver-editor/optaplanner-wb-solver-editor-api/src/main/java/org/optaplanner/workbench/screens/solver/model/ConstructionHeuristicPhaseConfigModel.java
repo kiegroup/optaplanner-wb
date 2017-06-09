@@ -30,7 +30,7 @@ public class ConstructionHeuristicPhaseConfigModel extends PhaseConfigModel {
         return constructionHeuristicType;
     }
 
-    public void setConstructionHeuristicType( ConstructionHeuristicType constructionHeuristicType ) {
+    public void setConstructionHeuristicType(ConstructionHeuristicType constructionHeuristicType) {
         this.constructionHeuristicType = constructionHeuristicType;
     }
 
@@ -38,8 +38,7 @@ public class ConstructionHeuristicPhaseConfigModel extends PhaseConfigModel {
         return entitySorterManner;
     }
 
-    public void setEntitySorterManner( EntitySorterManner entitySorterManner ) {
+    public void setEntitySorterManner(EntitySorterManner entitySorterManner) {
         this.entitySorterManner = entitySorterManner;
     }
-
 }

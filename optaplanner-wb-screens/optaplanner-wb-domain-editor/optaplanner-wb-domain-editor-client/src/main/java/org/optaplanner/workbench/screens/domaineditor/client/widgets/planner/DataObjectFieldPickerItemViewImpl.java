@@ -80,91 +80,96 @@ public class DataObjectFieldPickerItemViewImpl extends Composite implements Data
     private Presenter presenter;
 
     @Inject
-    public DataObjectFieldPickerItemViewImpl( final Div fieldPickerItemRow,
-                                              final ManagedInstance<DataObjectFieldPickerItemLabelView> fieldPickerItemLabelViewInstance ) {
+    public DataObjectFieldPickerItemViewImpl(final Div fieldPickerItemRow,
+                                             final ManagedInstance<DataObjectFieldPickerItemLabelView> fieldPickerItemLabelViewInstance) {
         this.fieldPickerItemRow = fieldPickerItemRow;
         this.fieldPickerItemLabelViewInstance = fieldPickerItemLabelViewInstance;
     }
 
     @PostConstruct
     public void init() {
-        moveUpButton.setIcon( IconType.ARROW_UP );
-        moveDownButton.setIcon( IconType.ARROW_DOWN );
-        ascSortButton.setIcon( IconType.SORT_ALPHA_ASC );
-        descSortButton.setIcon( IconType.SORT_ALPHA_DESC );
+        moveUpButton.setIcon(IconType.ARROW_UP);
+        moveDownButton.setIcon(IconType.ARROW_DOWN);
+        ascSortButton.setIcon(IconType.SORT_ALPHA_ASC);
+        descSortButton.setIcon(IconType.SORT_ALPHA_DESC);
     }
 
     @Override
-    public void setPresenter( Presenter presenter ) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void initSelectFieldDropdownOptions( List<ObjectProperty> options ) {
+    public void initSelectFieldDropdownOptions(List<ObjectProperty> options) {
         selectFieldDropdown.clear();
-        for ( ObjectProperty option : options ) {
-            AnchorListItem listItem = new AnchorListItem( option.getName() );
-            listItem.addClickHandler( c -> presenter.onFieldAdded( option, true ) );
-            selectFieldDropdown.add( listItem );
+        for (ObjectProperty option : options) {
+            AnchorListItem listItem = new AnchorListItem(option.getName());
+            listItem.addClickHandler(c -> presenter.onFieldAdded(option,
+                                                                 true));
+            selectFieldDropdown.add(listItem);
         }
     }
 
     @Override
-    public void addRootItem( DataObject rootDataObject ) {
-        createFieldPickerItemLabel( rootDataObject.getName(), () -> presenter.onRootLabelRemoved() );
+    public void addRootItem(DataObject rootDataObject) {
+        createFieldPickerItemLabel(rootDataObject.getName(),
+                                   () -> presenter.onRootLabelRemoved());
     }
 
     @Override
-    public void addFieldItem( ObjectProperty objectProperty ) {
-        createFieldPickerItemLabel( objectProperty.getName(), () -> presenter.onFieldRemoved( objectProperty ) );
+    public void addFieldItem(ObjectProperty objectProperty) {
+        createFieldPickerItemLabel(objectProperty.getName(),
+                                   () -> presenter.onFieldRemoved(objectProperty));
     }
 
-    private void createFieldPickerItemLabel( String name, Command removeLabelCommand ) {
+    private void createFieldPickerItemLabel(String name,
+                                            Command removeLabelCommand) {
         DataObjectFieldPickerItemLabelView labelView = fieldPickerItemLabelViewInstance.get();
-        labelView.setName( name );
-        labelView.setRemoveLabelCommand( removeLabelCommand );
-        fieldPickerItemRow.appendChild( labelView.getElement() );
+        labelView.setName(name);
+        labelView.setRemoveLabelCommand(removeLabelCommand);
+        fieldPickerItemRow.appendChild(labelView.getElement());
     }
 
     @Override
     public void removeLastFieldItem() {
-        fieldPickerItemRow.removeChild( fieldPickerItemRow.getLastChild() );
+        fieldPickerItemRow.removeChild(fieldPickerItemRow.getLastChild());
     }
 
     @Override
-    public void displaySelectFieldButton( boolean display ) {
-        selectFieldButton.setDisabled( !display );
+    public void displaySelectFieldButton(boolean display) {
+        selectFieldButton.setDisabled(!display);
     }
 
     @Override
-    public void setOrderSelectDescendingValue( boolean descending ) {
-        ascSortButton.setVisible( !descending );
-        descSortButton.setVisible( descending );
+    public void setOrderSelectDescendingValue(boolean descending) {
+        ascSortButton.setVisible(!descending);
+        descSortButton.setVisible(descending);
     }
 
     @Override
-    public void setFieldPickerItemIndex( int index ) {
-        sortIndexLabel.setTextContent( index + ".");
+    public void setFieldPickerItemIndex(int index) {
+        sortIndexLabel.setTextContent(index + ".");
     }
 
     @EventHandler("moveUpButton")
-    public void onMoveUpButtonClicked( ClickEvent event ) {
+    public void onMoveUpButtonClicked(ClickEvent event) {
         presenter.onMoveFieldItemUp();
     }
 
     @EventHandler("moveDownButton")
-    public void onMoveDownButtonClicked( ClickEvent event ) {
+    public void onMoveDownButtonClicked(ClickEvent event) {
         presenter.onMoveFieldItemDown();
     }
 
     @EventHandler("ascSortButton")
-    public void onAscSortButtonClicked( ClickEvent event ) {
-        presenter.onOrderSelectValueChange( true, true );
+    public void onAscSortButtonClicked(ClickEvent event) {
+        presenter.onOrderSelectValueChange(true,
+                                           true);
     }
 
     @EventHandler("descSortButton")
-    public void onDescSortButtonClicked( ClickEvent event ) {
-        presenter.onOrderSelectValueChange( false, true );
+    public void onDescSortButtonClicked(ClickEvent event) {
+        presenter.onOrderSelectValueChange(false,
+                                           true);
     }
-
 }

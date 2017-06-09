@@ -32,58 +32,58 @@ import org.slf4j.LoggerFactory;
 @ApplicationScoped
 public class HardConstraintMatchPersistenceExtension implements RuleModelIActionPersistenceExtension {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( HardConstraintMatchPersistenceExtension.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger(HardConstraintMatchPersistenceExtension.class);
 
-    private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile( "scoreHolder\\.addHardConstraintMatch\\(\\s*kcontext\\s*,.+\\);" );
+    private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile("scoreHolder\\.addHardConstraintMatch\\(\\s*kcontext\\s*,.+\\);");
 
     @Override
-    public boolean accept( final IAction iAction ) {
+    public boolean accept(final IAction iAction) {
         return iAction instanceof ActionHardConstraintMatch || iAction instanceof ActionBendableHardConstraintMatch;
     }
 
     @Override
-    public String marshal( final IAction iAction ) {
-        if ( iAction instanceof ActionHardConstraintMatch ) {
+    public String marshal(final IAction iAction) {
+        if (iAction instanceof ActionHardConstraintMatch) {
             ActionHardConstraintMatch actionConstraintMatch = (ActionHardConstraintMatch) iAction;
-            return String.format( "scoreHolder.addHardConstraintMatch(kcontext, %s);",
-                                  actionConstraintMatch.getConstraintMatch() );
-        } else if ( iAction instanceof ActionBendableHardConstraintMatch ) {
+            return String.format("scoreHolder.addHardConstraintMatch(kcontext, %s);",
+                                 actionConstraintMatch.getConstraintMatch());
+        } else if (iAction instanceof ActionBendableHardConstraintMatch) {
             ActionBendableHardConstraintMatch actionConstraintMatch = (ActionBendableHardConstraintMatch) iAction;
-            return String.format( "scoreHolder.addHardConstraintMatch(kcontext, %s, %s);",
-                                  actionConstraintMatch.getPosition(),
-                                  actionConstraintMatch.getConstraintMatch() );
+            return String.format("scoreHolder.addHardConstraintMatch(kcontext, %s, %s);",
+                                 actionConstraintMatch.getPosition(),
+                                 actionConstraintMatch.getConstraintMatch());
         }
-        throw new IllegalArgumentException( "Action " + iAction + " is not supported by this extension" );
+        throw new IllegalArgumentException("Action " + iAction + " is not supported by this extension");
     }
 
     @Override
-    public boolean accept( final String iActionString ) {
-        return CONSTRAINT_MATCH_PATTERN.matcher( iActionString ).matches();
+    public boolean accept(final String iActionString) {
+        return CONSTRAINT_MATCH_PATTERN.matcher(iActionString).matches();
     }
 
     @Override
-    public IAction unmarshal( final String iActionString ) {
-        List<String> parameters = StringUtils.splitArgumentsList( PersistenceExtensionUtils.unwrapParenthesis( iActionString ) );
+    public IAction unmarshal(final String iActionString) {
+        List<String> parameters = StringUtils.splitArgumentsList(PersistenceExtensionUtils.unwrapParenthesis(iActionString));
 
-        if ( !parameters.isEmpty() && "kcontext".equals( parameters.get( 0 ) ) ) {
-            if ( parameters.size() == 2 ) {
-                return new ActionHardConstraintMatch( PersistenceExtensionUtils.extractConstraintMatchValue( parameters.get( 1 ) ) );
+        if (!parameters.isEmpty() && "kcontext".equals(parameters.get(0))) {
+            if (parameters.size() == 2) {
+                return new ActionHardConstraintMatch(PersistenceExtensionUtils.extractConstraintMatchValue(parameters.get(1)));
             }
-            if ( parameters.size() == 3 ) {
+            if (parameters.size() == 3) {
                 try {
-                    int bendableScoreLevel = Integer.parseInt( parameters.get( 1 ) );
+                    int bendableScoreLevel = Integer.parseInt(parameters.get(1));
 
-                    return new ActionBendableHardConstraintMatch( bendableScoreLevel,
-                                                                  PersistenceExtensionUtils.extractConstraintMatchValue( parameters.get( 2 ) ) );
-                } catch ( NumberFormatException e ) {
-                    LOGGER.debug( "Could not parse bendable score level parameter " + parameters.get( 1 ) + " as an Integer, returning a FreeFormLine" );
+                    return new ActionBendableHardConstraintMatch(bendableScoreLevel,
+                                                                 PersistenceExtensionUtils.extractConstraintMatchValue(parameters.get(2)));
+                } catch (NumberFormatException e) {
+                    LOGGER.debug("Could not parse bendable score level parameter " + parameters.get(1) + " as an Integer, returning a FreeFormLine");
                 }
             }
         }
 
         // Line can't be parsed as an ActionHardConstraintMatch, return a FreeFormLine
         FreeFormLine freeFormLine = new FreeFormLine();
-        freeFormLine.setText( iActionString );
+        freeFormLine.setText(iActionString);
 
         return freeFormLine;
     }

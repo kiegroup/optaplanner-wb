@@ -27,11 +27,10 @@ import org.uberfire.backend.vfs.Path;
 public interface SolverEditorView extends KieEditorView,
                                           RequiresResize {
 
-    void setTerminationConfigModel( final TerminationConfigModel terminationConfigModel );
+    void setTerminationConfigModel(final TerminationConfigModel terminationConfigModel);
 
-    void setScoreDirectorFactoryConfig( final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
-                                        final Path path );
+    void setScoreDirectorFactoryConfig(final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig,
+                                       final Path path);
 
-    void setPhaseConfigModel( final List<PhaseConfigModel> phaseConfigModel );
-
+    void setPhaseConfigModel(final List<PhaseConfigModel> phaseConfigModel);
 }

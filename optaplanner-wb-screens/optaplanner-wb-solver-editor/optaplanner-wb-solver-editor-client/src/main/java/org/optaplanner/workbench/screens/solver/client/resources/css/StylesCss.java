@@ -25,5 +25,4 @@ public interface StylesCss
 
     @ClassName("termination-tree")
     String terminationTree();
-
 }

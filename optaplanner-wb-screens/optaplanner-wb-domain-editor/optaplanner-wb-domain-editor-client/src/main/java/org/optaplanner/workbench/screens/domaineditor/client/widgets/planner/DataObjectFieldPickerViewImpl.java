@@ -59,81 +59,82 @@ public class DataObjectFieldPickerViewImpl extends Composite implements DataObje
     }
 
     @Inject
-    public DataObjectFieldPickerViewImpl( final CheckboxInput comparatorCheckbox,
-                                          final Div fieldDiv ) {
+    public DataObjectFieldPickerViewImpl(final CheckboxInput comparatorCheckbox,
+                                         final Div fieldDiv) {
         this.comparatorCheckbox = comparatorCheckbox;
         this.fieldDiv = fieldDiv;
 
-        comparatorCheckbox.setHidden( false );
-        fieldDiv.setHidden( true );
+        comparatorCheckbox.setHidden(false);
+        fieldDiv.setHidden(true);
     }
 
     @Override
-    public void setPresenter( Presenter presenter ) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void addFieldPickerItem( DataObjectFieldPickerItem fieldPickerItem ) {
+    public void addFieldPickerItem(DataObjectFieldPickerItem fieldPickerItem) {
         ListGroupItem listGroupItem = new ListGroupItem();
-        listGroupItem.add( fieldPickerItem );
-        fieldList.add( listGroupItem );
+        listGroupItem.add(fieldPickerItem);
+        fieldList.add(listGroupItem);
     }
 
     @Override
-    public void removeFieldPickerItem( int position ) {
-        fieldList.remove( position );
+    public void removeFieldPickerItem(int position) {
+        fieldList.remove(position);
     }
 
     @Override
-    public void displayFieldPicker( boolean display ) {
-        fieldDiv.setHidden( !display );
+    public void displayFieldPicker(boolean display) {
+        fieldDiv.setHidden(!display);
     }
 
     @Override
-    public void displayComparatorCheckbox( boolean display ) {
-        view.setHidden( !display );
+    public void displayComparatorCheckbox(boolean display) {
+        view.setHidden(!display);
     }
 
     @Override
-    public void setComparatorCheckboxValue( boolean checked ) {
-        comparatorCheckbox.setChecked( checked );
+    public void setComparatorCheckboxValue(boolean checked) {
+        comparatorCheckbox.setChecked(checked);
     }
 
     @Override
     public void clear() {
         fieldList.clear();
-        comparatorCheckbox.setChecked( false );
+        comparatorCheckbox.setChecked(false);
     }
 
     @Override
-    public void moveFieldItemUp( int currentPosition ) {
-        if ( currentPosition == 0 ) {
+    public void moveFieldItemUp(int currentPosition) {
+        if (currentPosition == 0) {
             return;
         }
-        Widget widget = fieldList.getWidget( currentPosition );
-        fieldList.remove( widget );
-        fieldList.insert( widget, currentPosition - 1 );
+        Widget widget = fieldList.getWidget(currentPosition);
+        fieldList.remove(widget);
+        fieldList.insert(widget,
+                         currentPosition - 1);
     }
 
     @Override
-    public void moveFieldItemDown( int currentPosition ) {
-        if ( currentPosition == fieldList.getWidgetCount() - 1 ) {
+    public void moveFieldItemDown(int currentPosition) {
+        if (currentPosition == fieldList.getWidgetCount() - 1) {
             return;
         }
-        Widget widget = fieldList.getWidget( currentPosition );
-        fieldList.remove( widget );
-        fieldList.insert( widget, currentPosition + 1 );
+        Widget widget = fieldList.getWidget(currentPosition);
+        fieldList.remove(widget);
+        fieldList.insert(widget,
+                         currentPosition + 1);
     }
 
     @EventHandler("addFieldPickerItemButton")
-    public void onAddFieldPickerItemButtonClicked( ClickEvent event ) {
+    public void onAddFieldPickerItemButtonClicked(ClickEvent event) {
         presenter.addFieldPickerItem();
     }
 
     @EventHandler("comparatorCheckbox")
-    public void onComparatorCheckboxClicked( ChangeEvent event ) {
-        presenter.onComparatorSpecified( comparatorCheckbox.getChecked() );
+    public void onComparatorCheckboxClicked(ChangeEvent event) {
+        presenter.onComparatorSpecified(comparatorCheckbox.getChecked());
     }
-
 }

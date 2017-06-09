@@ -29,9 +29,9 @@ public class ScoreDirectorFactoryForm
     private ScoreDirectorFactoryConfigModel model;
 
     @Inject
-    public ScoreDirectorFactoryForm( final ScoreDirectorFactoryFormView view ) {
+    public ScoreDirectorFactoryForm(final ScoreDirectorFactoryFormView view) {
         this.view = view;
-        view.setPresenter( this );
+        view.setPresenter(this);
     }
 
     @Override
@@ -39,19 +39,19 @@ public class ScoreDirectorFactoryForm
         return view.asWidget();
     }
 
-    public void setModel( final ScoreDirectorFactoryConfigModel model,
-                          final Path path ) {
+    public void setModel(final ScoreDirectorFactoryConfigModel model,
+                         final Path path) {
         this.model = model;
 
-        view.setKSession( model.getKSessionName(),
-                          path );
+        view.setKSession(model.getKSessionName(),
+                         path);
     }
 
-    public void onKSessionNameChange( final String ksessionName ) {
-        if ( "defaultKieSession".equals( ksessionName ) ) {
-            model.setKSessionName( null );
+    public void onKSessionNameChange(final String ksessionName) {
+        if ("defaultKieSession".equals(ksessionName)) {
+            model.setKSessionName(null);
         } else {
-            model.setKSessionName( ksessionName );
+            model.setKSessionName(ksessionName);
         }
     }
 }

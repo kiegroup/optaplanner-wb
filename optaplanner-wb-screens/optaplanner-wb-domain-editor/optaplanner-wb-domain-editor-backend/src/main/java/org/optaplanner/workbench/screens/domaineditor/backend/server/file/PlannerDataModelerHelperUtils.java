@@ -42,10 +42,10 @@ import org.uberfire.io.IOService;
 @ApplicationScoped
 public class PlannerDataModelerHelperUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger( PlannerDataModelerHelperUtils.class );
+    private static final Logger logger = LoggerFactory.getLogger(PlannerDataModelerHelperUtils.class);
 
     @Inject
-    @Named( "ioStrategy" )
+    @Named("ioStrategy")
     private IOService ioService;
 
     @Inject
@@ -54,69 +54,75 @@ public class PlannerDataModelerHelperUtils {
     @Inject
     private DataModelerService dataModelerService;
 
-    public void updateDataObject( Path dataObjectPath ) {
-        String dataObjectString = ioService.readAllString( Paths.convert( dataObjectPath ) );
+    public void updateDataObject(Path dataObjectPath) {
+        String dataObjectString = ioService.readAllString(Paths.convert(dataObjectPath));
 
-        GenerationResult generationResult = dataModelerService.loadDataObject( dataObjectPath, dataObjectString, dataObjectPath );
+        GenerationResult generationResult = dataModelerService.loadDataObject(dataObjectPath,
+                                                                              dataObjectString,
+                                                                              dataObjectPath);
 
         DataObject dataObject = generationResult.getDataObject();
 
-        if ( dataObject != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty() ) {
-            JavaClass comparatorObject = getComparatorObject( dataObject );
-            if ( comparatorObject != null ) {
-                JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject( dataObject, comparatorObject );
+        if (dataObject != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty()) {
+            JavaClass comparatorObject = getComparatorObject(dataObject);
+            if (comparatorObject != null) {
+                JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject(dataObject,
+                                                                                                       comparatorObject);
 
-                dataObject.removeNestedClass( comparatorObject );
-                dataObject.addNestedClass( updatedComparatorObject );
+                dataObject.removeNestedClass(comparatorObject);
+                dataObject.addNestedClass(updatedComparatorObject);
 
-                Annotation planningEntityAnnotation = dataObject.getAnnotation( PlanningEntity.class.getName() );
-                if ( planningEntityAnnotation != null ) {
-                    planningEntityAnnotation.setValue( "difficultyComparatorClass", dataObject.getName() + ".DifficultyComparator" );
+                Annotation planningEntityAnnotation = dataObject.getAnnotation(PlanningEntity.class.getName());
+                if (planningEntityAnnotation != null) {
+                    planningEntityAnnotation.setValue("difficultyComparatorClass",
+                                                      dataObject.getName() + ".DifficultyComparator");
                 }
 
-                generationResult = dataModelerService.updateSource( dataObjectString, dataObjectPath, dataObject );
+                generationResult = dataModelerService.updateSource(dataObjectString,
+                                                                   dataObjectPath,
+                                                                   dataObject);
 
-                if ( generationResult.getDataObject() != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty() ) {
-                    ioService.write( Paths.convert( dataObjectPath ), generationResult.getSource() );
+                if (generationResult.getDataObject() != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty()) {
+                    ioService.write(Paths.convert(dataObjectPath),
+                                    generationResult.getSource());
                 } else {
-                    logger.error( "Data object " + dataObject.getClassName() + " couldn't be updated, path: " + dataObjectPath + "." );
+                    logger.error("Data object " + dataObject.getClassName() + " couldn't be updated, path: " + dataObjectPath + ".");
                 }
             }
         } else {
-            logger.error( "Data object couldn't be loaded, path: " + dataObjectPath + "." );
+            logger.error("Data object couldn't be loaded, path: " + dataObjectPath + ".");
         }
     }
 
     // TODO introduce PlannerDatamodelerRenameHelper once DataModelerService.rename uses RenameService to rename DataObject
-    private void onDataObjectRename( @Observes DataObjectRenamedEvent event ) {
+    private void onDataObjectRename(@Observes DataObjectRenamedEvent event) {
         Path updatedPath = event.getPath();
-        if ( updatedPath != null ) {
+        if (updatedPath != null) {
             try {
-                updateDataObject( updatedPath );
-            } catch ( Exception e ) {
-                logger.error( "Data object couldn't be updated, path: " + updatedPath + "." );
+                updateDataObject(updatedPath);
+            } catch (Exception e) {
+                logger.error("Data object couldn't be updated, path: " + updatedPath + ".");
             }
         }
     }
 
-    private JavaClass getComparatorObject( DataObject dataObject ) {
-        Annotation planningEntityAnnotation = dataObject.getAnnotation( PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION );
-        if ( dataObject.getNestedClasses() != null && planningEntityAnnotation != null ) {
-            String difficultyComparatorClass = (String) planningEntityAnnotation.getValue( "difficultyComparatorClass" );
-            if ( difficultyComparatorClass != null && difficultyComparatorClass.matches( "\\w[\\.\\w]+\\.class" ) ) {
-                String[] difficultyComparatorTokens = difficultyComparatorClass.split( "\\." );
+    private JavaClass getComparatorObject(DataObject dataObject) {
+        Annotation planningEntityAnnotation = dataObject.getAnnotation(PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION);
+        if (dataObject.getNestedClasses() != null && planningEntityAnnotation != null) {
+            String difficultyComparatorClass = (String) planningEntityAnnotation.getValue("difficultyComparatorClass");
+            if (difficultyComparatorClass != null && difficultyComparatorClass.matches("\\w[\\.\\w]+\\.class")) {
+                String[] difficultyComparatorTokens = difficultyComparatorClass.split("\\.");
                 Optional<JavaClass> comparatorNestedClass = dataObject.getNestedClasses().stream()
-                        .filter( t -> t.getName().equals( difficultyComparatorTokens[difficultyComparatorTokens.length - 2] )
-                                && t.getAnnotation( ComparatorDefinition.class.getName() ) != null
-                                && t.getAnnotation( "javax.annotation.Generated" ) != null
-                                && t.getInterfaces().stream().anyMatch( i -> i.startsWith( Comparator.class.getName() ) ) )
+                        .filter(t -> t.getName().equals(difficultyComparatorTokens[difficultyComparatorTokens.length - 2])
+                                && t.getAnnotation(ComparatorDefinition.class.getName()) != null
+                                && t.getAnnotation("javax.annotation.Generated") != null
+                                && t.getInterfaces().stream().anyMatch(i -> i.startsWith(Comparator.class.getName())))
                         .findFirst();
-                if ( comparatorNestedClass.isPresent() ) {
+                if (comparatorNestedClass.isPresent()) {
                     return comparatorNestedClass.get();
                 }
             }
         }
         return null;
     }
-
 }

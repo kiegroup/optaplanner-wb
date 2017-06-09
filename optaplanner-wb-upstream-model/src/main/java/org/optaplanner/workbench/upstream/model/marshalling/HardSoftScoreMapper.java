@@ -27,19 +27,33 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 public class HardSoftScoreMapper extends MappingDefinition {
 
     public HardSoftScoreMapper() throws NoSuchMethodException {
-        super( HardSoftScore.class );
+        super(HardSoftScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( HardSoftScore.class.getMethod( "valueOfUninitialized", int.class, int.class, int.class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "hardScore", 1, int.class );
-        factoryMapping.mapParmToIndex( "softScore", 2, int.class );
+        factoryMapping.setMethod(new JavaReflectionMethod(HardSoftScore.class.getMethod("valueOfUninitialized",
+                                                                                        int.class,
+                                                                                        int.class,
+                                                                                        int.class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("hardScore",
+                                      1,
+                                      int.class);
+        factoryMapping.mapParmToIndex("softScore",
+                                      2,
+                                      int.class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "hardScore", int.class, "getHardScore" ) );
-        addMemberMapping( new ReadMapping( "softScore", int.class, "getSoftScore" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("hardScore",
+                                         int.class,
+                                         "getHardScore"));
+        addMemberMapping(new ReadMapping("softScore",
+                                         int.class,
+                                         "getSoftScore"));
     }
-
 }

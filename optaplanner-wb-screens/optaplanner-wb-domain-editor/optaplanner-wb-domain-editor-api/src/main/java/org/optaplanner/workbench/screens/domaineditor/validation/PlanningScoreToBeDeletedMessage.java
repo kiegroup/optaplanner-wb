@@ -26,7 +26,8 @@ public class PlanningScoreToBeDeletedMessage extends ValidationMessage {
     public PlanningScoreToBeDeletedMessage() {
     }
 
-    public PlanningScoreToBeDeletedMessage(final Level level ) {
-        super( level, null );
+    public PlanningScoreToBeDeletedMessage(final Level level) {
+        super(level,
+              null);
     }
 }

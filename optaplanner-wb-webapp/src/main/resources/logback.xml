@@ -15,7 +15,7 @@
   <logger name="org.optaplanner" level="info"/>
 
   <root level="error">
-    <appender-ref ref="consoleAppender" />
+    <appender-ref ref="consoleAppender"/>
   </root>
 
 </configuration>

@@ -31,10 +31,11 @@ public class PlannerDataModelerCopyHelper extends DataModelerCopyHelper {
     private PlannerDataModelerHelperUtils helperUtils;
 
     @Override
-    public void postProcess( Path source, Path destination ) {
-        super.postProcess( source, destination );
+    public void postProcess(Path source,
+                            Path destination) {
+        super.postProcess(source,
+                          destination);
 
-        helperUtils.updateDataObject( destination );
+        helperUtils.updateDataObject(destination);
     }
-
 }

@@ -40,32 +40,34 @@ public class PlannerValidationMessageTranslatorTest {
 
     @Before
     public void setUp() {
-        translator = new PlannerValidationMessageTranslator( translationService );
+        translator = new PlannerValidationMessageTranslator(translationService);
     }
 
     @Test
     public void acceptSupportedClass() {
-        assertTrue( translator.accept( new PlanningSolutionToBeDuplicatedMessage( Level.ERROR ) ) );
+        assertTrue(translator.accept(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR)));
     }
 
     @Test
     public void acceptUnsupportedClass() {
-        assertFalse( translator.accept( new UnsupportedMessage() ) );
+        assertFalse(translator.accept(new UnsupportedMessage()));
     }
 
     @Test
     public void translateSupported() {
-        when( translationService.getTranslation( anyString() ) ).thenReturn( "Test translation" );
+        when(translationService.getTranslation(anyString())).thenReturn("Test translation");
 
-        ValidationMessage translatedMessage = translator.translate( new PlanningSolutionToBeDuplicatedMessage( Level.ERROR ) );
-        assertEquals( "Test translation", translatedMessage.getText() );
+        ValidationMessage translatedMessage = translator.translate(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR));
+        assertEquals("Test translation",
+                     translatedMessage.getText());
     }
 
     @Test(expected = IllegalStateException.class)
     public void translateUnsupported() {
-        assertNotNull( translator.translate( new UnsupportedMessage() ) );
+        assertNotNull(translator.translate(new UnsupportedMessage()));
     }
 
     private class UnsupportedMessage extends ValidationMessage {
+
     }
 }

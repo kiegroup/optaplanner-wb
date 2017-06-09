@@ -44,54 +44,74 @@ public class ComparatorDefinitionServiceTest {
 
     @Test
     public void createComparatorObject() {
-        JavaClass comparatorObject = comparatorDefinitionService.createComparatorObject( new DataObjectImpl( "foo.bar", "TestDataObject" ) );
+        JavaClass comparatorObject = comparatorDefinitionService.createComparatorObject(new DataObjectImpl("foo.bar",
+                                                                                                           "TestDataObject"));
 
-        assertEquals( "DifficultyComparator", comparatorObject.getName() );
-        assertTrue( comparatorObject.getInterfaces().contains( "java.util.Comparator<foo.bar.TestDataObject>" ) );
+        assertEquals("DifficultyComparator",
+                     comparatorObject.getName());
+        assertTrue(comparatorObject.getInterfaces().contains("java.util.Comparator<foo.bar.TestDataObject>"));
 
         List<Method> comparatorObjectMethods = comparatorObject.getMethods();
 
-        assertNotNull( comparatorObjectMethods );
-        assertEquals( 1, comparatorObjectMethods.size() );
+        assertNotNull(comparatorObjectMethods);
+        assertEquals(1,
+                     comparatorObjectMethods.size());
 
-        Method compareMethod = comparatorObjectMethods.get( 0 );
+        Method compareMethod = comparatorObjectMethods.get(0);
 
-        assertEquals( "compare", compareMethod.getName() );
-        assertEquals( "int", compareMethod.getReturnType().getName() );
-        assertEquals( "int", compareMethod.getReturnType().getName() );
+        assertEquals("compare",
+                     compareMethod.getName());
+        assertEquals("int",
+                     compareMethod.getReturnType().getName());
+        assertEquals("int",
+                     compareMethod.getReturnType().getName());
 
-        assertEquals( 2, compareMethod.getParameters().size() );
-        assertEquals( "foo.bar.TestDataObject", compareMethod.getParameters().get( 0 ).getType().getName() );
-        assertEquals( "o1", compareMethod.getParameters().get( 0 ).getName() );
-        assertEquals( "foo.bar.TestDataObject", compareMethod.getParameters().get( 1 ).getType().getName() );
-        assertEquals( "o2", compareMethod.getParameters().get( 1 ).getName() );
+        assertEquals(2,
+                     compareMethod.getParameters().size());
+        assertEquals("foo.bar.TestDataObject",
+                     compareMethod.getParameters().get(0).getType().getName());
+        assertEquals("o1",
+                     compareMethod.getParameters().get(0).getName());
+        assertEquals("foo.bar.TestDataObject",
+                     compareMethod.getParameters().get(1).getType().getName());
+        assertEquals("o2",
+                     compareMethod.getParameters().get(1).getName());
     }
 
     @Test
     public void updateComparatorObject() {
-        DataObject dataObject = new DataObjectImpl( "foo.bar", "TestDataObject" );
+        DataObject dataObject = new DataObjectImpl("foo.bar",
+                                                   "TestDataObject");
 
-        JavaClass comparatorObject = new JavaClassImpl( "", "DifficultyComparator" );
+        JavaClass comparatorObject = new JavaClassImpl("",
+                                                       "DifficultyComparator");
 
-        Parameter parameter1 = new ParameterImpl( new TypeImpl( "TestDataObject" ), "o1" );
-        Parameter parameter2 = new ParameterImpl( new TypeImpl( "TestDataObject" ), "o2" );
+        Parameter parameter1 = new ParameterImpl(new TypeImpl("TestDataObject"),
+                                                 "o1");
+        Parameter parameter2 = new ParameterImpl(new TypeImpl("TestDataObject"),
+                                                 "o2");
 
-        Method compareMethod = new MethodImpl( "compare", Arrays.asList( parameter1, parameter2 ), "foo", new TypeImpl( "int" ), Visibility.PUBLIC );
+        Method compareMethod = new MethodImpl("compare",
+                                              Arrays.asList(parameter1,
+                                                            parameter2),
+                                              "foo",
+                                              new TypeImpl("int"),
+                                              Visibility.PUBLIC);
 
-        comparatorObject.addMethod( compareMethod );
+        comparatorObject.addMethod(compareMethod);
 
-        comparatorObject.addInterface( "java.util.Comparator<foo.bar.TestDataObject>" );
+        comparatorObject.addInterface("java.util.Comparator<foo.bar.TestDataObject>");
 
-        dataObject.addNestedClass( comparatorObject );
+        dataObject.addNestedClass(comparatorObject);
 
-        comparatorObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( ComparatorDefinition.class ) ) );
+        comparatorObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(ComparatorDefinition.class)));
 
         // Rename data object
-        dataObject.setName( "TestDataObjectUpdated" );
+        dataObject.setName("TestDataObjectUpdated");
 
-        JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject( dataObject, comparatorObject );
+        JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject(dataObject,
+                                                                                               comparatorObject);
 
-        assertTrue( updatedComparatorObject.getInterfaces().contains( "java.util.Comparator<foo.bar.TestDataObjectUpdated>" ) );
+        assertTrue(updatedComparatorObject.getInterfaces().contains("java.util.Comparator<foo.bar.TestDataObjectUpdated>"));
     }
-
 }

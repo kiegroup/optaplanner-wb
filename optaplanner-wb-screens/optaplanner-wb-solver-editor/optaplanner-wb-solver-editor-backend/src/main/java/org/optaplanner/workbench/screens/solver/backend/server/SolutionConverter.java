@@ -21,17 +21,17 @@ public class SolutionConverter
         implements SingleValueConverter {
 
     @Override
-    public String toString( Object o ) {
+    public String toString(Object o) {
         return null;
     }
 
     @Override
-    public Object fromString( String s ) {
+    public Object fromString(String s) {
         return null;
     }
 
     @Override
-    public boolean canConvert( Class aClass ) {
-        return Class.class.isAssignableFrom( aClass );
+    public boolean canConvert(Class aClass) {
+        return Class.class.isAssignableFrom(aClass);
     }
 }

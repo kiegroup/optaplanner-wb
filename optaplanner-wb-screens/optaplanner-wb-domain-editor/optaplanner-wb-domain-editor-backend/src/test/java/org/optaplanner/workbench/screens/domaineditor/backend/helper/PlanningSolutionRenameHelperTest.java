@@ -56,41 +56,41 @@ public class PlanningSolutionRenameHelperTest {
 
     @Before
     public void setUp() {
-        renameHelper = new PlanningSolutionRenameWorkaroundHelper( ioService,
-                                                                   dataModelerService,
-                                                                   kieProjectService );
+        renameHelper = new PlanningSolutionRenameWorkaroundHelper(ioService,
+                                                                  dataModelerService,
+                                                                  kieProjectService);
     }
 
     @Test
     public void postProcess() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects" );
-        Path destinationPath = PathFactory.newPath( "TestDestination.java",
-                                                    "file:///dataObjects" );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
+        Path destinationPath = PathFactory.newPath("TestDestination.java",
+                                                   "file:///dataObjects");
 
-        when( ioService.readAllString( Paths.convert( sourcePath ) ) ).thenReturn( "test source" );
+        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
 
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "TestSource" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "TestSource");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( dataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(dataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        Package _package = mock( Package.class );
-        when( _package.getPackageMainResourcesPath() ).thenReturn( PathFactory.newPath( "dataObjects",
-                                                                                        "file:///dataObjects" ) );
-        when( kieProjectService.resolvePackage( sourcePath ) ).thenReturn( _package );
+        Package _package = mock(Package.class);
+        when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
+                                                                                    "file:///dataObjects"));
+        when(kieProjectService.resolvePackage(sourcePath)).thenReturn(_package);
 
-        when( ioService.exists( any() ) ).thenReturn( true );
+        when(ioService.exists(any())).thenReturn(true);
 
-        renameHelper.postProcess( sourcePath,
-                                  destinationPath );
+        renameHelper.postProcess(sourcePath,
+                                 destinationPath);
 
-        verify( ioService,
-                times( 1 ) ).move( any( org.uberfire.java.nio.file.Path.class ),
-                                   any( org.uberfire.java.nio.file.Path.class ) );
+        verify(ioService,
+               times(1)).move(any(org.uberfire.java.nio.file.Path.class),
+                              any(org.uberfire.java.nio.file.Path.class));
     }
 }

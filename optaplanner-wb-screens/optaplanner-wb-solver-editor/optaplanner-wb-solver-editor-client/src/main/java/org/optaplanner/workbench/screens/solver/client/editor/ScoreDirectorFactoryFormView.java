@@ -21,9 +21,8 @@ import org.uberfire.backend.vfs.Path;
 public interface ScoreDirectorFactoryFormView
         extends IsWidget {
 
-    void setPresenter( final ScoreDirectorFactoryForm form );
+    void setPresenter(final ScoreDirectorFactoryForm form);
 
-    void setKSession( final String ksessionName,
-                      final Path path );
-
+    void setKSession(final String ksessionName,
+                     final Path path);
 }

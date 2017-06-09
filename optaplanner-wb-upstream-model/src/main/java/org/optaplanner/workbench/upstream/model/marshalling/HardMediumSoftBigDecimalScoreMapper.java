@@ -29,21 +29,40 @@ import org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediu
 public class HardMediumSoftBigDecimalScoreMapper extends MappingDefinition {
 
     public HardMediumSoftBigDecimalScoreMapper() throws NoSuchMethodException {
-        super( HardMediumSoftBigDecimalScore.class );
+        super(HardMediumSoftBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( HardMediumSoftBigDecimalScore.class.getMethod( "valueOfUninitialized", int.class, BigDecimal.class, BigDecimal.class, BigDecimal.class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "hardScore", 1, BigDecimal.class );
-        factoryMapping.mapParmToIndex( "mediumScore", 2, BigDecimal.class );
-        factoryMapping.mapParmToIndex( "softScore", 3, BigDecimal.class );
+        factoryMapping.setMethod(new JavaReflectionMethod(HardMediumSoftBigDecimalScore.class.getMethod("valueOfUninitialized",
+                                                                                                        int.class,
+                                                                                                        BigDecimal.class,
+                                                                                                        BigDecimal.class,
+                                                                                                        BigDecimal.class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("hardScore",
+                                      1,
+                                      BigDecimal.class);
+        factoryMapping.mapParmToIndex("mediumScore",
+                                      2,
+                                      BigDecimal.class);
+        factoryMapping.mapParmToIndex("softScore",
+                                      3,
+                                      BigDecimal.class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "hardScore", BigDecimal.class, "getHardScore" ) );
-        addMemberMapping( new ReadMapping( "mediumScore", BigDecimal.class, "getMediumScore" ) );
-        addMemberMapping( new ReadMapping( "softScore", BigDecimal.class, "getSoftScore" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("hardScore",
+                                         BigDecimal.class,
+                                         "getHardScore"));
+        addMemberMapping(new ReadMapping("mediumScore",
+                                         BigDecimal.class,
+                                         "getMediumScore"));
+        addMemberMapping(new ReadMapping("softScore",
+                                         BigDecimal.class,
+                                         "getSoftScore"));
     }
-
 }

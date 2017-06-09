@@ -23,23 +23,23 @@
   <source path="org/optaplanner/core/api/score" includes="AbstractBendableScore.java"/>
   <source path="org/optaplanner/core/api/score" includes="FeasibilityScore.java"/>
   <source path="org/optaplanner/core/api/score" includes="Score.java"/>
-  <source path="org/optaplanner/core/api/score/buildin/bendable" includes="BendableScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/bendablebigdecimal" includes="BendableBigDecimalScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/bendablelong" includes="BendableLongScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoft" includes="HardMediumSoftScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftbigdecimal" includes="HardMediumSoftBigDecimalScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftlong" includes="HardMediumSoftLongScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardsoft" includes="HardSoftScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardsoftbigdecimal" includes="HardSoftBigDecimalScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardsoftdouble" includes="HardSoftDoubleScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/hardsoftlong" includes="HardSoftLongScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/simple" includes="SimpleScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/simplebigdecimal" includes="SimpleBigDecimalScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/simpledouble" includes="SimpleDoubleScore.java" />
-  <source path="org/optaplanner/core/api/score/buildin/simplelong" includes="SimpleLongScore.java" />
-  <source path="org/optaplanner/core/config/constructionheuristic"  includes="ConstructionHeuristicType.java"/>
-  <source path="org/optaplanner/core/config/heuristic/selector/entity"  includes="EntitySorterManner.java"/>
-  <source path="org/optaplanner/core/config/heuristic/selector/value"  includes="ValueSorterManner.java"/>
-  <source path="org/optaplanner/core/config/localsearch"  includes="LocalSearchType.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/bendable" includes="BendableScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/bendablebigdecimal" includes="BendableBigDecimalScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/bendablelong" includes="BendableLongScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoft" includes="HardMediumSoftScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftbigdecimal" includes="HardMediumSoftBigDecimalScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardmediumsoftlong" includes="HardMediumSoftLongScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardsoft" includes="HardSoftScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardsoftbigdecimal" includes="HardSoftBigDecimalScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardsoftdouble" includes="HardSoftDoubleScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/hardsoftlong" includes="HardSoftLongScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/simple" includes="SimpleScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/simplebigdecimal" includes="SimpleBigDecimalScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/simpledouble" includes="SimpleDoubleScore.java"/>
+  <source path="org/optaplanner/core/api/score/buildin/simplelong" includes="SimpleLongScore.java"/>
+  <source path="org/optaplanner/core/config/constructionheuristic" includes="ConstructionHeuristicType.java"/>
+  <source path="org/optaplanner/core/config/heuristic/selector/entity" includes="EntitySorterManner.java"/>
+  <source path="org/optaplanner/core/config/heuristic/selector/value" includes="ValueSorterManner.java"/>
+  <source path="org/optaplanner/core/config/localsearch" includes="LocalSearchType.java"/>
 
 </module>

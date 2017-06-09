@@ -22,14 +22,13 @@ import org.uberfire.commons.data.Pair;
 
 public interface ConstructionHeuristicFormView extends IsElement {
 
-    void setPresenter( ConstructionHeuristicForm presenter );
+    void setPresenter(ConstructionHeuristicForm presenter);
 
-    void initConstructionHeuristicTypeSelectOptions( List<Pair<String, String>> options );
+    void initConstructionHeuristicTypeSelectOptions(List<Pair<String, String>> options);
 
-    void initEntitySorterMannerSelectOptions( List<Pair<String, String>> options );
+    void initEntitySorterMannerSelectOptions(List<Pair<String, String>> options);
 
-    void setSelectedConstructionHeuristicType( String constructionHeuristicType );
+    void setSelectedConstructionHeuristicType(String constructionHeuristicType);
 
-    void setSelectedEntitySorterManner( String entitySorterManner );
-
+    void setSelectedEntitySorterManner(String entitySorterManner);
 }

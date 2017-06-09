@@ -16,10 +16,9 @@
 
 package ProjectBuildError.src.main.java.cb;
 
-public class Computer implements java.io.Serializable
-{
+public class Computer implements java.io.Serializable {
 
-
-   HELLO, I AM BROKEN
-
+    HELLO,
+    I AM
+    BROKEN
 }

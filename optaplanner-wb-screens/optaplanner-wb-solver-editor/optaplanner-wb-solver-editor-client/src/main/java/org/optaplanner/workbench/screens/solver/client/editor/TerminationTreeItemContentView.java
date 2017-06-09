@@ -21,15 +21,15 @@ import org.optaplanner.workbench.screens.solver.model.TerminationConfigOption;
 
 public interface TerminationTreeItemContentView extends IsElement {
 
-    void setPresenter( TerminationTreeItemContent presenter );
+    void setPresenter(TerminationTreeItemContent presenter);
 
-    void setRoot( boolean root );
+    void setRoot(boolean root);
 
-    void addDropDownOption( TerminationConfigOption option );
+    void addDropDownOption(TerminationConfigOption option);
 
-    void removeDropDownOption( TerminationConfigOption option );
+    void removeDropDownOption(TerminationConfigOption option);
 
-    void setNestedTreeItem( boolean nestedTreeItem );
+    void setNestedTreeItem(boolean nestedTreeItem);
 
     void hideTimeSpentInput();
 
@@ -45,41 +45,41 @@ public interface TerminationTreeItemContentView extends IsElement {
 
     void hideBestScoreLimitInput();
 
-    void setFormLabelText( String text );
+    void setFormLabelText(String text);
 
-    void setFormLabelHelpContent( String content );
+    void setFormLabelHelpContent(String content);
 
-    void setDropDownHelpContent( String content );
+    void setDropDownHelpContent(String content);
 
-    void setDaysSpent( Long value );
+    void setDaysSpent(Long value);
 
-    void setHoursSpent( Long value );
+    void setHoursSpent(Long value);
 
-    void setMinutesSpent( Long value );
+    void setMinutesSpent(Long value);
 
-    void setSecondsSpent( Long value );
+    void setSecondsSpent(Long value);
 
-    void setMillisecondsSpent( Long value );
+    void setMillisecondsSpent(Long value);
 
-    void setUnimprovedDaysSpent( Long value );
+    void setUnimprovedDaysSpent(Long value);
 
-    void setUnimprovedHoursSpent( Long value );
+    void setUnimprovedHoursSpent(Long value);
 
-    void setUnimprovedMinutesSpent( Long value );
+    void setUnimprovedMinutesSpent(Long value);
 
-    void setUnimprovedSecondsSpent( Long value );
+    void setUnimprovedSecondsSpent(Long value);
 
-    void setUnimprovedMillisecondsSpent( Long value );
+    void setUnimprovedMillisecondsSpent(Long value);
 
-    void setStepCountLimit( Integer value );
+    void setStepCountLimit(Integer value);
 
-    void setUnimprovedStepCountLimit( Integer value );
+    void setUnimprovedStepCountLimit(Integer value);
 
-    void setScoreCalculationCountLimit( Long value );
+    void setScoreCalculationCountLimit(Long value);
 
-    void setBestScoreFeasible( Boolean value );
+    void setBestScoreFeasible(Boolean value);
 
-    void setBestScoreLimit( String value );
+    void setBestScoreLimit(String value);
 
-    void setTerminationCompositionStyle( TerminationCompositionStyleModel value );
+    void setTerminationCompositionStyle(TerminationCompositionStyleModel value);
 }

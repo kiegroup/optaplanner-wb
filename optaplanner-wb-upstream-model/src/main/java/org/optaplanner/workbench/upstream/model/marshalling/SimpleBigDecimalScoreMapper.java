@@ -29,17 +29,26 @@ import org.optaplanner.core.api.score.buildin.simplebigdecimal.SimpleBigDecimalS
 public class SimpleBigDecimalScoreMapper extends MappingDefinition {
 
     public SimpleBigDecimalScoreMapper() throws NoSuchMethodException {
-        super( SimpleBigDecimalScore.class );
+        super(SimpleBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( SimpleBigDecimalScore.class.getMethod( "valueOfUninitialized", int.class, BigDecimal.class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "score", 1, BigDecimal.class );
+        factoryMapping.setMethod(new JavaReflectionMethod(SimpleBigDecimalScore.class.getMethod("valueOfUninitialized",
+                                                                                                int.class,
+                                                                                                BigDecimal.class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("score",
+                                      1,
+                                      BigDecimal.class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "score", BigDecimal.class, "getScore" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("score",
+                                         BigDecimal.class,
+                                         "getScore"));
     }
-
 }

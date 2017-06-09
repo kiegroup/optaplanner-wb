@@ -38,14 +38,14 @@ public class SolverValidatorTest {
     @Mock
     Path path;
 
-    private SolverValidator   solverValidator;
+    private SolverValidator solverValidator;
 
     private TestFileSystem testFileSystem;
 
     @Before
     public void setUp() throws Exception {
         testFileSystem = new TestFileSystem();
-        solverValidator = testFileSystem.getReference( SolverValidator.class );
+        solverValidator = testFileSystem.getReference(SolverValidator.class);
     }
 
     @After
@@ -58,16 +58,16 @@ public class SolverValidatorTest {
 
         final String url = "/ProjectWorks/src/main/resources/cb/my.solver.xml";
 
-        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath(this.getClass().getResource(url).toURI());
 
-        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
-                                                                           loadResource( url ) );
+        final List<ValidationMessage> messages = solverValidator.validate(Paths.convert(path),
+                                                                          loadResource(url));
 
-        for ( ValidationMessage message : messages ) {
-            System.out.println( message.getText() );
+        for (ValidationMessage message : messages) {
+            System.out.println(message.getText());
         }
 
-        assertTrue( messages.isEmpty() );
+        assertTrue(messages.isEmpty());
     }
 
     @Test
@@ -75,16 +75,16 @@ public class SolverValidatorTest {
 
         final String url = "/ProjectBuildError/src/main/resources/cb/my.solver.xml";
 
-        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath(this.getClass().getResource(url).toURI());
 
-        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
-                                                                           loadResource( url ) );
+        final List<ValidationMessage> messages = solverValidator.validate(Paths.convert(path),
+                                                                          loadResource(url));
 
-        for ( ValidationMessage message : messages ) {
-            System.out.println( message.getText() );
+        for (ValidationMessage message : messages) {
+            System.out.println(message.getText());
         }
 
-        assertFalse( messages.isEmpty() );
+        assertFalse(messages.isEmpty());
     }
 
     @Test
@@ -92,16 +92,15 @@ public class SolverValidatorTest {
 
         final String url = "/ProjectPlannerError/src/main/resources/cb/my.solver.xml";
 
-        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath( this.getClass().getResource( url ).toURI() );
+        org.uberfire.java.nio.file.Path path = testFileSystem.fileSystemProvider.getPath(this.getClass().getResource(url).toURI());
 
-        final List<ValidationMessage> messages = solverValidator.validate( Paths.convert( path ),
-                                                                           loadResource( url ) );
+        final List<ValidationMessage> messages = solverValidator.validate(Paths.convert(path),
+                                                                          loadResource(url));
 
-        for ( ValidationMessage message : messages ) {
-            System.out.println( message.getText() );
+        for (ValidationMessage message : messages) {
+            System.out.println(message.getText());
         }
 
-        assertFalse( messages.isEmpty() );
+        assertFalse(messages.isEmpty());
     }
-
 }

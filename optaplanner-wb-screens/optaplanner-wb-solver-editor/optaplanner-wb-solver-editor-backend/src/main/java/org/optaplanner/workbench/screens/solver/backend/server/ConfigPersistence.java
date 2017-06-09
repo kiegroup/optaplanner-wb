@@ -37,16 +37,15 @@ public class ConfigPersistence {
         xStream = XStreamXmlSolverFactory.buildXStream();
     }
 
-    public SolverConfigModel toConfig( final String xml ) {
-        return new ToSolverConfigModel( toSolverConfig( xml ) ).get();
+    public SolverConfigModel toConfig(final String xml) {
+        return new ToSolverConfigModel(toSolverConfig(xml)).get();
     }
 
-    public SolverConfig toSolverConfig( String xml ) {
-        return (SolverConfig) xStream.fromXML( xml );
+    public SolverConfig toSolverConfig(String xml) {
+        return (SolverConfig) xStream.fromXML(xml);
     }
 
-    public String toXML( final SolverConfigModel config ) {
-        return xStream.toXML( new ToSolverConfig( config ).get() );
+    public String toXML(final SolverConfigModel config) {
+        return xStream.toXML(new ToSolverConfig(config).get());
     }
-
 }

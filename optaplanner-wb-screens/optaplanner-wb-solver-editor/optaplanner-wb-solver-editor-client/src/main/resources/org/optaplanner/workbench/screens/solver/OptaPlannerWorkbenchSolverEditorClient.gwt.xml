@@ -38,7 +38,7 @@
 
   <replace-with class="org.optaplanner.workbench.screens.solver.client.util.SuperDevModeUsedFlag">
     <when-type-is class="org.optaplanner.workbench.screens.solver.client.util.SuperDevModeFlag"/>
-    <when-property-is name="superdevmode" value="on" />
+    <when-property-is name="superdevmode" value="on"/>
   </replace-with>
 
 </module>

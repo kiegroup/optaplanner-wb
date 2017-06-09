@@ -28,7 +28,8 @@ import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPath;
 import org.optaplanner.workbench.screens.domaineditor.model.ObjectPropertyPathImpl;
 
-public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.Presenter, IsWidget {
+public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.Presenter,
+                                                  IsWidget {
 
     private DataObjectFieldPickerItemView view;
 
@@ -40,89 +41,93 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
     private DataObjectFieldPicker picker;
 
     @Inject
-    public DataObjectFieldPickerItem( DataObjectFieldPickerItemView view ) {
+    public DataObjectFieldPickerItem(DataObjectFieldPickerItemView view) {
         this.view = view;
-        view.setPresenter( this );
+        view.setPresenter(this);
     }
 
-    public void init( DataModel dataModel, DataObject rootDataObject, DataObjectFieldPicker picker ) {
+    public void init(DataModel dataModel,
+                     DataObject rootDataObject,
+                     DataObjectFieldPicker picker) {
         this.dataModel = dataModel;
         this.rootDataObject = rootDataObject;
         this.picker = picker;
-        initSelectFieldDropdownOptions( rootDataObject );
-        view.addRootItem( rootDataObject );
-        view.setOrderSelectDescendingValue( false );
+        initSelectFieldDropdownOptions(rootDataObject);
+        view.addRootItem(rootDataObject);
+        view.setOrderSelectDescendingValue(false);
     }
 
-    private void initSelectFieldDropdownOptions( DataObject dataObject ) {
-        view.initSelectFieldDropdownOptions( dataObject.getProperties().stream().filter( p -> DataModelerUtils.isManagedProperty( p ) ).collect( Collectors.toList() ) );
+    private void initSelectFieldDropdownOptions(DataObject dataObject) {
+        view.initSelectFieldDropdownOptions(dataObject.getProperties().stream().filter(p -> DataModelerUtils.isManagedProperty(p)).collect(Collectors.toList()));
     }
 
     @Override
-    public void onFieldAdded( ObjectProperty objectProperty, boolean notify ) {
-        objectPropertyPath.appendObjectProperty( objectProperty );
-        view.addFieldItem( objectProperty );
-        if ( objectProperty.isBaseType() || objectProperty.isPrimitiveType() ) {
-            view.displaySelectFieldButton( false );
+    public void onFieldAdded(ObjectProperty objectProperty,
+                             boolean notify) {
+        objectPropertyPath.appendObjectProperty(objectProperty);
+        view.addFieldItem(objectProperty);
+        if (objectProperty.isBaseType() || objectProperty.isPrimitiveType()) {
+            view.displaySelectFieldButton(false);
         } else {
-            DataObject dataObject = dataModel.getDataObject( objectProperty.getClassName() );
-            initSelectFieldDropdownOptions( dataObject );
-            view.displaySelectFieldButton( true );
+            DataObject dataObject = dataModel.getDataObject(objectProperty.getClassName());
+            initSelectFieldDropdownOptions(dataObject);
+            view.displaySelectFieldButton(true);
         }
-        if ( notify ) {
-            picker.objectPropertyPathChanged( false );
+        if (notify) {
+            picker.objectPropertyPathChanged(false);
         }
     }
 
     @Override
-    public void onFieldRemoved( ObjectProperty objectProperty ) {
-        for ( int i = objectPropertyPath.getObjectPropertyPath().size() - 1; i >= 0; i-- ) {
-            ObjectProperty currentObjectProperty = objectPropertyPath.getObjectPropertyPath().get( i );
-            objectPropertyPath.getObjectPropertyPath().remove( i );
+    public void onFieldRemoved(ObjectProperty objectProperty) {
+        for (int i = objectPropertyPath.getObjectPropertyPath().size() - 1; i >= 0; i--) {
+            ObjectProperty currentObjectProperty = objectPropertyPath.getObjectPropertyPath().get(i);
+            objectPropertyPath.getObjectPropertyPath().remove(i);
             view.removeLastFieldItem();
-            if ( currentObjectProperty.equals( objectProperty ) ) {
+            if (currentObjectProperty.equals(objectProperty)) {
                 break;
             }
         }
         DataObject dataObject;
-        if ( objectPropertyPath.getObjectPropertyPath().isEmpty() ) {
+        if (objectPropertyPath.getObjectPropertyPath().isEmpty()) {
             dataObject = rootDataObject;
         } else {
-            ObjectProperty parentObjectProperty = objectPropertyPath.getObjectPropertyPath().get( objectPropertyPath.getObjectPropertyPath().size() - 1 );
-            dataObject = dataModel.getDataObject( parentObjectProperty.getClassName() );
+            ObjectProperty parentObjectProperty = objectPropertyPath.getObjectPropertyPath().get(objectPropertyPath.getObjectPropertyPath().size() - 1);
+            dataObject = dataModel.getDataObject(parentObjectProperty.getClassName());
         }
-        initSelectFieldDropdownOptions( dataObject );
-        view.displaySelectFieldButton( true );
-        picker.objectPropertyPathChanged( true );
+        initSelectFieldDropdownOptions(dataObject);
+        view.displaySelectFieldButton(true);
+        picker.objectPropertyPathChanged(true);
     }
 
     @Override
     public void onRootLabelRemoved() {
-        picker.onFieldPickerItemRemoved( this );
+        picker.onFieldPickerItemRemoved(this);
     }
 
     @Override
     public void onMoveFieldItemUp() {
-        picker.onMoveFieldPickerItemUp( this );
+        picker.onMoveFieldPickerItemUp(this);
     }
 
     @Override
     public void onMoveFieldItemDown() {
-        picker.onMoveFieldPickerItemDown( this );
+        picker.onMoveFieldPickerItemDown(this);
     }
 
     @Override
-    public void onOrderSelectValueChange( boolean descending, boolean notify ) {
-        view.setOrderSelectDescendingValue( descending );
-        objectPropertyPath.setDescending( descending );
-        if ( notify ) {
-            picker.objectPropertyPathChanged( false );
+    public void onOrderSelectValueChange(boolean descending,
+                                         boolean notify) {
+        view.setOrderSelectDescendingValue(descending);
+        objectPropertyPath.setDescending(descending);
+        if (notify) {
+            picker.objectPropertyPathChanged(false);
         }
     }
 
     @Override
-    public void setFieldPickerItemIndex( int index ) {
-        view.setFieldPickerItemIndex( index );
+    public void setFieldPickerItemIndex(int index) {
+        view.setFieldPickerItemIndex(index);
     }
 
     public ObjectPropertyPath getObjectPropertyPath() {
@@ -133,5 +138,4 @@ public class DataObjectFieldPickerItem implements DataObjectFieldPickerItemView.
     public Widget asWidget() {
         return view.asWidget();
     }
-
 }

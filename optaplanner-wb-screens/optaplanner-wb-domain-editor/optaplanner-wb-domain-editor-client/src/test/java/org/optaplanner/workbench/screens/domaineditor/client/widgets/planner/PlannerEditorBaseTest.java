@@ -27,7 +27,6 @@ public class PlannerEditorBaseTest
 
         super.initTest();
         //load the planner annotation definitions into the context.
-        context.getAnnotationDefinitions().putAll( PlannerTestUtil.getPlannerAnnotations() );
+        context.getAnnotationDefinitions().putAll(PlannerTestUtil.getPlannerAnnotations());
     }
-
 }

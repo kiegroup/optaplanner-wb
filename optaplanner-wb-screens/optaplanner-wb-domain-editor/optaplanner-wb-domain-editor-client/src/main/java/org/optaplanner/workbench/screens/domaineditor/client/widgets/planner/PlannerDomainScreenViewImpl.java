@@ -41,12 +41,12 @@ public class PlannerDomainScreenViewImpl
     }
 
     @Inject
-    public PlannerDomainScreenViewImpl( PlannerDomainEditor domainEditor ) {
+    public PlannerDomainScreenViewImpl(PlannerDomainEditor domainEditor) {
         this.domainEditor = domainEditor;
     }
 
     @PostConstruct
     private void init() {
-        containerPanel.add( domainEditor );
+        containerPanel.add(domainEditor);
     }
 }

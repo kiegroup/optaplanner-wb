@@ -29,19 +29,33 @@ import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDeci
 public class BendableBigDecimalScoreMapper extends MappingDefinition {
 
     public BendableBigDecimalScoreMapper() throws NoSuchMethodException {
-        super( BendableBigDecimalScore.class );
+        super(BendableBigDecimalScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( BendableBigDecimalScore.class.getMethod( "valueOfUninitialized", int.class, BigDecimal[].class, BigDecimal[].class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "hardScores", 1, BigDecimal[].class );
-        factoryMapping.mapParmToIndex( "softScores", 2, BigDecimal[].class );
+        factoryMapping.setMethod(new JavaReflectionMethod(BendableBigDecimalScore.class.getMethod("valueOfUninitialized",
+                                                                                                  int.class,
+                                                                                                  BigDecimal[].class,
+                                                                                                  BigDecimal[].class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("hardScores",
+                                      1,
+                                      BigDecimal[].class);
+        factoryMapping.mapParmToIndex("softScores",
+                                      2,
+                                      BigDecimal[].class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "hardScores", BigDecimal[].class, "getHardScores" ) );
-        addMemberMapping( new ReadMapping( "softScores", BigDecimal[].class, "getSoftScores" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("hardScores",
+                                         BigDecimal[].class,
+                                         "getHardScores"));
+        addMemberMapping(new ReadMapping("softScores",
+                                         BigDecimal[].class,
+                                         "getSoftScores"));
     }
-
 }

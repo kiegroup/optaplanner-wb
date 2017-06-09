@@ -46,77 +46,80 @@ public class ConstructionHeuristicFormTest {
 
     @Before
     public void setUp() {
-        constructionHeuristicForm = new ConstructionHeuristicForm( view );
-        constructionHeuristicForm.setPhaseConfigForm( phaseConfigForm );
+        constructionHeuristicForm = new ConstructionHeuristicForm(view);
+        constructionHeuristicForm.setPhaseConfigForm(phaseConfigForm);
     }
 
     @Test
     public void initConstructionHeuristicForm() {
-        verify( view ).setPresenter( constructionHeuristicForm );
+        verify(view).setPresenter(constructionHeuristicForm);
 
-        ArgumentCaptor<List> constructionHeuristicTypeSelectOptionsCaptor = ArgumentCaptor.forClass( List.class );
-        verify( view ).initConstructionHeuristicTypeSelectOptions( constructionHeuristicTypeSelectOptionsCaptor.capture() );
+        ArgumentCaptor<List> constructionHeuristicTypeSelectOptionsCaptor = ArgumentCaptor.forClass(List.class);
+        verify(view).initConstructionHeuristicTypeSelectOptions(constructionHeuristicTypeSelectOptionsCaptor.capture());
 
         List value = constructionHeuristicTypeSelectOptionsCaptor.getValue();
-        assertEquals( ConstructionHeuristicType.values().length, value.size() );
+        assertEquals(ConstructionHeuristicType.values().length,
+                     value.size());
 
-        verify( view ).initEntitySorterMannerSelectOptions( constructionHeuristicTypeSelectOptionsCaptor.capture() );
+        verify(view).initEntitySorterMannerSelectOptions(constructionHeuristicTypeSelectOptionsCaptor.capture());
 
         value = constructionHeuristicTypeSelectOptionsCaptor.getValue();
-        assertEquals( EntitySorterManner.values().length, value.size() );
+        assertEquals(EntitySorterManner.values().length,
+                     value.size());
     }
 
     @Test
     public void onConstructionHeuristicTypeSelected() {
-        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
-        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY );
+        when(model.getConstructionHeuristicType()).thenReturn(ConstructionHeuristicType.FIRST_FIT_DECREASING);
+        when(model.getEntitySorterManner()).thenReturn(EntitySorterManner.DECREASING_DIFFICULTY);
 
-        constructionHeuristicForm.setModel( model );
+        constructionHeuristicForm.setModel(model);
 
-        constructionHeuristicForm.onConstructionHeuristicTypeSelected( "FIRST_FIT" );
+        constructionHeuristicForm.onConstructionHeuristicTypeSelected("FIRST_FIT");
 
-        verify( model ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+        verify(model).setConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT);
     }
 
     @Test
     public void onEntitySorterMannerSelected() {
-        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
-        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
+        when(model.getConstructionHeuristicType()).thenReturn(ConstructionHeuristicType.FIRST_FIT_DECREASING);
+        when(model.getEntitySorterManner()).thenReturn(EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE);
 
-        constructionHeuristicForm.setModel( model );
+        constructionHeuristicForm.setModel(model);
 
-        constructionHeuristicForm.onEntitySorterMannerSelected( "DECREASING_DIFFICULTY" );
+        constructionHeuristicForm.onEntitySorterMannerSelected("DECREASING_DIFFICULTY");
 
-        verify( model ).setEntitySorterManner( EntitySorterManner.DECREASING_DIFFICULTY );
+        verify(model).setEntitySorterManner(EntitySorterManner.DECREASING_DIFFICULTY);
     }
 
     @Test
     public void onConstructionHeuristicRemoved() {
         constructionHeuristicForm.onConstructionHeuristicRemoved();
 
-        verify( phaseConfigForm ).removeConstructionHeuristic( constructionHeuristicForm );
+        verify(phaseConfigForm).removeConstructionHeuristic(constructionHeuristicForm);
     }
 
     @Test
     public void setModelNullAttribute() {
-        when( model.getConstructionHeuristicType() ).thenReturn( null ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
-        when( model.getEntitySorterManner() ).thenReturn( null ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
+        when(model.getConstructionHeuristicType()).thenReturn(null).thenReturn(ConstructionHeuristicType.FIRST_FIT_DECREASING);
+        when(model.getEntitySorterManner()).thenReturn(null).thenReturn(EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE);
 
-        constructionHeuristicForm.setModel( model );
+        constructionHeuristicForm.setModel(model);
 
-        verify( model ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
-        verify( model ).setEntitySorterManner( EntitySorterManner.NONE );
+        verify(model).setConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT);
+        verify(model).setEntitySorterManner(EntitySorterManner.NONE);
     }
 
     @Test
     public void setModelNonNullAttribute() {
-        when( model.getConstructionHeuristicType() ).thenReturn( ConstructionHeuristicType.FIRST_FIT_DECREASING );
-        when( model.getEntitySorterManner() ).thenReturn( EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE );
+        when(model.getConstructionHeuristicType()).thenReturn(ConstructionHeuristicType.FIRST_FIT_DECREASING);
+        when(model.getEntitySorterManner()).thenReturn(EntitySorterManner.DECREASING_DIFFICULTY_IF_AVAILABLE);
 
-        constructionHeuristicForm.setModel( model );
+        constructionHeuristicForm.setModel(model);
 
-        verify( model, times( 0 ) ).setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
-        verify( model, times( 0 ) ).setEntitySorterManner( EntitySorterManner.NONE );
+        verify(model,
+               times(0)).setConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT);
+        verify(model,
+               times(0)).setEntitySorterManner(EntitySorterManner.NONE);
     }
-
 }

@@ -30,33 +30,33 @@ public class XMLViewerImpl
 
     public XMLViewerImpl() {
         editor.startEditor();
-        editor.setMode( AceEditorMode.XML );
-        editor.setTheme( AceEditorTheme.CHROME );
-        editor.setReadOnly( true );
-        initWidget( editor );
+        editor.setMode(AceEditorMode.XML);
+        editor.setTheme(AceEditorTheme.CHROME);
+        editor.setReadOnly(true);
+        initWidget(editor);
     }
 
     @Override
     public void onResize() {
         int height = getParent().getOffsetHeight();
         int width = getParent().getOffsetWidth();
-        setPixelSize( width,
-                      height );
-        editor.setHeight( height + "px" );
+        setPixelSize(width,
+                     height);
+        editor.setHeight(height + "px");
         editor.redisplay();
     }
 
     @Override
-    public void setContent( String content ) {
-        editor.setText( content );
+    public void setContent(String content) {
+        editor.setText(content);
     }
 
     public void clear() {
-        editor.setText( null );
+        editor.setText(null);
     }
 
-    private int ensureValidMeasure( int value ) {
-        if ( value < 0 ) {
+    private int ensureValidMeasure(int value) {
+        if (value < 0) {
             return 0;
         } else {
             return value;

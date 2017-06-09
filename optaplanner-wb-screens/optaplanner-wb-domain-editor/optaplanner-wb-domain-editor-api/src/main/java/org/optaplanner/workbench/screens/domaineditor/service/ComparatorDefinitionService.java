@@ -23,8 +23,8 @@ import org.kie.workbench.common.services.datamodeller.core.JavaClass;
 @Remote
 public interface ComparatorDefinitionService {
 
-    JavaClass createComparatorObject( DataObject dataObject );
+    JavaClass createComparatorObject(DataObject dataObject);
 
-    JavaClass updateComparatorObject( DataObject dataObject, JavaClass comparatorClass );
-
+    JavaClass updateComparatorObject(DataObject dataObject,
+                                     JavaClass comparatorClass);
 }

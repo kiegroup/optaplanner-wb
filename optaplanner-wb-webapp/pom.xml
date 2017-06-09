@@ -37,7 +37,7 @@
   </properties>
 
   <dependencies>
-    
+
     <!-- errai-cdi-jboss provides gwt-dev with the proper dependency exclusions and should be first on the classpath -->
     <dependency>
       <groupId>org.jboss.errai</groupId>
@@ -162,7 +162,7 @@
       <artifactId>uberfire-widgets-commons</artifactId>
       <scope>provided</scope>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-widgets-table</artifactId>
       <scope>provided</scope>
@@ -913,7 +913,7 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-jboss-as-support</artifactId>
-    </dependency>    
+    </dependency>
 
     <!-- CDI Integration Modules -->
     <dependency>
@@ -1032,7 +1032,7 @@
           <server>org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher</server>
           <disableCastChecking>true</disableCastChecking>
           <runTarget>optaplanner-wb.html</runTarget>
-          <hostedWebapp>src/main/webapp</hostedWebapp>          
+          <hostedWebapp>src/main/webapp</hostedWebapp>
           <compileSourcesArtifacts>
             <!-- Guvnor -->
             <compileSourcesArtifact>org.guvnor:guvnor-asset-mgmt-api</compileSourcesArtifact>
@@ -1139,7 +1139,7 @@
             <compileSourcesArtifact>org.drools:drools-wb-workitems-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.drools:drools-wb-workitems-editor-client</compileSourcesArtifact>
 
-             <!-- UberFire Extensions -->
+            <!-- UberFire Extensions -->
             <compileSourcesArtifact>org.uberfire:uberfire-social-activities-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-social-activities-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-commons-editor-api</compileSourcesArtifact>
@@ -1233,7 +1233,7 @@
                 <include>src/main/webapp/org.optaplanner.workbench.OptaPlannerWorkbench/</include>
                 <include>src/main/webapp/WEB-INF/deploy/</include>
                 <include>src/main/webapp/WEB-INF/classes/</include>
-                <include>src/main/webapp/WEB-INF/lib/</include>                
+                <include>src/main/webapp/WEB-INF/lib/</include>
                 <include>.errai/</include>
                 <include>.niogit/**</include>
               </includes>

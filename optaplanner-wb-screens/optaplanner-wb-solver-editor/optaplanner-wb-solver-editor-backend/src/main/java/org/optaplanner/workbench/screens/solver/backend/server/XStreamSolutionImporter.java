@@ -31,17 +31,19 @@ public class XStreamSolutionImporter<T> {
 
     private final XStream xStream;
 
-    public XStreamSolutionImporter( ClassLoader classLoader ) {
-        xStream = new XStream(  );
-        xStream.setClassLoader( classLoader );
-        xStream.setMode( XStream.ID_REFERENCES );
+    public XStreamSolutionImporter(ClassLoader classLoader) {
+        xStream = new XStream();
+        xStream.setClassLoader(classLoader);
+        xStream.setMode(XStream.ID_REFERENCES);
     }
 
-    public T read( InputStream inputStream ) {
-        try (Reader reader = new InputStreamReader( inputStream, "UTF-8")) {
+    public T read(InputStream inputStream) {
+        try (Reader reader = new InputStreamReader(inputStream,
+                                                   "UTF-8")) {
             return (T) xStream.fromXML(reader);
         } catch (XStreamException | IOException e) {
-            throw new IllegalArgumentException("Failed reading solution.", e);
+            throw new IllegalArgumentException("Failed reading solution.",
+                                               e);
         }
     }
 }

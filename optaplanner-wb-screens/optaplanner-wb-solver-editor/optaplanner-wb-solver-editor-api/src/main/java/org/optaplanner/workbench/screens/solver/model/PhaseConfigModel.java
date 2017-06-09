@@ -16,4 +16,5 @@
 package org.optaplanner.workbench.screens.solver.model;
 
 public abstract class PhaseConfigModel {
+
 }

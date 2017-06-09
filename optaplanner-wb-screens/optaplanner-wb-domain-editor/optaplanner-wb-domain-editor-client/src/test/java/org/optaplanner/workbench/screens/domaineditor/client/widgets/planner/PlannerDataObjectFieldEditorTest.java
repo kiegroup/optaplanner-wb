@@ -36,18 +36,18 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith( GwtMockitoTestRunner.class )
+@RunWith(GwtMockitoTestRunner.class)
 public class PlannerDataObjectFieldEditorTest
-                extends PlannerEditorBaseTest {
+        extends PlannerEditorBaseTest {
 
     @Mock
     private PlannerDataObjectFieldEditorView view;
 
     protected PlannerDataObjectFieldEditor createFieldEditor() {
-        PlannerDataObjectFieldEditor fieldEditor = new PlannerDataObjectFieldEditor( view,
-                handlerRegistry,
-                dataModelerEvent,
-                commandBuilder );
+        PlannerDataObjectFieldEditor fieldEditor = new PlannerDataObjectFieldEditor(view,
+                                                                                    handlerRegistry,
+                                                                                    dataModelerEvent,
+                                                                                    commandBuilder);
         return fieldEditor;
     }
 
@@ -57,17 +57,19 @@ public class PlannerDataObjectFieldEditorTest
         PlannerDataObjectFieldEditor fieldEditor = createFieldEditor();
 
         DataObject dataObject = context.getDataObject();
-        ObjectProperty field1 = dataObject.getProperty( "field1" );
+        ObjectProperty field1 = dataObject.getProperty("field1");
         //emulates the selection of field1
-        context.setObjectProperty( field1 );
+        context.setObjectProperty(field1);
 
         //The domain editors typically reacts upon DataModelerContext changes.
         //when the context changes the editor will typically be reloaded.
-        fieldEditor.onContextChange( context );
+        fieldEditor.onContextChange(context);
 
         //the view should be populated with the values from the field.
-        verify( view, times( 1 ) ).clear();
-        verify( view, times( 1 ) ).showPlanningFieldPropertiesNotAvailable( true );
+        verify(view,
+               times(1)).clear();
+        verify(view,
+               times(1)).showPlanningFieldPropertiesNotAvailable(true);
     }
 
     @Test
@@ -77,29 +79,28 @@ public class PlannerDataObjectFieldEditorTest
 
         //first configure the DataObject as a PlanningEntity
         DataObject dataObject = context.getDataObject();
-        dataObject.addAnnotation( new AnnotationImpl( context.getAnnotationDefinition( PlanningEntity.class.getName() ) ) );
+        dataObject.addAnnotation(new AnnotationImpl(context.getAnnotationDefinition(PlanningEntity.class.getName())));
 
-        ObjectProperty field1 = dataObject.getProperty( "field1" );
+        ObjectProperty field1 = dataObject.getProperty("field1");
         //emulates the selection of field1
-        context.setObjectProperty( field1 );
+        context.setObjectProperty(field1);
 
         //The domain editors typically reacts upon DataModelerContext changes.
         //when the context changes the editor will typically be reloaded.
-        fieldEditor.onContextChange( context );
+        fieldEditor.onContextChange(context);
 
         //emulate the user input
-        when( view.getPlanningVariableValue() ).thenReturn( true );
-        when( view.getValueRangeProviderRefsValue() ).thenReturn( "valueRangeProviderRefsValue" );
+        when(view.getPlanningVariableValue()).thenReturn(true);
+        when(view.getValueRangeProviderRefsValue()).thenReturn("valueRangeProviderRefsValue");
 
         fieldEditor.onPlanningVariableChange();
         fieldEditor.onValueRangeProviderRefsChange();
 
-        List<String> valueRangeProviderRefs = new ArrayList<String>(  );
-        valueRangeProviderRefs.add( "valueRangeProviderRefsValue" );
-        assertNotNull( field1.getAnnotation( PlanningVariable.class.getName() ) );
-        assertEquals( valueRangeProviderRefs,
-                field1.getAnnotation( PlanningVariable.class.getName() ).getValue( "valueRangeProviderRefs" ) );
-
+        List<String> valueRangeProviderRefs = new ArrayList<String>();
+        valueRangeProviderRefs.add("valueRangeProviderRefsValue");
+        assertNotNull(field1.getAnnotation(PlanningVariable.class.getName()));
+        assertEquals(valueRangeProviderRefs,
+                     field1.getAnnotation(PlanningVariable.class.getName()).getValue("valueRangeProviderRefs"));
     }
 
     @Test
@@ -109,30 +110,29 @@ public class PlannerDataObjectFieldEditorTest
 
         //first configure the DataObject as a PlanningSolution
         DataObject dataObject = context.getDataObject();
-        dataObject.addAnnotation( new AnnotationImpl( context.getAnnotationDefinition( PlanningSolution.class.getName() ) ) );
-        dataObject.addProperty("score", HardSoftScore.class.getName());
+        dataObject.addAnnotation(new AnnotationImpl(context.getAnnotationDefinition(PlanningSolution.class.getName())));
+        dataObject.addProperty("score",
+                               HardSoftScore.class.getName());
 
-        ObjectProperty field1 = dataObject.getProperty( "field1" );
+        ObjectProperty field1 = dataObject.getProperty("field1");
         //emulates the selection of field1
-        context.setObjectProperty( field1 );
+        context.setObjectProperty(field1);
 
         //The domain editors typically reacts upon DataModelerContext changes.
         //when the context changes the editor will typically be reloaded.
-        fieldEditor.onContextChange( context );
+        fieldEditor.onContextChange(context);
 
-        when( view.getValueRangeProviderValue() ).thenReturn( true );
-        when( view.getValueRangeProviderIdValue() ).thenReturn( "valueRangeProviderIdValue" );
+        when(view.getValueRangeProviderValue()).thenReturn(true);
+        when(view.getValueRangeProviderIdValue()).thenReturn("valueRangeProviderIdValue");
 
         //emulate the user input
         fieldEditor.onValueRangeProviderChange();
         fieldEditor.onValueRangeProviderIdChange();
 
-        assertNotNull( field1.getAnnotation( ValueRangeProvider.class.getName() ) );
-        assertEquals( "valueRangeProviderIdValue",
-                AnnotationValueHandler.getStringValue( field1, ValueRangeProvider.class.getName(), "id" ) );
-
-
-
+        assertNotNull(field1.getAnnotation(ValueRangeProvider.class.getName()));
+        assertEquals("valueRangeProviderIdValue",
+                     AnnotationValueHandler.getStringValue(field1,
+                                                           ValueRangeProvider.class.getName(),
+                                                           "id"));
     }
-
 }

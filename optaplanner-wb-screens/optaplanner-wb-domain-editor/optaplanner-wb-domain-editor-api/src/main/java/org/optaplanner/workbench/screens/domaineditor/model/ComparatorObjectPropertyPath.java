@@ -31,5 +31,4 @@ public @interface ComparatorObjectPropertyPath {
     ComparatorObjectProperty[] objectProperties() default {};
 
     boolean ascending() default true;
-
 }

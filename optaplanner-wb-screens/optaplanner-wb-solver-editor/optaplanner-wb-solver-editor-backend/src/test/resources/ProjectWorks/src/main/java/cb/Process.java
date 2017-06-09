@@ -21,43 +21,36 @@ package cb;
  */
 
 @org.optaplanner.core.api.domain.entity.PlanningEntity
-public class Process implements java.io.Serializable
-{
+public class Process implements java.io.Serializable {
 
-   static final long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
-   private int cpuUsage;
-   @org.optaplanner.core.api.domain.variable.PlanningVariable(valueRangeProviderRefs = { "computerRange" })
-   private cb.Computer computer;
+    private int cpuUsage;
+    @org.optaplanner.core.api.domain.variable.PlanningVariable(valueRangeProviderRefs = {"computerRange"})
+    private cb.Computer computer;
 
-   public Process()
-   {
-   }
+    public Process() {
+    }
 
-   public int getCpuUsage()
-   {
-      return this.cpuUsage;
-   }
+    public int getCpuUsage() {
+        return this.cpuUsage;
+    }
 
-   public void setCpuUsage(int cpuUsage)
-   {
-      this.cpuUsage = cpuUsage;
-   }
+    public void setCpuUsage(int cpuUsage) {
+        this.cpuUsage = cpuUsage;
+    }
 
-   public cb.Computer getComputer()
-   {
-      return this.computer;
-   }
+    public cb.Computer getComputer() {
+        return this.computer;
+    }
 
-   public void setComputer(cb.Computer computer)
-   {
-      this.computer = computer;
-   }
+    public void setComputer(cb.Computer computer) {
+        this.computer = computer;
+    }
 
-   public Process(int cpuUsage, cb.Computer computer)
-   {
-      this.cpuUsage = cpuUsage;
-      this.computer = computer;
-   }
-
+    public Process(int cpuUsage,
+                   cb.Computer computer) {
+        this.cpuUsage = cpuUsage;
+        this.computer = computer;
+    }
 }

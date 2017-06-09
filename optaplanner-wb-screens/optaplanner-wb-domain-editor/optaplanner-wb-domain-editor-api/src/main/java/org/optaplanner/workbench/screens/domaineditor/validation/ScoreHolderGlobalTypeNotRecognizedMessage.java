@@ -26,7 +26,8 @@ public class ScoreHolderGlobalTypeNotRecognizedMessage extends ValidationMessage
     public ScoreHolderGlobalTypeNotRecognizedMessage() {
     }
 
-    public ScoreHolderGlobalTypeNotRecognizedMessage( final Level level ) {
-        super( level, null );
+    public ScoreHolderGlobalTypeNotRecognizedMessage(final Level level) {
+        super(level,
+              null);
     }
 }

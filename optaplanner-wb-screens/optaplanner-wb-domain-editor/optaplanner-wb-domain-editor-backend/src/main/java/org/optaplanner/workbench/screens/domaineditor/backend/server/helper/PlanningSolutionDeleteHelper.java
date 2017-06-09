@@ -37,7 +37,7 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
 @ApplicationScoped
 public class PlanningSolutionDeleteHelper implements DeleteHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( PlanningSolutionDeleteHelper.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlanningSolutionDeleteHelper.class);
 
     private static final String SCORE_HOLDER_GLOBAL_FILE_SUFFIX = "ScoreHolderGlobal.gdrl";
 
@@ -51,38 +51,38 @@ public class PlanningSolutionDeleteHelper implements DeleteHelper {
     }
 
     @Inject
-    public PlanningSolutionDeleteHelper( @Named("ioStrategy") final IOService ioService,
-                                         final DataModelerService dataModelerService,
-                                         final KieProjectService kieProjectService ) {
+    public PlanningSolutionDeleteHelper(@Named("ioStrategy") final IOService ioService,
+                                        final DataModelerService dataModelerService,
+                                        final KieProjectService kieProjectService) {
         this.ioService = ioService;
         this.dataModelerService = dataModelerService;
         this.kieProjectService = kieProjectService;
     }
 
     @Override
-    public boolean supports( final Path path ) {
-        return path.getFileName().endsWith( ".java" );
+    public boolean supports(final Path path) {
+        return path.getFileName().endsWith(".java");
     }
 
     @Override
-    public void postProcess( final Path path ) {
-        String dataObjectSource = ioService.readAllString( Paths.convert( path ) );
-        GenerationResult generationResult = dataModelerService.loadDataObject( path,
-                                                                               dataObjectSource,
-                                                                               path );
+    public void postProcess(final Path path) {
+        String dataObjectSource = ioService.readAllString(Paths.convert(path));
+        GenerationResult generationResult = dataModelerService.loadDataObject(path,
+                                                                              dataObjectSource,
+                                                                              path);
 
-        if ( generationResult.hasErrors() ) {
-            LOGGER.warn( "Path " + path + " parsing as a data object has failed. Score holder global generation will be skipped." );
+        if (generationResult.hasErrors()) {
+            LOGGER.warn("Path " + path + " parsing as a data object has failed. Score holder global generation will be skipped.");
         } else {
             DataObject dataObject = generationResult.getDataObject();
-            if ( dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                org.uberfire.java.nio.file.Path source = Paths.convert( kieProjectService.resolvePackage( path ).getPackageMainResourcesPath() );
-                org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory( source ) ? source : source.getParent();
+            if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(path).getPackageMainResourcesPath());
+                org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
 
-                String dataObjectFileName = path.getFileName().substring( 0,
-                                                                          path.getFileName().indexOf( "." ) );
+                String dataObjectFileName = path.getFileName().substring(0,
+                                                                         path.getFileName().indexOf("."));
 
-                ioService.deleteIfExists( sourcePackage.resolve( dataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX ) );
+                ioService.deleteIfExists(sourcePackage.resolve(dataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX));
             }
         }
     }

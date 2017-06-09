@@ -19,6 +19,6 @@
     "http://gwtproject.org/doctype/2.8.0/gwt-module.dtd">
 <module>
 
-  <inherits name="OptaPlannerUpstreamModelSourcePaths" />
+  <inherits name="OptaPlannerUpstreamModelSourcePaths"/>
 
 </module>

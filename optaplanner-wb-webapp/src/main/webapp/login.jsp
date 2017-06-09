@@ -15,7 +15,7 @@
   --%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<%@page import="org.jboss.errai.security.server.FormAuthenticationScheme"%>
+<%@page import="org.jboss.errai.security.server.FormAuthenticationScheme" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Drools Workbench</title>
@@ -164,7 +164,7 @@
         <% if (request.getParameter("gwt.codesvr") != null) { %>
         <input type="hidden" name="gwt.codesvr" value="<%= org.owasp.encoder.Encode.forHtmlAttribute(request.getParameter("gwt.codesvr")) %>"/>
         <% } %>
-        <% if (request.getParameter( FormAuthenticationScheme.LOGIN_ERROR_QUERY_PARAM ) != null) { %>
+        <% if (request.getParameter(FormAuthenticationScheme.LOGIN_ERROR_QUERY_PARAM) != null) { %>
         <span class="error">Login failed. Please try again.</span>
         <% } %>
         <input class="button" type="submit" value="Sign In"/>

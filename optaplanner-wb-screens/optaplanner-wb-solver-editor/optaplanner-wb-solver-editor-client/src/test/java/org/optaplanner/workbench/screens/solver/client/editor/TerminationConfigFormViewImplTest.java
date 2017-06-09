@@ -35,15 +35,14 @@ public class TerminationConfigFormViewImplTest {
 
     @Before
     public void setUp() throws Exception {
-        terminationConfigFormView = new TerminationConfigFormViewImpl( tree );
+        terminationConfigFormView = new TerminationConfigFormViewImpl(tree);
     }
 
     @Test
     public void initTree() {
         TreeItem treeItem = new TreeItem();
-        terminationConfigFormView.initTree( treeItem );
-        verify( tree ).clear();
-        verify( tree ).addItem( treeItem );
+        terminationConfigFormView.initTree(treeItem);
+        verify(tree).clear();
+        verify(tree).addItem(treeItem);
     }
-
 }

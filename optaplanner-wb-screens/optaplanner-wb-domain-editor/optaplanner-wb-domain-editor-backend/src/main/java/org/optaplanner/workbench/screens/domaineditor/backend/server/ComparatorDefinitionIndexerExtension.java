@@ -38,57 +38,61 @@ import org.slf4j.LoggerFactory;
 @ApplicationScoped
 public class ComparatorDefinitionIndexerExtension implements JavaFileIndexerExtension {
 
-    private static final Logger logger = LoggerFactory.getLogger( ComparatorDefinitionIndexerExtension.class );
+    private static final Logger logger = LoggerFactory.getLogger(ComparatorDefinitionIndexerExtension.class);
 
     @Override
-    public void process( DefaultIndexBuilder builder, JavaType javaType ) {
+    public void process(DefaultIndexBuilder builder,
+                        JavaType javaType) {
         try {
             final List<Annotation> comparatorDefinitions;
 
-            Annotation planningEntityAnnotation = javaType.getAnnotation( PlanningEntity.class.getName() );
+            Annotation planningEntityAnnotation = javaType.getAnnotation(PlanningEntity.class.getName());
 
-            if ( planningEntityAnnotation == null ) {
+            if (planningEntityAnnotation == null) {
                 return;
             }
 
-            String difficultyComparatorClass = planningEntityAnnotation.getStringValue( "difficultyComparatorClass" );
+            String difficultyComparatorClass = planningEntityAnnotation.getStringValue("difficultyComparatorClass");
 
-            if ( difficultyComparatorClass != null && javaType instanceof JavaClassSource && difficultyComparatorClass.matches( "\\w[\\.\\w]+\\.class" ) ) {
-                String[] difficultyComparatorTokens = difficultyComparatorClass.split( "\\." );
-                comparatorDefinitions = ( (JavaClassSource) javaType ).getNestedTypes().stream()
-                        .filter( t -> t instanceof JavaClassSource
-                                && t.getName().equals( difficultyComparatorTokens[difficultyComparatorTokens.length - 2] )
-                                && t.getAnnotation( ComparatorDefinition.class.getName() ) != null
-                                && t.getAnnotation( Generated.class.getName() ) != null
-                                && ( (JavaClassSource) t ).getInterfaces().stream().anyMatch( i -> i.startsWith( Comparator.class.getName() ) ) )
-                        .map( t -> t.getAnnotation( ComparatorDefinition.class.getName() ) )
-                        .collect( Collectors.toList() );
+            if (difficultyComparatorClass != null && javaType instanceof JavaClassSource && difficultyComparatorClass.matches("\\w[\\.\\w]+\\.class")) {
+                String[] difficultyComparatorTokens = difficultyComparatorClass.split("\\.");
+                comparatorDefinitions = ((JavaClassSource) javaType).getNestedTypes().stream()
+                        .filter(t -> t instanceof JavaClassSource
+                                && t.getName().equals(difficultyComparatorTokens[difficultyComparatorTokens.length - 2])
+                                && t.getAnnotation(ComparatorDefinition.class.getName()) != null
+                                && t.getAnnotation(Generated.class.getName()) != null
+                                && ((JavaClassSource) t).getInterfaces().stream().anyMatch(i -> i.startsWith(Comparator.class.getName())))
+                        .map(t -> t.getAnnotation(ComparatorDefinition.class.getName()))
+                        .collect(Collectors.toList());
             } else {
                 return;
             }
 
-            if ( javaType.getSyntaxErrors() == null || javaType.getSyntaxErrors().isEmpty() ) {
-                for ( Annotation comparatorDefinition : comparatorDefinitions ) {
-                    Annotation[] fieldPathDefinitions = comparatorDefinition.getAnnotationArrayValue( "objectPropertyPaths" );
+            if (javaType.getSyntaxErrors() == null || javaType.getSyntaxErrors().isEmpty()) {
+                for (Annotation comparatorDefinition : comparatorDefinitions) {
+                    Annotation[] fieldPathDefinitions = comparatorDefinition.getAnnotationArrayValue("objectPropertyPaths");
 
                     String previousFullyQualifiedClassname = null;
 
-                    if ( fieldPathDefinitions != null ) {
-                        for ( Annotation fieldPathDefinition : fieldPathDefinitions ) {
-                            Annotation[] fieldDefinitions = fieldPathDefinition.getAnnotationArrayValue( "objectProperties" );
+                    if (fieldPathDefinitions != null) {
+                        for (Annotation fieldPathDefinition : fieldPathDefinitions) {
+                            Annotation[] fieldDefinitions = fieldPathDefinition.getAnnotationArrayValue("objectProperties");
 
-                            if ( fieldDefinitions != null && fieldDefinitions.length > 0 ) {
+                            if (fieldDefinitions != null && fieldDefinitions.length > 0) {
 
-                                previousFullyQualifiedClassname = fieldDefinitions[0].getStringValue( "type" );
+                                previousFullyQualifiedClassname = fieldDefinitions[0].getStringValue("type");
 
-                                if ( previousFullyQualifiedClassname != null && previousFullyQualifiedClassname.matches( "\\w[\\.\\w]+\\.class" ) ) {
-                                    for ( int i = 1; i < fieldDefinitions.length; i++ ) {
-                                        ResourceReference resourceReference = new ResourceReference(previousFullyQualifiedClassname.substring(0, previousFullyQualifiedClassname.indexOf(".class" ) ), ResourceType.JAVA );
-                                        resourceReference.addPartReference( fieldDefinitions[i].getStringValue( "name" ), PartType.FIELD );
+                                if (previousFullyQualifiedClassname != null && previousFullyQualifiedClassname.matches("\\w[\\.\\w]+\\.class")) {
+                                    for (int i = 1; i < fieldDefinitions.length; i++) {
+                                        ResourceReference resourceReference = new ResourceReference(previousFullyQualifiedClassname.substring(0,
+                                                                                                                                              previousFullyQualifiedClassname.indexOf(".class")),
+                                                                                                    ResourceType.JAVA);
+                                        resourceReference.addPartReference(fieldDefinitions[i].getStringValue("name"),
+                                                                           PartType.FIELD);
 
-                                        previousFullyQualifiedClassname = fieldDefinitions[i].getStringValue( "type" );
+                                        previousFullyQualifiedClassname = fieldDefinitions[i].getStringValue("type");
 
-                                        builder.addGenerator( resourceReference );
+                                        builder.addGenerator(resourceReference);
                                     }
                                 }
                             }
@@ -96,8 +100,8 @@ public class ComparatorDefinitionIndexerExtension implements JavaFileIndexerExte
                     }
                 }
             }
-        } catch ( Exception e ) {
-            logger.error( "Unable to index comparator definition for " + javaType.getQualifiedName() );
+        } catch (Exception e) {
+            logger.error("Unable to index comparator definition for " + javaType.getQualifiedName());
         }
     }
 }
