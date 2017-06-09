@@ -28,7 +28,8 @@ import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)

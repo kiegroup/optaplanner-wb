@@ -30,7 +30,7 @@ import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
 
 import static org.junit.Assert.*;
-import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.*;
+import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.loadResource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolverValidatorTest {

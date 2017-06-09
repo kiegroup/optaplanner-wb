@@ -18,7 +18,6 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server.file;
 
 import java.util.Comparator;
 import java.util.Optional;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;

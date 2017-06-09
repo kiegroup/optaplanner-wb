@@ -37,8 +37,8 @@ import org.kie.workbench.common.services.datamodeller.core.impl.MethodImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.ParameterImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.TypeImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
+import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 
 @Service
 @ApplicationScoped
