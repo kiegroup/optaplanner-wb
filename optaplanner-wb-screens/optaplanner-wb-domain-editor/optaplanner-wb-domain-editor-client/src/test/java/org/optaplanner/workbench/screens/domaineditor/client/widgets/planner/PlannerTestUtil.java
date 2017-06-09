@@ -18,7 +18,6 @@ package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Generated;
 
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;

@@ -16,8 +16,8 @@
 
 package org.optaplanner.workbench.screens.domaineditor.backend.driver;
 
-import org.optaplanner.core.impl.domain.solution.*;
-import org.optaplanner.core.api.score.buildin.simple.*;
+import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
+import org.optaplanner.core.impl.domain.solution.AbstractSolution;
 
 public class PlannerSolutionExample extends AbstractSolution<SimpleScore> {
 

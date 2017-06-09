@@ -23,20 +23,15 @@ import org.kie.workbench.common.services.backend.project.ProjectClassLoaderHelpe
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
-import org.kie.workbench.common.services.datamodeller.core.impl.ImportImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.kie.workbench.common.services.shared.project.KieProject;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.core.impl.domain.solution.AbstractSolution;
 import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.ScoreHolderUtils;
-import org.uberfire.backend.vfs.Path;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScoreHolderUtilsTest {

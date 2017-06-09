@@ -26,7 +26,7 @@ import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.uberfire.io.IOService;
 
 import static org.junit.Assert.*;
-import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.*;
+import static org.optaplanner.workbench.screens.solver.backend.server.TestUtil.loadResource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolverConfigModelPersistenceTest {

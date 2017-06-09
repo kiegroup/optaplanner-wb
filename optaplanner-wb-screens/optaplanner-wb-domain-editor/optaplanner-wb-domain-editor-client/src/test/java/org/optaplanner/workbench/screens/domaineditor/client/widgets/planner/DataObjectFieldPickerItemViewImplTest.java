@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.domaineditor.client.widgets.planner;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
@@ -27,9 +26,7 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class DataObjectFieldPickerItemViewImplTest {

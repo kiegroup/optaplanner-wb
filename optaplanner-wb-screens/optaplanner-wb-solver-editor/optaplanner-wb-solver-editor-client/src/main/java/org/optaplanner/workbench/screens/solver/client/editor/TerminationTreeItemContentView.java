@@ -15,7 +15,6 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import org.jboss.errai.common.client.api.IsElement;
 import org.optaplanner.workbench.screens.solver.model.TerminationCompositionStyleModel;
 import org.optaplanner.workbench.screens.solver.model.TerminationConfigOption;
