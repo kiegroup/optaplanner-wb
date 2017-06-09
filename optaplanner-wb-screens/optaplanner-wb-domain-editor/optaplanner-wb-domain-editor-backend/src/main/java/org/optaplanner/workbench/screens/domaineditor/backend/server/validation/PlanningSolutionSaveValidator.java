@@ -42,30 +42,30 @@ public class PlanningSolutionSaveValidator implements SaveValidator<DataObject> 
     private DataModelerService dataModelerService;
 
     @Inject
-    public PlanningSolutionSaveValidator( DataModelerService dataModelerService ) {
+    public PlanningSolutionSaveValidator(DataModelerService dataModelerService) {
         this.dataModelerService = dataModelerService;
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path dataObjectPath,
-                                                   final DataObject dataObject ) {
-        if ( dataObject != null && dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-            List<Path> planningSolutionUsages = dataModelerService.findClassUsages( dataObjectPath,
-                                                                                    PLANNING_SOLUTION_ANNOTATION );
+    public Collection<ValidationMessage> validate(final Path dataObjectPath,
+                                                  final DataObject dataObject) {
+        if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+            List<Path> planningSolutionUsages = dataModelerService.findClassUsages(dataObjectPath,
+                                                                                   PLANNING_SOLUTION_ANNOTATION);
             // PlanningSolution already present in this object
-            if ( planningSolutionUsages.contains( dataObjectPath ) ) {
+            if (planningSolutionUsages.contains(dataObjectPath)) {
                 return Collections.emptyList();
             }
             // Check other PlanningSolution usages
-            if ( !planningSolutionUsages.isEmpty() ) {
-                return Arrays.asList( new PlanningSolutionToBeDuplicatedMessage( Level.ERROR ) );
+            if (!planningSolutionUsages.isEmpty()) {
+                return Arrays.asList(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR));
             }
         }
         return Collections.emptyList();
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".java" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".java");
     }
 }

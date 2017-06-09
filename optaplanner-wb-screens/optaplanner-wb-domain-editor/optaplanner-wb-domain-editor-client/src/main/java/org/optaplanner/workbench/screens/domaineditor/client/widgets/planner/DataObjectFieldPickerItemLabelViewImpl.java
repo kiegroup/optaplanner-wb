@@ -43,20 +43,19 @@ public class DataObjectFieldPickerItemLabelViewImpl implements DataObjectFieldPi
     private Command removeLabelCommand;
 
     @Override
-    public void setName( final String name ) {
-        this.name.setTextContent( name );
+    public void setName(final String name) {
+        this.name.setTextContent(name);
     }
 
     @Override
-    public void setRemoveLabelCommand( final Command removeLabelCommand ) {
+    public void setRemoveLabelCommand(final Command removeLabelCommand) {
         this.removeLabelCommand = removeLabelCommand;
     }
 
     @EventHandler("removeIcon")
-    public void onRemoveIconClicked( final ClickEvent event ) {
-        if ( removeLabelCommand != null ) {
+    public void onRemoveIconClicked(final ClickEvent event) {
+        if (removeLabelCommand != null) {
             removeLabelCommand.execute();
         }
     }
-
 }

@@ -26,7 +26,7 @@ public class ScoreDirectorFactoryConfigModel {
         return ksessionName;
     }
 
-    public void setKSessionName( final String ksessionName ) {
+    public void setKSessionName(final String ksessionName) {
         this.ksessionName = ksessionName;
     }
 }

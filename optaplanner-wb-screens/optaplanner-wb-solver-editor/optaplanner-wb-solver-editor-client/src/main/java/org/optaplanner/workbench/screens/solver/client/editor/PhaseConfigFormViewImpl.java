@@ -48,49 +48,49 @@ public class PhaseConfigFormViewImpl extends Composite implements PhaseConfigFor
     private PhaseConfigForm presenter;
 
     @Inject
-    public PhaseConfigFormViewImpl( final DropDownMenu dropdownMenuList,
-                                    final TranslationService translationService ) {
+    public PhaseConfigFormViewImpl(final DropDownMenu dropdownMenuList,
+                                   final TranslationService translationService) {
         this.dropdownMenuList = dropdownMenuList;
-        AnchorListItem constructionHeuristicListItem = new AnchorListItem( translationService.getTranslation( SolverEditorConstants.PhaseConfigFormViewImplConstructionHeuristic ) );
-        constructionHeuristicListItem.addClickHandler( h -> presenter.addConstructionHeuristic() );
-        this.dropdownMenuList.add( constructionHeuristicListItem );
+        AnchorListItem constructionHeuristicListItem = new AnchorListItem(translationService.getTranslation(SolverEditorConstants.PhaseConfigFormViewImplConstructionHeuristic));
+        constructionHeuristicListItem.addClickHandler(h -> presenter.addConstructionHeuristic());
+        this.dropdownMenuList.add(constructionHeuristicListItem);
 
-        AnchorListItem localSearchListItem = new AnchorListItem( translationService.getTranslation( SolverEditorConstants.PhaseConfigFormViewImplLocalSearch ) );
-        localSearchListItem.addClickHandler( h -> presenter.addLocalSearch() );
-        this.dropdownMenuList.add( localSearchListItem );
+        AnchorListItem localSearchListItem = new AnchorListItem(translationService.getTranslation(SolverEditorConstants.PhaseConfigFormViewImplLocalSearch));
+        localSearchListItem.addClickHandler(h -> presenter.addLocalSearch());
+        this.dropdownMenuList.add(localSearchListItem);
 
         // TODO add Exhaustive search, ...
     }
 
     @Override
-    public void setPresenter( final PhaseConfigForm presenter ) {
+    public void setPresenter(final PhaseConfigForm presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void addConstructionHeuristic( final HTMLElement element ) {
-        view.insertBefore( element,
-                           addPhaseButtonGroup );
+    public void addConstructionHeuristic(final HTMLElement element) {
+        view.insertBefore(element,
+                          addPhaseButtonGroup);
     }
 
     @Override
-    public void removeConstructionHeuristic( final HTMLElement element ) {
-        view.removeChild( element );
+    public void removeConstructionHeuristic(final HTMLElement element) {
+        view.removeChild(element);
     }
 
     @Override
-    public void addLocalSearch( final HTMLElement element ) {
-        view.insertBefore( element,
-                           addPhaseButtonGroup );
+    public void addLocalSearch(final HTMLElement element) {
+        view.insertBefore(element,
+                          addPhaseButtonGroup);
     }
 
     @Override
-    public void removeLocalSearch( final HTMLElement element ) {
-        view.removeChild( element );
+    public void removeLocalSearch(final HTMLElement element) {
+        view.removeChild(element);
     }
 
     @Override
-    public void displayEmptyPhaseConfigurationLabel( final boolean visible ) {
-        emptyPhaseConfigurationLabel.setHidden( !visible );
+    public void displayEmptyPhaseConfigurationLabel(final boolean visible) {
+        emptyPhaseConfigurationLabel.setHidden(!visible);
     }
 }

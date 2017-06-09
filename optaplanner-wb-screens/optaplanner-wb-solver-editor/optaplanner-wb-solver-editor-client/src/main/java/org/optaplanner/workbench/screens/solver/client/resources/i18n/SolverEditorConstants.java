@@ -22,73 +22,72 @@ import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
  */
 public interface SolverEditorConstants {
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String SolverEditorPresenterSmokeTest = "SolverEditorPresenter.SmokeTest";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String SolverEditorPresenterSmokeTestSuccess = "SolverEditorPresenter.SmokeTestSuccess";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String SolverEditorPresenterSource = "SolverEditorPresenter.Source";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String SolverResourceTypeDescription = "SolverResourceType.Description";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String NewSolverHandlerDescription = "NewSolverHandler.Description";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentTerminationCompositionStyleHelp = "TerminationTreeItemContent.TerminationCompositionStyleHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentTimeSpent = "TerminationTreeItemContent.TimeSpent";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentTimeSpentHelp = "TerminationTreeItemContent.TimeSpentHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentUnimprovedTimeSpent = "TerminationTreeItemContent.UnimprovedTimeSpent";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentUnimprovedTimeSpentHelp = "TerminationTreeItemContent.UnimprovedTimeSpentHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentBestScoreLimit = "TerminationTreeItemContent.BestScoreLimit";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentBestScoreLimitHelp = "TerminationTreeItemContent.BestScoreLimitHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentBestScoreFeasible = "TerminationTreeItemContent.BestScoreFeasible";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentBestScoreFeasibleHelp = "TerminationTreeItemContent.BestScoreFeasibleHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentStepCountLimit = "TerminationTreeItemContent.StepCountLimit";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentStepCountLimitHelp = "TerminationTreeItemContent.StepCountLimitHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentUnimprovedStepCountLimit = "TerminationTreeItemContent.UnimprovedStepCountLimit";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentUnimprovedStepCountLimitHelp = "TerminationTreeItemContent.UnimprovedStepCountLimitHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentScoreCalculationCountLimit = "TerminationTreeItemContent.ScoreCalculationCountLimit";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentScoreCalculationCountLimitHelp = "TerminationTreeItemContent.ScoreCalculationCountLimitHelp";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String TerminationTreeItemContentViewImplNestedTermination = "TerminationTreeItemContentViewImpl.NestedTermination";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PhaseConfigFormViewImplConstructionHeuristic = "PhaseConfigFormViewImpl.ConstructionHeuristic";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PhaseConfigFormViewImplLocalSearch = "PhaseConfigFormViewImpl.LocalSearch";
-
 }

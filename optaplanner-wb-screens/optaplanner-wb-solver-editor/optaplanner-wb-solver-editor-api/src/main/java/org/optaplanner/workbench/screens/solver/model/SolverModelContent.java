@@ -29,12 +29,12 @@ public class SolverModelContent {
         //Errai marshalling
     }
 
-    public SolverModelContent( final SolverConfigModel config,
-                               final Overview overview ) {
-        this.config = PortablePreconditions.checkNotNull( "config",
-                                                          config );
-        this.overview = PortablePreconditions.checkNotNull( "overview",
-                                                            overview );
+    public SolverModelContent(final SolverConfigModel config,
+                              final Overview overview) {
+        this.config = PortablePreconditions.checkNotNull("config",
+                                                         config);
+        this.overview = PortablePreconditions.checkNotNull("overview",
+                                                           overview);
     }
 
     public SolverConfigModel getConfig() {

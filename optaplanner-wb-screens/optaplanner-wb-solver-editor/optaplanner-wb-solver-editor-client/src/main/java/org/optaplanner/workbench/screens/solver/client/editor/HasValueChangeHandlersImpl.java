@@ -30,25 +30,25 @@ public class HasValueChangeHandlersImpl<T>
 
     private Set<ValueChangeHandler<T>> valueChangeHandlers = new HashSet<ValueChangeHandler<T>>();
 
-    public HandlerRegistration addValueChangeHandler( final ValueChangeHandler<T> valueChangeHandler ) {
+    public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<T> valueChangeHandler) {
 
         // Just in case this is the first time ValueChangeEvent is used, we need to setup the TYPE.
         ValueChangeEvent.getType();
 
-        this.valueChangeHandlers.add( valueChangeHandler );
+        this.valueChangeHandlers.add(valueChangeHandler);
 
         return new HandlerRegistration() {
             @Override
             public void removeHandler() {
-                valueChangeHandlers.remove( valueChangeHandler );
+                valueChangeHandlers.remove(valueChangeHandler);
             }
         };
     }
 
     @Override
-    public void fireEvent( GwtEvent<?> event ) {
+    public void fireEvent(GwtEvent<?> event) {
         for (ValueChangeHandler<T> valueChangeHandler : valueChangeHandlers) {
-            valueChangeHandler.onValueChange( (ValueChangeEvent<T>) event );
+            valueChangeHandler.onValueChange((ValueChangeEvent<T>) event);
         }
     }
 }

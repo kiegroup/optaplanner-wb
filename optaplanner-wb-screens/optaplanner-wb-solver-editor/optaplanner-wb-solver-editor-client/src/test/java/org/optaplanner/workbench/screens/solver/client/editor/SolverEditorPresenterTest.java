@@ -84,27 +84,27 @@ public class SolverEditorPresenterTest {
     @Before
     public void setUp() throws Exception {
         model = new SolverConfigModel();
-        model.setTerminationConfig( terminationConfigModel );
-        model.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
-        resourceType = GWT.create( SolverResourceType.class );
+        model.setTerminationConfig(terminationConfigModel);
+        model.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig);
+        resourceType = GWT.create(SolverResourceType.class);
 
-        when( resourceType.getSuffix() ).thenReturn( "solver.xml" );
-        when( resourceType.accept( path ) ).thenReturn( true );
-        when( resourceType.accept( path ) ).thenReturn( false );
+        when(resourceType.getSuffix()).thenReturn("solver.xml");
+        when(resourceType.accept(path)).thenReturn(true);
+        when(resourceType.accept(path)).thenReturn(false);
 
-        when( versionRecordManager.getCurrentPath() ).thenReturn( path );
+        when(versionRecordManager.getCurrentPath()).thenReturn(path);
 
-        presenter = new SolverEditorPresenter( view,
-                                               resourceType,
-                                               mock( XMLViewer.class ),
-                                               new NotificationEventMock(),
-                                               new ServiceMock(),
-                                               mock( ValidationPopup.class ),
-                                               mock( TranslationService.class ) ) {
+        presenter = new SolverEditorPresenter(view,
+                                              resourceType,
+                                              mock(XMLViewer.class),
+                                              new NotificationEventMock(),
+                                              new ServiceMock(),
+                                              mock(ValidationPopup.class),
+                                              mock(TranslationService.class)) {
             {
-                kieView = mock( KieEditorWrapperView.class );
+                kieView = mock(KieEditorWrapperView.class);
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
-                overviewWidget = mock( OverviewWidgetPresenter.class );
+                overviewWidget = mock(OverviewWidgetPresenter.class);
             }
 
             protected void makeMenuBar() {
@@ -117,28 +117,31 @@ public class SolverEditorPresenterTest {
 
     @Test
     public void load() throws Exception {
-        presenter.onStartup( path,
-                             mock( PlaceRequest.class ) );
+        presenter.onStartup(path,
+                            mock(PlaceRequest.class));
 
-        verify( view ).setTerminationConfigModel( terminationConfigModel );
-        verify( view ).setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig,
-                                                      path );
+        verify(view).setTerminationConfigModel(terminationConfigModel);
+        verify(view).setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig,
+                                                   path);
     }
 
     private class NotificationEventMock
             implements Event<NotificationEvent> {
 
-        @Override public void fire( NotificationEvent notificationEvent ) {
+        @Override
+        public void fire(NotificationEvent notificationEvent) {
 
         }
 
-        @Override public Event<NotificationEvent> select( Annotation... annotations ) {
+        @Override
+        public Event<NotificationEvent> select(Annotation... annotations) {
             return null;
         }
 
-        @Override public <U extends NotificationEvent> Event<U> select( Class<U> aClass, Annotation... annotations ) {
+        @Override
+        public <U extends NotificationEvent> Event<U> select(Class<U> aClass,
+                                                             Annotation... annotations) {
             return null;
-
         }
     }
 
@@ -148,68 +151,100 @@ public class SolverEditorPresenterTest {
         private SolverEditorService service = new SolverEditorServiceMock();
         RemoteCallback remoteCallback;
 
-        @Override public SolverEditorService call() {
+        @Override
+        public SolverEditorService call() {
             return service;
         }
 
-        @Override public SolverEditorService call( RemoteCallback<?> remoteCallback ) {
-            return call( remoteCallback, null );
+        @Override
+        public SolverEditorService call(RemoteCallback<?> remoteCallback) {
+            return call(remoteCallback,
+                        null);
         }
 
-        @Override public SolverEditorService call( RemoteCallback<?> remoteCallback, ErrorCallback<?> errorCallback ) {
+        @Override
+        public SolverEditorService call(RemoteCallback<?> remoteCallback,
+                                        ErrorCallback<?> errorCallback) {
             this.remoteCallback = remoteCallback;
             return call();
         }
 
         private class SolverEditorServiceMock implements SolverEditorService {
 
-            @Override public SolverModelContent loadContent( Path path ) {
+            @Override
+            public SolverModelContent loadContent(Path path) {
 
-                SolverModelContent content = new SolverModelContent( model,
-                                                                     new Overview() );
-                remoteCallback.callback( content );
+                SolverModelContent content = new SolverModelContent(model,
+                                                                    new Overview());
+                remoteCallback.callback(content);
 
                 return null;
             }
 
             @Override
-            public List<ValidationMessage> smokeTest( Path path, SolverConfigModel config ) {
+            public List<ValidationMessage> smokeTest(Path path,
+                                                     SolverConfigModel config) {
                 return null;
             }
 
-            @Override public Path copy( Path path, String newName, String comment ) {
+            @Override
+            public Path copy(Path path,
+                             String newName,
+                             String comment) {
                 return null;
             }
 
-            @Override public Path copy( Path path, String newName, Path targetDirectory, String comment ) {
+            @Override
+            public Path copy(Path path,
+                             String newName,
+                             Path targetDirectory,
+                             String comment) {
                 return null;
             }
 
-            @Override public Path create( Path context, String fileName, SolverConfigModel content, String comment ) {
+            @Override
+            public Path create(Path context,
+                               String fileName,
+                               SolverConfigModel content,
+                               String comment) {
                 return null;
             }
 
-            @Override public void delete( Path path, String comment ) {
+            @Override
+            public void delete(Path path,
+                               String comment) {
 
             }
 
-            @Override public SolverConfigModel load( Path path ) {
+            @Override
+            public SolverConfigModel load(Path path) {
                 return null;
             }
 
-            @Override public Path rename( Path path, String newName, String comment ) {
+            @Override
+            public Path rename(Path path,
+                               String newName,
+                               String comment) {
                 return null;
             }
 
-            @Override public Path save( Path path, SolverConfigModel content, Metadata metadata, String comment ) {
+            @Override
+            public Path save(Path path,
+                             SolverConfigModel content,
+                             Metadata metadata,
+                             String comment) {
                 return null;
             }
 
-            @Override public List<ValidationMessage> validate( Path path, SolverConfigModel content ) {
+            @Override
+            public List<ValidationMessage> validate(Path path,
+                                                    SolverConfigModel content) {
                 return null;
             }
 
-            @Override public String toSource( Path path, SolverConfigModel model ) {
+            @Override
+            public String toSource(Path path,
+                                   SolverConfigModel model) {
                 return null;
             }
         }

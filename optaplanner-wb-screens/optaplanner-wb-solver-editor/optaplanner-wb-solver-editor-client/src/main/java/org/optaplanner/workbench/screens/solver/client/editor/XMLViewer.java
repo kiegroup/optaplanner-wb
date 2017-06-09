@@ -20,6 +20,5 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface XMLViewer
         extends IsWidget {
 
-    void setContent( String xml );
-
+    void setContent(String xml);
 }

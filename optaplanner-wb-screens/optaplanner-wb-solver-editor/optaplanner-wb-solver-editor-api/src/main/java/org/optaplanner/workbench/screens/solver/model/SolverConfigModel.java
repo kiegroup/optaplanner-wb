@@ -32,7 +32,7 @@ public class SolverConfigModel {
         return scoreDirectorFactoryConfig;
     }
 
-    public void setScoreDirectorFactoryConfig( ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig ) {
+    public void setScoreDirectorFactoryConfig(ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig) {
         this.scoreDirectorFactoryConfig = scoreDirectorFactoryConfig;
     }
 
@@ -40,7 +40,7 @@ public class SolverConfigModel {
         return terminationConfig;
     }
 
-    public void setTerminationConfig( TerminationConfigModel terminationConfig ) {
+    public void setTerminationConfig(TerminationConfigModel terminationConfig) {
         this.terminationConfig = terminationConfig;
     }
 
@@ -48,7 +48,7 @@ public class SolverConfigModel {
         return phaseConfigList;
     }
 
-    public void setPhaseConfigList( List<PhaseConfigModel> phaseConfigList ) {
+    public void setPhaseConfigList(List<PhaseConfigModel> phaseConfigList) {
         this.phaseConfigList = phaseConfigList;
     }
 }

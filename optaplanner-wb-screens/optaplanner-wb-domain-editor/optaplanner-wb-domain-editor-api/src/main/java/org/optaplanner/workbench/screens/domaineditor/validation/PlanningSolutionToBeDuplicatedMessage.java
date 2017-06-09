@@ -26,7 +26,8 @@ public class PlanningSolutionToBeDuplicatedMessage extends ValidationMessage {
     public PlanningSolutionToBeDuplicatedMessage() {
     }
 
-    public PlanningSolutionToBeDuplicatedMessage( final Level level ) {
-        super( level, null );
+    public PlanningSolutionToBeDuplicatedMessage(final Level level) {
+        super(level,
+              null);
     }
 }

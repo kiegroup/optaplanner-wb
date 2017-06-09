@@ -55,7 +55,8 @@ public class ScoreHolderUtilsTest {
         DataObject dataObject = new DataObjectImpl("test",
                                                    "Test");
         dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
-        dataObject.addProperty("score", HardSoftScore.class.getName());
+        dataObject.addProperty("score",
+                               HardSoftScore.class.getName());
 
         String result = scoreHolderUtils.extractScoreTypeFqn(dataObject);
 

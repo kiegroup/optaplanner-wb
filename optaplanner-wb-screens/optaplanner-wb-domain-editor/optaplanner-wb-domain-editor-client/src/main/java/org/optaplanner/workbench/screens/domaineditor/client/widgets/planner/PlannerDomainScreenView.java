@@ -24,5 +24,4 @@ public interface PlannerDomainScreenView
     interface Presenter {
 
     }
-
 }

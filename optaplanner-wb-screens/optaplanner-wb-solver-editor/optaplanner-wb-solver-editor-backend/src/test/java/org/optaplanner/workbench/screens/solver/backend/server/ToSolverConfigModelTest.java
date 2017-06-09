@@ -36,52 +36,52 @@ public class ToSolverConfigModelTest {
 
     @Test
     public void get() {
-        ToSolverConfigModel toSolverConfigModel = new ToSolverConfigModel( getSolverConfig() );
+        ToSolverConfigModel toSolverConfigModel = new ToSolverConfigModel(getSolverConfig());
         SolverConfigModel solverConfigModel = toSolverConfigModel.get();
 
         TerminationConfigModel terminationConfigModel = solverConfigModel.getTermination();
-        assertEquals( Long.valueOf( 1 ),
-                      terminationConfigModel.getMillisecondsSpentLimit() );
-        assertEquals( 1,
-                      terminationConfigModel.getTerminationConfigList().size() );
-        assertEquals( Boolean.TRUE,
-                      terminationConfigModel.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
+        assertEquals(Long.valueOf(1),
+                     terminationConfigModel.getMillisecondsSpentLimit());
+        assertEquals(1,
+                     terminationConfigModel.getTerminationConfigList().size());
+        assertEquals(Boolean.TRUE,
+                     terminationConfigModel.getTerminationConfigList().get(0).getBestScoreFeasible());
 
-        assertEquals( "testKsession",
-                      solverConfigModel.getScoreDirectorFactoryConfig().getKSessionName() );
+        assertEquals("testKsession",
+                     solverConfigModel.getScoreDirectorFactoryConfig().getKSessionName());
 
-        assertEquals( 2,
-                      solverConfigModel.getPhaseConfigList().size() );
-        ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 0 );
-        assertEquals( ConstructionHeuristicType.FIRST_FIT,
-                      constructionHeuristicPhaseConfigModel.getConstructionHeuristicType() );
-        LocalSearchPhaseConfigModel localSearchPhaseConfigModel = (LocalSearchPhaseConfigModel) solverConfigModel.getPhaseConfigList().get( 1 );
-        assertEquals( LocalSearchType.TABU_SEARCH,
-                      localSearchPhaseConfigModel.getLocalSearchType() );
+        assertEquals(2,
+                     solverConfigModel.getPhaseConfigList().size());
+        ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = (ConstructionHeuristicPhaseConfigModel) solverConfigModel.getPhaseConfigList().get(0);
+        assertEquals(ConstructionHeuristicType.FIRST_FIT,
+                     constructionHeuristicPhaseConfigModel.getConstructionHeuristicType());
+        LocalSearchPhaseConfigModel localSearchPhaseConfigModel = (LocalSearchPhaseConfigModel) solverConfigModel.getPhaseConfigList().get(1);
+        assertEquals(LocalSearchType.TABU_SEARCH,
+                     localSearchPhaseConfigModel.getLocalSearchType());
     }
 
     private SolverConfig getSolverConfig() {
         SolverConfig solverConfig = new SolverConfig();
 
         TerminationConfig terminationConfig = new TerminationConfig();
-        terminationConfig.setMillisecondsSpentLimit( 1l );
+        terminationConfig.setMillisecondsSpentLimit(1l);
         TerminationConfig nestedTerminationConfig = new TerminationConfig();
-        nestedTerminationConfig.setBestScoreFeasible( true );
-        terminationConfig.setTerminationConfigList( Arrays.asList( nestedTerminationConfig ) );
-        solverConfig.setTerminationConfig( terminationConfig );
+        nestedTerminationConfig.setBestScoreFeasible(true);
+        terminationConfig.setTerminationConfigList(Arrays.asList(nestedTerminationConfig));
+        solverConfig.setTerminationConfig(terminationConfig);
 
         ScoreDirectorFactoryConfig scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfig();
-        scoreDirectorFactoryConfig.setKsessionName( "testKsession" );
-        solverConfig.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
+        scoreDirectorFactoryConfig.setKsessionName("testKsession");
+        solverConfig.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig);
 
         ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = new ConstructionHeuristicPhaseConfig();
-        constructionHeuristicPhaseConfig.setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
+        constructionHeuristicPhaseConfig.setConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT);
 
         LocalSearchPhaseConfig localSearchPhaseConfig = new LocalSearchPhaseConfig();
-        localSearchPhaseConfig.setLocalSearchType( LocalSearchType.TABU_SEARCH );
+        localSearchPhaseConfig.setLocalSearchType(LocalSearchType.TABU_SEARCH);
 
-        solverConfig.setPhaseConfigList( Arrays.asList( constructionHeuristicPhaseConfig,
-                                                        localSearchPhaseConfig ) );
+        solverConfig.setPhaseConfigList(Arrays.asList(constructionHeuristicPhaseConfig,
+                                                      localSearchPhaseConfig));
 
         return solverConfig;
     }

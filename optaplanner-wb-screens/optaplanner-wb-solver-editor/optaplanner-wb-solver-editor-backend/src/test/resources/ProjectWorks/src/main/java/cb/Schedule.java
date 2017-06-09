@@ -24,45 +24,37 @@ import org.optaplanner.core.impl.domain.solution.AbstractSolution;
  */
 
 @org.optaplanner.core.api.domain.solution.PlanningSolution
-public class Schedule extends AbstractSolution<HardSoftScore> implements java.io.Serializable
-{
+public class Schedule extends AbstractSolution<HardSoftScore> implements java.io.Serializable {
 
-   static final long serialVersionUID = 1L;
+    static final long serialVersionUID = 1L;
 
-   @org.optaplanner.core.api.domain.valuerange.ValueRangeProvider(id = "computerRange")
-   private java.util.List<cb.Computer> computerList;
-   @org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
-   private java.util.List<cb.Process> processList;
+    @org.optaplanner.core.api.domain.valuerange.ValueRangeProvider(id = "computerRange")
+    private java.util.List<cb.Computer> computerList;
+    @org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
+    private java.util.List<cb.Process> processList;
 
-   public Schedule()
-   {
-   }
+    public Schedule() {
+    }
 
-   public java.util.List<cb.Computer> getComputerList()
-   {
-      return this.computerList;
-   }
+    public java.util.List<cb.Computer> getComputerList() {
+        return this.computerList;
+    }
 
-   public void setComputerList(java.util.List<cb.Computer> computerList)
-   {
-      this.computerList = computerList;
-   }
+    public void setComputerList(java.util.List<cb.Computer> computerList) {
+        this.computerList = computerList;
+    }
 
-   public java.util.List<cb.Process> getProcessList()
-   {
-      return this.processList;
-   }
+    public java.util.List<cb.Process> getProcessList() {
+        return this.processList;
+    }
 
-   public void setProcessList(java.util.List<cb.Process> processList)
-   {
-      this.processList = processList;
-   }
+    public void setProcessList(java.util.List<cb.Process> processList) {
+        this.processList = processList;
+    }
 
-   public Schedule(java.util.List<cb.Computer> computerList,
-         java.util.List<cb.Process> processList)
-   {
-      this.computerList = computerList;
-      this.processList = processList;
-   }
-
+    public Schedule(java.util.List<cb.Computer> computerList,
+                    java.util.List<cb.Process> processList) {
+        this.computerList = computerList;
+        this.processList = processList;
+    }
 }

@@ -24,5 +24,4 @@ public interface SolverEditorImageResources
 
     @Source("typeSolver.gif")
     ImageResource typeSolver();
-
 }

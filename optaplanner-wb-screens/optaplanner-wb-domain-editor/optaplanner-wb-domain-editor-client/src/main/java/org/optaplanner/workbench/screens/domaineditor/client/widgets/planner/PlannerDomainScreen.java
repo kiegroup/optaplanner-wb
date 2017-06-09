@@ -27,7 +27,7 @@ import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.annotations.WorkbenchScreen;
 
 @ApplicationScoped
-@WorkbenchScreen( identifier = "PlannerDomainScreen")
+@WorkbenchScreen(identifier = "PlannerDomainScreen")
 public class PlannerDomainScreen {
 
     private TranslationService translationService;
@@ -38,20 +38,19 @@ public class PlannerDomainScreen {
     }
 
     @Inject
-    public PlannerDomainScreen( PlannerDomainScreenView view,
-                                TranslationService translationService ) {
+    public PlannerDomainScreen(PlannerDomainScreenView view,
+                               TranslationService translationService) {
         this.view = view;
         this.translationService = translationService;
     }
 
     @WorkbenchPartTitle
     public String getTitle() {
-        return translationService.getTranslation( DomainEditorConstants.PlannerDomainScreenName );
+        return translationService.getTranslation(DomainEditorConstants.PlannerDomainScreenName);
     }
 
     @WorkbenchPartView
     public IsWidget getView() {
         return view;
     }
-
 }

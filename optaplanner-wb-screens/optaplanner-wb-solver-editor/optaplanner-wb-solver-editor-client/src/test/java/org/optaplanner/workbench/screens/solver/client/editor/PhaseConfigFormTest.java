@@ -56,108 +56,108 @@ public class PhaseConfigFormTest {
 
     @Before
     public void setUp() {
-        phaseConfigForm = new PhaseConfigForm( view,
-                                               constructionHeuristicFormProvider,
-                                               localSearchFormProvider );
-        phaseConfigForm.setModel( new ArrayList<>() );
+        phaseConfigForm = new PhaseConfigForm(view,
+                                              constructionHeuristicFormProvider,
+                                              localSearchFormProvider);
+        phaseConfigForm.setModel(new ArrayList<>());
     }
 
     @Test
     public void setPresenter() {
-        verify( view ).setPresenter( phaseConfigForm );
+        verify(view).setPresenter(phaseConfigForm);
     }
 
     @Test
     public void setModel() {
         List<PhaseConfigModel> phaseConfigModelList = new ArrayList<>();
-        phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
-        phaseConfigModelList.add( new ConstructionHeuristicPhaseConfigModel() );
+        phaseConfigModelList.add(new ConstructionHeuristicPhaseConfigModel());
+        phaseConfigModelList.add(new ConstructionHeuristicPhaseConfigModel());
 
-        phaseConfigModelList.add( new LocalSearchPhaseConfigModel() );
-        phaseConfigModelList.add( new LocalSearchPhaseConfigModel() );
+        phaseConfigModelList.add(new LocalSearchPhaseConfigModel());
+        phaseConfigModelList.add(new LocalSearchPhaseConfigModel());
 
-        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
-        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
+        when(constructionHeuristicFormProvider.get()).thenReturn(constructionHeuristicForm);
+        when(localSearchFormProvider.get()).thenReturn(localSearchForm);
 
-        phaseConfigForm.setModel( phaseConfigModelList );
+        phaseConfigForm.setModel(phaseConfigModelList);
 
-        verify( view,
-                times( 2 ) ).addConstructionHeuristic( any() );
-        verify( view,
-                times( 2 ) ).addLocalSearch( any() );
+        verify(view,
+               times(2)).addConstructionHeuristic(any());
+        verify(view,
+               times(2)).addLocalSearch(any());
     }
 
     @Test
     public void addConstructionHeuristic() {
-        addConstructionHeuristic( true );
+        addConstructionHeuristic(true);
     }
 
     @Test
     public void addConstructionHeuristicExisting() {
-        addConstructionHeuristic( false );
+        addConstructionHeuristic(false);
     }
 
-    private void addConstructionHeuristic( final boolean newConstructionHeuristic ) {
-        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
+    private void addConstructionHeuristic(final boolean newConstructionHeuristic) {
+        when(constructionHeuristicFormProvider.get()).thenReturn(constructionHeuristicForm);
 
-        if ( newConstructionHeuristic ) {
+        if (newConstructionHeuristic) {
             phaseConfigForm.addConstructionHeuristic();
         } else {
-            phaseConfigForm.addConstructionHeuristic( new ConstructionHeuristicPhaseConfigModel() );
+            phaseConfigForm.addConstructionHeuristic(new ConstructionHeuristicPhaseConfigModel());
         }
-        verify( view ).addConstructionHeuristic( any() );
+        verify(view).addConstructionHeuristic(any());
     }
 
     @Test
     public void removeConstructionHeuristic() {
-        phaseConfigForm.removeConstructionHeuristic( constructionHeuristicForm );
-        verify( view ).removeConstructionHeuristic( constructionHeuristicForm.getElement() );
+        phaseConfigForm.removeConstructionHeuristic(constructionHeuristicForm);
+        verify(view).removeConstructionHeuristic(constructionHeuristicForm.getElement());
     }
 
     @Test
     public void addLocalSearch() {
-        addLocalSearch( true );
+        addLocalSearch(true);
     }
 
     @Test
     public void addLocalSearchExisting() {
-        addLocalSearch( false );
+        addLocalSearch(false);
     }
 
-    private void addLocalSearch( final boolean newLocalSearch ) {
-        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
+    private void addLocalSearch(final boolean newLocalSearch) {
+        when(localSearchFormProvider.get()).thenReturn(localSearchForm);
 
-        if ( newLocalSearch ) {
+        if (newLocalSearch) {
             phaseConfigForm.addLocalSearch();
         } else {
-            phaseConfigForm.addLocalSearch( new LocalSearchPhaseConfigModel() );
+            phaseConfigForm.addLocalSearch(new LocalSearchPhaseConfigModel());
         }
-        verify( view ).addLocalSearch( any() );
+        verify(view).addLocalSearch(any());
     }
 
     @Test
     public void removeLocalSearch() {
-        phaseConfigForm.removeLocalSearch( localSearchForm );
-        verify( view ).removeLocalSearch( localSearchForm.getElement() );
+        phaseConfigForm.removeLocalSearch(localSearchForm);
+        verify(view).removeLocalSearch(localSearchForm.getElement());
     }
 
     @Test
     public void displayEmptyPhaseConfigurationLabelConstructionHeuristic() {
-        when( constructionHeuristicFormProvider.get() ).thenReturn( constructionHeuristicForm );
+        when(constructionHeuristicFormProvider.get()).thenReturn(constructionHeuristicForm);
         phaseConfigForm.addConstructionHeuristic();
-        verify( view ).displayEmptyPhaseConfigurationLabel( false );
+        verify(view).displayEmptyPhaseConfigurationLabel(false);
 
-        phaseConfigForm.removeConstructionHeuristic( constructionHeuristicForm );
-        verify( view ).displayEmptyPhaseConfigurationLabel( true );
+        phaseConfigForm.removeConstructionHeuristic(constructionHeuristicForm);
+        verify(view).displayEmptyPhaseConfigurationLabel(true);
     }
 
     @Test
     public void displayEmptyPhaseConfigurationLabelLocalSearch() {
-        when( localSearchFormProvider.get() ).thenReturn( localSearchForm );
+        when(localSearchFormProvider.get()).thenReturn(localSearchForm);
         phaseConfigForm.addLocalSearch();
-        verify( view ).displayEmptyPhaseConfigurationLabel( false );
+        verify(view).displayEmptyPhaseConfigurationLabel(false);
 
-        phaseConfigForm.removeLocalSearch( localSearchForm );
-        verify( view ).displayEmptyPhaseConfigurationLabel( true );
+        phaseConfigForm.removeLocalSearch(localSearchForm);
+        verify(view).displayEmptyPhaseConfigurationLabel(true);
     }
 }

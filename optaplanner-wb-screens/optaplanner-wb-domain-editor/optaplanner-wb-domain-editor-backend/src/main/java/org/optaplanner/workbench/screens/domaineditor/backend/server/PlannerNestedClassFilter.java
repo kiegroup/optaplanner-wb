@@ -29,9 +29,9 @@ import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition
 public class PlannerNestedClassFilter implements NestedClassFilter {
 
     @Override
-    public boolean accept( JavaType<?> javaType ) {
-        return javaType.isClass() && ( javaType.getAnnotation( Generated.class.getName() ) != null )
-                && ( javaType.getAnnotation( ComparatorDefinition.class.getName() ) != null )
-                && ( (JavaClass) javaType ).getInterfaces().stream().anyMatch( s -> s.startsWith( Comparator.class.getName() ) );
+    public boolean accept(JavaType<?> javaType) {
+        return javaType.isClass() && (javaType.getAnnotation(Generated.class.getName()) != null)
+                && (javaType.getAnnotation(ComparatorDefinition.class.getName()) != null)
+                && ((JavaClass) javaType).getInterfaces().stream().anyMatch(s -> s.startsWith(Comparator.class.getName()));
     }
 }

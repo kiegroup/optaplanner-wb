@@ -36,7 +36,7 @@ import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-@WithClassesToStub({ ElementWrapperWidget.class })
+@WithClassesToStub({ElementWrapperWidget.class})
 public class TerminationConfigFormTest {
 
     @Mock
@@ -57,28 +57,28 @@ public class TerminationConfigFormTest {
 
     @Before
     public void setUp() throws Exception {
-        form = new TerminationConfigForm( view,
-                                          terminationTreeItemContentProvider );
-        terminationTreeItemContent = new TerminationTreeItemContent( terminationTreeItemContentView,
-                                                                     translationService );
+        form = new TerminationConfigForm(view,
+                                         terminationTreeItemContentProvider);
+        terminationTreeItemContent = new TerminationTreeItemContent(terminationTreeItemContentView,
+                                                                    translationService);
     }
 
     @Test
     public void setModel() {
         TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
-        terminationConfigModel.setBestScoreFeasible( Boolean.TRUE );
-        terminationConfigModel.setMillisecondsSpentLimit( 10l );
-        List<TerminationConfigModel> terminationConfigModelList = Arrays.asList( new TerminationConfigModel() );
-        terminationConfigModel.setTerminationConfigList( terminationConfigModelList );
-        when( terminationTreeItemContentProvider.get() ).thenReturn( terminationTreeItemContent );
+        terminationConfigModel.setBestScoreFeasible(Boolean.TRUE);
+        terminationConfigModel.setMillisecondsSpentLimit(10l);
+        List<TerminationConfigModel> terminationConfigModelList = Arrays.asList(new TerminationConfigModel());
+        terminationConfigModel.setTerminationConfigList(terminationConfigModelList);
+        when(terminationTreeItemContentProvider.get()).thenReturn(terminationTreeItemContent);
 
-        form.setModel( terminationConfigModel );
+        form.setModel(terminationConfigModel);
 
-        ArgumentCaptor<TreeItem> treeItemArgumentCaptor = ArgumentCaptor.forClass( TreeItem.class );
-        verify( view ).initTree( treeItemArgumentCaptor.capture() );
+        ArgumentCaptor<TreeItem> treeItemArgumentCaptor = ArgumentCaptor.forClass(TreeItem.class);
+        verify(view).initTree(treeItemArgumentCaptor.capture());
 
         TreeItem treeItem = treeItemArgumentCaptor.getValue();
-        Assert.assertEquals( 3,
-                             treeItem.getChildCount() );
+        Assert.assertEquals(3,
+                            treeItem.getChildCount());
     }
 }

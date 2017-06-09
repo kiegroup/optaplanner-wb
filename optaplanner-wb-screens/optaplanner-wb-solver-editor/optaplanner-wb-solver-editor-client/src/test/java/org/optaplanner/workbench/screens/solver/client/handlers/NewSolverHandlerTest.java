@@ -33,7 +33,7 @@ import org.uberfire.security.authz.AuthorizationManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(GwtMockitoTestRunner.class )
+@RunWith(GwtMockitoTestRunner.class)
 public class NewSolverHandlerTest {
 
     @Mock
@@ -60,29 +60,30 @@ public class NewSolverHandlerTest {
 
     @Before
     public void setUp() throws Exception {
-        newSolverHandler = new NewSolverHandler( new CallerMock<>( solverService ),
-                                                 resourceType,
-                                                 busyIndicatorView,
-                                                 authorizationManager,
-                                                 sessionInfo,
-                                                 translationService );
-        resourceType = GWT.create( SolverResourceType.class );
+        newSolverHandler = new NewSolverHandler(new CallerMock<>(solverService),
+                                                resourceType,
+                                                busyIndicatorView,
+                                                authorizationManager,
+                                                sessionInfo,
+                                                translationService);
+        resourceType = GWT.create(SolverResourceType.class);
     }
 
     @Test
     public void noPermissionToCreate() throws Exception {
-        testPermissionToCreate( false );
+        testPermissionToCreate(false);
     }
 
     @Test
     public void hasPermissionToCreate() throws Exception {
-        testPermissionToCreate( true );
+        testPermissionToCreate(true);
     }
 
-    private void testPermissionToCreate( boolean hasPermission ) {
-        when( authorizationManager.authorize( NewSolverHandler.PLANNER_AVAILABLE, sessionInfo.getIdentity() ) ).thenReturn( hasPermission );
+    private void testPermissionToCreate(boolean hasPermission) {
+        when(authorizationManager.authorize(NewSolverHandler.PLANNER_AVAILABLE,
+                                            sessionInfo.getIdentity())).thenReturn(hasPermission);
 
-        assertEquals( hasPermission, newSolverHandler.canCreate() );
+        assertEquals(hasPermission,
+                     newSolverHandler.canCreate());
     }
-
 }

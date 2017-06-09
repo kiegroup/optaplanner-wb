@@ -27,15 +27,13 @@ import org.junit.Test;
 
 public class PlannerSolutionParseTest {
 
-
     @Test
     public void createBaseClass() {
-        InputStream inputStream = getClass().getResourceAsStream( "/org/optaplanner/workbench/screens/domaineditor/backend/driver/PlannerSolutionExample.java" );
-        JavaClassSource classSource = (JavaClassSource) Roaster.parse( inputStream );
-
+        InputStream inputStream = getClass().getResourceAsStream("/org/optaplanner/workbench/screens/domaineditor/backend/driver/PlannerSolutionExample.java");
+        JavaClassSource classSource = (JavaClassSource) Roaster.parse(inputStream);
 
         String superClass = classSource.getSuperType();
-        TypeDeclaration typeDeclaration = ( ( TypeDeclaration ) ( ( org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit ) classSource.getInternal() ).types().get( 0 ) );
+        TypeDeclaration typeDeclaration = ((TypeDeclaration) ((org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit) classSource.getInternal()).types().get(0));
 
         Type type = typeDeclaration.getSuperclassType();
         ParameterizedType parameterizedType;
@@ -43,29 +41,26 @@ public class PlannerSolutionParseTest {
         String solutionClassName = null;
         String solutionClassNameParam = null;
 
-        if ( type != null && type.isParameterizedType() &&
-                ( type.toString().startsWith( "org.optaplanner.core.impl.domain.solution.AbstractSolution" ) ||
-                    type.toString().startsWith( "AbstractSolution" ) ) ) {
+        if (type != null && type.isParameterizedType() &&
+                (type.toString().startsWith("org.optaplanner.core.impl.domain.solution.AbstractSolution") ||
+                        type.toString().startsWith("AbstractSolution"))) {
 
             solutionClassName = "org.optaplanner.core.impl.domain.solution.AbstractSolution";
 
-            parameterizedType = ( ParameterizedType ) type;
-            if ( ( parameterizedType.typeArguments() != null && parameterizedType.typeArguments().size() == 1 ) &&
-                    isValidSolutionTypeArgument( (Type) parameterizedType.typeArguments().get( 0 ) ) ) {
-                typeParameter = (Type) parameterizedType.typeArguments().get( 0 );
+            parameterizedType = (ParameterizedType) type;
+            if ((parameterizedType.typeArguments() != null && parameterizedType.typeArguments().size() == 1) &&
+                    isValidSolutionTypeArgument((Type) parameterizedType.typeArguments().get(0))) {
+                typeParameter = (Type) parameterizedType.typeArguments().get(0);
                 solutionClassNameParam = typeParameter.toString();
             }
         }
 
-
         int i = 0;
-
     }
 
-    private boolean isValidSolutionTypeArgument( Type type ) {
+    private boolean isValidSolutionTypeArgument(Type type) {
         return
-                org.optaplanner.core.api.score.buildin.simple.SimpleScore.class.getName().equals( type.toString() ) ||
-                org.optaplanner.core.api.score.buildin.simple.SimpleScore.class.getSimpleName().equals( type.toString() );
-
+                org.optaplanner.core.api.score.buildin.simple.SimpleScore.class.getName().equals(type.toString()) ||
+                        org.optaplanner.core.api.score.buildin.simple.SimpleScore.class.getSimpleName().equals(type.toString());
     }
 }

@@ -21,8 +21,7 @@ import org.uberfire.mvp.Command;
 
 public interface DataObjectFieldPickerItemLabelView extends IsElement {
 
-    void setName( final String name );
+    void setName(final String name);
 
-    void setRemoveLabelCommand( final Command command );
-
+    void setRemoveLabelCommand(final Command command);
 }

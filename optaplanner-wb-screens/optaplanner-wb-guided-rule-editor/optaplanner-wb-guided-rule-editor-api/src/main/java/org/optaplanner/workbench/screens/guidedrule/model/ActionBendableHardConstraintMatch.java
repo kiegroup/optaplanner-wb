@@ -24,21 +24,21 @@ public class ActionBendableHardConstraintMatch extends AbstractActionBendableCon
     public ActionBendableHardConstraintMatch() {
     }
 
-    public ActionBendableHardConstraintMatch( final int position,
-                                              final String constraintMatch ) {
-        super( constraintMatch,
-               position );
+    public ActionBendableHardConstraintMatch(final int position,
+                                             final String constraintMatch) {
+        super(constraintMatch,
+              position);
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if ( !super.equals( o ) ) {
+        if (!super.equals(o)) {
             return false;
         }
 

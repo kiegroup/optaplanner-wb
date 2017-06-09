@@ -37,55 +37,55 @@ public class ToSolverConfigTest {
 
     @Test
     public void get() {
-        ToSolverConfig toSolverConfigModel = new ToSolverConfig( getSolverConfigModel() );
+        ToSolverConfig toSolverConfigModel = new ToSolverConfig(getSolverConfigModel());
         SolverConfig solverConfig = toSolverConfigModel.get();
 
         TerminationConfig terminationConfig = solverConfig.getTerminationConfig();
-        assertEquals( Long.valueOf( 1 ),
-                      terminationConfig.getMillisecondsSpentLimit() );
-        assertEquals( 1,
-                      terminationConfig.getTerminationConfigList().size() );
-        assertEquals( Boolean.TRUE,
-                      terminationConfig.getTerminationConfigList().get( 0 ).getBestScoreFeasible() );
+        assertEquals(Long.valueOf(1),
+                     terminationConfig.getMillisecondsSpentLimit());
+        assertEquals(1,
+                     terminationConfig.getTerminationConfigList().size());
+        assertEquals(Boolean.TRUE,
+                     terminationConfig.getTerminationConfigList().get(0).getBestScoreFeasible());
 
-        assertEquals( "testKsession",
-                      solverConfig.getScoreDirectorFactoryConfig().getKsessionName() );
+        assertEquals("testKsession",
+                     solverConfig.getScoreDirectorFactoryConfig().getKsessionName());
 
-        assertEquals( 2,
-                      solverConfig.getPhaseConfigList().size() );
-        ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) solverConfig.getPhaseConfigList().get( 0 );
-        assertEquals( ConstructionHeuristicType.FIRST_FIT,
-                      constructionHeuristicPhaseConfig.getConstructionHeuristicType() );
-        assertEquals( EntitySorterManner.DECREASING_DIFFICULTY,
-                      constructionHeuristicPhaseConfig.getEntitySorterManner() );
-        LocalSearchPhaseConfig localSearchPhaseConfig = (LocalSearchPhaseConfig) solverConfig.getPhaseConfigList().get( 1 );
-        assertEquals( LocalSearchType.TABU_SEARCH,
-                      localSearchPhaseConfig.getLocalSearchType() );
+        assertEquals(2,
+                     solverConfig.getPhaseConfigList().size());
+        ConstructionHeuristicPhaseConfig constructionHeuristicPhaseConfig = (ConstructionHeuristicPhaseConfig) solverConfig.getPhaseConfigList().get(0);
+        assertEquals(ConstructionHeuristicType.FIRST_FIT,
+                     constructionHeuristicPhaseConfig.getConstructionHeuristicType());
+        assertEquals(EntitySorterManner.DECREASING_DIFFICULTY,
+                     constructionHeuristicPhaseConfig.getEntitySorterManner());
+        LocalSearchPhaseConfig localSearchPhaseConfig = (LocalSearchPhaseConfig) solverConfig.getPhaseConfigList().get(1);
+        assertEquals(LocalSearchType.TABU_SEARCH,
+                     localSearchPhaseConfig.getLocalSearchType());
     }
 
     private SolverConfigModel getSolverConfigModel() {
         SolverConfigModel solverConfigModel = new SolverConfigModel();
 
         TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
-        terminationConfigModel.setMillisecondsSpentLimit( 1l );
+        terminationConfigModel.setMillisecondsSpentLimit(1l);
         TerminationConfigModel nestedTerminationConfig = new TerminationConfigModel();
-        nestedTerminationConfig.setBestScoreFeasible( true );
-        terminationConfigModel.setTerminationConfigList( Arrays.asList( nestedTerminationConfig ) );
-        solverConfigModel.setTerminationConfig( terminationConfigModel );
+        nestedTerminationConfig.setBestScoreFeasible(true);
+        terminationConfigModel.setTerminationConfigList(Arrays.asList(nestedTerminationConfig));
+        solverConfigModel.setTerminationConfig(terminationConfigModel);
 
         ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfigModel = new ScoreDirectorFactoryConfigModel();
-        scoreDirectorFactoryConfigModel.setKSessionName( "testKsession" );
-        solverConfigModel.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfigModel );
+        scoreDirectorFactoryConfigModel.setKSessionName("testKsession");
+        solverConfigModel.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfigModel);
 
         ConstructionHeuristicPhaseConfigModel constructionHeuristicPhaseConfigModel = new ConstructionHeuristicPhaseConfigModel();
-        constructionHeuristicPhaseConfigModel.setConstructionHeuristicType( ConstructionHeuristicType.FIRST_FIT );
-        constructionHeuristicPhaseConfigModel.setEntitySorterManner( EntitySorterManner.DECREASING_DIFFICULTY );
+        constructionHeuristicPhaseConfigModel.setConstructionHeuristicType(ConstructionHeuristicType.FIRST_FIT);
+        constructionHeuristicPhaseConfigModel.setEntitySorterManner(EntitySorterManner.DECREASING_DIFFICULTY);
 
         LocalSearchPhaseConfigModel localSearchPhaseConfigModel = new LocalSearchPhaseConfigModel();
-        localSearchPhaseConfigModel.setLocalSearchType( LocalSearchType.TABU_SEARCH );
+        localSearchPhaseConfigModel.setLocalSearchType(LocalSearchType.TABU_SEARCH);
 
-        solverConfigModel.setPhaseConfigList( Arrays.asList( constructionHeuristicPhaseConfigModel,
-                                                             localSearchPhaseConfigModel ) );
+        solverConfigModel.setPhaseConfigList(Arrays.asList(constructionHeuristicPhaseConfigModel,
+                                                           localSearchPhaseConfigModel));
 
         return solverConfigModel;
     }

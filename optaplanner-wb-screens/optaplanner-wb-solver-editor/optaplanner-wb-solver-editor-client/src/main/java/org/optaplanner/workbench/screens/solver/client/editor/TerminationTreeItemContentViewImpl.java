@@ -148,282 +148,291 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     private Map<TerminationConfigOption, String> dropDownNameMap = new HashMap<>();
 
     @Inject
-    public TerminationTreeItemContentViewImpl( final Button removeTerminationButton,
-                                               final DropDownMenu dropdownMenuList,
-                                               final TranslationService translationService ) {
+    public TerminationTreeItemContentViewImpl(final Button removeTerminationButton,
+                                              final DropDownMenu dropdownMenuList,
+                                              final TranslationService translationService) {
         this.removeTerminationButton = removeTerminationButton;
         this.dropdownMenuList = dropdownMenuList;
         this.translationService = translationService;
 
-        removeTerminationButton.addClickHandler( h -> {
+        removeTerminationButton.addClickHandler(h -> {
             presenter.removeTreeItem();
-        } );
+        });
         initDropDownList();
     }
 
     private void initDropDownList() {
-        String itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentTimeSpent );
-        dropDownNameMap.put( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT, itemMessage );
-        AnchorListItem listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.MILLISECONDS_SPENT_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        String itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentTimeSpent);
+        dropDownNameMap.put(TerminationConfigOption.MILLISECONDS_SPENT_LIMIT,
+                            itemMessage);
+        AnchorListItem listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.MILLISECONDS_SPENT_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedTimeSpent );
-        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentUnimprovedTimeSpent);
+        dropDownNameMap.put(TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.UNIMPROVED_MILLISECONDS_SPENT_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreLimit );
-        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_LIMIT, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.BEST_SCORE_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentBestScoreLimit);
+        dropDownNameMap.put(TerminationConfigOption.BEST_SCORE_LIMIT,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.BEST_SCORE_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentBestScoreFeasible );
-        dropDownNameMap.put( TerminationConfigOption.BEST_SCORE_FEASIBLE, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.BEST_SCORE_FEASIBLE.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentBestScoreFeasible);
+        dropDownNameMap.put(TerminationConfigOption.BEST_SCORE_FEASIBLE,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.BEST_SCORE_FEASIBLE.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentStepCountLimit );
-        dropDownNameMap.put( TerminationConfigOption.STEP_COUNT_LIMIT, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.STEP_COUNT_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentStepCountLimit);
+        dropDownNameMap.put(TerminationConfigOption.STEP_COUNT_LIMIT,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.STEP_COUNT_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentUnimprovedStepCountLimit );
-        dropDownNameMap.put( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentUnimprovedStepCountLimit);
+        dropDownNameMap.put(TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.UNIMPROVED_STEP_COUNT_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentScoreCalculationCountLimit );
-        dropDownNameMap.put( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentScoreCalculationCountLimit);
+        dropDownNameMap.put(TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.SCORE_CALCULATION_COUNT_LIMIT.name());
+        });
+        dropdownMenuList.add(listItem);
 
-        itemMessage = translationService.getTranslation( SolverEditorConstants.TerminationTreeItemContentViewImplNestedTermination );
-        dropDownNameMap.put( TerminationConfigOption.NESTED, itemMessage );
-        listItem = new AnchorListItem( itemMessage );
-        listItem.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( TerminationConfigOption.NESTED.name() );
-        } );
-        dropdownMenuList.add( listItem );
+        itemMessage = translationService.getTranslation(SolverEditorConstants.TerminationTreeItemContentViewImplNestedTermination);
+        dropDownNameMap.put(TerminationConfigOption.NESTED,
+                            itemMessage);
+        listItem = new AnchorListItem(itemMessage);
+        listItem.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(TerminationConfigOption.NESTED.name());
+        });
+        dropdownMenuList.add(listItem);
     }
 
     @EventHandler("daysSpentInput")
-    public void handleDaysSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = daysSpentInput.getValue().matches( "\\d+" );
+    public void handleDaysSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = daysSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onDaysSpentChange( Long.parseLong( daysSpentInput.getValue() ) );
+            presenter.onDaysSpentChange(Long.parseLong(daysSpentInput.getValue()));
         } else {
-            presenter.onDaysSpentChange( 0l );
-            daysSpentInput.setValue( "0" );
+            presenter.onDaysSpentChange(0l);
+            daysSpentInput.setValue("0");
         }
     }
 
     @EventHandler("hoursSpentInput")
-    public void handleHoursSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = hoursSpentInput.getValue().matches( "\\d+" );
+    public void handleHoursSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = hoursSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onHoursSpentChange( Long.parseLong( hoursSpentInput.getValue() ) );
+            presenter.onHoursSpentChange(Long.parseLong(hoursSpentInput.getValue()));
         } else {
-            presenter.onHoursSpentChange( 0l );
-            hoursSpentInput.setValue( "0" );
+            presenter.onHoursSpentChange(0l);
+            hoursSpentInput.setValue("0");
         }
     }
 
     @EventHandler("minutesSpentInput")
-    public void handleMinutesSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = minutesSpentInput.getValue().matches( "\\d+" );
+    public void handleMinutesSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = minutesSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onMinutesSpentChange( Long.parseLong( minutesSpentInput.getValue() ) );
+            presenter.onMinutesSpentChange(Long.parseLong(minutesSpentInput.getValue()));
         } else {
-            presenter.onMinutesSpentChange( 0l );
-            minutesSpentInput.setValue( "0" );
+            presenter.onMinutesSpentChange(0l);
+            minutesSpentInput.setValue("0");
         }
     }
 
     @EventHandler("secondsSpentInput")
-    public void handleSecondsSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = secondsSpentInput.getValue().matches( "\\d+" );
+    public void handleSecondsSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = secondsSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onSecondsSpentChange( Long.parseLong( secondsSpentInput.getValue() ) );
+            presenter.onSecondsSpentChange(Long.parseLong(secondsSpentInput.getValue()));
         } else {
-            presenter.onSecondsSpentChange( 0l );
-            secondsSpentInput.setValue( "0" );
+            presenter.onSecondsSpentChange(0l);
+            secondsSpentInput.setValue("0");
         }
     }
 
     @EventHandler("millisecondsSpentInput")
-    public void handleMilliSecondsSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = millisecondsSpentInput.getValue().matches( "\\d+" );
+    public void handleMilliSecondsSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = millisecondsSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onMillisecondsSpentChange( Long.parseLong( millisecondsSpentInput.getValue() ) );
+            presenter.onMillisecondsSpentChange(Long.parseLong(millisecondsSpentInput.getValue()));
         } else {
-            presenter.onMillisecondsSpentChange( 0l );
-            millisecondsSpentInput.setValue( "0" );
+            presenter.onMillisecondsSpentChange(0l);
+            millisecondsSpentInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedDaysSpentInput")
-    public void handleUnimprovedDaysSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedDaysSpentInput.getValue().matches( "\\d+" );
+    public void handleUnimprovedDaysSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedDaysSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedDaysSpentChange( Long.parseLong( unimprovedDaysSpentInput.getValue() ) );
+            presenter.onUnimprovedDaysSpentChange(Long.parseLong(unimprovedDaysSpentInput.getValue()));
         } else {
-            presenter.onUnimprovedDaysSpentChange( 0l );
-            unimprovedDaysSpentInput.setValue( "0" );
+            presenter.onUnimprovedDaysSpentChange(0l);
+            unimprovedDaysSpentInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedHoursSpentInput")
-    public void handleUnimprovedHoursSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedHoursSpentInput.getValue().matches( "\\d+" );
+    public void handleUnimprovedHoursSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedHoursSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedHoursSpentChange( Long.parseLong( unimprovedHoursSpentInput.getValue() ) );
+            presenter.onUnimprovedHoursSpentChange(Long.parseLong(unimprovedHoursSpentInput.getValue()));
         } else {
-            presenter.onUnimprovedHoursSpentChange( 0l );
-            unimprovedHoursSpentInput.setValue( "0" );
+            presenter.onUnimprovedHoursSpentChange(0l);
+            unimprovedHoursSpentInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedMinutesSpentInput")
-    public void handleUnimprovedMinutesSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedMinutesSpentInput.getValue().matches( "\\d+" );
+    public void handleUnimprovedMinutesSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedMinutesSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedMinutesSpentChange( Long.parseLong( unimprovedMinutesSpentInput.getValue() ) );
+            presenter.onUnimprovedMinutesSpentChange(Long.parseLong(unimprovedMinutesSpentInput.getValue()));
         } else {
-            presenter.onUnimprovedMinutesSpentChange( 0l );
-            unimprovedMinutesSpentInput.setValue( "0" );
+            presenter.onUnimprovedMinutesSpentChange(0l);
+            unimprovedMinutesSpentInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedSecondsSpentInput")
-    public void handleUnimprovedSecondsSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedSecondsSpentInput.getValue().matches( "\\d+" );
+    public void handleUnimprovedSecondsSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedSecondsSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedSecondsSpentChange( Long.parseLong( unimprovedSecondsSpentInput.getValue() ) );
+            presenter.onUnimprovedSecondsSpentChange(Long.parseLong(unimprovedSecondsSpentInput.getValue()));
         } else {
-            presenter.onUnimprovedSecondsSpentChange( 0l );
-            unimprovedSecondsSpentInput.setValue( "0" );
+            presenter.onUnimprovedSecondsSpentChange(0l);
+            unimprovedSecondsSpentInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedMillisecondsSpentInput")
-    public void handleUnimprovedMilliSecondsSpentInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedMillisecondsSpentInput.getValue().matches( "\\d+" );
+    public void handleUnimprovedMilliSecondsSpentInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedMillisecondsSpentInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedMillisecondsSpentChange( Long.parseLong( unimprovedMillisecondsSpentInput.getValue() ) );
+            presenter.onUnimprovedMillisecondsSpentChange(Long.parseLong(unimprovedMillisecondsSpentInput.getValue()));
         } else {
-            presenter.onUnimprovedMillisecondsSpentChange( 0l );
-            unimprovedMillisecondsSpentInput.setValue( "0" );
+            presenter.onUnimprovedMillisecondsSpentChange(0l);
+            unimprovedMillisecondsSpentInput.setValue("0");
         }
     }
 
     @EventHandler("stepCountLimitInput")
-    public void onStepCountLimitInputChange( ChangeEvent event ) {
-        boolean isNumeric = stepCountLimitInput.getValue().matches( "\\d+" );
+    public void onStepCountLimitInputChange(ChangeEvent event) {
+        boolean isNumeric = stepCountLimitInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onStepCountLimitChange( Integer.parseInt( stepCountLimitInput.getValue() ) );
+            presenter.onStepCountLimitChange(Integer.parseInt(stepCountLimitInput.getValue()));
         } else {
-            presenter.onStepCountLimitChange( 0 );
-            stepCountLimitInput.setValue( "0" );
+            presenter.onStepCountLimitChange(0);
+            stepCountLimitInput.setValue("0");
         }
     }
 
     @EventHandler("unimprovedStepCountLimitInput")
-    public void onUnimprovedStepCountLimitInputChange( ChangeEvent event ) {
-        boolean isNumeric = unimprovedStepCountLimitInput.getValue().matches( "\\d+" );
+    public void onUnimprovedStepCountLimitInputChange(ChangeEvent event) {
+        boolean isNumeric = unimprovedStepCountLimitInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onUnimprovedStepCountLimitChange( Integer.parseInt( unimprovedStepCountLimitInput.getValue() ) );
+            presenter.onUnimprovedStepCountLimitChange(Integer.parseInt(unimprovedStepCountLimitInput.getValue()));
         } else {
-            presenter.onUnimprovedStepCountLimitChange( 0 );
-            unimprovedStepCountLimitInput.setValue( "0" );
+            presenter.onUnimprovedStepCountLimitChange(0);
+            unimprovedStepCountLimitInput.setValue("0");
         }
     }
 
     @EventHandler("scoreCalculationCountLimitInput")
-    public void onScoreCalculationLimitInputChange( ChangeEvent event ) {
-        boolean isNumeric = scoreCalculationCountLimitInput.getValue().matches( "\\d+" );
+    public void onScoreCalculationLimitInputChange(ChangeEvent event) {
+        boolean isNumeric = scoreCalculationCountLimitInput.getValue().matches("\\d+");
         if (isNumeric) {
-            presenter.onScoreCalculationLimitChange( Long.parseLong( scoreCalculationCountLimitInput.getValue() ) );
+            presenter.onScoreCalculationLimitChange(Long.parseLong(scoreCalculationCountLimitInput.getValue()));
         } else {
-            presenter.onScoreCalculationLimitChange( 0l );
-            scoreCalculationCountLimitInput.setValue( "0" );
+            presenter.onScoreCalculationLimitChange(0l);
+            scoreCalculationCountLimitInput.setValue("0");
         }
     }
 
     @EventHandler("bestScoreInput")
-    public void handleBestScoreInputChange( ChangeEvent event ) {
+    public void handleBestScoreInputChange(ChangeEvent event) {
         String value = bestScoreInput.getValue().isEmpty() ? null : bestScoreInput.getValue();
-        presenter.onBestScoreLimitChange( value );
+        presenter.onBestScoreLimitChange(value);
     }
 
     @EventHandler("bestScoreFeasibleInput")
-    public void handleBestScoreFeasibleInputChange( ChangeEvent event ) {
-        presenter.onFeasibilityChange( bestScoreFeasibleInput.getChecked() );
+    public void handleBestScoreFeasibleInputChange(ChangeEvent event) {
+        presenter.onFeasibilityChange(bestScoreFeasibleInput.getChecked());
     }
 
     @EventHandler("terminationCompositionStyleSelect")
-    public void handleTerminationCompositionStyleSelectChange( ChangeEvent event ) {
-        presenter.onTerminationCompositionStyleChange( "and".equals( terminationCompositionStyleSelect.getValue() ) ? TerminationCompositionStyleModel.AND : TerminationCompositionStyleModel.OR );
-
+    public void handleTerminationCompositionStyleSelectChange(ChangeEvent event) {
+        presenter.onTerminationCompositionStyleChange("and".equals(terminationCompositionStyleSelect.getValue()) ? TerminationCompositionStyleModel.AND : TerminationCompositionStyleModel.OR);
     }
 
     @Override
-    public void setPresenter( TerminationTreeItemContent presenter ) {
+    public void setPresenter(TerminationTreeItemContent presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void setRoot( boolean root ) {
-        if ( root ) {
-            removeTerminationButton.getElement().getStyle().setProperty( "display", "none" );
+    public void setRoot(boolean root) {
+        if (root) {
+            removeTerminationButton.getElement().getStyle().setProperty("display",
+                                                                        "none");
         }
     }
 
     @Override
-    public void addDropDownOption( TerminationConfigOption terminationConfigOption ) {
-        if ( terminationConfigOption == TerminationConfigOption.NESTED ) {
+    public void addDropDownOption(TerminationConfigOption terminationConfigOption) {
+        if (terminationConfigOption == TerminationConfigOption.NESTED) {
             return;
         }
-        AnchorListItem li1 = new AnchorListItem( dropDownNameMap.get( terminationConfigOption ) );
-        li1.addClickHandler( h -> {
-            presenter.onTerminationTypeSelected( terminationConfigOption.name() );
-        } );
-        for ( int i = 0; i < dropdownMenuList.getWidgetCount(); i++ ) {
-            AnchorListItem item = (AnchorListItem) dropdownMenuList.getWidget( i );
-            TerminationConfigOption dropDownTerminationConfigOption = getDropDownOption( item.getText() );
-            if ( dropDownTerminationConfigOption == null || terminationConfigOption.ordinal() < dropDownTerminationConfigOption.ordinal() ) {
-                dropdownMenuList.insert( li1, i );
+        AnchorListItem li1 = new AnchorListItem(dropDownNameMap.get(terminationConfigOption));
+        li1.addClickHandler(h -> {
+            presenter.onTerminationTypeSelected(terminationConfigOption.name());
+        });
+        for (int i = 0; i < dropdownMenuList.getWidgetCount(); i++) {
+            AnchorListItem item = (AnchorListItem) dropdownMenuList.getWidget(i);
+            TerminationConfigOption dropDownTerminationConfigOption = getDropDownOption(item.getText());
+            if (dropDownTerminationConfigOption == null || terminationConfigOption.ordinal() < dropDownTerminationConfigOption.ordinal()) {
+                dropdownMenuList.insert(li1,
+                                        i);
                 break;
             }
-            if ( i == dropdownMenuList.getWidgetCount() - 1 ) {
-                dropdownMenuList.add( li1 );
+            if (i == dropdownMenuList.getWidgetCount() - 1) {
+                dropdownMenuList.add(li1);
             }
         }
     }
 
-    private TerminationConfigOption getDropDownOption( String text ) {
-        for ( Map.Entry<TerminationConfigOption, String> entry : dropDownNameMap.entrySet() ) {
-            if ( entry.getValue().equals( text ) ) {
+    private TerminationConfigOption getDropDownOption(String text) {
+        for (Map.Entry<TerminationConfigOption, String> entry : dropDownNameMap.entrySet()) {
+            if (entry.getValue().equals(text)) {
                 return entry.getKey();
             }
         }
@@ -431,153 +440,162 @@ public class TerminationTreeItemContentViewImpl implements TerminationTreeItemCo
     }
 
     @Override
-    public void removeDropDownOption( TerminationConfigOption option ) {
-        for ( int i = 0; i < dropdownMenuList.getWidgetCount(); i++ ) {
-            AnchorListItem item = (AnchorListItem) dropdownMenuList.getWidget( i );
-            if ( dropDownNameMap.get( option ).equals( item.getText() ) ) {
-                dropdownMenuList.remove( item );
+    public void removeDropDownOption(TerminationConfigOption option) {
+        for (int i = 0; i < dropdownMenuList.getWidgetCount(); i++) {
+            AnchorListItem item = (AnchorListItem) dropdownMenuList.getWidget(i);
+            if (dropDownNameMap.get(option).equals(item.getText())) {
+                dropdownMenuList.remove(item);
                 break;
             }
         }
     }
 
     @Override
-    public void setNestedTreeItem( boolean nested ) {
-        if ( nested ) {
-            formLabelDiv.getStyle().setProperty( "display", "none" );
+    public void setNestedTreeItem(boolean nested) {
+        if (nested) {
+            formLabelDiv.getStyle().setProperty("display",
+                                                "none");
         } else {
-            addTerminationDiv.getStyle().setProperty( "display", "none" );
+            addTerminationDiv.getStyle().setProperty("display",
+                                                     "none");
         }
     }
 
     @Override
     public void hideTimeSpentInput() {
-        timeSpentDiv.getStyle().setProperty( "display", "none" );
+        timeSpentDiv.getStyle().setProperty("display",
+                                            "none");
     }
 
     @Override
     public void hideUnimprovedTimeSpentInput() {
-        unimprovedTimeSpentDiv.getStyle().setProperty( "display", "none" );
+        unimprovedTimeSpentDiv.getStyle().setProperty("display",
+                                                      "none");
     }
 
     @Override
     public void hideStepCountLimitInput() {
-        stepCountLimitInput.getStyle().setProperty( "display", "none" );
+        stepCountLimitInput.getStyle().setProperty("display",
+                                                   "none");
     }
 
     @Override
     public void hideUnimprovedStepCountLimitInput() {
-        unimprovedStepCountLimitInput.getStyle().setProperty( "display", "none" );
+        unimprovedStepCountLimitInput.getStyle().setProperty("display",
+                                                             "none");
     }
 
     @Override
     public void hideScoreCalculationCountLimitInput() {
-        scoreCalculationCountLimitInput.getStyle().setProperty( "display", "none" );
+        scoreCalculationCountLimitInput.getStyle().setProperty("display",
+                                                               "none");
     }
 
     @Override
     public void hideBestScoreFeasibleInput() {
-        bestScoreFeasibleInput.getStyle().setProperty( "display", "none" );
+        bestScoreFeasibleInput.getStyle().setProperty("display",
+                                                      "none");
     }
 
     @Override
     public void hideBestScoreLimitInput() {
-        bestScoreInput.getStyle().setProperty( "display", "none" );
+        bestScoreInput.getStyle().setProperty("display",
+                                              "none");
     }
 
     @Override
-    public void setFormLabelText( String text ) {
-        formLabel.setText( text );
+    public void setFormLabelText(String text) {
+        formLabel.setText(text);
     }
 
     @Override
-    public void setFormLabelHelpContent( String content ) {
-        formLabel.setHelpContent( content );
+    public void setFormLabelHelpContent(String content) {
+        formLabel.setHelpContent(content);
     }
 
     @Override
-    public void setDropDownHelpContent( String content ) {
-        dropDownHelpIcon.setHelpContent( content );
+    public void setDropDownHelpContent(String content) {
+        dropDownHelpIcon.setHelpContent(content);
     }
 
     @Override
-    public void setDaysSpent( Long value ) {
-        daysSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setDaysSpent(Long value) {
+        daysSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setHoursSpent( Long value ) {
-        hoursSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setHoursSpent(Long value) {
+        hoursSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setMinutesSpent( Long value ) {
-        minutesSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setMinutesSpent(Long value) {
+        minutesSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setSecondsSpent( Long value ) {
-        secondsSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setSecondsSpent(Long value) {
+        secondsSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setMillisecondsSpent( Long value ) {
-        millisecondsSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setMillisecondsSpent(Long value) {
+        millisecondsSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedDaysSpent( Long value ) {
-        unimprovedDaysSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedDaysSpent(Long value) {
+        unimprovedDaysSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedHoursSpent( Long value ) {
-        unimprovedHoursSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedHoursSpent(Long value) {
+        unimprovedHoursSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedMinutesSpent( Long value ) {
-        unimprovedMinutesSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedMinutesSpent(Long value) {
+        unimprovedMinutesSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedSecondsSpent( Long value ) {
-        unimprovedSecondsSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedSecondsSpent(Long value) {
+        unimprovedSecondsSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedMillisecondsSpent( Long value ) {
-        unimprovedMillisecondsSpentInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedMillisecondsSpent(Long value) {
+        unimprovedMillisecondsSpentInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setStepCountLimit( Integer value ) {
-        stepCountLimitInput.setValue( value == null ? "0" : value.toString() );
+    public void setStepCountLimit(Integer value) {
+        stepCountLimitInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setUnimprovedStepCountLimit( Integer value ) {
-        unimprovedStepCountLimitInput.setValue( value == null ? "0" : value.toString() );
+    public void setUnimprovedStepCountLimit(Integer value) {
+        unimprovedStepCountLimitInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setScoreCalculationCountLimit( Long value ) {
-        scoreCalculationCountLimitInput.setValue( value == null ? "0" : value.toString() );
+    public void setScoreCalculationCountLimit(Long value) {
+        scoreCalculationCountLimitInput.setValue(value == null ? "0" : value.toString());
     }
 
     @Override
-    public void setBestScoreFeasible( Boolean value ) {
-        bestScoreFeasibleInput.setChecked( value == null ? false : value );
+    public void setBestScoreFeasible(Boolean value) {
+        bestScoreFeasibleInput.setChecked(value == null ? false : value);
     }
 
     @Override
-    public void setBestScoreLimit( String value ) {
-        bestScoreInput.setValue( value );
+    public void setBestScoreLimit(String value) {
+        bestScoreInput.setValue(value);
     }
 
     @Override
-    public void setTerminationCompositionStyle( TerminationCompositionStyleModel value ) {
-        terminationCompositionStyleSelect.setValue( value == TerminationCompositionStyleModel.AND ? "and" : "or" );
+    public void setTerminationCompositionStyle(TerminationCompositionStyleModel value) {
+        terminationCompositionStyleSelect.setValue(value == TerminationCompositionStyleModel.AND ? "and" : "or");
     }
 
     @Override

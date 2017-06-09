@@ -20,15 +20,15 @@ import org.jboss.errai.common.client.dom.HTMLElement;
 
 public interface PhaseConfigFormView extends IsWidget {
 
-    void setPresenter( final PhaseConfigForm presenter );
+    void setPresenter(final PhaseConfigForm presenter);
 
-    void addConstructionHeuristic( final HTMLElement element );
+    void addConstructionHeuristic(final HTMLElement element);
 
-    void removeConstructionHeuristic( final HTMLElement element );
+    void removeConstructionHeuristic(final HTMLElement element);
 
-    void addLocalSearch( final HTMLElement element );
+    void addLocalSearch(final HTMLElement element);
 
-    void removeLocalSearch( final HTMLElement element );
+    void removeLocalSearch(final HTMLElement element);
 
-    void displayEmptyPhaseConfigurationLabel( final boolean visible );
+    void displayEmptyPhaseConfigurationLabel(final boolean visible);
 }

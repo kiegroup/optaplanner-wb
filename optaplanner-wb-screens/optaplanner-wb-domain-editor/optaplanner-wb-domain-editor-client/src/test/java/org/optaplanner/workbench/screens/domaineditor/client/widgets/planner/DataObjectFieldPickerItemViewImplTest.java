@@ -41,36 +41,35 @@ public class DataObjectFieldPickerItemViewImplTest {
 
     @Before
     public void setUp() {
-        view = new DataObjectFieldPickerItemViewImpl( fieldPickerItemRow,
-                                                      fieldPickerItemLabelViewInstance );
+        view = new DataObjectFieldPickerItemViewImpl(fieldPickerItemRow,
+                                                     fieldPickerItemLabelViewInstance);
     }
 
     @Test
     public void addRootItem() {
-        DataObject dataObject = mock( DataObject.class );
-        when( dataObject.getName() ).thenReturn( "testDataObject" );
+        DataObject dataObject = mock(DataObject.class);
+        when(dataObject.getName()).thenReturn("testDataObject");
 
-        DataObjectFieldPickerItemLabelView labelView = mock( DataObjectFieldPickerItemLabelView.class );
-        when( fieldPickerItemLabelViewInstance.get() ).thenReturn( labelView );
+        DataObjectFieldPickerItemLabelView labelView = mock(DataObjectFieldPickerItemLabelView.class);
+        when(fieldPickerItemLabelViewInstance.get()).thenReturn(labelView);
 
-        view.addRootItem( dataObject );
+        view.addRootItem(dataObject);
 
-        verify( labelView ).setName( "testDataObject" );
-        verify( fieldPickerItemRow ).appendChild( labelView.getElement() );
+        verify(labelView).setName("testDataObject");
+        verify(fieldPickerItemRow).appendChild(labelView.getElement());
     }
 
     @Test
     public void addFieldItem() {
-        ObjectProperty objectProperty = mock( ObjectProperty.class );
-        when( objectProperty.getName() ).thenReturn( "testObjectProperty" );
+        ObjectProperty objectProperty = mock(ObjectProperty.class);
+        when(objectProperty.getName()).thenReturn("testObjectProperty");
 
-        DataObjectFieldPickerItemLabelView labelView = mock( DataObjectFieldPickerItemLabelView.class );
-        when( fieldPickerItemLabelViewInstance.get() ).thenReturn( labelView );
+        DataObjectFieldPickerItemLabelView labelView = mock(DataObjectFieldPickerItemLabelView.class);
+        when(fieldPickerItemLabelViewInstance.get()).thenReturn(labelView);
 
-        view.addFieldItem( objectProperty );
+        view.addFieldItem(objectProperty);
 
-        verify( labelView ).setName( "testObjectProperty" );
-        verify( fieldPickerItemRow ).appendChild( labelView.getElement() );
+        verify(labelView).setName("testObjectProperty");
+        verify(fieldPickerItemRow).appendChild(labelView.getElement());
     }
-
 }

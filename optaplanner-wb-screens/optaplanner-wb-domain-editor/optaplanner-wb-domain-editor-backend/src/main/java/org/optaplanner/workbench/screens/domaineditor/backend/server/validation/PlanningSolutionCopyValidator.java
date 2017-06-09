@@ -51,28 +51,28 @@ public class PlanningSolutionCopyValidator implements CopyValidator<DataObject> 
     private IOService ioService;
 
     @Override
-    public Collection<ValidationMessage> validate( final Path dataObjectPath,
-                                                   final DataObject dataObject ) {
-        if ( dataObject != null && dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-            return Arrays.asList( new PlanningSolutionToBeDuplicatedMessage( Level.ERROR ) );
+    public Collection<ValidationMessage> validate(final Path dataObjectPath,
+                                                  final DataObject dataObject) {
+        if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+            return Arrays.asList(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR));
         }
         return Collections.emptyList();
     }
 
     @Override
-    public Collection<ValidationMessage> validate( final Path path ) {
-        if ( path != null ) {
-            String dataObjectSource = ioService.readAllString( Paths.convert( path ) );
-            GenerationResult generationResult = dataModelerService.loadDataObject( path,
-                                                                                   dataObjectSource,
-                                                                                   path );
+    public Collection<ValidationMessage> validate(final Path path) {
+        if (path != null) {
+            String dataObjectSource = ioService.readAllString(Paths.convert(path));
+            GenerationResult generationResult = dataModelerService.loadDataObject(path,
+                                                                                  dataObjectSource,
+                                                                                  path);
 
-            if ( generationResult.hasErrors() ) {
+            if (generationResult.hasErrors()) {
                 return Collections.emptyList();
             } else {
                 DataObject dataObject = generationResult.getDataObject();
-                if ( dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                    return Arrays.asList( new PlanningSolutionToBeDuplicatedMessage( Level.ERROR ) );
+                if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                    return Arrays.asList(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR));
                 }
             }
         }
@@ -80,7 +80,7 @@ public class PlanningSolutionCopyValidator implements CopyValidator<DataObject> 
     }
 
     @Override
-    public boolean accept( final Path path ) {
-        return path.getFileName().endsWith( ".java" );
+    public boolean accept(final Path path) {
+        return path.getFileName().endsWith(".java");
     }
 }

@@ -48,50 +48,51 @@ public class PlanningSolutionSaveValidatorTest {
 
     @Before
     public void setUp() {
-        saveValidator = new PlanningSolutionSaveValidator( dataModelerService );
+        saveValidator = new PlanningSolutionSaveValidator(dataModelerService);
     }
 
     @Test
     public void checkNotAPlanningSolution() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
 
-        Collection<ValidationMessage> result = saveValidator.validate( mock( Path.class ),
-                                                                       dataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = saveValidator.validate(mock(Path.class),
+                                                                      dataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void checkPlanningSolutionNoOtherExists() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
-        Path dataObjectPath = mock( Path.class );
-        when( dataModelerService.findClassUsages( dataObjectPath,
-                                                  PlanningSolution.class.getName() ) ).thenReturn( Arrays.asList( dataObjectPath ) );
+        Path dataObjectPath = mock(Path.class);
+        when(dataModelerService.findClassUsages(dataObjectPath,
+                                                PlanningSolution.class.getName())).thenReturn(Arrays.asList(dataObjectPath));
 
-        Collection<ValidationMessage> result = saveValidator.validate( dataObjectPath,
-                                                                       dataObject );
-        assertTrue( result.isEmpty() );
+        Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
+                                                                      dataObject);
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void checkPlanningSolutionOtherExists() {
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "Test" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
-        Path dataObjectPath = mock( Path.class );
-        Path otherDataObjectPath = mock( Path.class );
-        when( dataModelerService.findClassUsages( dataObjectPath,
-                                                  PlanningSolution.class.getName() ) ).thenReturn( Arrays.asList( otherDataObjectPath ) );
+        Path dataObjectPath = mock(Path.class);
+        Path otherDataObjectPath = mock(Path.class);
+        when(dataModelerService.findClassUsages(dataObjectPath,
+                                                PlanningSolution.class.getName())).thenReturn(Arrays.asList(otherDataObjectPath));
 
-        Collection<ValidationMessage> result = saveValidator.validate( dataObjectPath,
-                                                                       dataObject );
-        assertEquals( 1, result.size() );
+        Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
+                                                                      dataObject);
+        assertEquals(1,
+                     result.size());
 
         ValidationMessage message = result.iterator().next();
-        assertTrue( message instanceof PlanningSolutionToBeDuplicatedMessage );
+        assertTrue(message instanceof PlanningSolutionToBeDuplicatedMessage);
     }
 }

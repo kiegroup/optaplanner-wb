@@ -40,7 +40,7 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
 @ApplicationScoped
 public class PlanningSolutionRenameWorkaroundHelper implements DataModelerRenameWorkaroundHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( PlanningSolutionRenameWorkaroundHelper.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlanningSolutionRenameWorkaroundHelper.class);
 
     private static final String SCORE_HOLDER_GLOBAL_FILE_SUFFIX = "ScoreHolderGlobal.gdrl";
 
@@ -54,42 +54,42 @@ public class PlanningSolutionRenameWorkaroundHelper implements DataModelerRename
     }
 
     @Inject
-    public PlanningSolutionRenameWorkaroundHelper( @Named("ioStrategy") final IOService ioService,
-                                                   final DataModelerService dataModelerService,
-                                                   final KieProjectService kieProjectService ) {
+    public PlanningSolutionRenameWorkaroundHelper(@Named("ioStrategy") final IOService ioService,
+                                                  final DataModelerService dataModelerService,
+                                                  final KieProjectService kieProjectService) {
         this.ioService = ioService;
         this.dataModelerService = dataModelerService;
         this.kieProjectService = kieProjectService;
     }
 
     @Override
-    public void postProcess( final Path sourcePath,
-                             final Path destinationPath ) {
-        String dataObjectSource = ioService.readAllString( Paths.convert( destinationPath ) );
-        GenerationResult generationResult = dataModelerService.loadDataObject( destinationPath,
-                                                                               dataObjectSource,
-                                                                               destinationPath );
+    public void postProcess(final Path sourcePath,
+                            final Path destinationPath) {
+        String dataObjectSource = ioService.readAllString(Paths.convert(destinationPath));
+        GenerationResult generationResult = dataModelerService.loadDataObject(destinationPath,
+                                                                              dataObjectSource,
+                                                                              destinationPath);
 
-        if ( generationResult.hasErrors() ) {
-            LOGGER.warn( "Path " + sourcePath + " parsing as a data object has failed. Score holder global generation will be skipped." );
+        if (generationResult.hasErrors()) {
+            LOGGER.warn("Path " + sourcePath + " parsing as a data object has failed. Score holder global generation will be skipped.");
         } else {
             DataObject dataObject = generationResult.getDataObject();
-            if ( dataObject.getAnnotation( PLANNING_SOLUTION_ANNOTATION ) != null ) {
-                org.uberfire.java.nio.file.Path source = Paths.convert( kieProjectService.resolvePackage( sourcePath ).getPackageMainResourcesPath() );
-                org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory( source ) ? source : source.getParent();
-                String sourceDataObjectFileName = sourcePath.getFileName().substring( 0,
-                                                                                      sourcePath.getFileName().indexOf( "." ) );
+            if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(sourcePath).getPackageMainResourcesPath());
+                org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
+                String sourceDataObjectFileName = sourcePath.getFileName().substring(0,
+                                                                                     sourcePath.getFileName().indexOf("."));
 
-                org.uberfire.java.nio.file.Path destination = Paths.convert( kieProjectService.resolvePackage( destinationPath ).getPackageMainResourcesPath() );
-                org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory( destination ) ? destination : destination.getParent();
-                String destinationDataObjectFileName = destinationPath.getFileName().substring( 0,
-                                                                                                destinationPath.getFileName().indexOf( "." ) );
+                org.uberfire.java.nio.file.Path destination = Paths.convert(kieProjectService.resolvePackage(destinationPath).getPackageMainResourcesPath());
+                org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory(destination) ? destination : destination.getParent();
+                String destinationDataObjectFileName = destinationPath.getFileName().substring(0,
+                                                                                               destinationPath.getFileName().indexOf("."));
 
-                boolean scoreHolderGlobalFileExists = ioService.exists( sourcePackage.resolve( sourceDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX ) );
+                boolean scoreHolderGlobalFileExists = ioService.exists(sourcePackage.resolve(sourceDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX));
 
-                if ( scoreHolderGlobalFileExists ) {
-                    ioService.move( sourcePackage.resolve( sourceDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX ),
-                                    destinationPackage.resolve( destinationDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX ) );
+                if (scoreHolderGlobalFileExists) {
+                    ioService.move(sourcePackage.resolve(sourceDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX),
+                                   destinationPackage.resolve(destinationDataObjectFileName + SCORE_HOLDER_GLOBAL_FILE_SUFFIX));
                 }
             }
         }

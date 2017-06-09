@@ -21,10 +21,9 @@ import com.google.gwt.user.client.ui.TreeItem;
 public interface TerminationConfigFormView
         extends IsWidget {
 
-    void initTree( TreeItem rootTreeItem );
+    void initTree(TreeItem rootTreeItem);
 
     void displayEmptyTreeLabel(boolean visible);
 
     void refreshTree();
-
 }

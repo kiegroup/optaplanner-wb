@@ -39,72 +39,81 @@ public class ScoreDirectorFactoryFormTest {
 
     @Before
     public void setUp() throws Exception {
-        form = new ScoreDirectorFactoryForm( view );
+        form = new ScoreDirectorFactoryForm(view);
     }
 
     @Test
     public void setPresenter() throws Exception {
-        verify( view ).setPresenter( form );
+        verify(view).setPresenter(form);
     }
 
     @Test
     public void setEmptyModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        form.setModel( model, path );
+        form.setModel(model,
+                      path);
 
-        verify( view ).setKSession( null, path );
+        verify(view).setKSession(null,
+                                 path);
     }
 
     @Test
     public void setEmptyKSession() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        form.setModel( model, path );
+        form.setModel(model,
+                      path);
 
-        verify( view ).setKSession( null, path );
+        verify(view).setKSession(null,
+                                 path);
     }
 
     @Test
     public void setModel() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
-        model.setKSessionName( "someSession" );
+        model.setKSessionName("someSession");
 
+        form.setModel(model,
+                      path);
 
-        form.setModel( model, path );
-
-        verify( view ).setKSession( "someSession", path );
+        verify(view).setKSession("someSession",
+                                 path);
     }
 
     @Test
     public void onNameChange() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-        form.setModel( model, path );
+        form.setModel(model,
+                      path);
 
-        form.onKSessionNameChange( "mySession" );
+        form.onKSessionNameChange("mySession");
 
-        assertEquals( "mySession", model.getKSessionName() );
+        assertEquals("mySession",
+                     model.getKSessionName());
     }
 
     @Test
     public void onNameChangeToDefault() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-        form.setModel( model, path );
+        form.setModel(model,
+                      path);
 
-        form.onKSessionNameChange( "defaultKieSession" );
+        form.onKSessionNameChange("defaultKieSession");
 
-        assertNull( model.getKSessionName() );
+        assertNull(model.getKSessionName());
     }
 
     @Test
     public void onNameChangeNull() throws Exception {
         ScoreDirectorFactoryConfigModel model = new ScoreDirectorFactoryConfigModel();
 
-        form.setModel( model, path );
+        form.setModel(model,
+                      path);
 
-        form.onKSessionNameChange( null );
+        form.onKSessionNameChange(null);
 
-        assertEquals( null, model.getKSessionName() );
+        assertEquals(null,
+                     model.getKSessionName());
     }
-
 }

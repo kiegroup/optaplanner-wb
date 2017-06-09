@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-@WithClassesToStub({ Text.class, AnchorListItem.class, AbstractAnchorListItem.class })
+@WithClassesToStub({Text.class, AnchorListItem.class, AbstractAnchorListItem.class})
 public class TerminationTreeItemContentViewImplTest {
 
     @Mock
@@ -48,14 +48,14 @@ public class TerminationTreeItemContentViewImplTest {
 
     @Before
     public void setUp() {
-        view = new TerminationTreeItemContentViewImpl( removeTerminationButton,
-                                                       dropDownMenu,
-                                                       translationService );
+        view = new TerminationTreeItemContentViewImpl(removeTerminationButton,
+                                                      dropDownMenu,
+                                                      translationService);
     }
 
     @Test
     public void initDropDownList() {
-        verify( dropDownMenu,
-                atLeastOnce() ).add( any() );
+        verify(dropDownMenu,
+               atLeastOnce()).add(any());
     }
 }

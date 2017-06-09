@@ -27,21 +27,40 @@ import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore
 public class HardMediumSoftScoreMapper extends MappingDefinition {
 
     public HardMediumSoftScoreMapper() throws NoSuchMethodException {
-        super( HardMediumSoftScore.class );
+        super(HardMediumSoftScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( HardMediumSoftScore.class.getMethod( "valueOfUninitialized", int.class, int.class, int.class, int.class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "hardScore", 1, int.class );
-        factoryMapping.mapParmToIndex( "mediumScore", 2, int.class );
-        factoryMapping.mapParmToIndex( "softScore", 3, int.class );
+        factoryMapping.setMethod(new JavaReflectionMethod(HardMediumSoftScore.class.getMethod("valueOfUninitialized",
+                                                                                              int.class,
+                                                                                              int.class,
+                                                                                              int.class,
+                                                                                              int.class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("hardScore",
+                                      1,
+                                      int.class);
+        factoryMapping.mapParmToIndex("mediumScore",
+                                      2,
+                                      int.class);
+        factoryMapping.mapParmToIndex("softScore",
+                                      3,
+                                      int.class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "hardScore", int.class, "getHardScore" ) );
-        addMemberMapping( new ReadMapping( "mediumScore", int.class, "getMediumScore" ) );
-        addMemberMapping( new ReadMapping( "softScore", int.class, "getSoftScore" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("hardScore",
+                                         int.class,
+                                         "getHardScore"));
+        addMemberMapping(new ReadMapping("mediumScore",
+                                         int.class,
+                                         "getMediumScore"));
+        addMemberMapping(new ReadMapping("softScore",
+                                         int.class,
+                                         "getSoftScore"));
     }
-
 }

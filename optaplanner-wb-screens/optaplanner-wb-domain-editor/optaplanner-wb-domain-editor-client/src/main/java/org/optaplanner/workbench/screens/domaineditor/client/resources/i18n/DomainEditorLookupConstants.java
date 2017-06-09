@@ -24,7 +24,7 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
  */
 public interface DomainEditorLookupConstants extends ConstantsWithLookup {
 
-    DomainEditorLookupConstants INSTANCE = GWT.create( DomainEditorLookupConstants.class );
+    DomainEditorLookupConstants INSTANCE = GWT.create(DomainEditorLookupConstants.class);
 
     String BendableScore();
 
@@ -53,5 +53,4 @@ public interface DomainEditorLookupConstants extends ConstantsWithLookup {
     String SimpleDoubleScore();
 
     String SimpleLongScore();
-
 }

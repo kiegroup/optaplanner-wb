@@ -42,48 +42,48 @@ public class PlannerValidationMessageTranslator implements ValidationMessageTran
 
     static {
         MESSAGE_CLASS_KEY_MAPPING = new HashMap<>();
-        MESSAGE_CLASS_KEY_MAPPING.put( PlanningSolutionToBeDuplicatedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated );
-        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalToBeRemovedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDeleted );
-        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalTypeToBeChangedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeChanged );
-        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalTypeNotRecognizedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized );
-        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalFileToBeRemovedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage );
-        MESSAGE_CLASS_KEY_MAPPING.put( ScoreHolderGlobalToBeDefinedManuallyMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage );
-        MESSAGE_CLASS_KEY_MAPPING.put( PlanningScoreToBeDeletedMessage.class.getName(),
-                                       DomainEditorConstants.PlannerCheckTranslatorPlanningScoreToBeDeletedMessage);
+        MESSAGE_CLASS_KEY_MAPPING.put(PlanningSolutionToBeDuplicatedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated);
+        MESSAGE_CLASS_KEY_MAPPING.put(ScoreHolderGlobalToBeRemovedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDeleted);
+        MESSAGE_CLASS_KEY_MAPPING.put(ScoreHolderGlobalTypeToBeChangedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeChanged);
+        MESSAGE_CLASS_KEY_MAPPING.put(ScoreHolderGlobalTypeNotRecognizedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized);
+        MESSAGE_CLASS_KEY_MAPPING.put(ScoreHolderGlobalFileToBeRemovedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage);
+        MESSAGE_CLASS_KEY_MAPPING.put(ScoreHolderGlobalToBeDefinedManuallyMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage);
+        MESSAGE_CLASS_KEY_MAPPING.put(PlanningScoreToBeDeletedMessage.class.getName(),
+                                      DomainEditorConstants.PlannerCheckTranslatorPlanningScoreToBeDeletedMessage);
     }
 
     @Inject
-    public PlannerValidationMessageTranslator( final TranslationService translationService ) {
+    public PlannerValidationMessageTranslator(final TranslationService translationService) {
         this.translationService = translationService;
     }
 
     @Override
-    public boolean accept( final ValidationMessage message ) {
-        return MESSAGE_CLASS_KEY_MAPPING.containsKey( message.getClass().getName() );
+    public boolean accept(final ValidationMessage message) {
+        return MESSAGE_CLASS_KEY_MAPPING.containsKey(message.getClass().getName());
     }
 
     @Override
-    public ValidationMessage translate( final ValidationMessage messageToTranslate ) {
-        String translationKey = MESSAGE_CLASS_KEY_MAPPING.get( messageToTranslate.getClass().getName() );
+    public ValidationMessage translate(final ValidationMessage messageToTranslate) {
+        String translationKey = MESSAGE_CLASS_KEY_MAPPING.get(messageToTranslate.getClass().getName());
 
-        if ( translationKey == null ) {
-            throw new IllegalStateException( "No translation found for message " + messageToTranslate );
+        if (translationKey == null) {
+            throw new IllegalStateException("No translation found for message " + messageToTranslate);
         }
 
-        return getMessageTranslation( messageToTranslate,
-                                      translationKey );
+        return getMessageTranslation(messageToTranslate,
+                                     translationKey);
     }
 
-    private ValidationMessage getMessageTranslation( final ValidationMessage messageToTranslate,
-                                                     final String translationKey ) {
-        ValidationMessage translatedMessage = new ValidationMessage( messageToTranslate );
-        translatedMessage.setText( translationService.getTranslation( translationKey ) );
+    private ValidationMessage getMessageTranslation(final ValidationMessage messageToTranslate,
+                                                    final String translationKey) {
+        ValidationMessage translatedMessage = new ValidationMessage(messageToTranslate);
+        translatedMessage.setText(translationService.getTranslation(translationKey));
         return translatedMessage;
     }
 }

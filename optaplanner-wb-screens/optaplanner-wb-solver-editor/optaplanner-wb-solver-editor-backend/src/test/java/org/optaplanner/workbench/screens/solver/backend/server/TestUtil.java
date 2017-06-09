@@ -22,20 +22,20 @@ import java.io.Reader;
 
 public class TestUtil {
 
-    public static String loadResource( final String name ) throws Exception {
-        final InputStream in = TestUtil.class.getResourceAsStream( name );
-        return loadResource( in );
+    public static String loadResource(final String name) throws Exception {
+        final InputStream in = TestUtil.class.getResourceAsStream(name);
+        return loadResource(in);
     }
 
-    public static String loadResource( final InputStream in ) throws IOException {
-        final Reader reader = new InputStreamReader( in );
+    public static String loadResource(final InputStream in) throws IOException {
+        final Reader reader = new InputStreamReader(in);
         final StringBuilder text = new StringBuilder();
         final char[] buf = new char[1024];
         int len = 0;
-        while ((len = reader.read( buf )) >= 0) {
-            text.append( buf,
-                         0,
-                         len );
+        while ((len = reader.read(buf)) >= 0) {
+            text.append(buf,
+                        0,
+                        len);
         }
         return text.toString();
     }

@@ -40,59 +40,57 @@ public class SolverConfigModelPersistenceTest {
     @Test
     public void newSolverConfigModel() throws Exception {
         SolverConfigModel config = new SolverConfigModel();
-        config.setTerminationConfig( new TerminationConfigModel() );
+        config.setTerminationConfig(new TerminationConfigModel());
         final ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfigModel();
-        scoreDirectorFactoryConfig.setKSessionName( "hello" );
-        config.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
-        String xml = configPersistence.toXML( config );
-        assertNotNull( xml );
-        assertTrue( xml.startsWith( "<solver" ) );
-        assertTrue( xml.contains( "<scanAnnotatedClasses" ) );
-        assertTrue( xml.contains( "hello" ) );
-        assertTrue( xml.endsWith( ">" ) );
+        scoreDirectorFactoryConfig.setKSessionName("hello");
+        config.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig);
+        String xml = configPersistence.toXML(config);
+        assertNotNull(xml);
+        assertTrue(xml.startsWith("<solver"));
+        assertTrue(xml.contains("<scanAnnotatedClasses"));
+        assertTrue(xml.contains("hello"));
+        assertTrue(xml.endsWith(">"));
     }
 
     @Test
     public void terminationIsNotEmpty() throws Exception {
 
-        SolverConfigModel solverConfigModel = configPersistence.toConfig( "<solver  />" );
+        SolverConfigModel solverConfigModel = configPersistence.toConfig("<solver  />");
 
-        assertNotNull( solverConfigModel.getTermination() );
+        assertNotNull(solverConfigModel.getTermination());
     }
 
     @Test
     public void scoreDirectorFactoryConfigIsNotEmpty() throws Exception {
 
-        SolverConfigModel solverConfigModel = configPersistence.toConfig( "<solver />" );
+        SolverConfigModel solverConfigModel = configPersistence.toConfig("<solver />");
 
-        assertNotNull( solverConfigModel.getScoreDirectorFactoryConfig() );
+        assertNotNull(solverConfigModel.getScoreDirectorFactoryConfig());
     }
 
     @Test
     public void fromFile() throws Exception {
-        SolverConfigModel config = configPersistence.toConfig( loadResource( "solver.xml" ) );
+        SolverConfigModel config = configPersistence.toConfig(loadResource("solver.xml"));
 
-        assertNotNull( config );
+        assertNotNull(config);
 
-        assertEquals( "testdataKsession",
-                      config.getScoreDirectorFactoryConfig().getKSessionName() );
+        assertEquals("testdataKsession",
+                     config.getScoreDirectorFactoryConfig().getKSessionName());
 
-        assertEquals( Long.valueOf( 30 ),
-                      config.getTermination().getSecondsSpentLimit() );
+        assertEquals(Long.valueOf(30),
+                     config.getTermination().getSecondsSpentLimit());
     }
 
     @Test
     public void fromFileNoKSessionName() throws Exception {
-        SolverConfigModel config = configPersistence.toConfig( loadResource( "ksessionNameNull.solver.xml" ) );
+        SolverConfigModel config = configPersistence.toConfig(loadResource("ksessionNameNull.solver.xml"));
 
-        assertNotNull( config );
+        assertNotNull(config);
 
-        assertEquals( null,
-                      config.getScoreDirectorFactoryConfig().getKSessionName() );
+        assertEquals(null,
+                     config.getScoreDirectorFactoryConfig().getKSessionName());
 
-        assertEquals( Long.valueOf( 30 ),
-                      config.getTermination().getSecondsSpentLimit() );
+        assertEquals(Long.valueOf(30),
+                     config.getTermination().getSecondsSpentLimit());
     }
-
-
 }

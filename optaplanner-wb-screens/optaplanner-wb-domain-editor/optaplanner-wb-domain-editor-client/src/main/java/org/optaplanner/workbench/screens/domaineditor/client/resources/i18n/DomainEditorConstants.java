@@ -23,33 +23,33 @@ import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
  */
 public interface DomainEditorConstants {
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerDomainScreenName = "PlannerDomainScreen.name";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerDataObjectEditorComparatorDefinitionProcessingFailed = "PlannerDataObjectEditor.ComparatorDefinitionProcessingFailed";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerDataObjectEditorViewImplPlanningSolutionHelpIconContent = "PlannerDataObjectEditorViewImpl.PlanningSolutionHelpIconContent";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorMultiplePlanningSolutionsToBeCreated = "PlannerCheckTranslator.MultiplePlanningSolutionsToBeCreated";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalToBeDeleted = "PlannerCheckTranslator.ScoreHolderGlobalToBeDeleted";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalToBeChanged = "PlannerCheckTranslator.ScoreHolderGlobalToBeChanged";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalTypeNotRecognized = "PlannerCheckTranslator.ScoreHolderGlobalTypeNotRecognized";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalFileToBeRemovedMessage = "PlannerCheckTranslator.ScoreHolderGlobalFileToBeRemovedMessage";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorScoreHolderGlobalToBeDefinedManuallyMessage = "PlannerCheckTranslator.ScoreHolderGlobalToBeDefinedManuallyMessage";
 
-    @TranslationKey( defaultValue = "")
+    @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorPlanningScoreToBeDeletedMessage = "PlannerCheckTranslator.PlanningScoreToBeDeletedMessage";
 }

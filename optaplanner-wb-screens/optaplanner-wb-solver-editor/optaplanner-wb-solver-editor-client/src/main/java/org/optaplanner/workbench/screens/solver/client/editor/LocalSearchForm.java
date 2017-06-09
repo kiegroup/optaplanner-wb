@@ -36,54 +36,54 @@ public class LocalSearchForm implements IsElement {
 
     private PhaseConfigForm phaseConfigForm;
 
-    private SolverEditorLookupConstants solverEditorLookupConstants = GWT.create( SolverEditorLookupConstants.class );
+    private SolverEditorLookupConstants solverEditorLookupConstants = GWT.create(SolverEditorLookupConstants.class);
 
     @Inject
-    public LocalSearchForm( final LocalSearchFormView view ) {
+    public LocalSearchForm(final LocalSearchFormView view) {
         this.view = view;
-        view.setPresenter( this );
+        view.setPresenter(this);
         initLocalSearchTypeSelectOptions();
     }
 
     private void initLocalSearchTypeSelectOptions() {
         List<Pair<String, String>> localSearchTypeOptions = new ArrayList<>();
-        for ( LocalSearchType localSearchType : LocalSearchType.values() ) {
+        for (LocalSearchType localSearchType : LocalSearchType.values()) {
             // TODO Remove once PLANNER-780 is resolved
-            if ( LocalSearchType.SIMULATED_ANNEALING == localSearchType ) {
+            if (LocalSearchType.SIMULATED_ANNEALING == localSearchType) {
                 continue;
             }
 
-            Pair<String, String> option = new Pair<>( solverEditorLookupConstants.getString( localSearchType.name() ),
-                                                      localSearchType.name() );
-            localSearchTypeOptions.add( option );
+            Pair<String, String> option = new Pair<>(solverEditorLookupConstants.getString(localSearchType.name()),
+                                                     localSearchType.name());
+            localSearchTypeOptions.add(option);
         }
-        view.initLocalSearchTypeSelectOptions( localSearchTypeOptions );
+        view.initLocalSearchTypeSelectOptions(localSearchTypeOptions);
     }
 
-    public void setPhaseConfigForm( PhaseConfigForm phaseConfigForm ) {
+    public void setPhaseConfigForm(PhaseConfigForm phaseConfigForm) {
         this.phaseConfigForm = phaseConfigForm;
     }
 
-    public void onLocalSearchTypeSelected( final String localSearchType ) {
-        model.setLocalSearchType( LocalSearchType.valueOf( localSearchType ) );
+    public void onLocalSearchTypeSelected(final String localSearchType) {
+        model.setLocalSearchType(LocalSearchType.valueOf(localSearchType));
     }
 
     public void onLocalSearchRemoved() {
-        phaseConfigForm.removeLocalSearch( this );
+        phaseConfigForm.removeLocalSearch(this);
     }
 
     public LocalSearchPhaseConfigModel getModel() {
         return model;
     }
 
-    public void setModel( LocalSearchPhaseConfigModel model ) {
+    public void setModel(LocalSearchPhaseConfigModel model) {
         this.model = model;
 
-        if ( model.getLocalSearchType() == null ) {
-            model.setLocalSearchType( LocalSearchType.LATE_ACCEPTANCE );
+        if (model.getLocalSearchType() == null) {
+            model.setLocalSearchType(LocalSearchType.LATE_ACCEPTANCE);
         }
 
-        view.setSelectedLocalSearchType( model.getLocalSearchType().name() );
+        view.setSelectedLocalSearchType(model.getLocalSearchType().name());
     }
 
     @Override

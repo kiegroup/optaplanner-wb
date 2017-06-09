@@ -178,7 +178,8 @@ public class PlannerDataObjectEditorViewImpl
 
     @Override
     public void initPlanningSolutionScoreTypeOptions(List<Pair<String, String>> optionPairs) {
-        planningSolutionScoreTypeSelector.add(createOption(Pair.newPair("-", "")));
+        planningSolutionScoreTypeSelector.add(createOption(Pair.newPair("-",
+                                                                        "")));
         for (Pair<String, String> optionPair : optionPairs) {
             Option option = createOption(optionPair);
             planningSolutionScoreTypeSelector.add(option);

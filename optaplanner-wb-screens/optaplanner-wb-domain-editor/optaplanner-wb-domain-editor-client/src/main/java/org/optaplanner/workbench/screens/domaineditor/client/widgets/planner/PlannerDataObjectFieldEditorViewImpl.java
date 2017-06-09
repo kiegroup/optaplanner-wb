@@ -69,13 +69,13 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void init( Presenter presenter ) {
+    public void init(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void setValueRangeProviderValue( boolean value ) {
-        valueRangeProviderCheckBox.setChecked( value );
+    public void setValueRangeProviderValue(boolean value) {
+        valueRangeProviderCheckBox.setChecked(value);
     }
 
     @Override
@@ -84,13 +84,13 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void enableValueRangeProviderId( boolean enabled ) {
-        valueRangeProviderIdTextBox.setEnabled( enabled );
+    public void enableValueRangeProviderId(boolean enabled) {
+        valueRangeProviderIdTextBox.setEnabled(enabled);
     }
 
     @Override
-    public void setValueRangeProviderIdValue( String value ) {
-        valueRangeProviderIdTextBox.setValue( value );
+    public void setValueRangeProviderIdValue(String value) {
+        valueRangeProviderIdTextBox.setValue(value);
     }
 
     @Override
@@ -99,8 +99,8 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void setPlanningVariableValue( boolean value ) {
-        planningVariableCheckBox.setChecked( value );
+    public void setPlanningVariableValue(boolean value) {
+        planningVariableCheckBox.setChecked(value);
     }
 
     @Override
@@ -109,13 +109,13 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void enableValueRangeProviderRefs( boolean enabled ) {
-        valueRangeProviderRefsTextBox.setEnabled( enabled );
+    public void enableValueRangeProviderRefs(boolean enabled) {
+        valueRangeProviderRefsTextBox.setEnabled(enabled);
     }
 
     @Override
-    public void setValueRangeProviderRefsValue( String value ) {
-        valueRangeProviderRefsTextBox.setValue( value );
+    public void setValueRangeProviderRefsValue(String value) {
+        valueRangeProviderRefsTextBox.setValue(value);
     }
 
     public String getValueRangeProviderRefsValue() {
@@ -123,51 +123,50 @@ public class PlannerDataObjectFieldEditorViewImpl
     }
 
     @Override
-    public void showPlanningSolutionSettingsPanel( boolean show ) {
-        planningSolutionSettingsPanelDiv.setHidden( !show );
+    public void showPlanningSolutionSettingsPanel(boolean show) {
+        planningSolutionSettingsPanelDiv.setHidden(!show);
     }
 
     @Override
-    public void showPlanningEntitySettingsPanel( boolean show ) {
-        planningEntitySettingsPanelDiv.setHidden( !show );
+    public void showPlanningEntitySettingsPanel(boolean show) {
+        planningEntitySettingsPanelDiv.setHidden(!show);
     }
 
     @Override
-    public void showPlanningFieldPropertiesNotAvailable( boolean show ) {
-        planningFieldPropertiesNotAvailablePanelDiv.setHidden( !show );
+    public void showPlanningFieldPropertiesNotAvailable(boolean show) {
+        planningFieldPropertiesNotAvailablePanelDiv.setHidden(!show);
     }
 
     @Override
     public void clear() {
-        showPlanningEntitySettingsPanel( false );
-        showPlanningSolutionSettingsPanel( false );
-        showPlanningSolutionSettingsPanel( false );
-        setValueRangeProviderValue( false );
-        setValueRangeProviderIdValue( null );
-        enableValueRangeProviderId( false );
-        setPlanningVariableValue( false );
-        setValueRangeProviderRefsValue( null );
-        enableValueRangeProviderRefs( false );
+        showPlanningEntitySettingsPanel(false);
+        showPlanningSolutionSettingsPanel(false);
+        showPlanningSolutionSettingsPanel(false);
+        setValueRangeProviderValue(false);
+        setValueRangeProviderIdValue(null);
+        enableValueRangeProviderId(false);
+        setPlanningVariableValue(false);
+        setValueRangeProviderRefsValue(null);
+        enableValueRangeProviderRefs(false);
     }
 
     @EventHandler("valueRangeProviderCheckBox")
-    void onValueRangeProviderChange( ClickEvent event ) {
+    void onValueRangeProviderChange(ClickEvent event) {
         presenter.onValueRangeProviderChange();
     }
 
     @EventHandler("valueRangeProviderIdTextBox")
-    void onValueRangeProviderId( ChangeEvent event ) {
+    void onValueRangeProviderId(ChangeEvent event) {
         presenter.onValueRangeProviderIdChange();
     }
 
     @EventHandler("planningVariableCheckBox")
-    void onPlanningVariableChange( ClickEvent event ) {
+    void onPlanningVariableChange(ClickEvent event) {
         presenter.onPlanningVariableChange();
     }
 
     @EventHandler("valueRangeProviderRefsTextBox")
-    void onValueRangeProviderRefs( ChangeEvent event ) {
+    void onValueRangeProviderRefs(ChangeEvent event) {
         presenter.onValueRangeProviderRefsChange();
     }
-
 }

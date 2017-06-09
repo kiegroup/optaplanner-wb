@@ -43,8 +43,8 @@ public interface SolverEditorService
         SupportsCopy,
         SupportsRename {
 
-    SolverModelContent loadContent( final Path path );
+    SolverModelContent loadContent(final Path path);
 
-    List<ValidationMessage> smokeTest( final Path path, final SolverConfigModel config);
-
+    List<ValidationMessage> smokeTest(final Path path,
+                                      final SolverConfigModel config);
 }

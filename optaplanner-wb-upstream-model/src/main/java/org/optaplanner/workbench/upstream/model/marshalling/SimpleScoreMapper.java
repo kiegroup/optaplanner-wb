@@ -27,17 +27,26 @@ import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 public class SimpleScoreMapper extends MappingDefinition {
 
     public SimpleScoreMapper() throws NoSuchMethodException {
-        super( SimpleScore.class );
+        super(SimpleScore.class);
 
         SimpleFactoryMapping factoryMapping = new SimpleFactoryMapping();
-        factoryMapping.setMethod( new JavaReflectionMethod( SimpleScore.class.getMethod( "valueOfUninitialized", int.class, int.class ) ) );
-        factoryMapping.mapParmToIndex( "initScore", 0, int.class );
-        factoryMapping.mapParmToIndex( "score", 1, int.class );
+        factoryMapping.setMethod(new JavaReflectionMethod(SimpleScore.class.getMethod("valueOfUninitialized",
+                                                                                      int.class,
+                                                                                      int.class)));
+        factoryMapping.mapParmToIndex("initScore",
+                                      0,
+                                      int.class);
+        factoryMapping.mapParmToIndex("score",
+                                      1,
+                                      int.class);
 
-        setInstantiationMapping( factoryMapping );
+        setInstantiationMapping(factoryMapping);
 
-        addMemberMapping( new ReadMapping( "initScore", int.class, "getInitScore" ) );
-        addMemberMapping( new ReadMapping( "score", int.class, "getScore" ) );
+        addMemberMapping(new ReadMapping("initScore",
+                                         int.class,
+                                         "getInitScore"));
+        addMemberMapping(new ReadMapping("score",
+                                         int.class,
+                                         "getScore"));
     }
-
 }

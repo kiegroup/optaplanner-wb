@@ -26,9 +26,10 @@ public interface DataObjectFieldPickerItemView extends IsWidget {
 
     interface Presenter {
 
-        void onFieldAdded( ObjectProperty field, boolean notify );
+        void onFieldAdded(ObjectProperty field,
+                          boolean notify);
 
-        void onFieldRemoved( ObjectProperty objectProperty );
+        void onFieldRemoved(ObjectProperty objectProperty);
 
         void onRootLabelRemoved();
 
@@ -36,26 +37,25 @@ public interface DataObjectFieldPickerItemView extends IsWidget {
 
         void onMoveFieldItemDown();
 
-        void onOrderSelectValueChange( boolean descending, boolean notify );
+        void onOrderSelectValueChange(boolean descending,
+                                      boolean notify);
 
-        void setFieldPickerItemIndex( int index );
-
+        void setFieldPickerItemIndex(int index);
     }
 
-    void setPresenter( Presenter presenter );
+    void setPresenter(Presenter presenter);
 
-    void initSelectFieldDropdownOptions( List<ObjectProperty> options );
+    void initSelectFieldDropdownOptions(List<ObjectProperty> options);
 
-    void addRootItem( DataObject rootDataObject );
+    void addRootItem(DataObject rootDataObject);
 
-    void addFieldItem( ObjectProperty objectProperty );
+    void addFieldItem(ObjectProperty objectProperty);
 
     void removeLastFieldItem();
 
-    void displaySelectFieldButton( boolean display );
+    void displaySelectFieldButton(boolean display);
 
-    void setOrderSelectDescendingValue( boolean descending );
+    void setOrderSelectDescendingValue(boolean descending);
 
-    void setFieldPickerItemIndex( int index );
-
+    void setFieldPickerItemIndex(int index);
 }

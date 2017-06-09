@@ -20,26 +20,39 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 public interface SolverEditorLookupConstants extends ConstantsWithLookup {
 
-    SolverEditorLookupConstants INSTANCE = GWT.create( SolverEditorLookupConstants.class );
+    SolverEditorLookupConstants INSTANCE = GWT.create(SolverEditorLookupConstants.class);
 
     String FIRST_FIT();
+
     String FIRST_FIT_DECREASING();
+
     String WEAKEST_FIT();
+
     String WEAKEST_FIT_DECREASING();
+
     String STRONGEST_FIT();
+
     String STRONGEST_FIT_DECREASING();
+
     String ALLOCATE_ENTITY_FROM_QUEUE();
+
     String ALLOCATE_TO_VALUE_FROM_QUEUE();
+
     String CHEAPEST_INSERTION();
+
     String ALLOCATE_FROM_POOL();
 
     String NONE();
+
     String DECREASING_DIFFICULTY();
+
     String DECREASING_DIFFICULTY_IF_AVAILABLE();
 
     String HILL_CLIMBING();
-    String TABU_SEARCH();
-    String SIMULATED_ANNEALING();
-    String LATE_ACCEPTANCE();
 
+    String TABU_SEARCH();
+
+    String SIMULATED_ANNEALING();
+
+    String LATE_ACCEPTANCE();
 }

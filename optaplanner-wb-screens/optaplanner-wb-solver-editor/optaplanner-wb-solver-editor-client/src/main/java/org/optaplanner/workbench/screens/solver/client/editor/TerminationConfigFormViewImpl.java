@@ -41,20 +41,20 @@ public class TerminationConfigFormViewImpl
     }
 
     @Inject
-    public TerminationConfigFormViewImpl( final Tree tree ) {
+    public TerminationConfigFormViewImpl(final Tree tree) {
         this.tree = tree;
-        this.tree.setStyleName( SolverEditorResources.INSTANCE.CSS().terminationTree() );
+        this.tree.setStyleName(SolverEditorResources.INSTANCE.CSS().terminationTree());
     }
 
     @Override
-    public void initTree( TreeItem rootTreeItem ) {
+    public void initTree(TreeItem rootTreeItem) {
         this.tree.clear();
-        this.tree.addItem( rootTreeItem );
+        this.tree.addItem(rootTreeItem);
     }
 
     @Override
-    public void displayEmptyTreeLabel( boolean visible ) {
-        emptyTreeLabel.setHidden( !visible );
+    public void displayEmptyTreeLabel(boolean visible) {
+        emptyTreeLabel.setHidden(!visible);
     }
 
     public void refreshTree() {
@@ -66,5 +66,4 @@ public class TerminationConfigFormViewImpl
         $wnd.jQuery("#tree div:has(> table)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
         $wnd.jQuery("#tree div:has(> div.gwt-TreeItem)").not(':last-child').css("border-bottom", "1px solid #e5e5e5");
     }-*/;
-
 }

@@ -24,31 +24,30 @@ public interface DataObjectFieldPickerView extends IsWidget {
 
         DataObjectFieldPickerItem addFieldPickerItem();
 
-        void onFieldPickerItemRemoved( DataObjectFieldPickerItem fieldPickerItem );
+        void onFieldPickerItemRemoved(DataObjectFieldPickerItem fieldPickerItem);
 
-        void onMoveFieldPickerItemUp( DataObjectFieldPickerItem fieldPickerItem );
+        void onMoveFieldPickerItemUp(DataObjectFieldPickerItem fieldPickerItem);
 
-        void onMoveFieldPickerItemDown( DataObjectFieldPickerItem fieldPickerItem );
+        void onMoveFieldPickerItemDown(DataObjectFieldPickerItem fieldPickerItem);
 
-        void onComparatorSpecified( boolean specified );
+        void onComparatorSpecified(boolean specified);
     }
 
-    void setPresenter( Presenter presenter );
+    void setPresenter(Presenter presenter);
 
-    void addFieldPickerItem( DataObjectFieldPickerItem fieldPickerItem );
+    void addFieldPickerItem(DataObjectFieldPickerItem fieldPickerItem);
 
-    void removeFieldPickerItem( int position );
+    void removeFieldPickerItem(int position);
 
-    void displayFieldPicker( boolean display );
+    void displayFieldPicker(boolean display);
 
-    void displayComparatorCheckbox( boolean display );
+    void displayComparatorCheckbox(boolean display);
 
-    void setComparatorCheckboxValue( boolean checked );
+    void setComparatorCheckboxValue(boolean checked);
 
     void clear();
 
-    void moveFieldItemUp( int currentPosition );
+    void moveFieldItemUp(int currentPosition);
 
-    void moveFieldItemDown( int currentPosition );
-
+    void moveFieldItemDown(int currentPosition);
 }

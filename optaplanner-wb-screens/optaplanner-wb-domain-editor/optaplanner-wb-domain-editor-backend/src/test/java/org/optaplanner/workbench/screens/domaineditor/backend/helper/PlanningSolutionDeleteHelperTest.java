@@ -56,37 +56,37 @@ public class PlanningSolutionDeleteHelperTest {
 
     @Before
     public void setUp() {
-        deleteHelper = new PlanningSolutionDeleteHelper( ioService,
-                                                         dataModelerService,
-                                                         kieProjectService );
+        deleteHelper = new PlanningSolutionDeleteHelper(ioService,
+                                                        dataModelerService,
+                                                        kieProjectService);
     }
 
     @Test
     public void postProcess() {
-        Path sourcePath = PathFactory.newPath( "TestSource.java",
-                                               "file:///dataObjects" );
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
 
-        when( ioService.readAllString( Paths.convert( sourcePath ) ) ).thenReturn( "test source" );
+        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
 
-        DataObject dataObject = new DataObjectImpl( "test",
-                                                    "TestSource" );
-        dataObject.addAnnotation( new AnnotationImpl( DriverUtils.buildAnnotationDefinition( PlanningSolution.class ) ) );
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "TestSource");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
         GenerationResult generationResult = new GenerationResult();
-        generationResult.setDataObject( dataObject );
-        when( dataModelerService.loadDataObject( any(),
-                                                 anyString(),
-                                                 any() ) ).thenReturn( generationResult );
+        generationResult.setDataObject(dataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
 
-        Package _package = mock( Package.class );
-        when( _package.getPackageMainResourcesPath() ).thenReturn( PathFactory.newPath( "dataObjects",
-                                                                                        "file:///dataObjects" ) );
-        when( kieProjectService.resolvePackage( sourcePath ) ).thenReturn( _package );
+        Package _package = mock(Package.class);
+        when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
+                                                                                    "file:///dataObjects"));
+        when(kieProjectService.resolvePackage(sourcePath)).thenReturn(_package);
 
-        when( ioService.exists( any() ) ).thenReturn( true );
+        when(ioService.exists(any())).thenReturn(true);
 
-        deleteHelper.postProcess( sourcePath );
+        deleteHelper.postProcess(sourcePath);
 
-        verify( ioService,
-                times( 1 ) ).deleteIfExists( any( org.uberfire.java.nio.file.Path.class ) );
+        verify(ioService,
+               times(1)).deleteIfExists(any(org.uberfire.java.nio.file.Path.class));
     }
 }

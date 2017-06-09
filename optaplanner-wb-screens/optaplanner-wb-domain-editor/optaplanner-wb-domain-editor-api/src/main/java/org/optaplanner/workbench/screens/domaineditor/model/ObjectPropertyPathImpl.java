@@ -37,12 +37,12 @@ public class ObjectPropertyPathImpl implements ObjectPropertyPath {
     }
 
     @Override
-    public void appendObjectProperty( ObjectProperty objectProperty ) {
-        objectPropertyList.add( objectProperty );
+    public void appendObjectProperty(ObjectProperty objectProperty) {
+        objectPropertyList.add(objectProperty);
     }
 
     @Override
-    public void setDescending( boolean descending ) {
+    public void setDescending(boolean descending) {
         this.descending = descending;
     }
 

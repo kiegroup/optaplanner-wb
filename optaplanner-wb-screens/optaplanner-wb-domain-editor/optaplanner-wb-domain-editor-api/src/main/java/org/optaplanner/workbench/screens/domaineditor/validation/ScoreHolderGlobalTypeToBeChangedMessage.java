@@ -26,7 +26,8 @@ public class ScoreHolderGlobalTypeToBeChangedMessage extends ValidationMessage {
     public ScoreHolderGlobalTypeToBeChangedMessage() {
     }
 
-    public ScoreHolderGlobalTypeToBeChangedMessage( final Level level ) {
-        super( level, null );
+    public ScoreHolderGlobalTypeToBeChangedMessage(final Level level) {
+        super(level,
+              null);
     }
 }

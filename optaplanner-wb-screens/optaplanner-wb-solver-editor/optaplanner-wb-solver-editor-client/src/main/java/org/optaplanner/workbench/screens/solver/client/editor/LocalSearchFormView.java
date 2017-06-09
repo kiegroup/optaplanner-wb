@@ -22,9 +22,9 @@ import org.uberfire.commons.data.Pair;
 
 public interface LocalSearchFormView extends IsElement {
 
-    void setPresenter( final LocalSearchForm presenter );
+    void setPresenter(final LocalSearchForm presenter);
 
-    void initLocalSearchTypeSelectOptions( final List<Pair<String, String>> options );
+    void initLocalSearchTypeSelectOptions(final List<Pair<String, String>> options);
 
-    void setSelectedLocalSearchType( final String localSearchType );
+    void setSelectedLocalSearchType(final String localSearchType);
 }

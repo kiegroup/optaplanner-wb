@@ -24,11 +24,10 @@ public interface SolverEditorResources
         extends
         ClientBundle {
 
-    SolverEditorResources INSTANCE = GWT.create( SolverEditorResources.class );
+    SolverEditorResources INSTANCE = GWT.create(SolverEditorResources.class);
 
     @Source("css/Styles.css")
     StylesCss CSS();
 
     SolverEditorImageResources images();
-
 }

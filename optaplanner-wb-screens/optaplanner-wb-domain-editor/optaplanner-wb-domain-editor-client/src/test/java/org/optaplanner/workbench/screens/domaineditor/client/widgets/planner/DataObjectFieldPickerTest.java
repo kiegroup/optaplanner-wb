@@ -50,75 +50,100 @@ public class DataObjectFieldPickerTest {
 
     @Before
     public void setUp() {
-        fieldPicker = new DataObjectFieldPicker( view, fieldPickerItemProducer );
+        fieldPicker = new DataObjectFieldPicker(view,
+                                                fieldPickerItemProducer);
     }
 
     @Test
     public void setPresenter() {
-        verify( view, times( 1 ) ).setPresenter( fieldPicker );
+        verify(view,
+               times(1)).setPresenter(fieldPicker);
     }
 
     @Test
     public void initWhenComparatorObjectSpecified() {
         initFieldPicker();
-        verify( view, times( 1 ) ).displayComparatorCheckbox( true );
-        verify( view, times( 1 ) ).displayFieldPicker( true );
-        verify( view, times( 1 ) ).setComparatorCheckboxValue( true );
-        verify( view, times( 1 ) ).clear();
+        verify(view,
+               times(1)).displayComparatorCheckbox(true);
+        verify(view,
+               times(1)).displayFieldPicker(true);
+        verify(view,
+               times(1)).setComparatorCheckboxValue(true);
+        verify(view,
+               times(1)).clear();
     }
 
     @Test
     public void initWhenComparatorObjectNotSpecified() {
-        fieldPicker.init( mock( DataModel.class ), mock( DataObject.class ), null, editor );
-        verify( view, times( 1 ) ).displayComparatorCheckbox( true );
-        verify( view, times( 0 ) ).displayFieldPicker( anyBoolean() );
-        verify( view, times( 0 ) ).setComparatorCheckboxValue( anyBoolean() );
-        verify( view, times( 1 ) ).clear();
+        fieldPicker.init(mock(DataModel.class),
+                         mock(DataObject.class),
+                         null,
+                         editor);
+        verify(view,
+               times(1)).displayComparatorCheckbox(true);
+        verify(view,
+               times(0)).displayFieldPicker(anyBoolean());
+        verify(view,
+               times(0)).setComparatorCheckboxValue(anyBoolean());
+        verify(view,
+               times(1)).clear();
     }
 
     @Test
     public void addFieldPickerItem() {
         initFieldPicker();
-        when( fieldPickerItemProducer.get() ).thenReturn( mock( DataObjectFieldPickerItem.class ) );
+        when(fieldPickerItemProducer.get()).thenReturn(mock(DataObjectFieldPickerItem.class));
         fieldPicker.addFieldPickerItem();
-        verify( view, times( 1 ) ).addFieldPickerItem( any( DataObjectFieldPickerItem.class ) );
+        verify(view,
+               times(1)).addFieldPickerItem(any(DataObjectFieldPickerItem.class));
     }
 
     @Test
     public void onFieldPickerItemRemoved() {
         initFieldPicker();
-        DataObjectFieldPickerItem item = new DataObjectFieldPickerItem( mock( DataObjectFieldPickerItemView.class ) );
-        when( fieldPickerItemProducer.get() ).thenReturn( item );
+        DataObjectFieldPickerItem item = new DataObjectFieldPickerItem(mock(DataObjectFieldPickerItemView.class));
+        when(fieldPickerItemProducer.get()).thenReturn(item);
         fieldPicker.addFieldPickerItem();
 
-        fieldPicker.onFieldPickerItemRemoved( item );
-        verify( view, times( 1 ) ).removeFieldPickerItem( anyInt() );
-        verify( editor, times( 1 ) ).objectPropertyPathChanged( anyList(), eq( true ) );
+        fieldPicker.onFieldPickerItemRemoved(item);
+        verify(view,
+               times(1)).removeFieldPickerItem(anyInt());
+        verify(editor,
+               times(1)).objectPropertyPathChanged(anyList(),
+                                                   eq(true));
     }
 
     @Test
     public void onMoveFieldPickerItemUp() {
         initFieldPicker();
-        fieldPicker.onMoveFieldPickerItemUp( any( DataObjectFieldPickerItem.class ) );
-        verify( view, times( 1 ) ).moveFieldItemUp( anyInt() );
+        fieldPicker.onMoveFieldPickerItemUp(any(DataObjectFieldPickerItem.class));
+        verify(view,
+               times(1)).moveFieldItemUp(anyInt());
     }
 
     @Test
     public void onMoveFieldPickerItemDown() {
         initFieldPicker();
-        fieldPicker.onMoveFieldPickerItemDown( any( DataObjectFieldPickerItem.class ) );
-        verify( view, times( 1 ) ).moveFieldItemDown( anyInt() );
+        fieldPicker.onMoveFieldPickerItemDown(any(DataObjectFieldPickerItem.class));
+        verify(view,
+               times(1)).moveFieldItemDown(anyInt());
     }
 
     @Test
     public void destroy() {
         fieldPicker.destroy();
-        verify( view, times( 1 ) ).displayFieldPicker( false );
-        verify( view, times( 1 ) ).displayComparatorCheckbox( false );
-        verify( view, times( 1 ) ).clear();
+        verify(view,
+               times(1)).displayFieldPicker(false);
+        verify(view,
+               times(1)).displayComparatorCheckbox(false);
+        verify(view,
+               times(1)).clear();
     }
 
     private void initFieldPicker() {
-        fieldPicker.init( mock( DataModel.class ), mock( DataObject.class ), Collections.EMPTY_LIST, editor );
+        fieldPicker.init(mock(DataModel.class),
+                         mock(DataObject.class),
+                         Collections.EMPTY_LIST,
+                         editor);
     }
 }
