@@ -15,7 +15,8 @@
  */
 package org.optaplanner.workbench.screens.solver.client;
 
-import org.jboss.errai.ioc.client.api.AfterInitialization;
+import javax.annotation.PostConstruct;
+
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
@@ -24,7 +25,7 @@ import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorRes
 @Bundle("resources/i18n/SolverEditorConstants.properties")
 public class SolverEditorEntryPoint {
 
-    @AfterInitialization
+    @PostConstruct
     public void startApp() {
         SolverEditorResources.INSTANCE.CSS().ensureInjected();
     }

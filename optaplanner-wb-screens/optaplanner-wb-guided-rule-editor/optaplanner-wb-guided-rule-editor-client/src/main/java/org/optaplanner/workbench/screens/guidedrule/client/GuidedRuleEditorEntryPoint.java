@@ -16,7 +16,8 @@
 
 package org.optaplanner.workbench.screens.guidedrule.client;
 
-import org.jboss.errai.ioc.client.api.AfterInitialization;
+import javax.annotation.PostConstruct;
+
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleEditorResources;
@@ -25,7 +26,7 @@ import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleE
 @Bundle("resources/i18n/GuidedRuleEditorConstants.properties")
 public class GuidedRuleEditorEntryPoint {
 
-    @AfterInitialization
+    @PostConstruct
     public void startApp() {
         GuidedRuleEditorResources.INSTANCE.css().ensureInjected();
     }
