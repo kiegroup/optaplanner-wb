@@ -18,14 +18,13 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
 
 public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
-    private TextBox constraintMatchTextBox = new TextBox();
+    private ConstraintMatchInputWidget constraintMatchInputWidget;
 
     public ConstraintMatchRuleModellerWidget(final RuleModeller mod,
                                              final EventBus eventBus,
@@ -36,6 +35,13 @@ public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRu
         super(mod,
               eventBus,
               translationService);
+
+        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch,
+                                                                    translationService);
+        constraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
+        constraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch));
 
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
@@ -54,18 +60,13 @@ public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRu
     private HorizontalPanel createConstraintMatchPanel(final AbstractActionConstraintMatch actionConstraintMatch) {
         HorizontalPanel constraintMatchPanel = new HorizontalPanel();
 
-        constraintMatchTextBox.setValue(actionConstraintMatch.getConstraintMatch() == null ? "" : actionConstraintMatch.getConstraintMatch());
-        constraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.setConstraintMatch(s.getValue()));
-        constraintMatchTextBox.setEnabled(false);
-        constraintMatchTextBox.setWidth("100%");
-
         constraintMatchPanel.setWidth("100%");
-        constraintMatchPanel.add(constraintMatchTextBox);
+        constraintMatchPanel.add(constraintMatchInputWidget);
 
         return constraintMatchPanel;
     }
 
     public void scoreHolderGlobalLoadedCorrectly() {
-        constraintMatchTextBox.setEnabled(true);
+        constraintMatchInputWidget.setEnabled(true);
     }
 }

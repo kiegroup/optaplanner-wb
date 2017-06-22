@@ -23,9 +23,9 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleEditorResources;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
@@ -36,11 +36,11 @@ import org.uberfire.client.views.pfly.widgets.HelpIcon;
 
 public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
-    private List<TextBox> hardConstraintMatchTextBoxes = new ArrayList<>();
+    private List<ConstraintMatchInputWidget> hardConstraintMatchInputWidgets = new ArrayList<>();
 
     private List<HelpIcon> hardConstraintMatchHelpIcons = new ArrayList<>();
 
-    private List<TextBox> softConstraintMatchTextBoxes = new ArrayList<>();
+    private List<ConstraintMatchInputWidget> softConstraintMatchInputWidgets = new ArrayList<>();
 
     private List<HelpIcon> softConstraintMatchHelpIcons = new ArrayList<>();
 
@@ -70,7 +70,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
                 HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScore),
                                                                                    i,
                                                                                    hardConstraintMatchHelpIcons,
-                                                                                   hardConstraintMatchTextBoxes,
+                                                                                   hardConstraintMatchInputWidgets,
                                                                                    actionConstraintMatch.getActionBendableHardConstraintMatches().get(i));
                 hardScorePanel.add(horizontalPanel);
             }
@@ -87,7 +87,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
                 HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScore),
                                                                                    i,
                                                                                    softConstraintMatchHelpIcons,
-                                                                                   softConstraintMatchTextBoxes,
+                                                                                   softConstraintMatchInputWidgets,
                                                                                    actionConstraintMatch.getActionBendableSoftConstraintMatches().get(i));
                 softScorePanel.add(horizontalPanel);
             }
@@ -102,7 +102,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
     private HorizontalPanel createBendableConstraintMatchRow(final String labelText,
                                                              final int index,
                                                              final List<HelpIcon> hardConstraintMatchHelpIcons,
-                                                             final List<TextBox> hardConstraintMatchTextBoxes,
+                                                             final List<ConstraintMatchInputWidget> constraintMatchInputWidgets,
                                                              final AbstractActionBendableConstraintMatch constraintMatch) {
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
@@ -129,14 +129,15 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
         horizontalPanel.add(selectPanel);
 
-        TextBox constraintMatchTextBox = new TextBox();
-        hardConstraintMatchTextBoxes.add(constraintMatchTextBox);
-        constraintMatchTextBox.setValue(constraintMatch.getConstraintMatch() == null ? "" : constraintMatch.getConstraintMatch());
-        constraintMatchTextBox.addValueChangeHandler(c -> constraintMatch.setConstraintMatch(c.getValue()));
-        constraintMatchTextBox.setEnabled(false);
-        constraintMatchTextBox.setWidth("100%");
+        ConstraintMatchInputWidget constraintMatchInputWidget = new ConstraintMatchInputWidget(constraintMatch,
+                                                                                               translationService);
+        constraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
+        constraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(constraintMatch));
+        constraintMatchInputWidgets.add(constraintMatchInputWidget);
 
-        horizontalPanel.add(constraintMatchTextBox);
+        horizontalPanel.add(constraintMatchInputWidget);
         horizontalPanel.setCellWidth(labelPanel,
                                      "150px");
         horizontalPanel.setCellWidth(selectPanel,
@@ -151,15 +152,15 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
     @Override
     public void scoreHolderGlobalLoadedCorrectly() {
-        if (hardConstraintMatchTextBoxes != null) {
-            for (TextBox hardConstraintMatchTextBox : hardConstraintMatchTextBoxes) {
-                hardConstraintMatchTextBox.setEnabled(true);
+        if (hardConstraintMatchInputWidgets != null) {
+            for (ConstraintMatchInputWidget hardConstraintMatchInputWidget : hardConstraintMatchInputWidgets) {
+                hardConstraintMatchInputWidget.setEnabled(true);
             }
         }
 
-        if (softConstraintMatchTextBoxes != null) {
-            for (TextBox softConstraintMatchTextBox : softConstraintMatchTextBoxes) {
-                softConstraintMatchTextBox.setEnabled(true);
+        if (softConstraintMatchInputWidgets != null) {
+            for (ConstraintMatchInputWidget softConstraintMatchInputWidget : softConstraintMatchInputWidgets) {
+                softConstraintMatchInputWidget.setEnabled(true);
             }
         }
     }

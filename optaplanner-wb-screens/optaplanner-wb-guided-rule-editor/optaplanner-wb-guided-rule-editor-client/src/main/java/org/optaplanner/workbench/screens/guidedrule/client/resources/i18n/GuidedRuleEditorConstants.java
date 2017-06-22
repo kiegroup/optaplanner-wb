@@ -63,6 +63,9 @@ public interface GuidedRuleEditorConstants {
     String RuleModellerActionPluginAmbigiousConstraintMatchesDetected = "RuleModellerActionPlugin.AmbigiousConstraintMatchesDetected";
 
     @TranslationKey(defaultValue = "")
+    String RuleModellerActionPluginEmptyValuesAreNotAllowedForModifyScore = "RuleModellerActionPlugin.EmptyValuesAreNotAllowedForModifyScore";
+
+    @TranslationKey(defaultValue = "")
     String ActionPluginClientServiceScoreHolderGlobalNotFound = "ActionPluginClientService.ScoreHolderGlobalNotFound";
 
     @TranslationKey(defaultValue = "")
