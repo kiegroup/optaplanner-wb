@@ -19,19 +19,21 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
+
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionBendableConstraintMatch;
 import org.uberfire.client.views.pfly.widgets.HelpIcon;
+import org.uberfire.ext.widgets.common.client.common.NumericIntegerTextBox;
 
 public class BendableConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
     private AbstractActionBendableConstraintMatch actionConstraintMatch;
 
-    private TextBox constraintMatchTextBox = new TextBox();
+    private TextBox constraintMatchTextBox = new NumericIntegerTextBox(false);
 
-    private TextBox constraintLevelTextBox = new TextBox();
+    private TextBox constraintLevelTextBox = new NumericIntegerTextBox(false);
 
     private HelpIcon constraintLevelSelectHelpIcon = new HelpIcon();
 
@@ -86,6 +88,8 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
 
         selectPanel.add(constraintLevelSelectHelpIcon);
 
+        actionConstraintMatch.setPosition(Integer.parseInt(constraintLevelTextBox.getValue()));
+
         return selectPanel;
     }
 
@@ -99,6 +103,8 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
 
         constraintMatchPanel.setWidth("100%");
         constraintMatchPanel.add(constraintMatchTextBox);
+
+        actionConstraintMatch.setConstraintMatch(constraintMatchTextBox.getValue());
 
         return constraintMatchPanel;
     }

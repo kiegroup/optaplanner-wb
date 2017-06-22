@@ -18,14 +18,15 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
+import org.uberfire.ext.widgets.common.client.common.NumericIntegerTextBox;
 
 public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
-    private TextBox constraintMatchTextBox = new TextBox();
+    private TextBox constraintMatchTextBox = new NumericIntegerTextBox();
 
     public ConstraintMatchRuleModellerWidget(final RuleModeller mod,
                                              final EventBus eventBus,
@@ -61,6 +62,8 @@ public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRu
 
         constraintMatchPanel.setWidth("100%");
         constraintMatchPanel.add(constraintMatchTextBox);
+
+        actionConstraintMatch.setConstraintMatch(constraintMatchTextBox.getValue());
 
         return constraintMatchPanel;
     }

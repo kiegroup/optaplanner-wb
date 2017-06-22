@@ -23,16 +23,21 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleEditorResources;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionBendableConstraintMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionMultiConstraintBendableMatch;
+import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableBigDecimalMatch;
+import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableLongMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.BendableScoreLevelsWrapper;
 import org.uberfire.client.views.pfly.widgets.HelpIcon;
+import org.uberfire.ext.widgets.common.client.common.NumericBigDecimalTextBox;
+import org.uberfire.ext.widgets.common.client.common.NumericIntegerTextBox;
+import org.uberfire.ext.widgets.common.client.common.NumericLongTextBox;
 
 public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
@@ -44,6 +49,8 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
     private List<HelpIcon> softConstraintMatchHelpIcons = new ArrayList<>();
 
+    private AbstractActionMultiConstraintBendableMatch actionConstraintMatch;
+
     public MultiConstraintBendableMatchRuleModellerWidget(final RuleModeller mod,
                                                           final EventBus eventBus,
                                                           final AbstractActionMultiConstraintBendableMatch actionConstraintMatch,
@@ -52,6 +59,8 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         super(mod,
               eventBus,
               translationService);
+
+        this.actionConstraintMatch = actionConstraintMatch;
 
         VerticalPanel verticalPanel = new VerticalPanel();
 
@@ -101,8 +110,8 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
     private HorizontalPanel createBendableConstraintMatchRow(final String labelText,
                                                              final int index,
-                                                             final List<HelpIcon> hardConstraintMatchHelpIcons,
-                                                             final List<TextBox> hardConstraintMatchTextBoxes,
+                                                             final List<HelpIcon> constraintMatchHelpIcons,
+                                                             final List<TextBox> constraintMatchTextBoxes,
                                                              final AbstractActionBendableConstraintMatch constraintMatch) {
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
@@ -120,7 +129,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         selectPanel.add(constraintLevelTextBox);
 
         HelpIcon constraintLevelSelectHelpIcon = new HelpIcon();
-        hardConstraintMatchHelpIcons.add(constraintLevelSelectHelpIcon);
+        constraintMatchHelpIcons.add(constraintLevelSelectHelpIcon);
         constraintLevelSelectHelpIcon.setVisible(false);
         constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded));
         constraintLevelSelectHelpIcon.getElement().getStyle().setPaddingLeft(5,
@@ -129,8 +138,15 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
         horizontalPanel.add(selectPanel);
 
-        TextBox constraintMatchTextBox = new TextBox();
-        hardConstraintMatchTextBoxes.add(constraintMatchTextBox);
+        TextBox constraintMatchTextBox = null;
+        if (actionConstraintMatch instanceof ActionMultiConstraintBendableBigDecimalMatch) {
+            constraintMatchTextBox = new NumericBigDecimalTextBox(false);
+        } else if ((actionConstraintMatch instanceof ActionMultiConstraintBendableLongMatch)) {
+            constraintMatchTextBox = new NumericLongTextBox(false);
+        } else {
+            constraintMatchTextBox = new NumericIntegerTextBox(false);
+        }
+        constraintMatchTextBoxes.add(constraintMatchTextBox);
         constraintMatchTextBox.setValue(constraintMatch.getConstraintMatch() == null ? "" : constraintMatch.getConstraintMatch());
         constraintMatchTextBox.addValueChangeHandler(c -> constraintMatch.setConstraintMatch(c.getValue()));
         constraintMatchTextBox.setEnabled(false);
@@ -145,6 +161,9 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         horizontalPanel.setStyleName(GuidedRuleEditorResources.INSTANCE.css().multiConstraintMatch());
         horizontalPanel.getElement().getStyle().setWidth(100,
                                                          Style.Unit.PCT);
+
+        constraintMatch.setConstraintMatch(constraintMatchTextBox.getValue());
+        constraintMatch.setPosition(index);
 
         return horizontalPanel;
     }

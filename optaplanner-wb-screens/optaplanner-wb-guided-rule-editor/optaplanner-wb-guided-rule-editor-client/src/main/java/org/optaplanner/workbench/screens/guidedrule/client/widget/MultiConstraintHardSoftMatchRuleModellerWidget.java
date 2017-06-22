@@ -19,18 +19,19 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleEditorResources;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardSoftMatch;
+import org.uberfire.ext.widgets.common.client.common.NumericIntegerTextBox;
 
 public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
-    private TextBox hardConstraintMatchTextBox = new TextBox();
-    private TextBox softConstraintMatchTextBox = new TextBox();
+    private TextBox hardConstraintMatchTextBox = new NumericIntegerTextBox(false);
+    private TextBox softConstraintMatchTextBox = new NumericIntegerTextBox(false);
 
     public MultiConstraintHardSoftMatchRuleModellerWidget(final RuleModeller mod,
                                                           final EventBus eventBus,
@@ -53,12 +54,14 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         hardConstraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.getActionHardConstraintMatch().setConstraintMatch(s.getValue()));
         verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScore),
                                        hardConstraintMatchTextBox));
+        actionConstraintMatch.getActionHardConstraintMatch().setConstraintMatch(hardConstraintMatchTextBox.getValue());
 
         String softConstraintMatch = actionConstraintMatch.getActionSoftConstraintMatch().getConstraintMatch();
         softConstraintMatchTextBox.setValue(softConstraintMatch == null ? "" : softConstraintMatch);
         softConstraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.getActionSoftConstraintMatch().setConstraintMatch(s.getValue()));
         verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScore),
                                        softConstraintMatchTextBox));
+        actionConstraintMatch.getActionSoftConstraintMatch().setConstraintMatch(softConstraintMatchTextBox.getValue());
 
         verticalPanel.setStyleName(GuidedRuleEditorResources.INSTANCE.css().multiConstraintMatch());
 
