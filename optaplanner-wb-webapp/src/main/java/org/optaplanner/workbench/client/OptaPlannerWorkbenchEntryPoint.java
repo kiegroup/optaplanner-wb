@@ -24,7 +24,6 @@ import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
-import org.kie.workbench.common.services.shared.service.PlaceManagerActivityService;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
@@ -53,7 +52,6 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     @Inject
     public OptaPlannerWorkbenchEntryPoint(final Caller<AppConfigService> appConfigService,
-                                          final Caller<PlaceManagerActivityService> pmas,
                                           final ActivityBeansCache activityBeansCache,
                                           final DefaultWorkbenchFeaturesMenusHelper menusHelper,
                                           final WorkbenchMenuBarPresenter menuBar,
@@ -61,7 +59,6 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
                                           final AdminPage adminPage,
                                           final TranslationService translationService) {
         super(appConfigService,
-              pmas,
               activityBeansCache);
         this.menusHelper = menusHelper;
         this.menuBar = menuBar;

@@ -26,7 +26,6 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.workbench.common.services.shared.service.PlaceManagerActivityService;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -50,10 +49,6 @@ public class OptaPlannerWorkbenchEntryPointTest {
     @Mock
     private AppConfigService appConfigService;
     private CallerMock<AppConfigService> appConfigServiceCallerMock;
-
-    @Mock
-    private PlaceManagerActivityService pmas;
-    private CallerMock<PlaceManagerActivityService> pmasCallerMock;
 
     @Mock
     private ActivityBeansCache activityBeansCache;
@@ -84,10 +79,8 @@ public class OptaPlannerWorkbenchEntryPointTest {
     @Before
     public void setup() {
         appConfigServiceCallerMock = new CallerMock<>(appConfigService);
-        pmasCallerMock = new CallerMock<>(pmas);
 
         optaPlannerWorkbenchEntryPoint = spy(new OptaPlannerWorkbenchEntryPoint(appConfigServiceCallerMock,
-                                                                                pmasCallerMock,
                                                                                 activityBeansCache,
                                                                                 menusHelper,
                                                                                 menuBar,
