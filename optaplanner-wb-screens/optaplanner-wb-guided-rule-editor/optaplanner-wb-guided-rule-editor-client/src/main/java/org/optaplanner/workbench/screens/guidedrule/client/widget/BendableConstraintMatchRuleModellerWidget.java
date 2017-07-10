@@ -19,9 +19,10 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
+import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionBendableConstraintMatch;
 import org.uberfire.client.views.pfly.widgets.HelpIcon;
 
@@ -29,7 +30,7 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
 
     private AbstractActionBendableConstraintMatch actionConstraintMatch;
 
-    private TextBox constraintMatchTextBox = new TextBox();
+    private ConstraintMatchInputWidget constraintMatchInputWidget;
 
     private TextBox constraintLevelTextBox = new TextBox();
 
@@ -46,6 +47,12 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
               translationService);
 
         this.actionConstraintMatch = actionConstraintMatch;
+        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch,
+                                                                    translationService);
+        constraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
+        constraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch));
 
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
@@ -90,22 +97,17 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
     }
 
     private HorizontalPanel createConstraintMatchPanel() {
-        HorizontalPanel constraintMatchPanel = new HorizontalPanel();
-
-        constraintMatchTextBox.setValue(actionConstraintMatch.getConstraintMatch() == null ? "" : actionConstraintMatch.getConstraintMatch());
-        constraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.setConstraintMatch(s.getValue()));
-        constraintMatchTextBox.setEnabled(false);
-        constraintMatchTextBox.setWidth("100%");
+        final HorizontalPanel constraintMatchPanel = new HorizontalPanel();
 
         constraintMatchPanel.setWidth("100%");
-        constraintMatchPanel.add(constraintMatchTextBox);
+        constraintMatchPanel.add(constraintMatchInputWidget);
 
         return constraintMatchPanel;
     }
 
     @Override
     public void scoreHolderGlobalLoadedCorrectly() {
-        constraintMatchTextBox.setEnabled(true);
+        constraintMatchInputWidget.setEnabled(true);
         constraintLevelTextBox.setEnabled(true);
     }
 
@@ -113,7 +115,7 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
         int currentLevelSize = actionConstraintMatch.getPosition();
 
         if (currentLevelSize >= scoreLevelSize) {
-            constraintLevelSelectHelpIcon.setHelpContent("Score level set for this score is greater than the maximum defined by current planning solution. Modify the bendable score levels size in the planning solution or change the level for this item.");
+            constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded));
             constraintLevelSelectHelpIcon.setVisible(true);
         } else {
             constraintLevelTextBox.getElement().setAttribute("max",

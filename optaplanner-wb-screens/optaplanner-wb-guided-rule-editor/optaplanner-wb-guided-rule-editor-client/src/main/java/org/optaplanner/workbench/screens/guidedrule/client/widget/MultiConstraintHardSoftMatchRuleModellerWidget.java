@@ -18,8 +18,8 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
@@ -29,8 +29,8 @@ import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintH
 
 public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 
-    private TextBox hardConstraintMatchTextBox = new TextBox();
-    private TextBox softConstraintMatchTextBox = new TextBox();
+    private ConstraintMatchInputWidget hardConstraintMatchInputWidget;
+    private ConstraintMatchInputWidget softConstraintMatchInputWidget;
 
     public MultiConstraintHardSoftMatchRuleModellerWidget(final RuleModeller mod,
                                                           final EventBus eventBus,
@@ -40,6 +40,18 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         super(mod,
               eventBus,
               translationService);
+        hardConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionHardConstraintMatch(),
+                                                                        translationService);
+        hardConstraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(hardConstraintMatchInputWidget));
+        hardConstraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch.getActionHardConstraintMatch()));
+        softConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionSoftConstraintMatch(),
+                                                                        translationService);
+        softConstraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(softConstraintMatchInputWidget));
+        softConstraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch.getActionSoftConstraintMatch()));
 
         VerticalPanel verticalPanel = new VerticalPanel();
 
@@ -48,17 +60,11 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         verticalPanel.setCellHeight(labelPanel,
                                     "25px");
 
-        String hardConstraintMatch = actionConstraintMatch.getActionHardConstraintMatch().getConstraintMatch();
-        hardConstraintMatchTextBox.setValue(hardConstraintMatch == null ? "" : hardConstraintMatch);
-        hardConstraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.getActionHardConstraintMatch().setConstraintMatch(s.getValue()));
         verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScore),
-                                       hardConstraintMatchTextBox));
+                                       hardConstraintMatchInputWidget));
 
-        String softConstraintMatch = actionConstraintMatch.getActionSoftConstraintMatch().getConstraintMatch();
-        softConstraintMatchTextBox.setValue(softConstraintMatch == null ? "" : softConstraintMatch);
-        softConstraintMatchTextBox.addValueChangeHandler(s -> actionConstraintMatch.getActionSoftConstraintMatch().setConstraintMatch(s.getValue()));
         verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScore),
-                                       softConstraintMatchTextBox));
+                                       softConstraintMatchInputWidget));
 
         verticalPanel.setStyleName(GuidedRuleEditorResources.INSTANCE.css().multiConstraintMatch());
 
@@ -66,7 +72,7 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
     }
 
     private HorizontalPanel getItemPanel(final String labelText,
-                                         final TextBox constraintMatchTextBox) {
+                                         final IsWidget constraintWidget) {
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
         HorizontalPanel labelPanel = new HorizontalPanel();
@@ -74,9 +80,7 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         labelPanel.add(label);
         horizontalPanel.add(labelPanel);
 
-        constraintMatchTextBox.setEnabled(false);
-        constraintMatchTextBox.setWidth("100%");
-        horizontalPanel.add(constraintMatchTextBox);
+        horizontalPanel.add(constraintWidget);
 
         horizontalPanel.setWidth("100%");
         horizontalPanel.setCellWidth(labelPanel,
@@ -86,7 +90,7 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
     }
 
     public void scoreHolderGlobalLoadedCorrectly() {
-        hardConstraintMatchTextBox.setEnabled(true);
-        softConstraintMatchTextBox.setEnabled(true);
+        hardConstraintMatchInputWidget.setEnabled(true);
+        softConstraintMatchInputWidget.setEnabled(true);
     }
 }
