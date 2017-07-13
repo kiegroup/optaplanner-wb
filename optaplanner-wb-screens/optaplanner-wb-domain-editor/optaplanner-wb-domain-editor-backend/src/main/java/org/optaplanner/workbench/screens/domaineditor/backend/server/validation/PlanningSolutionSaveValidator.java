@@ -27,10 +27,13 @@ import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.kie.workbench.common.services.shared.validation.SaveValidator;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningSolutionToBeDuplicatedMessage;
 import org.uberfire.backend.vfs.Path;
 
+import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations.PLANNING_ENTITY_ANNOTATION;
 import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION;
 
 /**
@@ -39,19 +42,20 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
 @ApplicationScoped
 public class PlanningSolutionSaveValidator implements SaveValidator<DataObject> {
 
-    private DataModelerService dataModelerService;
+    private AssetsUsageService assetsUsageService;
 
     @Inject
-    public PlanningSolutionSaveValidator(DataModelerService dataModelerService) {
-        this.dataModelerService = dataModelerService;
+    public PlanningSolutionSaveValidator(AssetsUsageService assetsUsageService) {
+        this.assetsUsageService = assetsUsageService;
     }
 
     @Override
     public Collection<ValidationMessage> validate(final Path dataObjectPath,
                                                   final DataObject dataObject) {
         if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
-            List<Path> planningSolutionUsages = dataModelerService.findClassUsages(dataObjectPath,
-                                                                                   PLANNING_SOLUTION_ANNOTATION);
+            List<Path> planningSolutionUsages = assetsUsageService.getAssetUsages(PLANNING_SOLUTION_ANNOTATION,
+                                                                                  ResourceType.JAVA,
+                                                                                  dataObjectPath);
             // PlanningSolution already present in this object
             if (planningSolutionUsages.contains(dataObjectPath)) {
                 return Collections.emptyList();
