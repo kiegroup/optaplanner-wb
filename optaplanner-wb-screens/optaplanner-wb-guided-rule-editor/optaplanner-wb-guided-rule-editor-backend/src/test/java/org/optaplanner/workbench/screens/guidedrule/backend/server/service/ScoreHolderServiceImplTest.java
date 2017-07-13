@@ -34,6 +34,8 @@ import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -69,6 +71,9 @@ public class ScoreHolderServiceImplTest {
     @Mock
     private JavaResourceTypeDefinition javaResourceTypeDefinition;
 
+    @Mock
+    private AssetsUsageService assetsUsageService;
+
     @InjectMocks
     private ScoreHolderServiceImpl scoreHolderService;
 
@@ -76,8 +81,9 @@ public class ScoreHolderServiceImplTest {
     public void getProjectScoreInformation() {
         Path dataObjectPath = PathFactory.newPath("Test.java",
                                                   "file:///dataObjects");
-        when(dataModelerService.findClassUsages(dataObjectPath,
-                                                PlanningSolution.class.getName())).thenReturn(Arrays.asList(dataObjectPath));
+        when(assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
+                                               ResourceType.JAVA,
+                                               dataObjectPath)).thenReturn(Arrays.asList(dataObjectPath));
         when(javaResourceTypeDefinition.accept(dataObjectPath)).thenReturn(true);
 
         // scoreHolder definitions

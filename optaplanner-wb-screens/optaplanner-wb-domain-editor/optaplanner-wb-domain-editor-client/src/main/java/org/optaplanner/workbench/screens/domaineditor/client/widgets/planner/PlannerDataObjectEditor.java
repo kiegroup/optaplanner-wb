@@ -40,6 +40,8 @@ import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.JavaClass;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
 import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScore;
 import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScore;
@@ -69,7 +71,7 @@ public class PlannerDataObjectEditor
 
     private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
-    private Caller<DataModelerService> dataModelerService;
+    private Caller<AssetsUsageService> assetsUsageServiceCaller;
 
     @Inject
     public PlannerDataObjectEditor(PlannerDataObjectEditorView view,
@@ -78,14 +80,14 @@ public class PlannerDataObjectEditor
                                    DataModelCommandBuilder commandBuilder,
                                    TranslationService translationService,
                                    Caller<ComparatorDefinitionService> comparatorDefinitionService,
-                                   Caller<DataModelerService> dataModelerService) {
+                                   Caller<AssetsUsageService> assetsUsageServiceCaller) {
         super(handlerRegistry,
               dataModelerEvent,
               commandBuilder);
         this.view = view;
         this.translationService = translationService;
         this.comparatorDefinitionService = comparatorDefinitionService;
-        this.dataModelerService = dataModelerService;
+        this.assetsUsageServiceCaller = assetsUsageServiceCaller;
 
         view.init(this);
         view.initPlanningSolutionScoreTypeOptions(getPlanningSolutionScoreTypeOptions());
@@ -118,8 +120,9 @@ public class PlannerDataObjectEditor
             if (!hasPlanningSolution) {
                 view.enablePlanningSolutionCheckBox(false);
                 view.showPlanningSolutionHelpIcon(false);
-                dataModelerService.call(getFindClassUsagesCallback()).findClassUsages(context.getCurrentProject().getRootPath(),
-                                                                                      PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION);
+                assetsUsageServiceCaller.call(getFindClassUsagesCallback()).getAssetUsages (PlannerDomainAnnotations.PLANNING_SOLUTION_ANNOTATION,
+                                                                                            ResourceType.JAVA,
+                                                                                            context.getCurrentProject().getRootPath());
             } else {
                 view.enablePlanningSolutionCheckBox(true);
                 view.showPlanningSolutionHelpIcon(false);
