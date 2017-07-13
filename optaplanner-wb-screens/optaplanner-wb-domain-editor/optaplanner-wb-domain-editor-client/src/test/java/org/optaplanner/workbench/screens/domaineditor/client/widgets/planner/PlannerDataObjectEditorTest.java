@@ -31,13 +31,13 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.screens.datamodeller.client.widgets.DataModelerEditorsTestHelper;
-import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.AnnotationDefinition;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyImpl;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -70,15 +70,16 @@ public class PlannerDataObjectEditorTest
     private Caller<ComparatorDefinitionService> comparatorDefinitionService;
 
     @Mock
-    private Caller<DataModelerService> dataModelerServiceCallerMock;
+    private Caller<AssetsUsageService> assetsUsageServiceCaller;
 
     @Mock
-    private DataModelerService dataModelerServiceMock;
+    private AssetsUsageService assetsUsageService;
 
     protected PlannerDataObjectEditor createObjectEditor() {
-        when(dataModelerServiceCallerMock.call(any())).thenReturn(dataModelerServiceMock);
-        when(dataModelerServiceMock.findClassUsages(any(Path.class),
-                                                    anyString())).thenReturn(Collections.emptyList());
+        when(assetsUsageServiceCaller.call(any())).thenReturn(assetsUsageService);
+        when(assetsUsageService.getAssetUsages(anyString(),
+                                               any(),
+                                               any(Path.class))).thenReturn(Collections.emptyList());
 
         PlannerDataObjectEditor objectEditor = new PlannerDataObjectEditor(view,
                                                                            handlerRegistry,
@@ -86,7 +87,7 @@ public class PlannerDataObjectEditorTest
                                                                            commandBuilder,
                                                                            translationService,
                                                                            comparatorDefinitionService,
-                                                                           dataModelerServiceCallerMock);
+                                                                           assetsUsageServiceCaller);
         return objectEditor;
     }
 
@@ -125,9 +126,10 @@ public class PlannerDataObjectEditorTest
         verify(view,
                times(1)).showPlanningSolutionBendableScoreInput(false);
 
-        verify(dataModelerServiceMock,
-               times(1)).findClassUsages(any(Path.class),
-                                         anyString());
+        verify(assetsUsageService,
+               times(1)).getAssetUsages(anyString(),
+                                        any(),
+                                        any(Path.class));
     }
 
     @Test
@@ -145,9 +147,10 @@ public class PlannerDataObjectEditorTest
         verify(view,
                times(1)).showPlanningSolutionHelpIcon(false);
 
-        verify(dataModelerServiceMock,
-               never()).findClassUsages(any(Path.class),
-                                        anyString());
+        verify(assetsUsageService,
+               never()).getAssetUsages(anyString(),
+                                       any(),
+                                       any(Path.class));
     }
 
     @Test

@@ -29,6 +29,8 @@ import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.workbench.common.screens.datamodeller.model.GenerationResult;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.kie.workbench.common.services.shared.validation.SaveValidator;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalToBeRemovedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeNotRecognizedMessage;
@@ -59,13 +61,17 @@ public class PlanningSolutionScoreHolderSaveValidator implements SaveValidator<D
 
     private ScoreHolderUtils scoreHolderUtils;
 
+    private AssetsUsageService assetsUsageService;
+
     @Inject
     public PlanningSolutionScoreHolderSaveValidator(final DataModelerService dataModelerService,
                                                     @Named("ioStrategy") final IOService ioService,
-                                                    final ScoreHolderUtils scoreHolderUtils) {
+                                                    final ScoreHolderUtils scoreHolderUtils,
+                                                    final AssetsUsageService assetsUsageService) {
         this.dataModelerService = dataModelerService;
         this.ioService = ioService;
         this.scoreHolderUtils = scoreHolderUtils;
+        this.assetsUsageService = assetsUsageService;
     }
 
     @Override
@@ -90,8 +96,9 @@ public class PlanningSolutionScoreHolderSaveValidator implements SaveValidator<D
                         return Arrays.asList(new ScoreHolderGlobalTypeNotRecognizedMessage(Level.WARNING));
                     }
 
-                    List<Path> scoreHolderGlobalUsages = dataModelerService.findClassUsages(dataObjectPath,
-                                                                                            originalDataObjectScoreHolderTypeFqn);
+                    List<Path> scoreHolderGlobalUsages = assetsUsageService.getAssetUsages(originalDataObjectScoreHolderTypeFqn,
+                                                                                           ResourceType.JAVA,
+                                                                                           dataObjectPath);
                     if (scoreHolderGlobalUsages.isEmpty()) {
                         return Collections.emptyList();
                     } else {
