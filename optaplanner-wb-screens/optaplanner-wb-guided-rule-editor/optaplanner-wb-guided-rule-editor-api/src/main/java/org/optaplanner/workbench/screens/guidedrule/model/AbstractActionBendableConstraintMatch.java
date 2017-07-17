@@ -16,7 +16,7 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
-public class AbstractActionBendableConstraintMatch extends AbstractActionConstraintMatch {
+public abstract class AbstractActionBendableConstraintMatch extends AbstractActionConstraintMatch {
 
     protected int position;
 

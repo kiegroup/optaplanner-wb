@@ -17,7 +17,9 @@
 package org.optaplanner.workbench.screens.guidedrule.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.drools.workbench.models.datamodel.rule.TemplateAware;
 import org.jboss.errai.common.client.api.annotations.Portable;
 
 @Portable
@@ -30,5 +32,11 @@ public class ActionMultiConstraintBendableMatch extends AbstractActionMultiConst
                                               final List<ActionBendableSoftConstraintMatch> actionBendableSoftConstraintMatches) {
         super(actionBendableHardConstraintMatches,
               actionBendableSoftConstraintMatches);
+    }
+
+    @Override
+    public TemplateAware cloneTemplateAware() {
+        return new ActionMultiConstraintBendableMatch(getActionBendableHardConstraintMatches().stream().map(m -> (ActionBendableHardConstraintMatch) m.cloneTemplateAware()).collect(Collectors.toList()),
+                                                      getActionBendableSoftConstraintMatches().stream().map(m -> (ActionBendableSoftConstraintMatch) m.cloneTemplateAware()).collect(Collectors.toList()));
     }
 }
