@@ -16,9 +16,17 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
-public abstract class AbstractActionMultiConstraintBendableMatch implements ActionConstraintMatch {
+import org.drools.workbench.models.datamodel.rule.InterpolationVariable;
+import org.drools.workbench.models.datamodel.rule.TemplateAware;
+import org.optaplanner.workbench.screens.guidedrule.util.TemplateUtils;
+
+public abstract class AbstractActionMultiConstraintBendableMatch implements ActionConstraintMatch,
+                                                                            TemplateAware {
 
     private List<ActionBendableHardConstraintMatch> actionBendableHardConstraintMatches;
 
@@ -47,6 +55,36 @@ public abstract class AbstractActionMultiConstraintBendableMatch implements Acti
 
     public void setActionBendableSoftConstraintMatches(List<ActionBendableSoftConstraintMatch> actionBendableSoftConstraintMatches) {
         this.actionBendableSoftConstraintMatches = actionBendableSoftConstraintMatches;
+    }
+
+    @Override
+    public Collection<InterpolationVariable> extractInterpolationVariables() {
+        List<InterpolationVariable> interpolationVariableList = new ArrayList<>();
+        if (getActionBendableHardConstraintMatches() != null) {
+            for (ActionBendableHardConstraintMatch hardConstraintMatch : getActionBendableHardConstraintMatches()) {
+                interpolationVariableList.addAll(TemplateUtils.extractInterpolationVariables(hardConstraintMatch.getConstraintMatch()));
+            }
+        }
+        if (getActionBendableSoftConstraintMatches() != null) {
+            for (ActionBendableSoftConstraintMatch softConstraintMatch : getActionBendableSoftConstraintMatches()) {
+                interpolationVariableList.addAll(TemplateUtils.extractInterpolationVariables(softConstraintMatch.getConstraintMatch()));
+            }
+        }
+        return interpolationVariableList;
+    }
+
+    @Override
+    public void substituteTemplateVariables(Function<String, String> keyToValueFunction) {
+        if (getActionBendableHardConstraintMatches() != null) {
+            for (ActionBendableHardConstraintMatch hardConstraintMatch : getActionBendableHardConstraintMatches()) {
+                hardConstraintMatch.substituteTemplateVariables(keyToValueFunction);
+            }
+        }
+        if (getActionBendableSoftConstraintMatches() != null) {
+            for (ActionBendableSoftConstraintMatch softConstraintMatch : getActionBendableSoftConstraintMatches()) {
+                softConstraintMatch.substituteTemplateVariables(keyToValueFunction);
+            }
+        }
     }
 
     @Override
