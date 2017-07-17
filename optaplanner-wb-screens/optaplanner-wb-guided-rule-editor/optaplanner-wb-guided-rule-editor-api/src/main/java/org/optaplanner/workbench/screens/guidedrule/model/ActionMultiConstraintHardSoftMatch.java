@@ -16,10 +16,19 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+
+import org.drools.workbench.models.datamodel.rule.InterpolationVariable;
+import org.drools.workbench.models.datamodel.rule.TemplateAware;
 import org.jboss.errai.common.client.api.annotations.Portable;
+import org.optaplanner.workbench.screens.guidedrule.util.TemplateUtils;
 
 @Portable
-public class ActionMultiConstraintHardSoftMatch implements ActionConstraintMatch {
+public class ActionMultiConstraintHardSoftMatch implements ActionConstraintMatch,
+                                                           TemplateAware {
 
     private ActionHardConstraintMatch actionHardConstraintMatch;
 
@@ -40,6 +49,26 @@ public class ActionMultiConstraintHardSoftMatch implements ActionConstraintMatch
 
     public ActionSoftConstraintMatch getActionSoftConstraintMatch() {
         return actionSoftConstraintMatch;
+    }
+
+    @Override
+    public Collection<InterpolationVariable> extractInterpolationVariables() {
+        List<InterpolationVariable> interpolationVariableList = new ArrayList<>();
+        interpolationVariableList.addAll(TemplateUtils.extractInterpolationVariables(getActionHardConstraintMatch().getConstraintMatch()));
+        interpolationVariableList.addAll(TemplateUtils.extractInterpolationVariables(getActionSoftConstraintMatch().getConstraintMatch()));
+        return interpolationVariableList;
+    }
+
+    @Override
+    public void substituteTemplateVariables(final Function<String, String> keyToValueFunction) {
+        getActionHardConstraintMatch().substituteTemplateVariables(keyToValueFunction);
+        getActionSoftConstraintMatch().substituteTemplateVariables(keyToValueFunction);
+    }
+
+    @Override
+    public TemplateAware cloneTemplateAware() {
+        return new ActionMultiConstraintHardSoftMatch(new ActionHardConstraintMatch(getActionHardConstraintMatch().getConstraintMatch()),
+                                                      new ActionSoftConstraintMatch(getActionSoftConstraintMatch().getConstraintMatch()));
     }
 
     @Override

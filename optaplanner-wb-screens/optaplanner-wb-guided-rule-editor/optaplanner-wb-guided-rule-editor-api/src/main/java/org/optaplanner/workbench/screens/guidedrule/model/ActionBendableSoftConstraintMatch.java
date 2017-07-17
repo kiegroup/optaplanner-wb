@@ -16,6 +16,7 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
+import org.drools.workbench.models.datamodel.rule.TemplateAware;
 import org.jboss.errai.common.client.api.annotations.Portable;
 
 @Portable
@@ -28,6 +29,12 @@ public class ActionBendableSoftConstraintMatch extends AbstractActionBendableCon
                                              final String constraintMatch) {
         super(constraintMatch,
               position);
+    }
+
+    @Override
+    public TemplateAware cloneTemplateAware() {
+        return new ActionBendableSoftConstraintMatch(getPosition(),
+                                                     getConstraintMatch());
     }
 
     @Override
