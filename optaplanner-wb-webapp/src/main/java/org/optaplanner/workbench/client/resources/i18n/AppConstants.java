@@ -48,31 +48,22 @@ public interface AppConstants {
     String AdministrationPerspective_MenuManageOrganizationalUnits = "AdministrationPerspective.MenuManageOrganizationalUnits";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_KieKnowledgeDevelopmentCycle = "HomeProducer.KieKnowledgeDevelopmentCycle";
+    String HomeProducer_Heading = "HomeProducer.Heading";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_Author = "HomeProducer.Author";
+    String HomeProducer_SubHeading = "HomeProducer.SubHeading";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_FormalizeYourBusinessKnowledge = "HomeProducer.FormalizeYourBusinessKnowledge";
+    String HomeProducer_Design = "HomeProducer.Design";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_ConfigureYourEnvironment = "HomeProducer.ConfigureYourEnvironment";
+    String HomeProducer_DesignDescription = "HomeProducer.DesignDescription";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_Deploy = "HomeProducer.Deploy";
+    String HomeProducer_DevOps = "HomeProducer.DevOps";
 
     @TranslationKey(defaultValue = "")
-    String HomeProducer_ProjectAuthoring = "HomeProducer.ProjectAuthoring";
-
-    @TranslationKey(defaultValue = "")
-    String HomeProducer_ArtifactRepository = "HomeProducer.ArtifactRepository";
-
-    @TranslationKey(defaultValue = "")
-    String HomeProducer_Administration = "HomeProducer.Administration";
-
-    @TranslationKey(defaultValue = "")
-    String HomeProducer_DeployYourArtifacts = "HomeProducer.DeployYourArtifacts";
+    String HomeProducer_DevOpsDescription = "HomeProducer.DevOpsDescription";
 
     @TranslationKey(defaultValue = "")
     String OptaPlannerWorkbenchEntryPoint_Administration = "OptaPlannerWorkbenchEntryPoint.Administration";
