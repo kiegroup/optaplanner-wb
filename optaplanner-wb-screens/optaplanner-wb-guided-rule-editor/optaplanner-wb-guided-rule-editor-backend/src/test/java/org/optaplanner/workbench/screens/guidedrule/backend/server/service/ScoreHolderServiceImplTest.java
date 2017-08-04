@@ -36,7 +36,7 @@ import org.kie.workbench.common.services.datamodeller.core.impl.ObjectPropertyIm
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -57,7 +57,7 @@ import static org.mockito.Mockito.*;
 public class ScoreHolderServiceImplTest {
 
     @Mock
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     @Mock
     private IOService ioService;
@@ -90,7 +90,7 @@ public class ScoreHolderServiceImplTest {
         Package resourcesPackage = mock(Package.class);
         when(resourcesPackage.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("Test.java",
                                                                                             "file:///dataObjects"));
-        when(kieProjectService.resolvePackage(dataObjectPath)).thenReturn(resourcesPackage);
+        when(kieModuleService.resolvePackage(dataObjectPath)).thenReturn(resourcesPackage);
         when(ioService.exists(any(org.uberfire.java.nio.file.Path.class))).thenReturn(true);
 
         GlobalsModel globalsModel = new GlobalsModel();

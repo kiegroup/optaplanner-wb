@@ -26,7 +26,7 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -50,7 +50,7 @@ public class PlanningSolutionRenameHelperTest {
     private DataModelerService dataModelerService;
 
     @Mock
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     private PlanningSolutionRenameWorkaroundHelper renameHelper;
 
@@ -58,7 +58,7 @@ public class PlanningSolutionRenameHelperTest {
     public void setUp() {
         renameHelper = new PlanningSolutionRenameWorkaroundHelper(ioService,
                                                                   dataModelerService,
-                                                                  kieProjectService);
+                                                                  kieModuleService);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class PlanningSolutionRenameHelperTest {
         Package _package = mock(Package.class);
         when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
                                                                                     "file:///dataObjects"));
-        when(kieProjectService.resolvePackage(sourcePath)).thenReturn(_package);
+        when(kieModuleService.resolvePackage(sourcePath)).thenReturn(_package);
 
         when(ioService.exists(any())).thenReturn(true);
 
