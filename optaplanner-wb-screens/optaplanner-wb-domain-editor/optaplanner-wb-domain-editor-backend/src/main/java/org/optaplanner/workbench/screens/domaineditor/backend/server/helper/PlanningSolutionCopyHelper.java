@@ -23,7 +23,7 @@ import javax.inject.Named;
 import org.kie.workbench.common.screens.datamodeller.model.GenerationResult;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.uberfire.backend.server.util.Paths;
@@ -45,7 +45,7 @@ public class PlanningSolutionCopyHelper implements CopyHelper {
 
     private DataModelerService dataModelerService;
 
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     public PlanningSolutionCopyHelper() {
     }
@@ -53,10 +53,10 @@ public class PlanningSolutionCopyHelper implements CopyHelper {
     @Inject
     public PlanningSolutionCopyHelper(@Named("ioStrategy") final IOService ioService,
                                       final DataModelerService dataModelerService,
-                                      final KieProjectService kieProjectService) {
+                                      final KieModuleService kieModuleService) {
         this.ioService = ioService;
         this.dataModelerService = dataModelerService;
-        this.kieProjectService = kieProjectService;
+        this.kieModuleService = kieModuleService;
     }
 
     @Override
@@ -77,12 +77,12 @@ public class PlanningSolutionCopyHelper implements CopyHelper {
         } else {
             DataObject dataObject = generationResult.getDataObject();
             if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
-                org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(sourcePath).getPackageMainResourcesPath());
+                org.uberfire.java.nio.file.Path source = Paths.convert(kieModuleService.resolvePackage(sourcePath).getPackageMainResourcesPath());
                 org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
                 String sourceDataObjectFileName = sourcePath.getFileName().substring(0,
                                                                                      sourcePath.getFileName().indexOf("."));
 
-                org.uberfire.java.nio.file.Path destination = Paths.convert(kieProjectService.resolvePackage(destinationPath).getPackageMainResourcesPath());
+                org.uberfire.java.nio.file.Path destination = Paths.convert(kieModuleService.resolvePackage(destinationPath).getPackageMainResourcesPath());
                 org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory(destination) ? destination : destination.getParent();
                 String destinationDataObjectFileName = destinationPath.getFileName().substring(0,
                                                                                                destinationPath.getFileName().indexOf("."));

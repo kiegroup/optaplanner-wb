@@ -34,7 +34,7 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
 import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
@@ -52,7 +52,7 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
 
     private static final String SCORE_HOLDER_GLOBAL_FILE_SUFFIX = "ScoreHolderGlobal.gdrl";
 
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     private IOService ioService;
 
@@ -68,13 +68,13 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
     }
 
     @Inject
-    public ScoreHolderServiceImpl(final KieProjectService kieProjectService,
+    public ScoreHolderServiceImpl(final KieModuleService kieModuleService,
                                   @Named("ioStrategy") final IOService ioService,
                                   final GlobalsEditorService globalsEditorService,
                                   final DataModelerService dataModelerService,
                                   final JavaResourceTypeDefinition javaResourceTypeDefinition,
                                   final AssetsUsageService assetsUsageService) {
-        this.kieProjectService = kieProjectService;
+        this.kieModuleService = kieModuleService;
         this.ioService = ioService;
         this.globalsEditorService = globalsEditorService;
         this.dataModelerService = dataModelerService;
@@ -101,7 +101,7 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
     }
 
     private Collection<String> extractSolutionScoreTypeFqns(final Path solutionObjectPath) {
-        org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(solutionObjectPath).getPackageMainResourcesPath());
+        org.uberfire.java.nio.file.Path source = Paths.convert(kieModuleService.resolvePackage(solutionObjectPath).getPackageMainResourcesPath());
         org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
 
         String sourceSolutionFileName = solutionObjectPath.getFileName().substring(0,
