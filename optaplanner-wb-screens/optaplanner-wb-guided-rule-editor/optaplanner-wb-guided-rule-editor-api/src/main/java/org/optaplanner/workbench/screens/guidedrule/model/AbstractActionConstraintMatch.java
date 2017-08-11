@@ -16,7 +16,15 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
-public abstract class AbstractActionConstraintMatch implements ActionConstraintMatch {
+import java.util.Collection;
+import java.util.function.Function;
+
+import org.drools.workbench.models.datamodel.rule.InterpolationVariable;
+import org.drools.workbench.models.datamodel.rule.TemplateAware;
+import org.optaplanner.workbench.screens.guidedrule.util.TemplateUtils;
+
+public abstract class AbstractActionConstraintMatch implements ActionConstraintMatch,
+                                                               TemplateAware {
 
     private String constraintMatch;
 
@@ -33,6 +41,17 @@ public abstract class AbstractActionConstraintMatch implements ActionConstraintM
 
     public void setConstraintMatch(String constraintMatch) {
         this.constraintMatch = constraintMatch;
+    }
+
+    @Override
+    public Collection<InterpolationVariable> extractInterpolationVariables() {
+        return TemplateUtils.extractInterpolationVariables(getConstraintMatch());
+    }
+
+    @Override
+    public void substituteTemplateVariables(Function<String, String> keyToValueFunction) {
+        setConstraintMatch(TemplateUtils.substituteTemplateVariable(getConstraintMatch(),
+                                                                    keyToValueFunction));
     }
 
     @Override
