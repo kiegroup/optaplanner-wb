@@ -32,6 +32,8 @@ import org.kie.workbench.common.screens.javaeditor.type.JavaResourceTypeDefiniti
 import org.kie.workbench.common.services.datamodeller.core.Annotation;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -58,6 +60,8 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
 
     private DataModelerService dataModelerService;
 
+    private AssetsUsageService assetsUsageService;
+
     private JavaResourceTypeDefinition javaResourceTypeDefinition;
 
     public ScoreHolderServiceImpl() {
@@ -68,18 +72,21 @@ public class ScoreHolderServiceImpl implements ScoreHolderService {
                                   @Named("ioStrategy") final IOService ioService,
                                   final GlobalsEditorService globalsEditorService,
                                   final DataModelerService dataModelerService,
-                                  final JavaResourceTypeDefinition javaResourceTypeDefinition) {
+                                  final JavaResourceTypeDefinition javaResourceTypeDefinition,
+                                  final AssetsUsageService assetsUsageService) {
         this.kieProjectService = kieProjectService;
         this.ioService = ioService;
         this.globalsEditorService = globalsEditorService;
         this.dataModelerService = dataModelerService;
         this.javaResourceTypeDefinition = javaResourceTypeDefinition;
+        this.assetsUsageService = assetsUsageService;
     }
 
     @Override
     public ScoreInformation getProjectScoreInformation(final Path projectPath) {
-        List<Path> classUsages = dataModelerService.findClassUsages(projectPath,
-                                                                    PlanningSolution.class.getName());
+        List<Path> classUsages = assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
+                                                                   ResourceType.JAVA,
+                                                                   projectPath);
 
         return new ScoreInformation(extractProjectScoreTypeFqns(classUsages),
                                     getBendableScoreLevelsSize(classUsages));

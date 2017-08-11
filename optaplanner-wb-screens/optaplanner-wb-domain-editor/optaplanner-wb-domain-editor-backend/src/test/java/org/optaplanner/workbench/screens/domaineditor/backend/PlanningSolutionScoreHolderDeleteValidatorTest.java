@@ -29,6 +29,8 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -55,6 +57,9 @@ public class PlanningSolutionScoreHolderDeleteValidatorTest {
     private DataModelerService dataModelerService;
 
     @Mock
+    private AssetsUsageService assetsUsageService;
+
+    @Mock
     private IOService ioService;
 
     @Mock
@@ -66,7 +71,8 @@ public class PlanningSolutionScoreHolderDeleteValidatorTest {
     public void setUp() {
         validator = new PlanningSolutionScoreHolderDeleteValidator(dataModelerService,
                                                                    ioService,
-                                                                   scoreHolderUtils);
+                                                                   scoreHolderUtils,
+                                                                   assetsUsageService);
     }
 
     @Test
@@ -88,8 +94,9 @@ public class PlanningSolutionScoreHolderDeleteValidatorTest {
         when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
         when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
 
-        when(dataModelerService.findClassUsages(dataObjectPath,
-                                                HardSoftScoreHolder.class.getName())).thenReturn(Arrays.asList(mock(Path.class)));
+        when(assetsUsageService.getAssetUsages(HardSoftScoreHolder.class.getName(),
+                                               ResourceType.JAVA,
+                                               dataObjectPath)).thenReturn(Arrays.asList(mock(Path.class)));
 
         DataObject updatedDataObject = new DataObjectImpl("test",
                                                           "Test");

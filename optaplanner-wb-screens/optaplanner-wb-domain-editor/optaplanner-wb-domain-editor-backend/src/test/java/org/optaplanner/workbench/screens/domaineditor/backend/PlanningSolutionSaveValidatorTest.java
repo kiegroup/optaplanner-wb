@@ -23,11 +23,12 @@ import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
+import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
+import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -42,13 +43,13 @@ import static org.mockito.Mockito.*;
 public class PlanningSolutionSaveValidatorTest {
 
     @Mock
-    private DataModelerService dataModelerService;
+    private AssetsUsageService assetsUsageService;
 
     private PlanningSolutionSaveValidator saveValidator;
 
     @Before
     public void setUp() {
-        saveValidator = new PlanningSolutionSaveValidator(dataModelerService);
+        saveValidator = new PlanningSolutionSaveValidator(assetsUsageService);
     }
 
     @Test
@@ -68,8 +69,9 @@ public class PlanningSolutionSaveValidatorTest {
         dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
 
         Path dataObjectPath = mock(Path.class);
-        when(dataModelerService.findClassUsages(dataObjectPath,
-                                                PlanningSolution.class.getName())).thenReturn(Arrays.asList(dataObjectPath));
+        when(assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
+                                               ResourceType.JAVA,
+                                               dataObjectPath)).thenReturn(Arrays.asList(dataObjectPath));
 
         Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
                                                                       dataObject);
@@ -84,8 +86,9 @@ public class PlanningSolutionSaveValidatorTest {
 
         Path dataObjectPath = mock(Path.class);
         Path otherDataObjectPath = mock(Path.class);
-        when(dataModelerService.findClassUsages(dataObjectPath,
-                                                PlanningSolution.class.getName())).thenReturn(Arrays.asList(otherDataObjectPath));
+        when(assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
+                                               ResourceType.JAVA,
+                                               dataObjectPath)).thenReturn(Arrays.asList(otherDataObjectPath));
 
         Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
                                                                       dataObject);
