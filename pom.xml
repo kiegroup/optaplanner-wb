@@ -32,6 +32,10 @@
   <description>OptaPlanner Workbench</description>
   <url>http://www.optaplanner.org</url>
 
+  <properties>
+    <findbugs.failOnViolation>true</findbugs.failOnViolation>
+  </properties>
+
   <repositories>
     <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
     <repository>
