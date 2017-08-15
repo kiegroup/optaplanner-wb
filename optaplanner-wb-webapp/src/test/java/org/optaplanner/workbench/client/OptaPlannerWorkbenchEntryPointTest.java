@@ -30,11 +30,10 @@ import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMe
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
-import org.uberfire.client.mvp.AbstractWorkbenchPerspectiveActivity;
 import org.uberfire.client.mvp.ActivityBeansCache;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.views.pfly.menu.UserMenu;
-import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
+import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
 import org.uberfire.mocks.CallerMock;
 import org.uberfire.workbench.model.menu.MenuItem;
@@ -57,7 +56,7 @@ public class OptaPlannerWorkbenchEntryPointTest {
     private DefaultWorkbenchFeaturesMenusHelper menusHelper;
 
     @Mock
-    private WorkbenchMenuBarPresenter menuBar;
+    private WorkbenchMegaMenuPresenter menuBar;
 
     @Mock
     private Caller<AuthenticationService> authService;
@@ -122,7 +121,5 @@ public class OptaPlannerWorkbenchEntryPointTest {
         final ArrayList<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(mock(MenuItem.class));
         doReturn(menuItems).when(menusHelper).getPerspectivesMenuItems();
-
-        doReturn(mock(AbstractWorkbenchPerspectiveActivity.class)).when(menusHelper).getDefaultPerspectiveActivity();
     }
 }
