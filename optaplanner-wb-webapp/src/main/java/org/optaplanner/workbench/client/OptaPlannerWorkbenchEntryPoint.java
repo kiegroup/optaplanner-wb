@@ -30,7 +30,7 @@ import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMe
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.ActivityBeansCache;
 import org.uberfire.client.views.pfly.menu.UserMenu;
-import org.uberfire.client.workbench.widgets.menu.WorkbenchMenuBarPresenter;
+import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuItem;
@@ -42,7 +42,7 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     protected DefaultWorkbenchFeaturesMenusHelper menusHelper;
 
-    protected WorkbenchMenuBarPresenter menuBar;
+    protected WorkbenchMegaMenuPresenter menuBar;
 
     protected UserMenu userMenu;
 
@@ -54,7 +54,7 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
     public OptaPlannerWorkbenchEntryPoint(final Caller<AppConfigService> appConfigService,
                                           final ActivityBeansCache activityBeansCache,
                                           final DefaultWorkbenchFeaturesMenusHelper menusHelper,
-                                          final WorkbenchMenuBarPresenter menuBar,
+                                          final WorkbenchMegaMenuPresenter menuBar,
                                           final UserMenu userMenu,
                                           final AdminPage adminPage,
                                           final TranslationService translationService) {
