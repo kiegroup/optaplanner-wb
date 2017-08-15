@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Function;
 
-import org.drools.workbench.models.datamodel.oracle.DataType;
+import org.appformer.project.datamodel.oracle.DataType;
 import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.models.datamodel.rule.InterpolationVariable;
 import org.junit.Test;

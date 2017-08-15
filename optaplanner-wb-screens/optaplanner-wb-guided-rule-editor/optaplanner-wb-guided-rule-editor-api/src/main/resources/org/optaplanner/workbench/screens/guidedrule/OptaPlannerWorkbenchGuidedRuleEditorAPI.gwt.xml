@@ -19,6 +19,9 @@
     "http://www.gwtproject.org/doctype/2.7.0/gwt-module.dtd">
 <module>
 
+  <!-- DataModel dependencies -->
+  <inherits name="org.appformer.project.datamodel.AFProjectDataModelAPI"/>
+
   <source path="model"/>
   <source path="util"/>
   <source path="service"/>
