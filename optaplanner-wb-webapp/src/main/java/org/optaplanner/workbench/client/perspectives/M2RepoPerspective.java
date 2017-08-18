@@ -15,12 +15,10 @@
  */
 package org.optaplanner.workbench.client.perspectives;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.guvnor.m2repo.client.event.M2RepoRefreshEvent;
-import org.guvnor.m2repo.client.event.M2RepoSearchEvent;
 import org.guvnor.m2repo.client.upload.UploadFormPresenter;
 import org.jboss.errai.common.client.dom.Div;
 import org.jboss.errai.ioc.client.api.ManagedInstance;
@@ -28,13 +26,11 @@ import org.jboss.errai.ui.client.local.api.IsElement;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.kie.workbench.common.widgets.client.search.ContextualSearch;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPanel;
 import org.uberfire.client.annotations.WorkbenchPerspective;
-import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
@@ -46,16 +42,7 @@ import org.uberfire.workbench.model.menu.Menus;
 public class M2RepoPerspective implements IsElement {
 
     @Inject
-    private ContextualSearch contextualSearch;
-
-    @Inject
-    private Event<M2RepoSearchEvent> searchEvents;
-
-    @Inject
     private Event<M2RepoRefreshEvent> refreshEvents;
-
-    @Inject
-    private PlaceManager placeManager;
 
     @Inject
     private ManagedInstance<UploadFormPresenter> uploadFormPresenterProvider;
@@ -67,12 +54,6 @@ public class M2RepoPerspective implements IsElement {
     @DataField
     @WorkbenchPanel(parts = "M2RepoEditor")
     Div m2RepoEditor;
-
-    @PostConstruct
-    private void init() {
-        contextualSearch.setPerspectiveSearchBehavior(PerspectiveIds.GUVNOR_M2REPO,
-                                                      searchFilter -> searchEvents.fire(new M2RepoSearchEvent(searchFilter)));
-    }
 
     @WorkbenchMenu
     public Menus getMenus() {
