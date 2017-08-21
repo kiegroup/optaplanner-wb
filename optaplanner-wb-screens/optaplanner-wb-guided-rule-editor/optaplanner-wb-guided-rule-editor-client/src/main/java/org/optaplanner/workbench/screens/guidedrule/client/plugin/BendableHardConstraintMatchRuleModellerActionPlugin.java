@@ -27,13 +27,11 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.drools.workbench.screens.guided.rule.client.editor.plugin.RuleModellerActionPlugin;
 import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget;
-import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.BendableConstraintMatchRuleModellerWidget;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.BendableScoreLevelsWrapper;
-import org.optaplanner.workbench.screens.guidedrule.service.ScoreHolderService;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
@@ -47,9 +45,6 @@ public class BendableHardConstraintMatchRuleModellerActionPlugin implements Rule
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScoreHolder");
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScoreHolder");
     }
-
-    @Inject
-    private Caller<ScoreHolderService> scoreHolderService;
 
     @Inject
     private ActionPluginClientService actionPluginClientService;
@@ -85,7 +80,7 @@ public class BendableHardConstraintMatchRuleModellerActionPlugin implements Rule
 
     @Override
     public String getActionAddDescription() {
-        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginModifyHardScore);
+        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ModifyHardScore);
     }
 
     @Override
@@ -98,7 +93,7 @@ public class BendableHardConstraintMatchRuleModellerActionPlugin implements Rule
                                                                                                          (ActionBendableHardConstraintMatch) iAction,
                                                                                                          translationService,
                                                                                                          readOnly,
-                                                                                                         GuidedRuleEditorConstants.RuleModellerActionPluginHardScore);
+                                                                                                         GuidedRuleEditorConstants.RuleModellerActionPlugin_HardScore);
         actionPluginClientService.initScoreHolderAwarePlugin(ruleModeller,
                                                              widget,
                                                              SUPPORTED_SCORE_HOLDER_TYPES);

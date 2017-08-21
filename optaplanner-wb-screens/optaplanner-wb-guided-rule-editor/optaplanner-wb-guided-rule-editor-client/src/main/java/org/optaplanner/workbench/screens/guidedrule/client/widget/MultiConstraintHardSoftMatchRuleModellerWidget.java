@@ -40,30 +40,24 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         super(mod,
               eventBus,
               translationService);
-        hardConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionHardConstraintMatch(),
-                                                                        translationService);
-        hardConstraintMatchInputWidget
-                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(hardConstraintMatchInputWidget));
+        hardConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionHardConstraintMatch());
         hardConstraintMatchInputWidget
                 .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch.getActionHardConstraintMatch()));
-        softConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionSoftConstraintMatch(),
-                                                                        translationService);
-        softConstraintMatchInputWidget
-                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(softConstraintMatchInputWidget));
+        softConstraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch.getActionSoftConstraintMatch());
         softConstraintMatchInputWidget
                 .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch.getActionSoftConstraintMatch()));
 
         VerticalPanel verticalPanel = new VerticalPanel();
 
-        HorizontalPanel labelPanel = createLabelPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginMultiConstraintMatch));
+        HorizontalPanel labelPanel = createLabelPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_MultiConstraintMatch));
         verticalPanel.add(labelPanel);
         verticalPanel.setCellHeight(labelPanel,
                                     "25px");
 
-        verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScore),
+        verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_HardScore),
                                        hardConstraintMatchInputWidget));
 
-        verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScore),
+        verticalPanel.add(getItemPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_SoftScore),
                                        softConstraintMatchInputWidget));
 
         verticalPanel.setStyleName(GuidedRuleEditorResources.INSTANCE.css().multiConstraintMatch());
@@ -89,8 +83,17 @@ public class MultiConstraintHardSoftMatchRuleModellerWidget extends AbstractCons
         return horizontalPanel;
     }
 
-    public void scoreHolderGlobalLoadedCorrectly() {
+    public void scoreHolderGlobalLoadedCorrectly(final String scoreHolderType) {
         hardConstraintMatchInputWidget.setEnabled(true);
         softConstraintMatchInputWidget.setEnabled(true);
+
+        hardConstraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(hardConstraintMatchInputWidget,
+                                                                                         translationService,
+                                                                                         scoreHolderType));
+        softConstraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(softConstraintMatchInputWidget,
+                                                                                         translationService,
+                                                                                         scoreHolderType));
     }
 }

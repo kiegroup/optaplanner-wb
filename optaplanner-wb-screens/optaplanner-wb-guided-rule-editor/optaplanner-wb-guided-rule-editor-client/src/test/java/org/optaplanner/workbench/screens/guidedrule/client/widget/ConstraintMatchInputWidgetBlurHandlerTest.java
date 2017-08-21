@@ -18,79 +18,365 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.optaplanner.core.api.score.buildin.bendable.BendableScoreHolder;
+import org.optaplanner.core.api.score.buildin.bendablebigdecimal.BendableBigDecimalScoreHolder;
+import org.optaplanner.core.api.score.buildin.bendablelong.BendableLongScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardsoftbigdecimal.HardSoftBigDecimalScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScoreHolder;
+import org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScoreHolder;
+import org.optaplanner.core.api.score.buildin.simple.SimpleScoreHolder;
+import org.optaplanner.core.api.score.buildin.simplebigdecimal.SimpleBigDecimalScoreHolder;
+import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScoreHolder;
+import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder;
+import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class ConstraintMatchInputWidgetBlurHandlerTest {
 
-    ConstraintMatchInputWidgetBlurHandler handler;
+    @Mock
+    private ConstraintMatchInputWidget widget;
 
     @Mock
-    ConstraintMatchInputWidget widget;
+    private TranslationService translationService;
+
+    private ConstraintMatchInputWidgetBlurHandler handler;
 
     @Before
     public void setUp() throws Exception {
-        handler = new ConstraintMatchInputWidgetBlurHandler(widget);
-
+        handler = new ConstraintMatchInputWidgetBlurHandler(widget,
+                                                            translationService,
+                                                            HardSoftScoreHolder.class.getName());
     }
 
     @Test
-    public void testNullConstraintMatch() throws Exception {
+    public void nullConstraintMatch() throws Exception {
         when(widget.getConstraintMatchValue()).thenReturn(null);
+        when(translationService.getTranslation(GuidedRuleEditorConstants.ConstraintMatchInputWidgetBlurHandler_EmptyValuesAreNotAllowedForModifyScore))
+                .thenReturn("translation");
 
         handler.onBlur(mock(BlurEvent.class));
 
-        verify(widget).showEmptyValuesNotAllowedError();
-        verify(widget, never()).clearError();
+        verify(widget).showError("translation");
+        verify(widget,
+               never()).clearError();
     }
 
     @Test
-    public void testEmptyConstraintMatch() throws Exception {
+    public void emptyConstraintMatch() throws Exception {
         when(widget.getConstraintMatchValue()).thenReturn("");
+        when(translationService.getTranslation(GuidedRuleEditorConstants.ConstraintMatchInputWidgetBlurHandler_EmptyValuesAreNotAllowedForModifyScore))
+                .thenReturn("translation");
 
         handler.onBlur(mock(BlurEvent.class));
 
-        verify(widget).showEmptyValuesNotAllowedError();
-        verify(widget, never()).clearError();
+        verify(widget).showError("translation");
+        verify(widget,
+               never()).clearError();
     }
 
     @Test
-    public void testJustWhiteSpaceConstraintMatch() throws Exception {
+    public void whiteSpaceConstraintMatch() throws Exception {
         when(widget.getConstraintMatchValue()).thenReturn(" ");
+        when(translationService.getTranslation(GuidedRuleEditorConstants.ConstraintMatchInputWidgetBlurHandler_EmptyValuesAreNotAllowedForModifyScore))
+                .thenReturn("translation");
 
         handler.onBlur(mock(BlurEvent.class));
 
-        verify(widget).showEmptyValuesNotAllowedError();
-        verify(widget, never()).clearError();
+        verify(widget).showError("translation");
+        verify(widget,
+               never()).clearError();
     }
 
     @Test
-    public void testNumberConstraintMatch() throws Exception {
+    public void numberConstraintMatch() throws Exception {
         when(widget.getConstraintMatchValue()).thenReturn("123");
 
         handler.onBlur(mock(BlurEvent.class));
 
-        verify(widget, never()).showEmptyValuesNotAllowedError();
+        verify(widget,
+               never()).showError(anyString());
         verify(widget).clearError();
     }
 
     @Test
-    public void testExpressionConstraintMatch() throws Exception {
+    public void validNumericValueConstraintMatchBendableScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(BendableScoreHolder.class.getName(),
+                                             "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleScoreHolder.class.getName(),
+                                             "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardSoftScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftScoreHolder.class.getName(),
+                                             "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftScoreHolder.class.getName(),
+                                             "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchBendableLongScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(BendableLongScoreHolder.class.getName(),
+                                             "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleLongScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleLongScoreHolder.class.getName(),
+                                             "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardSoftLongScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftLongScoreHolder.class.getName(),
+                                             "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftLongScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftLongScoreHolder.class.getName(),
+                                             "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleDoubleScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleDoubleScoreHolder.class.getName(),
+                                             "-3.14");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardSoftDoubleScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftDoubleScoreHolder.class.getName(),
+                                             "-3.14");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchBendableBigDecimalScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(BendableBigDecimalScoreHolder.class.getName(),
+                                             "-5.599");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleBigDecimalScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleBigDecimalScoreHolder.class.getName(),
+                                             "-5.599");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardSoftBigDecimalScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftBigDecimalScoreHolder.class.getName(),
+                                             "-5.599");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftBigDecimalScoreHolder() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftBigDecimalScoreHolder.class.getName(),
+                                             "-5.599");
+    }
+
+    private void testValidNumericValueConstraintMatch(final String scoreHolderClass,
+                                                      final String constraintMatchValue) throws Exception {
+        ConstraintMatchInputWidgetBlurHandler handler = new ConstraintMatchInputWidgetBlurHandler(widget,
+                                                                                                  translationService,
+                                                                                                  scoreHolderClass);
+
+        when(widget.getConstraintMatchValue()).thenReturn(constraintMatchValue);
+        when(translationService.getTranslation(GuidedRuleEditorConstants.ConstraintMatchInputWidgetBlurHandler_IntegerValueParsingError))
+                .thenReturn("translation");
+
+        handler.onBlur(mock(BlurEvent.class));
+
+        verify(widget,
+               never()).showError("translation");
+        verify(widget,
+               times(1)).clearError();
+    }
+
+    @Test
+    public void invalidValueConstraintMatchBendableScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(BendableScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchSimpleScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(SimpleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardSoftScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardSoftScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardMediumSoftScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardMediumSoftScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchBendableLongScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(BendableLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchSimpleLongScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(SimpleLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardSoftLongScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardSoftLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardMediumSoftLongScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardMediumSoftLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchSimpleDoubleScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(SimpleDoubleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardSoftDoubleScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardSoftDoubleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchBendableBigDecimalScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(BendableBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchSimpleBigDecimalScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(SimpleBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardSoftBigDecimalScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardSoftBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void invalidValueConstraintMatchHardMediumSoftBigDecimalScoreHolder() throws Exception {
+        testInvalidValueConstraintMatch(HardMediumSoftBigDecimalScoreHolder.class.getName());
+    }
+
+    private void testInvalidValueConstraintMatch(final String scoreHolderClass) {
+        ConstraintMatchInputWidgetBlurHandler handler = new ConstraintMatchInputWidgetBlurHandler(widget,
+                                                                                                  translationService,
+                                                                                                  scoreHolderClass);
+        when(widget.getConstraintMatchValue()).thenReturn("123zzz");
+        when(translationService.getTranslation(anyString()))
+                .thenReturn("translation");
+
+        handler.onBlur(mock(BlurEvent.class));
+
+        verify(widget,
+               times(1)).showError("translation");
+        verify(widget,
+               never()).clearError();
+    }
+
+    @Test
+    public void validExpressionConstraintMatchBendableScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(BendableScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchSimpleScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(SimpleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardSoftScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardSoftScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardMediumSoftScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardMediumSoftScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchBendableLongScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(BendableLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchSimpleLongScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(SimpleLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardSoftLongScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardSoftLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardMediumSoftLongScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardMediumSoftLongScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchSimpleDoubleScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(SimpleDoubleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardSoftDoubleScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardSoftDoubleScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchBendableBigDecimalScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(BendableBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchSimpleBigDecimalScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(SimpleBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardSoftBigDecimalScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardSoftBigDecimalScoreHolder.class.getName());
+    }
+
+    @Test
+    public void validExpressionConstraintMatchHardMediumSoftBigDecimalScoreHolder() throws Exception {
+        testValidExpressionConstraintMatch(HardMediumSoftBigDecimalScoreHolder.class.getName());
+    }
+
+    private void testValidExpressionConstraintMatch(final String scoreHolderClass) throws Exception {
+        ConstraintMatchInputWidgetBlurHandler handler = new ConstraintMatchInputWidgetBlurHandler(widget,
+                                                                                                  translationService,
+                                                                                                  scoreHolderClass);
         when(widget.getConstraintMatchValue()).thenReturn("$person.getAge()");
 
         handler.onBlur(mock(BlurEvent.class));
 
-        verify(widget, never()).showEmptyValuesNotAllowedError();
+        verify(widget,
+               never()).showError(anyString());
         verify(widget).clearError();
     }
-
-
 }
