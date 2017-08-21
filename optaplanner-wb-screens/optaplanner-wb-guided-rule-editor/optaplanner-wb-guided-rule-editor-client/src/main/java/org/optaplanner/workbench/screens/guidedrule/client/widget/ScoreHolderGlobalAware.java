@@ -20,5 +20,5 @@ public interface ScoreHolderGlobalAware {
 
     void scoreHolderGlobalIssueDetected(final String message);
 
-    void scoreHolderGlobalLoadedCorrectly();
+    void scoreHolderGlobalLoadedCorrectly(final String scoreHolderType);
 }

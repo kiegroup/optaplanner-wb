@@ -75,14 +75,14 @@ public class ActionPluginClientService {
                                               scoreInformation -> {
                                                   Collection<String> scoreHolderFqns = scoreInformation.getScoreHolderFqnTypeFqns();
                                                   if (scoreHolderFqns.isEmpty()) {
-                                                      scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientServiceScoreHolderGlobalNotFound));
+                                                      scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientService_ScoreHolderGlobalNotFound));
                                                   } else if (scoreHolderFqns.size() > 1) {
-                                                      scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientServiceMultipleScoreHolderGlobals)));
+                                                      scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientService_MultipleScoreHolderGlobals)));
                                                   } else if (scoreHolderFqns.size() == 1) {
                                                       if (!supportedScoreHolderTypes.containsAll(scoreHolderFqns)) {
-                                                          scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientServiceScoreTypeNotSupported));
+                                                          scoreHolderGlobalAware.scoreHolderGlobalIssueDetected(translationService.getTranslation(GuidedRuleEditorConstants.ActionPluginClientService_ScoreTypeNotSupported));
                                                       } else {
-                                                          scoreHolderGlobalAware.scoreHolderGlobalLoadedCorrectly();
+                                                          scoreHolderGlobalAware.scoreHolderGlobalLoadedCorrectly(scoreHolderFqns.iterator().next());
                                                       }
                                                   }
                                               });

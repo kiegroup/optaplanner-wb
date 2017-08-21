@@ -55,7 +55,7 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
 
         VerticalPanel verticalPanel = new VerticalPanel();
 
-        HorizontalPanel titlePanel = createLabelPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginMultiConstraintMatch));
+        HorizontalPanel titlePanel = createLabelPanel(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_MultiConstraintMatch));
         verticalPanel.add(titlePanel);
         verticalPanel.setCellHeight(titlePanel,
                                     "25px");
@@ -64,10 +64,10 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         hardScorePanel.getElement().getStyle().setWidth(100,
                                                         Style.Unit.PCT);
         if (actionConstraintMatch.getActionBendableHardConstraintMatches() == null || actionConstraintMatch.getActionBendableHardConstraintMatches().isEmpty()) {
-            hardScorePanel.add(new Label(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScoreLevelSizeIsZero)));
+            hardScorePanel.add(new Label(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_HardScoreLevelSizeIsZero)));
         } else {
             for (int i = 0; i < actionConstraintMatch.getActionBendableHardConstraintMatches().size(); i++) {
-                HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginHardScore),
+                HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_HardScore),
                                                                                    i,
                                                                                    hardConstraintMatchHelpIcons,
                                                                                    hardConstraintMatchInputWidgets,
@@ -81,10 +81,10 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         softScorePanel.getElement().getStyle().setWidth(100,
                                                         Style.Unit.PCT);
         if (actionConstraintMatch.getActionBendableSoftConstraintMatches() == null || actionConstraintMatch.getActionBendableSoftConstraintMatches().isEmpty()) {
-            softScorePanel.add(new Label(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScoreLevelSizeIsZero)));
+            softScorePanel.add(new Label(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_SoftScoreLevelSizeIsZero)));
         } else {
             for (int i = 0; i < actionConstraintMatch.getActionBendableSoftConstraintMatches().size(); i++) {
-                HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginSoftScore),
+                HorizontalPanel horizontalPanel = createBendableConstraintMatchRow(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_SoftScore),
                                                                                    i,
                                                                                    softConstraintMatchHelpIcons,
                                                                                    softConstraintMatchInputWidgets,
@@ -122,17 +122,14 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
         HelpIcon constraintLevelSelectHelpIcon = new HelpIcon();
         hardConstraintMatchHelpIcons.add(constraintLevelSelectHelpIcon);
         constraintLevelSelectHelpIcon.setVisible(false);
-        constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded));
+        constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ScoreLevelExceeded));
         constraintLevelSelectHelpIcon.getElement().getStyle().setPaddingLeft(5,
                                                                              Style.Unit.PX);
         selectPanel.add(constraintLevelSelectHelpIcon);
 
         horizontalPanel.add(selectPanel);
 
-        ConstraintMatchInputWidget constraintMatchInputWidget = new ConstraintMatchInputWidget(constraintMatch,
-                                                                                               translationService);
-        constraintMatchInputWidget
-                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
+        ConstraintMatchInputWidget constraintMatchInputWidget = new ConstraintMatchInputWidget(constraintMatch);
         constraintMatchInputWidget
                 .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(constraintMatch));
         constraintMatchInputWidgets.add(constraintMatchInputWidget);
@@ -151,16 +148,22 @@ public class MultiConstraintBendableMatchRuleModellerWidget extends AbstractCons
     }
 
     @Override
-    public void scoreHolderGlobalLoadedCorrectly() {
+    public void scoreHolderGlobalLoadedCorrectly(final String scoreHolderType) {
         if (hardConstraintMatchInputWidgets != null) {
             for (ConstraintMatchInputWidget hardConstraintMatchInputWidget : hardConstraintMatchInputWidgets) {
                 hardConstraintMatchInputWidget.setEnabled(true);
+                hardConstraintMatchInputWidget.addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(hardConstraintMatchInputWidget,
+                                                                                                                       translationService,
+                                                                                                                       scoreHolderType));
             }
         }
 
         if (softConstraintMatchInputWidgets != null) {
             for (ConstraintMatchInputWidget softConstraintMatchInputWidget : softConstraintMatchInputWidgets) {
                 softConstraintMatchInputWidget.setEnabled(true);
+                softConstraintMatchInputWidget.addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(softConstraintMatchInputWidget,
+                                                                                                                       translationService,
+                                                                                                                       scoreHolderType));
             }
         }
     }
