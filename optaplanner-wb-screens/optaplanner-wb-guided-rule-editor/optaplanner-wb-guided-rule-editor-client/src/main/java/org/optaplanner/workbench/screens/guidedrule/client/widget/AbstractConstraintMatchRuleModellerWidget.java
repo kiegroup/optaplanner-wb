@@ -76,7 +76,7 @@ public abstract class AbstractConstraintMatchRuleModellerWidget extends RuleMode
         long actionConstraintMatchCount = Arrays.stream(model.rhs).filter(a -> a instanceof ActionConstraintMatch).count();
 
         if (actionConstraintMatchCount > 1) {
-            messages.add(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginAmbigiousConstraintMatchesDetected));
+            messages.add(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_AmbigiousConstraintMatchesDetected));
 
             displayMessages();
         }

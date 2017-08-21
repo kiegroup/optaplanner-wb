@@ -26,12 +26,10 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.drools.workbench.screens.guided.rule.client.editor.plugin.RuleModellerActionPlugin;
 import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget;
-import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.ConstraintMatchRuleModellerWidget;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionSimpleConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.service.ScoreHolderService;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
@@ -46,9 +44,6 @@ public class SimpleConstraintMatchRuleModellerActionPlugin implements RuleModell
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScoreHolder");
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder");
     }
-
-    @Inject
-    private Caller<ScoreHolderService> scoreHolderService;
 
     @Inject
     private ActionPluginClientService actionPluginClientService;
@@ -84,7 +79,7 @@ public class SimpleConstraintMatchRuleModellerActionPlugin implements RuleModell
 
     @Override
     public String getActionAddDescription() {
-        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginModifySimpleScore);
+        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ModifySimpleScore);
     }
 
     @Override
@@ -98,7 +93,7 @@ public class SimpleConstraintMatchRuleModellerActionPlugin implements RuleModell
                                                                                          (ActionSimpleConstraintMatch) iAction,
                                                                                          translationService,
                                                                                          readOnly,
-                                                                                         GuidedRuleEditorConstants.RuleModellerActionPluginSimpleScore);
+                                                                                         GuidedRuleEditorConstants.RuleModellerActionPlugin_SimpleScore);
         actionPluginClientService.initScoreHolderAwarePlugin(ruleModeller,
                                                              widget,
                                                              SUPPORTED_SCORE_HOLDER_TYPES);

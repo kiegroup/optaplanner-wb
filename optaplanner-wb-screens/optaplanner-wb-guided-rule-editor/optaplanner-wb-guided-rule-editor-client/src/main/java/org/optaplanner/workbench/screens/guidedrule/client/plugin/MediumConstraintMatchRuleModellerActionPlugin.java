@@ -26,12 +26,10 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.drools.workbench.screens.guided.rule.client.editor.plugin.RuleModellerActionPlugin;
 import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget;
-import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.ConstraintMatchRuleModellerWidget;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionMediumConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.service.ScoreHolderService;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
@@ -45,9 +43,6 @@ public class MediumConstraintMatchRuleModellerActionPlugin implements RuleModell
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardmediumsoftbigdecimal.HardMediumSoftBigDecimalScoreHolder");
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScoreHolder");
     }
-
-    @Inject
-    private Caller<ScoreHolderService> scoreHolderService;
 
     @Inject
     private ActionPluginClientService actionPluginClientService;
@@ -83,7 +78,7 @@ public class MediumConstraintMatchRuleModellerActionPlugin implements RuleModell
 
     @Override
     public String getActionAddDescription() {
-        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginModifyMediumScore);
+        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ModifyMediumScore);
     }
 
     @Override
@@ -97,7 +92,7 @@ public class MediumConstraintMatchRuleModellerActionPlugin implements RuleModell
                                                                                          (ActionMediumConstraintMatch) iAction,
                                                                                          translationService,
                                                                                          readOnly,
-                                                                                         GuidedRuleEditorConstants.RuleModellerActionPluginMediumScore);
+                                                                                         GuidedRuleEditorConstants.RuleModellerActionPlugin_MediumScore);
         actionPluginClientService.initScoreHolderAwarePlugin(ruleModeller,
                                                              widget,
                                                              SUPPORTED_SCORE_HOLDER_TYPES);

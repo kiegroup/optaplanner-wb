@@ -47,10 +47,7 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
               translationService);
 
         this.actionConstraintMatch = actionConstraintMatch;
-        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch,
-                                                                    translationService);
-        constraintMatchInputWidget
-                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
+        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch);
         constraintMatchInputWidget
                 .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch));
 
@@ -106,16 +103,21 @@ public class BendableConstraintMatchRuleModellerWidget extends AbstractConstrain
     }
 
     @Override
-    public void scoreHolderGlobalLoadedCorrectly() {
+    public void scoreHolderGlobalLoadedCorrectly(final String scoreHolderType) {
         constraintMatchInputWidget.setEnabled(true);
         constraintLevelTextBox.setEnabled(true);
+
+        constraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget,
+                                                                                         translationService,
+                                                                                         scoreHolderType));
     }
 
     public void setScoreLevels(final int scoreLevelSize) {
         int currentLevelSize = actionConstraintMatch.getPosition();
 
         if (currentLevelSize >= scoreLevelSize) {
-            constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginScoreLevelExceeded));
+            constraintLevelSelectHelpIcon.setHelpContent(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ScoreLevelExceeded));
             constraintLevelSelectHelpIcon.setVisible(true);
         } else {
             constraintLevelTextBox.getElement().setAttribute("max",

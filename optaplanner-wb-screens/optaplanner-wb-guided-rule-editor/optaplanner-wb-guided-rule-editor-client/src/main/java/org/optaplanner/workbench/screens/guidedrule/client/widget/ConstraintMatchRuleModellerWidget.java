@@ -36,13 +36,6 @@ public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRu
               eventBus,
               translationService);
 
-        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch,
-                                                                    translationService);
-        constraintMatchInputWidget
-                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget));
-        constraintMatchInputWidget
-                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch));
-
         HorizontalPanel horizontalPanel = new HorizontalPanel();
 
         HorizontalPanel labelPanel = createLabelPanel(translationService.getTranslation(labelTranslationKey));
@@ -58,15 +51,23 @@ public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRu
     }
 
     private HorizontalPanel createConstraintMatchPanel(final AbstractActionConstraintMatch actionConstraintMatch) {
-        HorizontalPanel constraintMatchPanel = new HorizontalPanel();
+        constraintMatchInputWidget = new ConstraintMatchInputWidget(actionConstraintMatch);
+        constraintMatchInputWidget
+                .addConstraintMatchValueChangeHandler(new ConstraintMatchValueChangeHandler(actionConstraintMatch));
 
+        HorizontalPanel constraintMatchPanel = new HorizontalPanel();
         constraintMatchPanel.setWidth("100%");
         constraintMatchPanel.add(constraintMatchInputWidget);
 
         return constraintMatchPanel;
     }
 
-    public void scoreHolderGlobalLoadedCorrectly() {
+    public void scoreHolderGlobalLoadedCorrectly(final String scoreHolderType) {
         constraintMatchInputWidget.setEnabled(true);
+
+        constraintMatchInputWidget
+                .addConstraintMatchBlurHandler(new ConstraintMatchInputWidgetBlurHandler(constraintMatchInputWidget,
+                                                                                         translationService,
+                                                                                         scoreHolderType));
     }
 }

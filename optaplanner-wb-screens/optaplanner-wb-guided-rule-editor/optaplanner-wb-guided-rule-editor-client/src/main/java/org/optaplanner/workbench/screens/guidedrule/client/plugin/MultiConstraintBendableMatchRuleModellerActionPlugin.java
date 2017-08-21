@@ -27,13 +27,11 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.drools.workbench.screens.guided.rule.client.editor.plugin.RuleModellerActionPlugin;
 import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget;
-import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.MultiConstraintBendableMatchRuleModellerWidget;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.BendableScoreLevelsWrapper;
-import org.optaplanner.workbench.screens.guidedrule.service.ScoreHolderService;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
@@ -45,9 +43,6 @@ public class MultiConstraintBendableMatchRuleModellerActionPlugin implements Rul
         SUPPORTED_SCORE_HOLDER_TYPES = new HashSet<>(1);
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.bendable.BendableScoreHolder");
     }
-
-    @Inject
-    private Caller<ScoreHolderService> scoreHolderService;
 
     @Inject
     private ActionPluginClientService actionPluginClientService;
@@ -88,7 +83,7 @@ public class MultiConstraintBendableMatchRuleModellerActionPlugin implements Rul
 
     @Override
     public String getActionAddDescription() {
-        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginModifyMultipleScoreLevels);
+        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ModifyMultipleScoreLevels);
     }
 
     @Override
