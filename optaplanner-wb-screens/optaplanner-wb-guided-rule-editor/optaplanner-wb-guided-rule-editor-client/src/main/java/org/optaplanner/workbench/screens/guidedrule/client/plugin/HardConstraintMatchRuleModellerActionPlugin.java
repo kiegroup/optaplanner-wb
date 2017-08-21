@@ -25,12 +25,10 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.drools.workbench.screens.guided.rule.client.editor.plugin.RuleModellerActionPlugin;
 import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget;
-import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.ConstraintMatchRuleModellerWidget;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.service.ScoreHolderService;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
@@ -48,9 +46,6 @@ public class HardConstraintMatchRuleModellerActionPlugin implements RuleModeller
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftdouble.HardSoftDoubleScoreHolder");
         SUPPORTED_SCORE_HOLDER_TYPES.add("org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScoreHolder");
     }
-
-    @Inject
-    private Caller<ScoreHolderService> scoreHolderService;
 
     @Inject
     private ActionPluginClientService actionPluginClientService;
@@ -86,7 +81,7 @@ public class HardConstraintMatchRuleModellerActionPlugin implements RuleModeller
 
     @Override
     public String getActionAddDescription() {
-        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginModifyHardScore);
+        return translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPlugin_ModifyHardScore);
     }
 
     @Override
@@ -99,7 +94,7 @@ public class HardConstraintMatchRuleModellerActionPlugin implements RuleModeller
                                                                                          (ActionHardConstraintMatch) iAction,
                                                                                          translationService,
                                                                                          readOnly,
-                                                                                         GuidedRuleEditorConstants.RuleModellerActionPluginHardScore);
+                                                                                         GuidedRuleEditorConstants.RuleModellerActionPlugin_HardScore);
         actionPluginClientService.initScoreHolderAwarePlugin(ruleModeller,
                                                              widget,
                                                              SUPPORTED_SCORE_HOLDER_TYPES);

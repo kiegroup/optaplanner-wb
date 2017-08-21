@@ -21,56 +21,68 @@ import org.jboss.errai.ui.shared.api.annotations.TranslationKey;
 public interface GuidedRuleEditorConstants {
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginModifyHardScore = "RuleModellerActionPlugin.ModifyHardScore";
+    String RuleModellerActionPlugin_ModifyHardScore = "RuleModellerActionPlugin.ModifyHardScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginModifyMediumScore = "RuleModellerActionPlugin.ModifyMediumScore";
+    String RuleModellerActionPlugin_ModifyMediumScore = "RuleModellerActionPlugin.ModifyMediumScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginModifyMultipleScoreLevels = "RuleModellerActionPlugin.ModifyMultipleScoreLevels";
+    String RuleModellerActionPlugin_ModifyMultipleScoreLevels = "RuleModellerActionPlugin.ModifyMultipleScoreLevels";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginModifySimpleScore = "RuleModellerActionPlugin.ModifySimpleScore";
+    String RuleModellerActionPlugin_ModifySimpleScore = "RuleModellerActionPlugin.ModifySimpleScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginModifySoftScore = "RuleModellerActionPlugin.ModifySoftScore";
+    String RuleModellerActionPlugin_ModifySoftScore = "RuleModellerActionPlugin.ModifySoftScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginHardScore = "RuleModellerActionPlugin.HardScore";
+    String RuleModellerActionPlugin_HardScore = "RuleModellerActionPlugin.HardScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginMediumScore = "RuleModellerActionPlugin.MediumScore";
+    String RuleModellerActionPlugin_MediumScore = "RuleModellerActionPlugin.MediumScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginSimpleScore = "RuleModellerActionPlugin.SimpleScore";
+    String RuleModellerActionPlugin_SimpleScore = "RuleModellerActionPlugin.SimpleScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginSoftScore = "RuleModellerActionPlugin.SoftScore";
+    String RuleModellerActionPlugin_SoftScore = "RuleModellerActionPlugin.SoftScore";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginMultiConstraintMatch = "RuleModellerActionPlugin.MultiConstraintMatch";
+    String RuleModellerActionPlugin_MultiConstraintMatch = "RuleModellerActionPlugin.MultiConstraintMatch";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginHardScoreLevelSizeIsZero = "RuleModellerActionPlugin.HardScoreLevelSizeIsZero";
+    String RuleModellerActionPlugin_HardScoreLevelSizeIsZero = "RuleModellerActionPlugin.HardScoreLevelSizeIsZero";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginSoftScoreLevelSizeIsZero = "RuleModellerActionPlugin.SoftScoreLevelSizeIsZero";
+    String RuleModellerActionPlugin_SoftScoreLevelSizeIsZero = "RuleModellerActionPlugin.SoftScoreLevelSizeIsZero";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginScoreLevelExceeded = "RuleModellerActionPlugin.ScoreLevelExceeded";
+    String RuleModellerActionPlugin_ScoreLevelExceeded = "RuleModellerActionPlugin.ScoreLevelExceeded";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginAmbigiousConstraintMatchesDetected = "RuleModellerActionPlugin.AmbigiousConstraintMatchesDetected";
+    String RuleModellerActionPlugin_AmbigiousConstraintMatchesDetected = "RuleModellerActionPlugin.AmbigiousConstraintMatchesDetected";
 
     @TranslationKey(defaultValue = "")
-    String RuleModellerActionPluginEmptyValuesAreNotAllowedForModifyScore = "RuleModellerActionPlugin.EmptyValuesAreNotAllowedForModifyScore";
+    String ConstraintMatchInputWidgetBlurHandler_EmptyValuesAreNotAllowedForModifyScore = "ConstraintMatchInputWidgetBlurHandler.EmptyValuesAreNotAllowedForModifyScore";
 
     @TranslationKey(defaultValue = "")
-    String ActionPluginClientServiceScoreHolderGlobalNotFound = "ActionPluginClientService.ScoreHolderGlobalNotFound";
+    String ConstraintMatchInputWidgetBlurHandler_IntegerValueParsingError = "ConstraintMatchInputWidgetBlurHandler.IntegerValueParsingError";
 
     @TranslationKey(defaultValue = "")
-    String ActionPluginClientServiceMultipleScoreHolderGlobals = "ActionPluginClientService.MultipleScoreHolderGlobals";
+    String ConstraintMatchInputWidgetBlurHandler_LongValueParsingError = "ConstraintMatchInputWidgetBlurHandler.LongValueParsingError";
 
     @TranslationKey(defaultValue = "")
-    String ActionPluginClientServiceScoreTypeNotSupported = "ActionPluginClientService.ScoreTypeNotSupported";
+    String ConstraintMatchInputWidgetBlurHandler_DoubleValueParsingError = "ConstraintMatchInputWidgetBlurHandler.DoubleValueParsingError";
+
+    @TranslationKey(defaultValue = "")
+    String ConstraintMatchInputWidgetBlurHandler_BigDecimalValueParsingError = "ConstraintMatchInputWidgetBlurHandler.BigDecimalValueParsingError";
+
+    @TranslationKey(defaultValue = "")
+    String ActionPluginClientService_ScoreHolderGlobalNotFound = "ActionPluginClientService.ScoreHolderGlobalNotFound";
+
+    @TranslationKey(defaultValue = "")
+    String ActionPluginClientService_MultipleScoreHolderGlobals = "ActionPluginClientService.MultipleScoreHolderGlobals";
+
+    @TranslationKey(defaultValue = "")
+    String ActionPluginClientService_ScoreTypeNotSupported = "ActionPluginClientService.ScoreTypeNotSupported";
 }

@@ -110,7 +110,7 @@ public class ActionPluginClientServiceTest {
                                            Arrays.asList(HardSoftScoreHolder.class.getName()));
 
         verify(scoreHolderGlobalAware,
-               times(1)).scoreHolderGlobalLoadedCorrectly();
+               times(1)).scoreHolderGlobalLoadedCorrectly(HardSoftScoreHolder.class.getName());
     }
 
     @Test

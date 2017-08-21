@@ -24,8 +24,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.HelpBlock;
 import org.gwtbootstrap3.client.ui.TextBox;
-import org.jboss.errai.ui.client.local.spi.TranslationService;
-import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
 import org.uberfire.client.views.pfly.widgets.ValidationState;
 
@@ -35,28 +33,17 @@ public class ConstraintMatchInputWidget extends FormGroup {
 
     private HelpBlock helpBlock;
 
-    private TranslationService translationService;
-
-    public ConstraintMatchInputWidget(AbstractActionConstraintMatch actionConstraintMatch,
-                                      TranslationService translationService) {
-
-        this.translationService = translationService;
-
+    public ConstraintMatchInputWidget(final AbstractActionConstraintMatch actionConstraintMatch) {
         constraintMatchTextBox = new TextBox();
         helpBlock = new HelpBlock();
         add(constraintMatchTextBox);
         add(helpBlock);
 
         constraintMatchTextBox.setValue(actionConstraintMatch.getConstraintMatch() == null ? "" : actionConstraintMatch.getConstraintMatch());
-
         constraintMatchTextBox.setEnabled(false);
     }
 
-    public void showEmptyValuesNotAllowedError() {
-        showError(translationService.getTranslation(GuidedRuleEditorConstants.RuleModellerActionPluginEmptyValuesAreNotAllowedForModifyScore));
-    }
-
-    private void showError(String errorMessage) {
+    public void showError(final String errorMessage) {
         addStyleName(ValidationState.ERROR.getCssName());
         helpBlock.setError(errorMessage);
     }
@@ -70,18 +57,19 @@ public class ConstraintMatchInputWidget extends FormGroup {
         return constraintMatchTextBox.getValue();
     }
 
-    public HandlerRegistration addConstraintMatchValueChangeHandler(ValueChangeHandler<String> valueChangeHandler) {
+    public HandlerRegistration addConstraintMatchValueChangeHandler(final ValueChangeHandler<String> valueChangeHandler) {
         return constraintMatchTextBox.addValueChangeHandler(valueChangeHandler);
     }
 
-    public HandlerRegistration addConstraintMatchBlurHandler(BlurHandler blurHandler) {
+    public HandlerRegistration addConstraintMatchBlurHandler(final BlurHandler blurHandler) {
         HandlerRegistration registration = constraintMatchTextBox.addBlurHandler(blurHandler);
-        DomEvent.fireNativeEvent(Document.get().createBlurEvent(), constraintMatchTextBox);
+        DomEvent.fireNativeEvent(Document.get().createBlurEvent(),
+                                 constraintMatchTextBox);
 
         return registration;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         constraintMatchTextBox.setEnabled(enabled);
     }
 }
