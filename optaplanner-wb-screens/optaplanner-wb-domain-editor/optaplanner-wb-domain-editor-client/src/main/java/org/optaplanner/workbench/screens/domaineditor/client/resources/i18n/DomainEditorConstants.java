@@ -52,4 +52,13 @@ public interface DomainEditorConstants {
 
     @TranslationKey(defaultValue = "")
     String PlannerCheckTranslatorPlanningScoreToBeDeletedMessage = "PlannerCheckTranslator.PlanningScoreToBeDeletedMessage";
+
+    @TranslationKey(defaultValue = "")
+    String PlannerFieldMetadataProvider_PlanningScore = "PlannerFieldMetadataProvider.PlanningScore";
+
+    @TranslationKey(defaultValue = "")
+    String PlannerFieldMetadataProvider_PlanningVariable = "PlannerFieldMetadataProvider.PlanningVariable";
+
+    @TranslationKey(defaultValue = "")
+    String PlannerFieldMetadataProvider_ValueRangeProvider = "PlannerFieldMetadataProvider.ValueRangeProvider";
 }
