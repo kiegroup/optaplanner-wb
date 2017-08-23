@@ -42,13 +42,13 @@ public class HomeProducer implements HomeModelProvider {
         final HomeModel model = new HomeModel(translationService.getTranslation(AppConstants.HomeProducer_Heading),
                                               translationService.getTranslation(AppConstants.HomeProducer_SubHeading),
                                               "images/home_bg.jpg");
-        model.addShortcut(ModelUtils.makeShortcut("pficon-blueprint",
+        model.addShortcut(ModelUtils.makeShortcut("pficon pficon-blueprint",
                                                   translationService.getTranslation(AppConstants.HomeProducer_Design),
                                                   translationService.getTranslation(AppConstants.HomeProducer_DesignDescription),
                                                   () -> placeManager.goTo(LIBRARY),
                                                   LIBRARY,
                                                   PERSPECTIVE));
-        model.addShortcut(ModelUtils.makeShortcut("pficon-build",
+        model.addShortcut(ModelUtils.makeShortcut("fa fa-gears",
                                                   translationService.getTranslation(AppConstants.HomeProducer_DevOps),
                                                   translationService.getTranslation(AppConstants.HomeProducer_DevOpsDescription),
                                                   () -> placeManager.goTo(SERVER_MANAGEMENT),
