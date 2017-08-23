@@ -34,6 +34,7 @@
   <inherits name="org.kie.workbench.common.screens.javaeditor.KieWorkbenchCommonJavaEditorClient"/>
   <inherits name="org.kie.workbench.common.screens.server.management.ServerManagementClient"/>
   <inherits name="org.kie.workbench.common.screens.library.LibraryClient"/>
+  <inherits name="org.kie.workbench.common.screens.contributors.KieWorkbenchContributorsClient"/>
   <inherits name="org.kie.workbench.common.workbench.KieDefaultWorkbenchClient"/>
   <inherits name="org.kie.workbench.common.screens.examples.KieWorkbenchCommonExamplesClient"/>
 
@@ -86,6 +87,7 @@
 
   <!-- Dashbuilder -->
   <inherits name="org.dashbuilder.DashbuilderClientAll"/>
+  <inherits name="org.dashbuilder.renderer.GChartsRenderer"/>
 
   <!-- Specify the application specific style sheet. -->
   <stylesheet src='css/optaplanner-workbench.css'/>
