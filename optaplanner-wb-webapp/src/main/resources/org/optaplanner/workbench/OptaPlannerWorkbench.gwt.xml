@@ -16,6 +16,9 @@
   <inherits name="org.uberfire.ext.widgets.common.UberfireWidgetsCommons"/>
   <inherits name="org.uberfire.ext.preferences.UberfirePreferences"/>
 
+  <!-- DataModel dependencies -->
+  <inherits name="org.appformer.project.datamodel.AFProjectDataModelAPI"/>
+
   <!-- Guvnor dependencies -->
   <inherits name='org.guvnor.asset.management.GuvnorAssetMgmtClient'/>
   <inherits name='org.guvnor.structure.GuvnorStructureClient'/>
