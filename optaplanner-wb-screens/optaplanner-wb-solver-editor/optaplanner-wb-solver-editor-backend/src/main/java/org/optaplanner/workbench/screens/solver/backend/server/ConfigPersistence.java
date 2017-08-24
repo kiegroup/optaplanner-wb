@@ -35,6 +35,8 @@ public class ConfigPersistence {
 
     public ConfigPersistence() {
         xStream = XStreamXmlSolverFactory.buildXStream();
+        String[] voidDeny = {"void.class", "Void.class"};
+        xStream.denyTypes(voidDeny);
     }
 
     public SolverConfigModel toConfig( final String xml ) {
