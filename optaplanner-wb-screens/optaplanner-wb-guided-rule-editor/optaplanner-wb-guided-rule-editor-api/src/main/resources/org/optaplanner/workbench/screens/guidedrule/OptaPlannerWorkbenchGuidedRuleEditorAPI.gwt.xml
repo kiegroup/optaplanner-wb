@@ -20,8 +20,8 @@
 <module>
 
   <!-- DataModel dependencies -->
-  <inherits name="org.appformer.project.datamodel.AFProjectDataModelAPI"/>
   <inherits name="org.optaplanner.workbench.models.datamodel.OptaplannerWorkbenchDataModelAPI"/>
+  <inherits name="org.kie.soup.project.datamodel.ProjectDataModelAPI"/>
 
   <source path="model"/>
   <source path="service"/>

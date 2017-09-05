@@ -20,7 +20,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.enterprise.inject.Produces;
+
+import org.kie.soup.project.datamodel.commons.util.MVELEvaluator;
+import org.kie.soup.project.datamodel.commons.util.RawMVELEvaluator;
+
 public class TestUtil {
+
+    @Produces
+    public static MVELEvaluator rawEvaluator = new RawMVELEvaluator();
 
     public static String loadResource(final String name) throws Exception {
         final InputStream in = TestUtil.class.getResourceAsStream(name);
