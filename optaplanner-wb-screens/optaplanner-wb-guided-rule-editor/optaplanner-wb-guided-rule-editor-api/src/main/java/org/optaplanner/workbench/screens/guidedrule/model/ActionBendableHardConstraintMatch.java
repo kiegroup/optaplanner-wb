@@ -62,4 +62,14 @@ public class ActionBendableHardConstraintMatch extends AbstractActionBendableCon
         result = ~~result;
         return result;
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addHardConstraintMatch(kcontext, ")
+                .append(getPosition())
+                .append(", ")
+                .append(getConstraintMatch())
+                .append(")").toString();
+    }
 }

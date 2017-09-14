@@ -27,4 +27,6 @@
 
   <inherits name="org.optaplanner.workbench.screens.guidedrule.OptaPlannerWorkbenchGuidedRuleEditorAPI"/>
 
+  <source path="client"/>
+
 </module>

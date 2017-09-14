@@ -33,4 +33,12 @@ public class ActionSoftConstraintMatch extends AbstractActionConstraintMatch {
     public TemplateAware cloneTemplateAware() {
         return new ActionSoftConstraintMatch(getConstraintMatch());
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addSoftConstraintMatch(kcontext, ")
+                .append(getConstraintMatch())
+                .append(")").toString();
+    }
 }

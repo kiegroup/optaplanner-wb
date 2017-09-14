@@ -486,4 +486,140 @@ public class ActionConstraintMatchTest {
         assertEquals("soft",
                      constraintMatch.getActionSoftConstraintMatch().getConstraintMatch());
     }
+
+    @Test
+    public void marshalActionSoftConstraintMatch() {
+        ActionSoftConstraintMatch action = new ActionSoftConstraintMatch("-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addSoftConstraintMatch(kcontext, -1)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionBendableSoftConstraintMatch() {
+        ActionBendableSoftConstraintMatch action = new ActionBendableSoftConstraintMatch(1,
+                                                                                         "-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addSoftConstraintMatch(kcontext, 1, -1)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMediumConstraintMatch() {
+        ActionMediumConstraintMatch action = new ActionMediumConstraintMatch("-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMediumConstraintMatch(kcontext, -1)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMultiConstraintHardSoftMatch() {
+        ActionMultiConstraintHardSoftMatch action = new ActionMultiConstraintHardSoftMatch(new ActionHardConstraintMatch("-1"),
+                                                                                           new ActionSoftConstraintMatch("-2"));
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMultiConstraintMatch(kcontext, -1, -2)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMultiConstraintHardMediumSoftMatch() {
+        ActionMultiConstraintHardMediumSoftMatch action = new ActionMultiConstraintHardMediumSoftMatch(new ActionHardConstraintMatch("-1"),
+                                                                                                       new ActionMediumConstraintMatch("-2"),
+                                                                                                       new ActionSoftConstraintMatch("-3"));
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMultiConstraintMatch(kcontext, -1, -2, -3)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMultiConstraintBendableMatch() {
+        ActionMultiConstraintBendableMatch action = new ActionMultiConstraintBendableMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
+                                                                                                                                               "-1"),
+                                                                                                         new ActionBendableHardConstraintMatch(1,
+                                                                                                                                               "-2")),
+                                                                                           Arrays.asList(new ActionBendableSoftConstraintMatch(0,
+                                                                                                                                               "-3"),
+                                                                                                         new ActionBendableSoftConstraintMatch(1,
+                                                                                                                                               "-4")));
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1, -2}, new int[] {-3, -4})",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMultiConstraintBendableLongMatch() {
+        ActionMultiConstraintBendableLongMatch action = new ActionMultiConstraintBendableLongMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
+                                                                                                                                                       "-1l"),
+                                                                                                                 new ActionBendableHardConstraintMatch(1,
+                                                                                                                                                       "-2l")),
+                                                                                                   Arrays.asList(new ActionBendableSoftConstraintMatch(0,
+                                                                                                                                                       "-3l"),
+                                                                                                                 new ActionBendableSoftConstraintMatch(1,
+                                                                                                                                                       "-4l")));
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMultiConstraintMatch(kcontext, new long[] {-1l, -2l}, new long[] {-3l, -4l})",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionMultiConstraintBendableBigDecimalMatch() {
+        ActionMultiConstraintBendableBigDecimalMatch action = new ActionMultiConstraintBendableBigDecimalMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
+                                                                                                                                                                   "new java.math.BigDecimal(-1)"),
+                                                                                                                             new ActionBendableHardConstraintMatch(1,
+                                                                                                                                                                   "new java.math.BigDecimal(-2)")),
+                                                                                                               Arrays.asList(new ActionBendableSoftConstraintMatch(0,
+                                                                                                                                                                   "new java.math.BigDecimal(-3)"),
+                                                                                                                             new ActionBendableSoftConstraintMatch(1,
+                                                                                                                                                                   "new java.math.BigDecimal(-4)")));
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addMultiConstraintMatch(kcontext, new java.math.BigDecimal[] {new java.math.BigDecimal(-1), new java.math.BigDecimal(-2)}, new java.math.BigDecimal[] {new java.math.BigDecimal(-3), new java.math.BigDecimal(-4)})",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionSimpleConstraintMatch() {
+        ActionSimpleConstraintMatch action = new ActionSimpleConstraintMatch("-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addConstraintMatch(kcontext, -1)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionHardConstraintMatch() {
+        ActionHardConstraintMatch action = new ActionHardConstraintMatch("-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addHardConstraintMatch(kcontext, -1)",
+                     marshaledAction);
+    }
+
+    @Test
+    public void marshalActionBendableHardConstraintMatch() {
+        ActionBendableHardConstraintMatch action = new ActionBendableHardConstraintMatch(1,
+                                                                                         "-1");
+
+        String marshaledAction = action.getStringRepresentation();
+
+        assertEquals("scoreHolder.addHardConstraintMatch(kcontext, 1, -1)",
+                     marshaledAction);
+    }
 }
