@@ -32,8 +32,6 @@
   <description>OptaPlanner Workbench - WebApp</description>
 
   <properties>
-    <!-- Temporary override as the custom org.jboss.errai:wildfly-dist:10.1.0.Final is not yet available -->
-    <version.org.wildfly.gwt.sdm>10.0.0.Final</version.org.wildfly.gwt.sdm>
     <!-- Add the absolute path for $JBOSS_HOME below to manage another instance -->
     <errai.jboss.home>${project.build.directory}/wildfly-${version.org.wildfly.gwt.sdm}</errai.jboss.home>
   </properties>
