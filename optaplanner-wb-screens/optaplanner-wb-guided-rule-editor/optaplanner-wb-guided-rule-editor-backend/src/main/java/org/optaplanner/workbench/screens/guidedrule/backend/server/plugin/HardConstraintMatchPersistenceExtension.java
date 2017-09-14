@@ -22,8 +22,8 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.core.util.StringUtils;
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
-import org.drools.workbench.models.datamodel.rule.FreeFormLine;
-import org.drools.workbench.models.datamodel.rule.IAction;
+import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
+import org.drools.workbench.models.datamodel.rule.PluggableIAction;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionHardConstraintMatch;
 import org.slf4j.Logger;
@@ -37,32 +37,12 @@ public class HardConstraintMatchPersistenceExtension implements RuleModelIAction
     private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile("scoreHolder\\.addHardConstraintMatch\\(\\s*kcontext\\s*,.+\\);");
 
     @Override
-    public boolean accept(final IAction iAction) {
-        return iAction instanceof ActionHardConstraintMatch || iAction instanceof ActionBendableHardConstraintMatch;
-    }
-
-    @Override
-    public String marshal(final IAction iAction) {
-        if (iAction instanceof ActionHardConstraintMatch) {
-            ActionHardConstraintMatch actionConstraintMatch = (ActionHardConstraintMatch) iAction;
-            return String.format("scoreHolder.addHardConstraintMatch(kcontext, %s);",
-                                 actionConstraintMatch.getConstraintMatch());
-        } else if (iAction instanceof ActionBendableHardConstraintMatch) {
-            ActionBendableHardConstraintMatch actionConstraintMatch = (ActionBendableHardConstraintMatch) iAction;
-            return String.format("scoreHolder.addHardConstraintMatch(kcontext, %s, %s);",
-                                 actionConstraintMatch.getPosition(),
-                                 actionConstraintMatch.getConstraintMatch());
-        }
-        throw new IllegalArgumentException("Action " + iAction + " is not supported by this extension");
-    }
-
-    @Override
     public boolean accept(final String iActionString) {
         return CONSTRAINT_MATCH_PATTERN.matcher(iActionString).matches();
     }
 
     @Override
-    public IAction unmarshal(final String iActionString) {
+    public PluggableIAction unmarshal(final String iActionString) throws RuleModelDRLPersistenceException {
         List<String> parameters = StringUtils.splitArgumentsList(PersistenceExtensionUtils.unwrapParenthesis(iActionString));
 
         if (!parameters.isEmpty() && "kcontext".equals(parameters.get(0))) {
@@ -76,15 +56,11 @@ public class HardConstraintMatchPersistenceExtension implements RuleModelIAction
                     return new ActionBendableHardConstraintMatch(bendableScoreLevel,
                                                                  PersistenceExtensionUtils.extractConstraintMatchValue(parameters.get(2)));
                 } catch (NumberFormatException e) {
-                    LOGGER.debug("Could not parse bendable score level parameter " + parameters.get(1) + " as an Integer, returning a FreeFormLine");
+                    LOGGER.error("Could not parse bendable score level parameter " + parameters.get(1) + " as an Integer");
                 }
             }
         }
 
-        // Line can't be parsed as an ActionHardConstraintMatch, return a FreeFormLine
-        FreeFormLine freeFormLine = new FreeFormLine();
-        freeFormLine.setText(iActionString);
-
-        return freeFormLine;
+        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
     }
 }

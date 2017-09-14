@@ -16,8 +16,8 @@
 
 package org.optaplanner.workbench.screens.guidedrule.model;
 
-import org.drools.workbench.models.datamodel.rule.IAction;
+import org.drools.workbench.models.datamodel.rule.PluggableIAction;
 
-public interface ActionConstraintMatch extends IAction {
+public interface ActionConstraintMatch extends PluggableIAction {
 
 }

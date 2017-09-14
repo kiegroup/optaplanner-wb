@@ -33,4 +33,12 @@ public class ActionMediumConstraintMatch extends AbstractActionConstraintMatch {
     public TemplateAware cloneTemplateAware() {
         return new ActionMediumConstraintMatch(getConstraintMatch());
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addMediumConstraintMatch(kcontext, ")
+                .append(getConstraintMatch())
+                .append(")").toString();
+    }
 }
