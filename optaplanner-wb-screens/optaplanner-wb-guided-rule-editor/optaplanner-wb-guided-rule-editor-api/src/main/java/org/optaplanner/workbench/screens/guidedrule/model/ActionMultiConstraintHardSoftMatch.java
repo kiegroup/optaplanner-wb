@@ -96,4 +96,14 @@ public class ActionMultiConstraintHardSoftMatch implements ActionConstraintMatch
         result = ~~result;
         return result;
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addMultiConstraintMatch(kcontext, ")
+                .append(getActionHardConstraintMatch().getConstraintMatch())
+                .append(", ")
+                .append(getActionSoftConstraintMatch().getConstraintMatch())
+                .append(")").toString();
+    }
 }

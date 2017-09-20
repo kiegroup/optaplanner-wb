@@ -32,4 +32,12 @@ public class ActionHardConstraintMatch extends AbstractActionConstraintMatch {
     public TemplateAware cloneTemplateAware() {
         return new ActionHardConstraintMatch(getConstraintMatch());
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addHardConstraintMatch(kcontext, ")
+                .append(getConstraintMatch())
+                .append(")").toString();
+    }
 }

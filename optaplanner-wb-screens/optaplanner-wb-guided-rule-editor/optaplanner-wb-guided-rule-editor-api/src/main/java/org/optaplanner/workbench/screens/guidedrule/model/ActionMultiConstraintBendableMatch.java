@@ -39,4 +39,14 @@ public class ActionMultiConstraintBendableMatch extends AbstractActionMultiConst
         return new ActionMultiConstraintBendableMatch(getActionBendableHardConstraintMatches().stream().map(m -> (ActionBendableHardConstraintMatch) m.cloneTemplateAware()).collect(Collectors.toList()),
                                                       getActionBendableSoftConstraintMatches().stream().map(m -> (ActionBendableSoftConstraintMatch) m.cloneTemplateAware()).collect(Collectors.toList()));
     }
+
+    @Override
+    public String getStringRepresentation() {
+        return new StringBuilder()
+                .append("scoreHolder.addMultiConstraintMatch(kcontext, new int[] {")
+                .append(getActionBendableHardConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")))
+                .append("}, new int[] {")
+                .append(getActionBendableSoftConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")))
+                .append("})").toString();
+    }
 }

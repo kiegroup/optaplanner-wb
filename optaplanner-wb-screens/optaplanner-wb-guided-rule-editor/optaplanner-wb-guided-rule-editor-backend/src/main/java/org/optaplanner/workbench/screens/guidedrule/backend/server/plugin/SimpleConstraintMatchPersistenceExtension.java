@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
-import org.drools.workbench.models.datamodel.rule.FreeFormLine;
-import org.drools.workbench.models.datamodel.rule.IAction;
+import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
+import org.drools.workbench.models.datamodel.rule.PluggableIAction;
 import org.optaplanner.workbench.screens.guidedrule.model.ActionSimpleConstraintMatch;
 
 @ApplicationScoped
@@ -30,27 +30,12 @@ public class SimpleConstraintMatchPersistenceExtension implements RuleModelIActi
     private static final Pattern CONSTRAINT_MATCH_PATTERN = Pattern.compile("scoreHolder\\.addConstraintMatch\\(\\s*kcontext\\s*,.+\\);");
 
     @Override
-    public boolean accept(final IAction iAction) {
-        return iAction instanceof ActionSimpleConstraintMatch;
-    }
-
-    @Override
-    public String marshal(final IAction iAction) {
-        if (iAction instanceof ActionSimpleConstraintMatch) {
-            ActionSimpleConstraintMatch actionConstraintMatch = (ActionSimpleConstraintMatch) iAction;
-            return String.format("scoreHolder.addConstraintMatch(kcontext, %s);",
-                                 actionConstraintMatch.getConstraintMatch());
-        }
-        throw new IllegalArgumentException("Action " + iAction + " is not supported by this extension");
-    }
-
-    @Override
     public boolean accept(final String iActionString) {
         return CONSTRAINT_MATCH_PATTERN.matcher(iActionString).matches();
     }
 
     @Override
-    public IAction unmarshal(final String iActionString) {
+    public PluggableIAction unmarshal(final String iActionString) throws RuleModelDRLPersistenceException {
         String[] parameters = PersistenceExtensionUtils.unwrapParenthesis(iActionString).split("\\s*,\\s*");
 
         if ("kcontext".equals(parameters[0])) {
@@ -59,10 +44,6 @@ public class SimpleConstraintMatchPersistenceExtension implements RuleModelIActi
             }
         }
 
-        // Line can't be parsed as an ActionSimpleConstraintMatch, return a FreeFormLine
-        FreeFormLine freeFormLine = new FreeFormLine();
-        freeFormLine.setText(iActionString);
-
-        return freeFormLine;
+        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
     }
 }
