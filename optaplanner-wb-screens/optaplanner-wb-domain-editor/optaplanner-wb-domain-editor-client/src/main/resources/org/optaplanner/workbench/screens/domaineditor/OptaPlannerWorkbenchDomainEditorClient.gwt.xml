@@ -34,7 +34,7 @@
   <inherits name="org.kie.workbench.common.widgets.configresource.KieWorkbenchConfigResourceWidget"/>
 
   <inherits name="org.optaplanner.workbench.screens.domaineditor.OptaPlannerWorkbenchDomainEditorAPI"/>
-  <inherits name='org.optaplanner.workbench.upstream.model.OptaPlannerUpstreamModelAPI'/>
+  <inherits name='org.optaplanner.workbench.models.core.OptaPlannerWorkbenchCoreAPI'/>
 
 
 </module>

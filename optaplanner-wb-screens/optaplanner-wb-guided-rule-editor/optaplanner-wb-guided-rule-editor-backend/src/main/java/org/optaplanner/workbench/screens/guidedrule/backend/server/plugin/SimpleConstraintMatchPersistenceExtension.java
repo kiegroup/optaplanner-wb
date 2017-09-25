@@ -22,7 +22,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.PluggableIAction;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionSimpleConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionSimpleConstraintMatch;
 
 @ApplicationScoped
 public class SimpleConstraintMatchPersistenceExtension implements RuleModelIActionPersistenceExtension {

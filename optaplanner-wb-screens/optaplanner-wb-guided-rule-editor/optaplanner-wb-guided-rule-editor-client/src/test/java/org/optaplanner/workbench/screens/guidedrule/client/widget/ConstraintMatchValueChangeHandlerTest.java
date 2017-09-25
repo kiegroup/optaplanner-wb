@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.AbstractActionConstraintMatch;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

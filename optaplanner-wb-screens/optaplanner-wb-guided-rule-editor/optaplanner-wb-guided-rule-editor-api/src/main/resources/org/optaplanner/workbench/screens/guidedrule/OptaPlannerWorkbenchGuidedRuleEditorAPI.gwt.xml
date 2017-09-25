@@ -19,8 +19,9 @@
     "http://www.gwtproject.org/doctype/2.7.0/gwt-module.dtd">
 <module>
 
+  <inherits name="org.optaplanner.workbench.models.datamodel.OptaplannerWorkbenchDataModelAPI"/>
+
   <source path="model"/>
-  <source path="util"/>
   <source path="service"/>
 
 </module>

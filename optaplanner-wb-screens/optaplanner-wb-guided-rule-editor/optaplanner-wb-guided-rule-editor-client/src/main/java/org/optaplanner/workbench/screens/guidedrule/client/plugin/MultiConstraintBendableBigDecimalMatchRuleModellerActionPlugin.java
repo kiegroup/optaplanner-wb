@@ -30,7 +30,7 @@ import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.MultiConstraintBendableMatchRuleModellerWidget;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableBigDecimalMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableBigDecimalMatch;
 import org.optaplanner.workbench.screens.guidedrule.model.BendableScoreLevelsWrapper;
 import org.uberfire.mvp.Command;
 

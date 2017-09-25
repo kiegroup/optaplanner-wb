@@ -75,7 +75,7 @@
     </dependency>
     <dependency>
       <groupId>org.optaplanner</groupId>
-      <artifactId>optaplanner-wb-upstream-model</artifactId>
+      <artifactId>optaplanner-workbench-models-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.uberfire</groupId>

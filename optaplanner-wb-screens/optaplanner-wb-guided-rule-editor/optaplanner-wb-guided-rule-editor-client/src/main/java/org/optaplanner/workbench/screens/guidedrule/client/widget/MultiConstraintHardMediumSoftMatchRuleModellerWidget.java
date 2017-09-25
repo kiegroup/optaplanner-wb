@@ -25,7 +25,7 @@ import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.GuidedRuleEditorResources;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardMediumSoftMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardMediumSoftMatch;
 
 public class MultiConstraintHardMediumSoftMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 

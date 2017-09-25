@@ -24,8 +24,8 @@ import org.drools.core.util.StringUtils;
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.PluggableIAction;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionHardConstraintMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
