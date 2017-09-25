@@ -65,7 +65,6 @@
   </issueManagement>
 
   <modules>
-    <module>optaplanner-wb-upstream-model</module>
     <module>optaplanner-wb-screens</module>
     <module>optaplanner-wb-webapp</module>
   </modules>

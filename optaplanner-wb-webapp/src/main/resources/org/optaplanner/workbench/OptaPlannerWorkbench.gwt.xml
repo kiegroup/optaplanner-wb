@@ -55,6 +55,7 @@
   <inherits name="org.optaplanner.workbench.screens.guidedrule.OptaPlannerWorkbenchGuidedRuleEditorClient"/>
   <inherits name="org.optaplanner.workbench.screens.domaineditor.OptaPlannerWorkbenchDomainEditorAPI"/>
   <inherits name="org.optaplanner.workbench.screens.domaineditor.OptaPlannerWorkbenchDomainEditorClient"/>
+  <inherits name="org.optaplanner.workbench.models.datamodel.OptaplannerWorkbenchDataModelAPI"/>
 
   <!-- Models for Drools Workbench Screens -->
   <inherits name="org.drools.workbench.models.commons.DroolsWorkbenchModelsCommon"/>

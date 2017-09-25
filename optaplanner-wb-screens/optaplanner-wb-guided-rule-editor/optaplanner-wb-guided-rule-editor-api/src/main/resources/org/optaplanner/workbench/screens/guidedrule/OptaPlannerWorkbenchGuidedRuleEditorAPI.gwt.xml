@@ -21,9 +21,9 @@
 
   <!-- DataModel dependencies -->
   <inherits name="org.appformer.project.datamodel.AFProjectDataModelAPI"/>
+  <inherits name="org.optaplanner.workbench.models.datamodel.OptaplannerWorkbenchDataModelAPI"/>
 
   <source path="model"/>
-  <source path="util"/>
   <source path="service"/>
 
 </module>

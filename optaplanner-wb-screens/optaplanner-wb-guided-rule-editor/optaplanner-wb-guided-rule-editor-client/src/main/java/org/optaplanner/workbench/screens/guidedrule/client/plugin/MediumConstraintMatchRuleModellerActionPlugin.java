@@ -29,7 +29,7 @@ import org.drools.workbench.screens.guided.rule.client.widget.RuleModellerWidget
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 import org.optaplanner.workbench.screens.guidedrule.client.widget.ConstraintMatchRuleModellerWidget;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMediumConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMediumConstraintMatch;
 import org.uberfire.mvp.Command;
 
 @ApplicationScoped
