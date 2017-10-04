@@ -85,4 +85,7 @@ public interface GuidedRuleEditorConstants {
 
     @TranslationKey(defaultValue = "")
     String ActionPluginClientService_ScoreTypeNotSupported = "ActionPluginClientService.ScoreTypeNotSupported";
+
+    @TranslationKey(defaultValue = "")
+    String ScoreHolderPatternBindingValidator_ScoreHolderVariableReserved = "ScoreHolderPatternBindingValidator.ScoreHolderVariableReserved";
 }
