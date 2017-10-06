@@ -20,23 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.core.util.StringUtils;
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
-import org.drools.workbench.models.datamodel.rule.FreeFormLine;
-import org.drools.workbench.models.datamodel.rule.IAction;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableSoftConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMediumConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableBigDecimalMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableLongMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardMediumSoftMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardSoftMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionSoftConstraintMatch;
+import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
+import org.drools.workbench.models.datamodel.rule.PluggableIAction;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableSoftConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMediumConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableBigDecimalMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableLongMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardMediumSoftMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardSoftMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionSoftConstraintMatch;
 
 @ApplicationScoped
 public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleModelIActionPersistenceExtension {
@@ -46,53 +45,12 @@ public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleMod
     private static final Pattern ARRAY_PATTERN = Pattern.compile("new\\s+\\b(int|long|BigDecimal|java\\.math\\.BigDecimal)\\b\\s*\\[\\s*\\]\\s*\\{.*\\}");
 
     @Override
-    public boolean accept(final IAction iAction) {
-        return iAction instanceof ActionMultiConstraintHardSoftMatch
-                || iAction instanceof ActionMultiConstraintHardMediumSoftMatch
-                || iAction instanceof ActionMultiConstraintBendableMatch
-                || iAction instanceof ActionMultiConstraintBendableLongMatch
-                || iAction instanceof ActionMultiConstraintBendableBigDecimalMatch;
-    }
-
-    @Override
-    public String marshal(final IAction iAction) {
-        if (iAction instanceof ActionMultiConstraintHardSoftMatch) {
-            ActionMultiConstraintHardSoftMatch actionConstraintMatch = (ActionMultiConstraintHardSoftMatch) iAction;
-            return String.format("scoreHolder.addMultiConstraintMatch(kcontext, %s, %s);",
-                                 actionConstraintMatch.getActionHardConstraintMatch().getConstraintMatch(),
-                                 actionConstraintMatch.getActionSoftConstraintMatch().getConstraintMatch());
-        } else if (iAction instanceof ActionMultiConstraintHardMediumSoftMatch) {
-            ActionMultiConstraintHardMediumSoftMatch actionConstraintMatch = (ActionMultiConstraintHardMediumSoftMatch) iAction;
-            return String.format("scoreHolder.addMultiConstraintMatch(kcontext, %s, %s, %s);",
-                                 actionConstraintMatch.getActionHardConstraintMatch().getConstraintMatch(),
-                                 actionConstraintMatch.getActionMediumConstraintMatch().getConstraintMatch(),
-                                 actionConstraintMatch.getActionSoftConstraintMatch().getConstraintMatch());
-        } else if (iAction instanceof ActionMultiConstraintBendableMatch) {
-            ActionMultiConstraintBendableMatch actionConstraintMatch = (ActionMultiConstraintBendableMatch) iAction;
-            return String.format("scoreHolder.addMultiConstraintMatch(kcontext, new int[] {%s}, new int[] {%s});",
-                                 actionConstraintMatch.getActionBendableHardConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")),
-                                 actionConstraintMatch.getActionBendableSoftConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")));
-        } else if (iAction instanceof ActionMultiConstraintBendableLongMatch) {
-            ActionMultiConstraintBendableLongMatch actionConstraintMatch = (ActionMultiConstraintBendableLongMatch) iAction;
-            return String.format("scoreHolder.addMultiConstraintMatch(kcontext, new long[] {%s}, new long[] {%s});",
-                                 actionConstraintMatch.getActionBendableHardConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")),
-                                 actionConstraintMatch.getActionBendableSoftConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")));
-        } else if (iAction instanceof ActionMultiConstraintBendableBigDecimalMatch) {
-            ActionMultiConstraintBendableBigDecimalMatch actionConstraintMatch = (ActionMultiConstraintBendableBigDecimalMatch) iAction;
-            return String.format("scoreHolder.addMultiConstraintMatch(kcontext, new java.math.BigDecimal[] {%s}, new java.math.BigDecimal[] {%s});",
-                                 actionConstraintMatch.getActionBendableHardConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")),
-                                 actionConstraintMatch.getActionBendableSoftConstraintMatches().stream().map(m -> m.getConstraintMatch()).collect(Collectors.joining(", ")));
-        }
-        throw new IllegalArgumentException("Action " + iAction + " is not supported by this extension");
-    }
-
-    @Override
     public boolean accept(final String iActionString) {
         return CONSTRAINT_MATCH_PATTERN.matcher(iActionString).matches();
     }
 
     @Override
-    public IAction unmarshal(final String iActionString) {
+    public PluggableIAction unmarshal(final String iActionString) throws RuleModelDRLPersistenceException {
         List<String> parameters = StringUtils.splitArgumentsList(PersistenceExtensionUtils.unwrapParenthesis(iActionString));
 
         if (!parameters.isEmpty() && "kcontext".equals(parameters.get(0))) {
@@ -160,11 +118,7 @@ public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleMod
             }
         }
 
-        // Line can't be parsed as ActionMultiConstraint*Match, return a FreeFormLine
-        FreeFormLine freeFormLine = new FreeFormLine();
-        freeFormLine.setText(iActionString);
-
-        return freeFormLine;
+        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
     }
 
     private String unwrapCurlyBrackets(final String s) {

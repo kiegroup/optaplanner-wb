@@ -20,7 +20,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
-import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.AbstractActionConstraintMatch;
 
 public class ConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {
 

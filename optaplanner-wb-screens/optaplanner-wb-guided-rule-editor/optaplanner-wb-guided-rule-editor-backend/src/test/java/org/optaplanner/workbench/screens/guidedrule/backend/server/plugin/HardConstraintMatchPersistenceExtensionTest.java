@@ -16,50 +16,17 @@
 
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
+import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionHardConstraintMatch;
 
 import static org.junit.Assert.*;
 
 public class HardConstraintMatchPersistenceExtensionTest {
 
     private HardConstraintMatchPersistenceExtension extension = new HardConstraintMatchPersistenceExtension();
-
-    @Test
-    public void acceptIAction() {
-        assertTrue(extension.accept(new ActionHardConstraintMatch()));
-        assertTrue(extension.accept(new ActionBendableHardConstraintMatch()));
-
-        assertFalse(extension.accept(new UnknownIAction()));
-    }
-
-    @Test
-    public void marshalActionHardConstraintMatch() {
-        ActionHardConstraintMatch action = new ActionHardConstraintMatch("-1");
-
-        String marshaledAction = extension.marshal(action);
-
-        assertEquals("scoreHolder.addHardConstraintMatch(kcontext, -1);",
-                     marshaledAction);
-    }
-
-    @Test
-    public void marshalActionBendableHardConstraintMatch() {
-        ActionBendableHardConstraintMatch action = new ActionBendableHardConstraintMatch(1,
-                                                                                         "-1");
-
-        String marshaledAction = extension.marshal(action);
-
-        assertEquals("scoreHolder.addHardConstraintMatch(kcontext, 1, -1);",
-                     marshaledAction);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void marshalUnknownIAction() {
-        extension.marshal(new UnknownIAction());
-    }
 
     @Test
     public void acceptString() {
@@ -70,7 +37,7 @@ public class HardConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
-    public void unmarshalHardConstraintMatch() {
+    public void unmarshalHardConstraintMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addHardConstraintMatch(kcontext, -1);";
 
         IAction action = extension.unmarshal(actionString);
@@ -84,7 +51,7 @@ public class HardConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
-    public void unmarshalActionBendableHardConstraintMatch() {
+    public void unmarshalActionBendableHardConstraintMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addHardConstraintMatch(kcontext, 1, -1);";
 
         IAction action = extension.unmarshal(actionString);
@@ -97,5 +64,10 @@ public class HardConstraintMatchPersistenceExtensionTest {
                      actionHardConstraintMatch.getPosition());
         assertEquals("-1",
                      actionHardConstraintMatch.getConstraintMatch());
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("unrecognizedString");
     }
 }

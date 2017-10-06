@@ -16,50 +16,17 @@
 
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
+import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableSoftConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionSoftConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableSoftConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionSoftConstraintMatch;
 
 import static org.junit.Assert.*;
 
 public class SoftConstraintMatchPersistenceExtensionTest {
 
     private SoftConstraintMatchPersistenceExtension extension = new SoftConstraintMatchPersistenceExtension();
-
-    @Test
-    public void acceptIAction() {
-        assertTrue(extension.accept(new ActionSoftConstraintMatch()));
-        assertTrue(extension.accept(new ActionBendableSoftConstraintMatch()));
-
-        assertFalse(extension.accept(new UnknownIAction()));
-    }
-
-    @Test
-    public void marshalActionSoftConstraintMatch() {
-        ActionSoftConstraintMatch action = new ActionSoftConstraintMatch("-1");
-
-        String marshaledAction = extension.marshal(action);
-
-        assertEquals("scoreHolder.addSoftConstraintMatch(kcontext, -1);",
-                     marshaledAction);
-    }
-
-    @Test
-    public void marshalActionBendableSoftConstraintMatch() {
-        ActionBendableSoftConstraintMatch action = new ActionBendableSoftConstraintMatch(1,
-                                                                                         "-1");
-
-        String marshaledAction = extension.marshal(action);
-
-        assertEquals("scoreHolder.addSoftConstraintMatch(kcontext, 1, -1);",
-                     marshaledAction);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void marshalUnknownIAction() {
-        extension.marshal(new UnknownIAction());
-    }
 
     @Test
     public void acceptString() {
@@ -70,7 +37,7 @@ public class SoftConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
-    public void unmarshalSoftConstraintMatch() {
+    public void unmarshalSoftConstraintMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addSoftConstraintMatch(kcontext, -1);";
 
         IAction action = extension.unmarshal(actionString);
@@ -84,7 +51,7 @@ public class SoftConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
-    public void unmarshalActionBendableSoftConstraintMatch() {
+    public void unmarshalActionBendableSoftConstraintMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addSoftConstraintMatch(kcontext, 1, -1);";
 
         IAction action = extension.unmarshal(actionString);
@@ -97,5 +64,10 @@ public class SoftConstraintMatchPersistenceExtensionTest {
                      actionSoftConstraintMatch.getPosition());
         assertEquals("-1",
                      actionSoftConstraintMatch.getConstraintMatch());
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("unrecognizedString");
     }
 }

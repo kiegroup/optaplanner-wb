@@ -23,7 +23,7 @@ import org.drools.workbench.screens.guided.rule.client.editor.RuleModeller;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
-import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionBendableConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.AbstractActionBendableConstraintMatch;
 import org.uberfire.client.views.pfly.widgets.HelpIcon;
 
 public class BendableConstraintMatchRuleModellerWidget extends AbstractConstraintMatchRuleModellerWidget {

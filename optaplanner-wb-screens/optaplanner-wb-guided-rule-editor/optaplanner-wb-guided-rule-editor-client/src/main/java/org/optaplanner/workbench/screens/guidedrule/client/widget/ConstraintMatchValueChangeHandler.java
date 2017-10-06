@@ -18,7 +18,7 @@ package org.optaplanner.workbench.screens.guidedrule.client.widget;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.AbstractActionConstraintMatch;
 
 public class ConstraintMatchValueChangeHandler implements ValueChangeHandler<String> {
 
