@@ -21,13 +21,13 @@ import java.util.Arrays;
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableHardConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionBendableSoftConstraintMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableBigDecimalMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableLongMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintBendableMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardMediumSoftMatch;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMultiConstraintHardSoftMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableHardConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionBendableSoftConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableBigDecimalMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableLongMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBendableMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardMediumSoftMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardSoftMatch;
 
 import static org.junit.Assert.*;
 

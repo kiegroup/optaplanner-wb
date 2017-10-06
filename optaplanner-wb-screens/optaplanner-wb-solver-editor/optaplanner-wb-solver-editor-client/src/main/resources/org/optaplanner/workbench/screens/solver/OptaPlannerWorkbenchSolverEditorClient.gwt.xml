@@ -34,7 +34,7 @@
   <inherits name="org.kie.workbench.common.widgets.configresource.KieWorkbenchConfigResourceWidget"/>
 
   <inherits name='org.optaplanner.workbench.screens.solver.OptaPlannerWorkbenchSolverEditorAPI'/>
-  <inherits name='org.optaplanner.workbench.upstream.model.OptaPlannerUpstreamModelAPI'/>
+  <inherits name='org.optaplanner.workbench.models.core.OptaPlannerWorkbenchCoreAPI'/>
 
   <replace-with class="org.optaplanner.workbench.screens.solver.client.util.SuperDevModeUsedFlag">
     <when-type-is class="org.optaplanner.workbench.screens.solver.client.util.SuperDevModeFlag"/>

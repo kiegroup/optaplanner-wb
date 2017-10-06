@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.HelpBlock;
 import org.gwtbootstrap3.client.ui.TextBox;
-import org.optaplanner.workbench.screens.guidedrule.model.AbstractActionConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.AbstractActionConstraintMatch;
 import org.uberfire.client.views.pfly.widgets.ValidationState;
 
 public class ConstraintMatchInputWidget extends FormGroup {

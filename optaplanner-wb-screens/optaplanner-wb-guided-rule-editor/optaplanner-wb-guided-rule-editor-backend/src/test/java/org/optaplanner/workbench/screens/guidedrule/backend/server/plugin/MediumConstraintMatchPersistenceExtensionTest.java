@@ -19,7 +19,7 @@ package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
-import org.optaplanner.workbench.screens.guidedrule.model.ActionMediumConstraintMatch;
+import org.optaplanner.workbench.models.datamodel.rule.ActionMediumConstraintMatch;
 
 import static org.junit.Assert.*;
 
