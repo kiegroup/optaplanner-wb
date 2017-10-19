@@ -22,6 +22,7 @@ import java.io.Reader;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
+import org.kie.internal.xstream.XStreamUtils;
 
 /**
  * TODO Remove once org.optaplanner.persistence.xstream.impl.domain.solution.XStreamSolutionFileIO
@@ -32,7 +33,7 @@ public class XStreamSolutionImporter<T> {
     private final XStream xStream;
 
     public XStreamSolutionImporter(ClassLoader classLoader) {
-        xStream = new XStream();
+        xStream = XStreamUtils.createTrustingXStream();
         xStream.setClassLoader(classLoader);
         xStream.setMode(XStream.ID_REFERENCES);
     }
