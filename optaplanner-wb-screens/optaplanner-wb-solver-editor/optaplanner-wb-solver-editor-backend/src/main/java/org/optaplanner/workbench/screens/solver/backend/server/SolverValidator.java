@@ -29,11 +29,19 @@ import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
 import org.guvnor.common.services.backend.validation.GenericValidator;
+import org.guvnor.common.services.project.service.ProjectService;
 import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
+import org.guvnor.m2repo.backend.server.GuvnorM2Repository;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
-import org.kie.workbench.common.services.backend.builder.service.BuildInfoService;
+import org.kie.workbench.common.services.backend.builder.af.KieAFBuilder;
+import org.kie.workbench.common.services.backend.compiler.impl.kie.KieCompilationResponse;
+import org.kie.workbench.common.services.backend.compiler.impl.share.BuilderCache;
+import org.kie.workbench.common.services.backend.compiler.impl.share.ClassLoaderCache;
+import org.kie.workbench.common.services.backend.compiler.impl.share.GitCache;
+import org.kie.workbench.common.services.backend.compiler.impl.utils.KieAFBuilderUtil;
+
 import org.kie.workbench.common.services.backend.validation.asset.DefaultGenericKieValidator;
 import org.kie.workbench.common.services.backend.validation.asset.NoProjectException;
 import org.kie.workbench.common.services.backend.validation.asset.ValidatorBuildService;
@@ -41,6 +49,7 @@ import org.kie.workbench.common.services.shared.project.KieProject;
 import org.kie.workbench.common.services.shared.project.KieProjectService;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
 
 public class SolverValidator {
@@ -50,7 +59,7 @@ public class SolverValidator {
     private static final Set<String> SMOKE_TEST_SUPPORTED_PROJECTS = new HashSet<>();
 
     private KieProjectService projectService;
-    private BuildInfoService buildInfoService;
+
     private ValidatorBuildService validatorBuildService;
 
     static {
@@ -61,11 +70,23 @@ public class SolverValidator {
     }
 
     @Inject
+    private BuilderCache builderCache;
+
+    @Inject
+    KieProjectService kieProjectService;
+    @Inject
+    private ClassLoaderCache classLoaderCache;
+
+    @Inject
+    private GitCache gitCache;
+
+    @Inject
+    private GuvnorM2Repository guvnorM2Repository;
+
+    @Inject
     public SolverValidator(final KieProjectService projectService,
-                           final BuildInfoService buildInfoService,
                            final ValidatorBuildService validatorBuildService) {
         this.projectService = projectService;
-        this.buildInfoService = buildInfoService;
         this.validatorBuildService = validatorBuildService;
     }
 
@@ -134,7 +155,18 @@ public class SolverValidator {
     private ValidationMessage createSolverFactory(final Path resourcePath,
                                                   final KieProject kieWorkbenchProject,
                                                   final boolean runSolver) {
-        final InternalKieModule kieModule = (InternalKieModule) buildInfoService.getBuildInfo(kieWorkbenchProject).getKieModuleIgnoringErrors();
+        //@TODO check if it works as expected
+        KieProject kieProjectForBuild = projectService.resolveProject(resourcePath);
+        org.uberfire.java.nio.file.Path nioPath = Paths.convert(kieProjectForBuild.getRootPath());;
+        KieAFBuilder builder = KieAFBuilderUtil.getKieAFBuilder(kieProjectForBuild.getRootPath().toURI(), nioPath, gitCache, builderCache, guvnorM2Repository, "system");
+        InternalKieModule kieModule ;
+        KieCompilationResponse res = builder.build();
+        if(res.isSuccessful() && res.getKieModule().isPresent()){
+             kieModule = (InternalKieModule) res.getKieModule().get();
+        }else{
+            return null;
+        }
+
         final org.drools.compiler.kie.builder.impl.KieProject kieProject = new KieModuleKieProject(kieModule,
                                                                                                    null);
         final KieContainer kieContainer = new KieContainerImpl(kieProject,
