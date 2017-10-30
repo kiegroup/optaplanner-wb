@@ -123,6 +123,12 @@
       <artifactId>xstream</artifactId>
     </dependency>
 
+    <!-- Contains XStreamUtils -->
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-commons</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-test-utils</artifactId>
