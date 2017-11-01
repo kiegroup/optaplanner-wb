@@ -30,6 +30,10 @@
   <name>OptaPlanner Workbench - Guided Rule Editor - Backend</name>
   <description>OptaPlanner Workbench - Guided Rule Editor - Backend</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.guided.rule.editor.backend</java.module.name>
+  </properties>
+
   <dependencies>
     <!-- Regular dependencies -->
     <dependency>
