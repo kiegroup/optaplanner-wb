@@ -30,6 +30,10 @@
   <name>OptaPlanner Workbench - Solver Editor - Backend</name>
   <description>OptaPlanner Workbench - Solver Editor - Backend</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.solver.editor.backend</java.module.name>
+  </properties>
+
   <dependencies>
 
     <!-- dependencies added because of new illegal transitive dependency check -->

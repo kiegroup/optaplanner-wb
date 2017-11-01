@@ -31,6 +31,10 @@
   <name>OptaPlanner Workbench - Domain Editor Client</name>
   <description>OptaPlanner Workbench - Domain Editor Client</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.domain.editor.client</java.module.name>
+  </properties>
+
   <dependencies>
     <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>

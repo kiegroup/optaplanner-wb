@@ -30,6 +30,10 @@
   <name>OptaPlanner Workbench - Solver Editor - API</name>
   <description>OptaPlanner Workbench - Solver Editor - API</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.solver.editor.api</java.module.name>
+  </properties>
+
   <dependencies>
 
     <!-- dependencies added because of new illegal transitive dependency check -->

@@ -32,6 +32,9 @@
   <name>OptaPlanner Workbench - Domain Editor API</name>
   <description>OptaPlanner Workbench - Domain API</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.domain.editor.api</java.module.name>
+  </properties>
 
   <dependencies>
 

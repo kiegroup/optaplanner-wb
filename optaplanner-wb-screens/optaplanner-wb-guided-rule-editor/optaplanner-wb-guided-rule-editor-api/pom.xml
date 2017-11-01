@@ -30,6 +30,10 @@
   <name>OptaPlanner Workbench - Guided Rule Editor - API</name>
   <description>OptaPlanner Workbench - Guided Rule Editor - API</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.guided.rule.editor.api</java.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.kie.soup</groupId>

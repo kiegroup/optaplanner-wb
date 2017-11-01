@@ -30,6 +30,10 @@
   <name>OptaPlanner Workbench - Solver Editor - Client</name>
   <description>OptaPlanner Workbench - Solver Editor - Client</description>
 
+  <properties>
+    <java.module.name>org.optaplanner.wb.solver.editor.client</java.module.name>
+  </properties>
+
   <dependencies>
 
     <!-- dependencies added because of new illegal transitive dependency check -->
