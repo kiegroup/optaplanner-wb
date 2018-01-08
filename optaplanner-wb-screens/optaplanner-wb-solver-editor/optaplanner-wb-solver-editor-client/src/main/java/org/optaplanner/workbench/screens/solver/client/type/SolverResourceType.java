@@ -25,6 +25,8 @@ import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorRes
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
 import org.uberfire.client.workbench.type.ClientResourceType;
+import org.uberfire.workbench.category.Category;
+import org.uberfire.workbench.category.Others;
 
 @ApplicationScoped
 public class SolverResourceType
@@ -33,8 +35,17 @@ public class SolverResourceType
 
     private final Image IMAGE = new Image(SolverEditorResources.INSTANCE.images().typeSolver());
 
-    @Inject
     private TranslationService translationService;
+
+    public SolverResourceType() {
+    }
+
+    @Inject
+    public SolverResourceType(Others category,
+                              TranslationService translationService) {
+        super(category);
+        this.translationService = translationService;
+    }
 
     @Override
     public IsWidget getIcon() {

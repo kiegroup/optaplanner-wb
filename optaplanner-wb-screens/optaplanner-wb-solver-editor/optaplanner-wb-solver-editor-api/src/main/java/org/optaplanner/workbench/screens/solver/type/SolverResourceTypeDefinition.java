@@ -16,13 +16,26 @@
 package org.optaplanner.workbench.screens.solver.type;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.uberfire.backend.vfs.Path;
+import org.uberfire.workbench.category.Category;
+import org.uberfire.workbench.category.Others;
 import org.uberfire.workbench.type.ResourceTypeDefinition;
 
 @ApplicationScoped
 public class SolverResourceTypeDefinition
         implements ResourceTypeDefinition {
+
+    private Category category;
+
+    public SolverResourceTypeDefinition() {
+    }
+
+    @Inject
+    public SolverResourceTypeDefinition(Others category) {
+        this.category = category;
+    }
 
     @Override
     public String getShortName() {
@@ -57,5 +70,10 @@ public class SolverResourceTypeDefinition
     @Override
     public boolean accept(final Path path) {
         return path.getFileName().endsWith("." + getSuffix());
+    }
+
+    @Override
+    public Category getCategory() {
+        return this.category;
     }
 }
