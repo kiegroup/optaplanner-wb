@@ -55,4 +55,6 @@ public interface SolverEditorLookupConstants extends ConstantsWithLookup {
     String SIMULATED_ANNEALING();
 
     String LATE_ACCEPTANCE();
+
+    String VARIABLE_NEIGHBORHOOD_DESCENT();
 }
