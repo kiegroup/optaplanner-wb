@@ -260,6 +260,12 @@
       <artifactId>kie-soup-project-datamodel-api</artifactId>
     </dependency>
 
+    <!-- Contains Producer method for MVELEvaluator -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-cdi</artifactId>
+    </dependency>
+
     <!-- Models held within Drools -->
     <dependency>
       <groupId>org.drools</groupId>
