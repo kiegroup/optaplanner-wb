@@ -20,8 +20,8 @@ import org.guvnor.common.services.project.model.Package;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.DefaultIndexBuilder;
-import org.kie.workbench.common.services.shared.project.KieProject;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModule;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class SolverFileIndexerTest {
 
     @Mock
-    private KieProjectService projectService;
+    private KieModuleService moduleService;
 
     @Mock
     private SolverResourceTypeDefinition resourceTypeDefinition;
@@ -50,8 +50,8 @@ public class SolverFileIndexerTest {
         Path path = PathFactory.newPath("SolverConfig.solver.xml",
                                         "default:///test/SolverConfig.solver.xml");
 
-        when(projectService.resolveProject(path)).thenReturn(mock(KieProject.class));
-        when(projectService.resolvePackage(path)).thenReturn(mock(Package.class));
+        when(moduleService.resolveModule(path)).thenReturn(mock(KieModule.class));
+        when(moduleService.resolvePackage(path)).thenReturn(mock(Package.class));
 
         DefaultIndexBuilder indexBuilder = solverFileIndexer.fillIndexBuilder(Paths.convert(path));
 

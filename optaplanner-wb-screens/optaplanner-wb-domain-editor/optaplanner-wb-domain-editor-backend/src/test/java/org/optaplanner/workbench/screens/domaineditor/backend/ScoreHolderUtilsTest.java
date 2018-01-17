@@ -19,13 +19,10 @@ package org.optaplanner.workbench.screens.domaineditor.backend;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.workbench.common.services.backend.project.ProjectClassLoaderHelper;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
@@ -36,18 +33,11 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ScoreHolderUtilsTest {
 
-    @Mock
-    private KieProjectService kieProjectService;
-
-    @Mock
-    private ProjectClassLoaderHelper classLoaderHelper;
-
     private ScoreHolderUtils scoreHolderUtils;
 
     @Before
     public void setUp() {
-        scoreHolderUtils = new ScoreHolderUtils(kieProjectService,
-                                                classLoaderHelper);
+        scoreHolderUtils = new ScoreHolderUtils();
     }
 
     @Test

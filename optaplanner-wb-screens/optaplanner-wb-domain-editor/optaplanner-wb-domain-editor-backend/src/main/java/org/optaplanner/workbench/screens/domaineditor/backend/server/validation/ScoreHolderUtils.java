@@ -19,10 +19,10 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server.validation
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.kie.workbench.common.services.backend.project.ProjectClassLoaderHelper;
+import org.kie.workbench.common.services.backend.project.ModuleClassLoaderHelper;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.ObjectProperty;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScore;
 import org.optaplanner.core.api.score.buildin.bendable.BendableScoreHolder;
@@ -56,18 +56,7 @@ import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder;
 @ApplicationScoped
 public class ScoreHolderUtils {
 
-    private KieProjectService kieProjectService;
-
-    private ProjectClassLoaderHelper classLoaderHelper;
-
     public ScoreHolderUtils() {
-    }
-
-    @Inject
-    public ScoreHolderUtils(final KieProjectService kieProjectService,
-                            final ProjectClassLoaderHelper classLoaderHelper) {
-        this.kieProjectService = kieProjectService;
-        this.classLoaderHelper = classLoaderHelper;
     }
 
     public String extractScoreTypeFqn(final DataObject dataObject) {

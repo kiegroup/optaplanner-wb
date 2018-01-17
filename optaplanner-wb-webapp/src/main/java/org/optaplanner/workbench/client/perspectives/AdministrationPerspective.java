@@ -20,9 +20,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.guvnor.asset.management.client.editors.repository.wizard.CreateRepositoryWizard;
 import org.guvnor.structure.client.editors.repository.clone.CloneRepositoryPresenter;
-import org.jboss.errai.ioc.client.api.ManagedInstance;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.handlers.NewResourcePresenter;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
@@ -55,9 +53,6 @@ public class AdministrationPerspective {
 
     @Inject
     private PlaceManager placeManager;
-
-    @Inject
-    private ManagedInstance<CreateRepositoryWizard> createRepositoryWizardProvider;
 
     @Inject
     private CloneRepositoryPresenter cloneRepositoryPresenter;
@@ -104,13 +99,6 @@ public class AdministrationPerspective {
                 () -> placeManager.goTo("RepositoriesEditor")).endMenu().build().getItems().get(0));
         menuItems.add(MenuFactory.newSimpleItem(translationService.getTranslation(AppConstants.AdministrationPerspective_MenuCloneRepository)).respondsWith(
                 () -> cloneRepositoryPresenter.showForm()).endMenu().build().getItems().get(0));
-        menuItems.add(MenuFactory.newSimpleItem(translationService.getTranslation(AppConstants.AdministrationPerspective_MenuNewRepository)).respondsWith(
-                () -> {
-                    final CreateRepositoryWizard newRepositoryWizard = createRepositoryWizardProvider.get();
-                    //When pop-up is closed destroy bean to avoid memory leak
-                    newRepositoryWizard.onCloseCallback(result -> createRepositoryWizardProvider.destroy(newRepositoryWizard));
-                    newRepositoryWizard.start();
-                }).endMenu().build().getItems().get(0));
 
         return menuItems;
     }
