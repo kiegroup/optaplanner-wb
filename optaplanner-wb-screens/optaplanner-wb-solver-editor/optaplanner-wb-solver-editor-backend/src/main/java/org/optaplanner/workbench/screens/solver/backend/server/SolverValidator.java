@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+
 import javax.inject.Inject;
 
 import com.google.common.base.Charsets;
@@ -41,6 +42,7 @@ import org.kie.workbench.common.services.shared.project.KieModule;
 import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
 
 public class SolverValidator {
@@ -186,7 +188,7 @@ public class SolverValidator {
 
     private String getSolverConfigResource(final Path resourcePath,
                                            final KieModule kieWorkbenchModule) {
-        return resourcePath.toURI().substring(kieWorkbenchModule.getRootPath().toURI().length() + "/src/main/resources/".length());
+        return Paths.convert(Paths.convert(resourcePath)).toURI().substring(Paths.convert(Paths.convert(kieWorkbenchModule.getRootPath())).toURI().length() + "/src/main/resources/".length());
     }
 
     private ValidationMessage make(final Exception e,
