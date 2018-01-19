@@ -181,7 +181,7 @@ public class SolverValidator {
     private String resolveProjectName(final Path resourcePath) {
         KieModule kieModule = moduleService.resolveModule(resourcePath);
         if (kieModule == null) {
-            throw new IllegalStateException("Failed to resolve KieProject (" + kieModule + ").");
+            throw new IllegalStateException("Failed to resolve KieModule (" + kieModule + ").");
         }
         return kieModule.getModuleName();
     }
