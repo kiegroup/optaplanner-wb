@@ -29,7 +29,7 @@ import org.kie.workbench.common.screens.datamodeller.backend.server.helper.DataM
 import org.kie.workbench.common.screens.datamodeller.model.GenerationResult;
 import org.kie.workbench.common.screens.datamodeller.service.DataModelerService;
 import org.kie.workbench.common.services.datamodeller.core.DataObject;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.ScoreHolderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
 
     private GlobalsEditorService globalsEditorService;
 
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     private ScoreHolderUtils scoreHolderUtils;
 
@@ -68,13 +68,13 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
     public PlanningSolutionSaveHelper(@Named("ioStrategy") final IOService ioService,
                                       final DataModelerService dataModelerService,
                                       final GlobalsEditorService globalsEditorService,
-                                      final KieProjectService kieProjectService,
+                                      final KieModuleService kieModuleService,
                                       final ScoreHolderUtils scoreHolderUtils,
                                       final MetadataService metadataService) {
         this.ioService = ioService;
         this.dataModelerService = dataModelerService;
         this.globalsEditorService = globalsEditorService;
-        this.kieProjectService = kieProjectService;
+        this.kieModuleService = kieModuleService;
         this.scoreHolderUtils = scoreHolderUtils;
         this.metadataService = metadataService;
     }
@@ -87,7 +87,7 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
         GenerationResult generationResult = dataModelerService.loadDataObject(destinationPath,
                                                                               dataObjectSource,
                                                                               destinationPath);
-        org.uberfire.java.nio.file.Path source = Paths.convert(kieProjectService.resolvePackage(sourcePath).getPackageMainResourcesPath());
+        org.uberfire.java.nio.file.Path source = Paths.convert(kieModuleService.resolvePackage(sourcePath).getPackageMainResourcesPath());
         org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
 
         String sourceSolutionFileName = sourcePath.getFileName().substring(0,
@@ -124,7 +124,7 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
                                                     sourceSolutionFileName);
                     }
                 } else {
-                    org.uberfire.java.nio.file.Path destination = Paths.convert(kieProjectService.resolvePackage(destinationPath).getPackageMainResourcesPath());
+                    org.uberfire.java.nio.file.Path destination = Paths.convert(kieModuleService.resolvePackage(destinationPath).getPackageMainResourcesPath());
                     org.uberfire.java.nio.file.Path destinationPackage = Files.isDirectory(destination) ? destination : destination.getParent();
 
                     ioService.deleteIfExists(sourceScoreHolderGlobalPath);

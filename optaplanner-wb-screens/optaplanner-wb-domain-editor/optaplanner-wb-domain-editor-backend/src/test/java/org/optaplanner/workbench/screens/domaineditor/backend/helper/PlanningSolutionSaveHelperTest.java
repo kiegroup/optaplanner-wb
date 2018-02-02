@@ -30,7 +30,7 @@ import org.kie.workbench.common.services.datamodeller.core.DataObject;
 import org.kie.workbench.common.services.datamodeller.core.impl.AnnotationImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.DataObjectImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -60,7 +60,7 @@ public class PlanningSolutionSaveHelperTest {
     private GlobalsEditorService globalsEditorService;
 
     @Mock
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     @Mock
     private ScoreHolderUtils scoreHolderUtils;
@@ -75,7 +75,7 @@ public class PlanningSolutionSaveHelperTest {
         saveHelper = new PlanningSolutionSaveHelper(ioService,
                                                     dataModelerService,
                                                     globalsEditorService,
-                                                    kieProjectService,
+                                                    kieModuleService,
                                                     scoreHolderUtils,
                                                     metadataService);
     }
@@ -130,7 +130,7 @@ public class PlanningSolutionSaveHelperTest {
         Package _package = mock(Package.class);
         when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
                                                                                     "file:///dataObjects"));
-        when(kieProjectService.resolvePackage(any(Path.class))).thenReturn(_package);
+        when(kieModuleService.resolvePackage(any(Path.class))).thenReturn(_package);
 
         when(scoreHolderUtils.extractScoreTypeFqn(dataObject)).thenReturn(HardSoftScore.class.getName());
         when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
@@ -179,7 +179,7 @@ public class PlanningSolutionSaveHelperTest {
         Package _package = mock(Package.class);
         when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
                                                                                     "file:///dataObjects"));
-        when(kieProjectService.resolvePackage(any(Path.class))).thenReturn(_package);
+        when(kieModuleService.resolvePackage(any(Path.class))).thenReturn(_package);
 
         saveHelper.postProcess(sourcePath,
                                destinationPath);

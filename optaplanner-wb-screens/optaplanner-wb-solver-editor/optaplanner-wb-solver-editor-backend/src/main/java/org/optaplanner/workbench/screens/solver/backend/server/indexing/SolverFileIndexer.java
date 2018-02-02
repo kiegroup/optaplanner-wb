@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import org.guvnor.common.services.project.model.Package;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.AbstractFileIndexer;
 import org.kie.workbench.common.services.refactoring.backend.server.indexing.DefaultIndexBuilder;
-import org.kie.workbench.common.services.shared.project.KieProject;
-import org.kie.workbench.common.services.shared.project.KieProjectService;
+import org.kie.workbench.common.services.shared.project.KieModule;
+import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class SolverFileIndexer extends AbstractFileIndexer {
     private static final Logger logger = LoggerFactory.getLogger(SolverFileIndexer.class);
 
     @Inject
-    private KieProjectService kieProjectService;
+    private KieModuleService kieModuleService;
 
     @Inject
     private SolverResourceTypeDefinition solverResourceTypeDefinition;
@@ -44,18 +44,18 @@ public class SolverFileIndexer extends AbstractFileIndexer {
     @Override
     protected DefaultIndexBuilder fillIndexBuilder(final Path path) throws Exception {
         final org.uberfire.backend.vfs.Path vfsPath = Paths.convert(path);
-        final KieProject project = kieProjectService.resolveProject(vfsPath);
-        if (project == null) {
-            logger.error("Unable to index " + path.toUri() + ", project could not be resolved.");
+        final KieModule module = kieModuleService.resolveModule(vfsPath);
+        if (module == null) {
+            logger.error("Unable to index " + path.toUri() + ", module could not be resolved.");
             return null;
         }
-        final Package _package = kieProjectService.resolvePackage(vfsPath);
+        final Package _package = kieModuleService.resolvePackage(vfsPath);
         if (_package == null) {
             logger.error("Unable to index " + path.toUri() + ", package could not be resolved.");
             return null;
         }
         return new DefaultIndexBuilder(vfsPath.getFileName(),
-                                       project,
+                                       module,
                                        _package);
     }
 
