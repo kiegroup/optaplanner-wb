@@ -17,6 +17,8 @@
 package org.optaplanner.workbench.screens.solver.backend.server;
 
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -35,6 +37,7 @@ import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
 import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
+import org.uberfire.ext.editor.commons.backend.service.SaveAndRenameServiceImpl;
 import org.uberfire.ext.editor.commons.service.CopyService;
 import org.uberfire.ext.editor.commons.service.DeleteService;
 import org.uberfire.ext.editor.commons.service.RenameService;
@@ -79,6 +82,14 @@ public class SolverEditorServiceImpl
 
     @Inject
     private CommentedOptionFactory commentedOptionFactory;
+
+    @Inject
+    private SaveAndRenameServiceImpl<SolverConfigModel, Metadata> saveAndRenameService;
+
+    @PostConstruct
+    public void init() {
+        saveAndRenameService.init(this);
+    }
 
     @Override
     public Path create(final Path context,
@@ -231,5 +242,14 @@ public class SolverEditorServiceImpl
         } catch (Exception e) {
             throw ExceptionUtilities.handleException(e);
         }
+    }
+
+    @Override
+    public Path saveAndRename(final Path path,
+                              final String newFileName,
+                              final Metadata metadata,
+                              final SolverConfigModel content,
+                              final String comment) {
+        return saveAndRenameService.saveAndRename(path, newFileName, metadata, content, comment);
     }
 }

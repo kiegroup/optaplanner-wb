@@ -17,6 +17,8 @@ package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.function.Supplier;
+
 import javax.enterprise.event.Event;
 
 import com.google.gwt.core.client.GWT;
@@ -47,10 +49,17 @@ import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.backend.vfs.ObservablePath;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
+import org.uberfire.ext.editor.commons.service.support.SupportsSaveAndRename;
+import org.uberfire.mvp.Command;
 import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.workbench.events.NotificationEvent;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SolverEditorPresenterTest {
@@ -62,13 +71,6 @@ public class SolverEditorPresenterTest {
     SolverEditorResources solverEditorResources;
 
     @Mock
-    private SolverEditorView view;
-
-    private SolverEditorPresenter presenter;
-    private TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
-    private ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfigModel();
-
-    @Mock
     KieEditorWrapperView kieView;
 
     @Mock
@@ -77,9 +79,20 @@ public class SolverEditorPresenterTest {
     @Mock
     VersionRecordManager versionRecordManager;
 
+    @Mock
+    private SolverEditorView view;
+
+    private SolverEditorPresenter presenter;
+
+    private TerminationConfigModel terminationConfigModel = new TerminationConfigModel();
+
+    private ScoreDirectorFactoryConfigModel scoreDirectorFactoryConfig = new ScoreDirectorFactoryConfigModel();
+
     private SolverConfigModel model;
 
     private SolverResourceType resourceType;
+
+    private ServiceMock solverService;
 
     @Before
     public void setUp() throws Exception {
@@ -94,17 +107,23 @@ public class SolverEditorPresenterTest {
 
         when(versionRecordManager.getCurrentPath()).thenReturn(path);
 
-        presenter = new SolverEditorPresenter(view,
-                                              resourceType,
-                                              mock(XMLViewer.class),
-                                              new NotificationEventMock(),
-                                              new ServiceMock(),
-                                              mock(ValidationPopup.class),
-                                              mock(TranslationService.class)) {
+        solverService = new ServiceMock();
+        presenter = spy(new SolverEditorPresenter(view,
+                                                  resourceType,
+                                                  mock(XMLViewer.class),
+                                                  new NotificationEventMock(),
+                                                  solverService,
+                                                  mock(ValidationPopup.class),
+                                                  mock(TranslationService.class)) {
             {
                 kieView = mock(KieEditorWrapperView.class);
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
                 overviewWidget = mock(OverviewWidgetPresenter.class);
+            }
+
+            @Override
+            protected Command getSaveAndRename() {
+                return mock(Command.class);
             }
 
             protected void makeMenuBar() {
@@ -112,7 +131,7 @@ public class SolverEditorPresenterTest {
 
             protected void addSourcePage() {
             }
-        };
+        });
     }
 
     @Test
@@ -123,6 +142,26 @@ public class SolverEditorPresenterTest {
         verify(view).setTerminationConfigModel(terminationConfigModel);
         verify(view).setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig,
                                                    path);
+    }
+
+    @Test
+    public void testGetContentSupplier() throws Exception {
+
+        final SolverConfigModel content = mock(SolverConfigModel.class);
+
+        doReturn(content).when(presenter).getModel();
+
+        final Supplier<SolverConfigModel> contentSupplier = presenter.getContentSupplier();
+
+        assertEquals(content, contentSupplier.get());
+    }
+
+    @Test
+    public void testGetSaveAndRenameServiceCaller() throws Exception {
+
+        final Caller<? extends SupportsSaveAndRename<SolverConfigModel, Metadata>> serviceCaller = presenter.getSaveAndRenameServiceCaller();
+
+        assertEquals(this.solverService, serviceCaller);
     }
 
     private class NotificationEventMock
@@ -148,8 +187,8 @@ public class SolverEditorPresenterTest {
     private class ServiceMock
             implements Caller<SolverEditorService> {
 
-        private SolverEditorService service = new SolverEditorServiceMock();
         RemoteCallback remoteCallback;
+        private SolverEditorService service = new SolverEditorServiceMock();
 
         @Override
         public SolverEditorService call() {
@@ -174,8 +213,11 @@ public class SolverEditorPresenterTest {
             @Override
             public SolverModelContent loadContent(Path path) {
 
-                SolverModelContent content = new SolverModelContent(model,
-                                                                    new Overview());
+                final Overview overview = new Overview() {{
+                    setMetadata(mock(Metadata.class));
+                }};
+                final SolverModelContent content = new SolverModelContent(model,
+                                                                          overview);
                 remoteCallback.callback(content);
 
                 return null;
@@ -245,6 +287,15 @@ public class SolverEditorPresenterTest {
             @Override
             public String toSource(Path path,
                                    SolverConfigModel model) {
+                return null;
+            }
+
+            @Override
+            public Path saveAndRename(final Path path,
+                                      final String newFileName,
+                                      final Metadata metadata,
+                                      final SolverConfigModel content,
+                                      final String comment) {
                 return null;
             }
         }

@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.solver.service;
 import java.util.List;
 
 import org.guvnor.common.services.shared.file.SupportsUpdate;
+import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.validation.ValidationService;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.bus.server.annotations.Remote;
@@ -30,6 +31,7 @@ import org.uberfire.ext.editor.commons.service.support.SupportsCreate;
 import org.uberfire.ext.editor.commons.service.support.SupportsDelete;
 import org.uberfire.ext.editor.commons.service.support.SupportsRead;
 import org.uberfire.ext.editor.commons.service.support.SupportsRename;
+import org.uberfire.ext.editor.commons.service.support.SupportsSaveAndRename;
 
 @Remote
 public interface SolverEditorService
@@ -38,10 +40,9 @@ public interface SolverEditorService
         ViewSourceService<SolverConfigModel>,
         SupportsCreate<SolverConfigModel>,
         SupportsRead<SolverConfigModel>,
-        SupportsUpdate<SolverConfigModel>,
+        SupportsSaveAndRename<SolverConfigModel, Metadata>,
         SupportsDelete,
-        SupportsCopy,
-        SupportsRename {
+        SupportsCopy {
 
     SolverModelContent loadContent(final Path path);
 
