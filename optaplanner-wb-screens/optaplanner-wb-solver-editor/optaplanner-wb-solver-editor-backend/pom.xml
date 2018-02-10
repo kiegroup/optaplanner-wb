@@ -121,6 +121,11 @@
       <artifactId>uberfire-commons-editor-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons-editor-backend</artifactId>
+    </dependency>
+
     <!-- XML -->
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>

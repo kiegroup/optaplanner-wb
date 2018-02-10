@@ -16,12 +16,15 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.List;
+import java.util.function.Supplier;
+
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
+import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -42,6 +45,8 @@ import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartTitleDecoration;
 import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.views.pfly.multipage.PageImpl;
+import org.uberfire.ext.editor.commons.client.validation.Validator;
+import org.uberfire.ext.editor.commons.service.support.SupportsSaveAndRename;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
 import org.uberfire.lifecycle.OnClose;
 import org.uberfire.lifecycle.OnMayClose;
@@ -57,7 +62,7 @@ import org.uberfire.workbench.model.menu.Menus;
 @Dependent
 @WorkbenchEditor(identifier = "OptaPlannerSolverEditor", supportedTypes = {SolverResourceType.class}, priority = 10)
 public class SolverEditorPresenter
-        extends KieEditor {
+        extends KieEditor<SolverConfigModel> {
 
     private Caller<SolverEditorService> solverService;
 
@@ -72,6 +77,7 @@ public class SolverEditorPresenter
     private TranslationService translationService;
 
     private SolverEditorView view;
+
     private SolverConfigModel model;
 
     @Inject
@@ -114,8 +120,7 @@ public class SolverEditorPresenter
                     }))
                     .addCopy(versionRecordManager.getCurrentPath(),
                              fileNameValidator)
-                    .addRename(versionRecordManager.getPathToLatest(),
-                               fileNameValidator)
+                    .addRename(getSaveAndRename())
                     .addDelete(versionRecordManager.getPathToLatest())
                     .addValidate(onValidate())
                     .addCommand(translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSmokeTest),
@@ -130,6 +135,21 @@ public class SolverEditorPresenter
         view.showLoading();
         solverService.call(getLoadContentSuccessCallback(),
                            getNoSuchFileExceptionErrorCallback()).loadContent(versionRecordManager.getCurrentPath());
+    }
+
+    @Override
+    protected Supplier<SolverConfigModel> getContentSupplier() {
+        return this::getModel;
+    }
+
+    @Override
+    public Validator getRenameValidator() {
+        return fileNameValidator;
+    }
+
+    @Override
+    protected Caller<? extends SupportsSaveAndRename<SolverConfigModel, Metadata>> getSaveAndRenameServiceCaller() {
+        return solverService;
     }
 
     private RemoteCallback<SolverModelContent> getLoadContentSuccessCallback() {
@@ -250,5 +270,9 @@ public class SolverEditorPresenter
     @WorkbenchMenu
     public Menus getMenus() {
         return menus;
+    }
+
+    SolverConfigModel getModel() {
+        return model;
     }
 }
