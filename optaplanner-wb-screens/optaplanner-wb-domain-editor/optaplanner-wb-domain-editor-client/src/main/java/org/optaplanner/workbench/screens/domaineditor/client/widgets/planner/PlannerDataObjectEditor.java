@@ -234,10 +234,12 @@ public class PlannerDataObjectEditor
                     if (lastObjectPropertyInPath.isBaseType() || lastObjectPropertyInPath.isPrimitiveType()) {
                         throw new IllegalStateException(dataObject.getName() + "Comparator: Cannot append property " + objectPropertyName + " to primitive/base type " + lastObjectPropertyInPath.getClassName());
                     }
+
                     DataObject lastDataObjectInPath = getContext().getDataModel().getDataObject(lastObjectPropertyInPath.getClassName());
-                    if (lastObjectPropertyInPath == null) {
+                    if (lastDataObjectInPath == null) {
                         throw new IllegalStateException(dataObject.getName() + "Comparator: Data object " + lastObjectPropertyInPath.getClassName() + " not found");
                     }
+
                     ObjectProperty currentObjectProperty = lastDataObjectInPath.getProperty(objectPropertyName);
                     if (currentObjectProperty == null) {
                         throw new IllegalStateException(dataObject.getName() + "Comparator: Property " + objectPropertyName + " not found in data object " + lastDataObjectInPath.getClassName());
