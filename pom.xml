@@ -66,6 +66,7 @@
 
   <modules>
     <module>optaplanner-wb-screens</module>
+    <module>optaplanner-wb-ui</module>
     <module>optaplanner-wb-webapp</module>
   </modules>
 
