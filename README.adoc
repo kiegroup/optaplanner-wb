@@ -1,5 +1,3 @@
-image:https://jenkins-kieci.rhcloud.com/buildStatus/icon?job=optaplanner-wb["Build Status", link="https://jenkins-kieci.rhcloud.com/job/optaplanner-wb"]
-
 == Quick development start
 
 To build and run from source:
@@ -13,14 +11,21 @@ $ mvn clean gwt:run
 To develop with IntelliJ IDEA, Eclipse or NetBeans, open the root `pom.xml` as a new project
 and configure a _Run/Debug configuration_ like this:
 
-* Type: GWT configuration
-* Module: `optaplanner-wb-webapp`
-* User Super Dev mode: `yes`
-* GWT Modules to load: `All` (only 1 option, default)
-* VM options: `-Xmx4G -Xms1G -Xss1M -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-10.0.0.Final/  -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data` (replace `/.../optaplanner-wb/` with your clone directory path twice)
-* Dev Mode parameters: `-server org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher`
-* Environment variables: (none, default)
-* Start page: `optaplanner-wb.html` (default)
+* *Type*: GWT configuration
+* *Module*: `optaplanner-wb-webapp`
+* *User Super Dev Mode*: `yes`
+* *GWT Modules to load*: `All` (only 1 option, default)
+* *VM options*: `-Xmx4g -Xms1g -Xss1m -XX:CompileThreshold=7000 -Derrai.jboss.home=/.../optaplanner-wb/optaplanner-wb-webapp/target/wildfly-11.0.0.Final/ -Dorg.uberfire.nio.git.dir=/.../optaplanner-wb/local/data`(replace `/.../optaplanner-wb/` with your clone directory path twice)
+* *Dev Mode parameters*: `-server org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher`
+* *Environment variables*: (none, default)
+* *Start page*: `optaplanner-wb.html` (default)
+
+Finally, add Maven goal to Before launch list. Click the (+) button, select *Run Maven Goal*, set:
+
+* *Working directory*: `/.../optaplanner-wb/optaplanner-wb-webapp`
+* *Command line*: `clean process-resources`
+
+Move the Maven goal before *Build* step.
 
 == Advanced development start
 
