@@ -39,7 +39,12 @@ import org.optaplanner.core.api.score.buildin.simpledouble.SimpleDoubleScoreHold
 import org.optaplanner.core.api.score.buildin.simplelong.SimpleLongScoreHolder;
 import org.optaplanner.workbench.screens.guidedrule.client.resources.i18n.GuidedRuleEditorConstants;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class ConstraintMatchInputWidgetBlurHandlerTest {
@@ -116,9 +121,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchBendableScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(BendableScoreHolder.class.getName(),
+                                             " 1 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchSimpleScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(SimpleScoreHolder.class.getName(),
                                              "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleScoreHolder.class.getName(),
+                                             " 1 ");
     }
 
     @Test
@@ -128,9 +145,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchHardSoftScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftScoreHolder.class.getName(),
+                                             " 1 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchHardMediumSoftScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(HardMediumSoftScoreHolder.class.getName(),
                                              "-1");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftScoreHolder.class.getName(),
+                                             " 1 ");
     }
 
     @Test
@@ -140,9 +169,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchBendableLongScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(BendableLongScoreHolder.class.getName(),
+                                             " 9999999999 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchSimpleLongScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(SimpleLongScoreHolder.class.getName(),
                                              "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleLongScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleLongScoreHolder.class.getName(),
+                                             " 9999999999 ");
     }
 
     @Test
@@ -152,9 +193,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchHardSoftLongScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftLongScoreHolder.class.getName(),
+                                             " 9999999999 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchHardMediumSoftLongScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(HardMediumSoftLongScoreHolder.class.getName(),
                                              "-9999999999");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftLongScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftLongScoreHolder.class.getName(),
+                                             " 9999999999 ");
     }
 
     @Test
@@ -164,9 +217,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchSimpleDoubleScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleDoubleScoreHolder.class.getName(),
+                                             " 3.14 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchHardSoftDoubleScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(HardSoftDoubleScoreHolder.class.getName(),
                                              "-3.14");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardSoftDoubleScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftDoubleScoreHolder.class.getName(),
+                                             " 3.14 ");
     }
 
     @Test
@@ -176,9 +241,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchBendableBigDecimalScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(BendableBigDecimalScoreHolder.class.getName(),
+                                             " 5.599 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchSimpleBigDecimalScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(SimpleBigDecimalScoreHolder.class.getName(),
                                              "-5.599");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchSimpleBigDecimalScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(SimpleBigDecimalScoreHolder.class.getName(),
+                                             " 5.599 ");
     }
 
     @Test
@@ -188,9 +265,21 @@ public class ConstraintMatchInputWidgetBlurHandlerTest {
     }
 
     @Test
+    public void validNumericValueConstraintMatchHardSoftBigDecimalScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardSoftBigDecimalScoreHolder.class.getName(),
+                                             " 5.599 ");
+    }
+
+    @Test
     public void validNumericValueConstraintMatchHardMediumSoftBigDecimalScoreHolder() throws Exception {
         testValidNumericValueConstraintMatch(HardMediumSoftBigDecimalScoreHolder.class.getName(),
                                              "-5.599");
+    }
+
+    @Test
+    public void validNumericValueConstraintMatchHardMediumSoftBigDecimalScoreHolderWhiteSpace() throws Exception {
+        testValidNumericValueConstraintMatch(HardMediumSoftBigDecimalScoreHolder.class.getName(),
+                                             " 5.599 ");
     }
 
     private void testValidNumericValueConstraintMatch(final String scoreHolderClass,

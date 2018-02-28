@@ -37,6 +37,8 @@ import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHard
 import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardSoftMatch;
 import org.optaplanner.workbench.models.datamodel.rule.ActionSoftConstraintMatch;
 
+import static org.optaplanner.workbench.screens.guidedrule.backend.server.plugin.PersistenceExtensionUtils.unwrapCurlyBrackets;
+
 @ApplicationScoped
 public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleModelIActionPersistenceExtension {
 
@@ -121,13 +123,5 @@ public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleMod
         throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
     }
 
-    private String unwrapCurlyBrackets(final String s) {
-        int start = s.indexOf('{');
-        int end = s.lastIndexOf('}');
-        if (start < 0 || end < 0) {
-            return s;
-        }
-        return s.substring(start + 1,
-                           end).trim();
-    }
+
 }

@@ -141,4 +141,14 @@ public class MultiConstraintMatchPersistenceExtensionTest {
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
         extension.unmarshal("unrecognizedString");
     }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addMultiConstraintMatch(kcontext, -1, -2, -3, 123);");
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addMultiConstraintMatch(kcontext, -1);");
+    }
 }
