@@ -70,4 +70,14 @@ public class SoftConstraintMatchPersistenceExtensionTest {
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
         extension.unmarshal("unrecognizedString");
     }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addSoftConstraintMatch(kcontext, 1, -1, 123);");
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addSoftConstraintMatch(kcontext);");
+    }
 }

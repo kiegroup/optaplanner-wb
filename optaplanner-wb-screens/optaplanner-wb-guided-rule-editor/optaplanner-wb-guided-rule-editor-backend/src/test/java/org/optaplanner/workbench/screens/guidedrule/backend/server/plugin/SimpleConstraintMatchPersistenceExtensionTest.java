@@ -21,7 +21,9 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
 import org.optaplanner.workbench.models.datamodel.rule.ActionSimpleConstraintMatch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleConstraintMatchPersistenceExtensionTest {
 
@@ -51,5 +53,15 @@ public class SimpleConstraintMatchPersistenceExtensionTest {
     @Test(expected = RuleModelDRLPersistenceException.class)
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
         extension.unmarshal("unrecognizedString");
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addConstraintMatch(kcontext, -1, 123);");
+    }
+
+    @Test(expected = RuleModelDRLPersistenceException.class)
+    public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
+        extension.unmarshal("scoreHolder.addConstraintMatch(kcontext);");
     }
 }

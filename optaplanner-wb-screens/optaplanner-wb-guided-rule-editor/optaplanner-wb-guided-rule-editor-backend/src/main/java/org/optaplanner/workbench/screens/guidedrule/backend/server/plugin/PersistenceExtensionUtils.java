@@ -21,14 +21,24 @@ public final class PersistenceExtensionUtils {
     private PersistenceExtensionUtils() {
     }
 
-    public static String unwrapParenthesis(final String s) {
-        int start = s.indexOf('(');
-        int end = s.lastIndexOf(')');
+    private static String unwrap(final String stringToUnwrap,
+                                 final Character wrappingCharacterStart,
+                                 final Character wrappingCharacterEnd) {
+        int start = stringToUnwrap.indexOf(wrappingCharacterStart);
+        int end = stringToUnwrap.lastIndexOf(wrappingCharacterEnd);
         if (start < 0 || end < 0) {
-            return s;
+            return stringToUnwrap;
         }
-        return s.substring(start + 1,
-                           end).trim();
+        return stringToUnwrap.substring(start + 1,
+                                        end).trim();
+    }
+
+    public static String unwrapParenthesis(final String stringToUnwrap) {
+        return unwrap(stringToUnwrap, '(', ')');
+    }
+
+    public static String unwrapCurlyBrackets(final String stringToUnwrap) {
+        return unwrap(stringToUnwrap, '{', '}');
     }
 
     public static String extractConstraintMatchValue(final String s) {
