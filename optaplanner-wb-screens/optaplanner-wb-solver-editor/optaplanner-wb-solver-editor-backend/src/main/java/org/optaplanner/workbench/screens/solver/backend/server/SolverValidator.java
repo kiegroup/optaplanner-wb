@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.solver.backend.server;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Charsets;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
@@ -42,7 +40,6 @@ import org.kie.workbench.common.services.shared.project.KieModule;
 import org.kie.workbench.common.services.shared.project.KieModuleService;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
-import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
 
 public class SolverValidator {
@@ -104,10 +101,6 @@ public class SolverValidator {
         } catch (NoModuleException e) {
             return new ArrayList<ValidationMessage>();
         }
-    }
-
-    private ByteArrayInputStream inputStream(final String content) {
-        return new ByteArrayInputStream(content.getBytes(Charsets.UTF_8));
     }
 
     private List<ValidationMessage> buildSolver(final Path resourcePath,
@@ -188,7 +181,8 @@ public class SolverValidator {
 
     private String getSolverConfigResource(final Path resourcePath,
                                            final KieModule kieWorkbenchModule) {
-        return Paths.convert(Paths.convert(resourcePath)).toURI().substring(Paths.convert(Paths.convert(kieWorkbenchModule.getRootPath())).toURI().length() + "/src/main/resources/".length());
+        return PathUtil.removePrefix(resourcePath,
+                                     kieWorkbenchModule.getRootPath()).substring("src/main/resources/".length());
     }
 
     private ValidationMessage make(final Exception e,
