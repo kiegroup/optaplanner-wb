@@ -1,5 +1,6 @@
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,27 +18,33 @@ public class PersistenceExtensionUtilsTest {
     public void testUnwrapMissingEnd() throws Exception {
         final String constantToUnwrapOne = "(abc";
         final String constantToUnwrapTwo = "{abc";
-        assertEquals(constantToUnwrapOne, PersistenceExtensionUtils.unwrapParenthesis(constantToUnwrapOne));
-        assertEquals(constantToUnwrapTwo, PersistenceExtensionUtils.unwrapCurlyBrackets(constantToUnwrapTwo));
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapParenthesis(constantToUnwrapOne))
+                .hasMessage("\"(abc\" had not characters '(':0 and ')':-1 in appropriate order.");
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapCurlyBrackets(constantToUnwrapTwo))
+                .hasMessage("\"{abc\" had not characters '{':0 and '}':-1 in appropriate order.");
     }
 
     @Test
     public void testUnwrapMissingStart() throws Exception {
         final String constantToUnwrapOne = "abc)";
         final String constantToUnwrapTwo = "abc}";
-        assertEquals(constantToUnwrapOne, PersistenceExtensionUtils.unwrapParenthesis(constantToUnwrapOne));
-        assertEquals(constantToUnwrapTwo, PersistenceExtensionUtils.unwrapCurlyBrackets(constantToUnwrapTwo));
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapParenthesis(constantToUnwrapOne))
+                .hasMessage("\"abc)\" had not characters '(':-1 and ')':3 in appropriate order.");
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapCurlyBrackets(constantToUnwrapTwo))
+                .hasMessage("\"abc}\" had not characters '{':-1 and '}':3 in appropriate order.");
     }
 
-    @Test(expected = StringIndexOutOfBoundsException.class)
+    @Test
     public void testUnwrapMissingWrongOrder() throws Exception {
         final String constant = ")abc(";
-        PersistenceExtensionUtils.unwrapParenthesis(constant);
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapParenthesis(constant))
+                .hasMessage("\")abc(\" had not characters '(':4 and ')':0 in appropriate order.");
     }
 
-    @Test(expected = StringIndexOutOfBoundsException.class)
+    @Test
     public void testUnwrapMissingWrongOrderCurly() throws Exception {
         final String constant = "}abc{";
-        PersistenceExtensionUtils.unwrapCurlyBrackets(constant);
+        Assertions.assertThatThrownBy(() -> PersistenceExtensionUtils.unwrapCurlyBrackets(constant))
+                .hasMessage("\"}abc{\" had not characters '{':4 and '}':0 in appropriate order.");
     }
 }

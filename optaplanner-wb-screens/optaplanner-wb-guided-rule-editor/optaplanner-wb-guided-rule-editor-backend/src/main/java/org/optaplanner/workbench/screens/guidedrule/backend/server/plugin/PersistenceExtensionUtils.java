@@ -28,17 +28,34 @@ public final class PersistenceExtensionUtils {
                                  final Character wrappingCharacterEnd) {
         int start = stringToUnwrap.indexOf(wrappingCharacterStart);
         int end = stringToUnwrap.lastIndexOf(wrappingCharacterEnd);
-        if (start < 0 || end < 0) {
+
+        if (start < 0 && end < 0) {
             return stringToUnwrap;
+        }
+
+        if (start < 0 || end < 0 || end <= start) {
+            final String message = String.format("\"%s\" had not characters '%c':%d and '%c':%d in appropriate order.",
+                                                 stringToUnwrap, wrappingCharacterStart, start, wrappingCharacterEnd, end);
+            throw new IllegalArgumentException(message);
         }
         return stringToUnwrap.substring(start + 1,
                                         end).trim();
     }
 
+    /**
+     * Return content that was wrapped in '(' and ')' characters
+     * @param stringToUnwrap
+     * @return unwrapped text
+     */
     public static String unwrapParenthesis(final String stringToUnwrap) {
         return unwrap(stringToUnwrap, '(', ')');
     }
 
+    /**
+     * Return content that was wrapped in '{' and '}' characters
+     * @param stringToUnwrap
+     * @return unwrapped text
+     */
     public static String unwrapCurlyBrackets(final String stringToUnwrap) {
         return unwrap(stringToUnwrap, '{', '}');
     }
