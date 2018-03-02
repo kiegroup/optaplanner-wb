@@ -1149,6 +1149,11 @@
         <configuration>
           <moduleName>org.optaplanner.workbench.OptaPlannerWorkbench</moduleName>
           <moduleShortName>OptaPlannerWorkbench</moduleShortName>
+          <jvmArgs>
+            <!-- Write org/jboss/errai/ServerMarshallingFactoryImpl$Marshaller_*_Impl.class files
+            to the WAR's WEB-INF/classes-->
+            <arg>-Derrai.server.classOutput=${project.build.finalName}/WEB-INF/classes</arg>
+          </jvmArgs>
           <compilerArgs>
             <arg>-strict</arg>
             <arg>-logLevel</arg>
