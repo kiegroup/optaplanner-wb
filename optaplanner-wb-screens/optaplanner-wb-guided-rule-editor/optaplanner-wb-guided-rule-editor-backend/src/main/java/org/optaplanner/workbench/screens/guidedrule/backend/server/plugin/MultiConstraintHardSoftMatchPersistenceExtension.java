@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.core.util.StringUtils;
@@ -120,8 +121,6 @@ public class MultiConstraintHardSoftMatchPersistenceExtension implements RuleMod
             }
         }
 
-        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
+        throw new RuleModelDRLPersistenceException(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE + iActionString);
     }
-
-
 }

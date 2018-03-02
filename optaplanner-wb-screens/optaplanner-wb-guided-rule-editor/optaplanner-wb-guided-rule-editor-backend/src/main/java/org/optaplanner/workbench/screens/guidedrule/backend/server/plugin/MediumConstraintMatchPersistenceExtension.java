@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 import java.util.regex.Pattern;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
@@ -38,12 +39,12 @@ public class MediumConstraintMatchPersistenceExtension implements RuleModelIActi
     public PluggableIAction unmarshal(final String iActionString) throws RuleModelDRLPersistenceException {
         String[] parameters = PersistenceExtensionUtils.unwrapParenthesis(iActionString).split("\\s*,\\s*");
 
-        if ("kcontext".equals(parameters[0])) {
+        if (parameters.length > 0 && "kcontext".equals(parameters[0])) {
             if (parameters.length == 2) {
                 return new ActionMediumConstraintMatch(PersistenceExtensionUtils.extractConstraintMatchValue(parameters[1]));
             }
         }
 
-        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
+        throw new RuleModelDRLPersistenceException(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE + iActionString);
     }
 }

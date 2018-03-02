@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 import java.util.regex.Pattern;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.workbench.models.commons.backend.rule.RuleModelIActionPersistenceExtension;
@@ -59,6 +60,6 @@ public class SoftConstraintMatchPersistenceExtension implements RuleModelIAction
             }
         }
 
-        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
+        throw new RuleModelDRLPersistenceException(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE + iActionString);
     }
 }

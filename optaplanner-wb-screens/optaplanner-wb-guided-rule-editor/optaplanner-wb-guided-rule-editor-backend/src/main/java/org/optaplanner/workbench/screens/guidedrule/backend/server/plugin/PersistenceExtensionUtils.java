@@ -18,6 +18,8 @@ package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 public final class PersistenceExtensionUtils {
 
+    public static final String EXCEPTION_MESSAGE_BASE = "Could not unmarshal action string ";
+
     private PersistenceExtensionUtils() {
     }
 
