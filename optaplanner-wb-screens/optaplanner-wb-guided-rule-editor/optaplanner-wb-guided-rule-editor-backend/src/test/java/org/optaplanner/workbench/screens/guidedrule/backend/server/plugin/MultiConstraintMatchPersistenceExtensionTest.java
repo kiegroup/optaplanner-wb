@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
@@ -29,7 +30,11 @@ import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintBend
 import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardMediumSoftMatch;
 import org.optaplanner.workbench.models.datamodel.rule.ActionMultiConstraintHardSoftMatch;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class MultiConstraintMatchPersistenceExtensionTest {
 
@@ -63,6 +68,20 @@ public class MultiConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
+    public void unmarshalActionMultiConstraintHardSoftMatchNull() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, null, null);";
+
+        IAction action = extension.unmarshal(actionString);
+
+        assertTrue(action instanceof ActionMultiConstraintHardSoftMatch);
+
+        ActionMultiConstraintHardSoftMatch actionActionMultiConstraintHardSoftMatch = (ActionMultiConstraintHardSoftMatch) action;
+
+        assertNull(actionActionMultiConstraintHardSoftMatch.getActionHardConstraintMatch().getConstraintMatch());
+        assertNull(actionActionMultiConstraintHardSoftMatch.getActionSoftConstraintMatch().getConstraintMatch());
+    }
+
+    @Test
     public void unmarshalActionMultiConstraintHardMediumSoftMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, -1, -2, -3);";
 
@@ -78,6 +97,36 @@ public class MultiConstraintMatchPersistenceExtensionTest {
                      actionActionMultiConstraintHardMediumSoftMatch.getActionMediumConstraintMatch().getConstraintMatch());
         assertEquals("-3",
                      actionActionMultiConstraintHardMediumSoftMatch.getActionSoftConstraintMatch().getConstraintMatch());
+    }
+
+    @Test
+    public void unmarshalActionMultiConstraintBendableMatchDifferentLength() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1}, new int[] {2, -3});";
+
+        IAction action = extension.unmarshal(actionString);
+
+        ActionMultiConstraintBendableMatch expectedAction = new ActionMultiConstraintBendableMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
+                                                                                                                                                       "-1")),
+                                                                                                   Arrays.asList(new ActionBendableSoftConstraintMatch(0,
+                                                                                                                                                       "2"),
+                                                                                                                 new ActionBendableSoftConstraintMatch(1,
+                                                                                                                                                       "-3")));
+
+        assertEquals(expectedAction,
+                     action);
+    }
+
+    @Test
+    public void unmarshalActionMultiConstraintBendableMatchEmpty() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {}, new int[] {});";
+
+        IAction action = extension.unmarshal(actionString);
+
+        ActionMultiConstraintBendableMatch expectedAction = new ActionMultiConstraintBendableMatch(Collections.emptyList(),
+                                                                                                   Collections.emptyList());
+
+        assertEquals(expectedAction,
+                     action);
     }
 
     @Test
@@ -137,18 +186,148 @@ public class MultiConstraintMatchPersistenceExtensionTest {
                      action);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
+    public void unmarshalActionMultiConstraintBendableBigDecimalMatch2() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new BigDecimal[] {new BigDecimal(-1), new BigDecimal(-2)}, new BigDecimal[] {new BigDecimal(-3), new BigDecimal(-4)});";
+
+        IAction action = extension.unmarshal(actionString);
+
+        ActionMultiConstraintBendableBigDecimalMatch expectedAction = new ActionMultiConstraintBendableBigDecimalMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
+                                                                                                                                                                           "new BigDecimal(-1)"),
+                                                                                                                                     new ActionBendableHardConstraintMatch(1,
+                                                                                                                                                                           "new BigDecimal(-2)")),
+                                                                                                                       Arrays.asList(new ActionBendableSoftConstraintMatch(0,
+                                                                                                                                                                           "new BigDecimal(-3)"),
+                                                                                                                                     new ActionBendableSoftConstraintMatch(1,
+                                                                                                                                                                           "new BigDecimal(-4)")));
+
+        assertEquals(expectedAction,
+                     action);
+    }
+
+    @Test
+    public void unmarshalActionMultiConstraintHardSoftMatchArrays() throws RuleModelDRLPersistenceException {
+        final String hardConstraint = "new float[] {-1}";
+        final String softConstraint = "new float[] {-2}";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, " + hardConstraint + ", " + softConstraint + ");";
+
+        final IAction action = extension.unmarshal(actionString);
+
+        assertTrue(action instanceof ActionMultiConstraintHardSoftMatch);
+
+        final ActionMultiConstraintHardSoftMatch actionActionMultiConstraintHardSoftMatch = (ActionMultiConstraintHardSoftMatch) action;
+
+        assertEquals(hardConstraint,
+                     actionActionMultiConstraintHardSoftMatch.getActionHardConstraintMatch().getConstraintMatch());
+        assertEquals(softConstraint,
+                     actionActionMultiConstraintHardSoftMatch.getActionSoftConstraintMatch().getConstraintMatch());
+    }
+
+    @Test
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("unrecognizedString");
+        final String actionText = "unrecognizedString";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addMultiConstraintMatch(kcontext, -1, -2, -3, 123);");
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext, -1, -2, -3, 123);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addMultiConstraintMatch(kcontext, -1);");
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext, -1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalNotEnoughArgumentsJustOne() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalMissingArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch();";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalEmptyArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch( , , );";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgument() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(context, 1, -1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgumentHardMediumSoft() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(context, 1, -1, 1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgumentArrays() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(context, new long[] {-1}, new long[] {-2});";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalDifferentArrays() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1}, new long[] {-2});";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalHardIsArraySoftIsNot() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1}, -2);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalHardIsNotArraySoftIs() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMultiConstraintMatch(kcontext, -1, new long[] {-2});";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 }

@@ -22,7 +22,11 @@ import org.junit.Test;
 import org.optaplanner.workbench.models.datamodel.rule.ActionBendableSoftConstraintMatch;
 import org.optaplanner.workbench.models.datamodel.rule.ActionSoftConstraintMatch;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class SoftConstraintMatchPersistenceExtensionTest {
 
@@ -51,6 +55,19 @@ public class SoftConstraintMatchPersistenceExtensionTest {
     }
 
     @Test
+    public void unmarshalSoftConstraintMatchNull() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addSoftConstraintMatch(kcontext, null);";
+
+        IAction action = extension.unmarshal(actionString);
+
+        assertTrue(action instanceof ActionSoftConstraintMatch);
+
+        ActionSoftConstraintMatch actionSoftConstraintMatch = (ActionSoftConstraintMatch) action;
+
+        assertNull(actionSoftConstraintMatch.getConstraintMatch());
+    }
+
+    @Test
     public void unmarshalActionBendableSoftConstraintMatch() throws RuleModelDRLPersistenceException {
         String actionString = "scoreHolder.addSoftConstraintMatch(kcontext, 1, -1);";
 
@@ -66,18 +83,48 @@ public class SoftConstraintMatchPersistenceExtensionTest {
                      actionSoftConstraintMatch.getConstraintMatch());
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("unrecognizedString");
+        final String actionText = "unrecognizedString";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addSoftConstraintMatch(kcontext, 1, -1, 123);");
+        final String actionText = "scoreHolder.addSoftConstraintMatch(kcontext, 1, -1, 123);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addSoftConstraintMatch(kcontext);");
+        final String actionText = "scoreHolder.addSoftConstraintMatch(kcontext);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalEmptyArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addSoftConstraintMatch();";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgument() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addSoftConstraintMatch(context, 1, -1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 }

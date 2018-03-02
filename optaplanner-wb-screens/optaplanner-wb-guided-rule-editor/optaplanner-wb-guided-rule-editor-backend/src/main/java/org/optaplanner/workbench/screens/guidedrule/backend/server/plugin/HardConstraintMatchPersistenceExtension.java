@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import org.drools.core.util.StringUtils;
@@ -61,6 +62,6 @@ public class HardConstraintMatchPersistenceExtension implements RuleModelIAction
             }
         }
 
-        throw new RuleModelDRLPersistenceException("Could not unmarshal action string '" + iActionString);
+        throw new RuleModelDRLPersistenceException(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE + iActionString);
     }
 }

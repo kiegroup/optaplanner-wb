@@ -21,7 +21,11 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
 import org.optaplanner.workbench.models.datamodel.rule.ActionMediumConstraintMatch;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class MediumConstraintMatchPersistenceExtensionTest {
 
@@ -48,18 +52,70 @@ public class MediumConstraintMatchPersistenceExtensionTest {
                      actionMediumConstraintMatch.getConstraintMatch());
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
+    public void unmarshalMediumConstraintMatchNull() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addMediumConstraintMatch(kcontext, null);";
+
+        IAction action = extension.unmarshal(actionString);
+
+        assertTrue(action instanceof ActionMediumConstraintMatch);
+
+        ActionMediumConstraintMatch actionMediumConstraintMatch = (ActionMediumConstraintMatch) action;
+
+        assertNull(actionMediumConstraintMatch.getConstraintMatch());
+    }
+
+    @Test
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("unrecognizedString");
+        final String actionText = "unrecognizedString";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addMediumConstraintMatch(kcontext, -1, 123);");
+        final String actionText = "scoreHolder.addMediumConstraintMatch(kcontext, -1, 123);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
+    public void unmarshalArgumentsInvalid() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMediumConstraintMatch(context, 123, 321);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
     public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addMediumConstraintMatch(kcontext);");
+        final String actionText = "scoreHolder.addMediumConstraintMatch(kcontext);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgument() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMediumConstraintMatch(context, 1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalEmptyArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addMediumConstraintMatch( , );";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 }

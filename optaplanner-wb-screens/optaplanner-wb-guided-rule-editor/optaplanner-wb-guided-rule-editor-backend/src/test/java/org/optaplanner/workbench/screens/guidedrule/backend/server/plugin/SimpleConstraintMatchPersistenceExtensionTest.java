@@ -21,8 +21,10 @@ import org.drools.workbench.models.datamodel.rule.IAction;
 import org.junit.Test;
 import org.optaplanner.workbench.models.datamodel.rule.ActionSimpleConstraintMatch;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SimpleConstraintMatchPersistenceExtensionTest {
@@ -34,6 +36,19 @@ public class SimpleConstraintMatchPersistenceExtensionTest {
         assertTrue(extension.accept("scoreHolder.addConstraintMatch(kcontext, -1);"));
 
         assertFalse(extension.accept("unknownString"));
+    }
+
+    @Test
+    public void unmarshalSimpleConstraintMatchNull() throws RuleModelDRLPersistenceException {
+        String actionString = "scoreHolder.addConstraintMatch(kcontext, null);";
+
+        IAction action = extension.unmarshal(actionString);
+
+        assertTrue(action instanceof ActionSimpleConstraintMatch);
+
+        ActionSimpleConstraintMatch actionSimpleConstraintMatch = (ActionSimpleConstraintMatch) action;
+
+        assertNull(actionSimpleConstraintMatch.getConstraintMatch());
     }
 
     @Test
@@ -50,18 +65,66 @@ public class SimpleConstraintMatchPersistenceExtensionTest {
                      actionSimpleConstraintMatch.getConstraintMatch());
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalUnrecognizedString() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("unrecognizedString");
+        final String actionText = "unrecognizedString";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalTooManyArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addConstraintMatch(kcontext, -1, 123);");
+        final String actionText = "scoreHolder.addConstraintMatch(kcontext, -1, 123);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 
-    @Test(expected = RuleModelDRLPersistenceException.class)
+    @Test
     public void unmarshalNotEnoughArguments() throws RuleModelDRLPersistenceException {
-        extension.unmarshal("scoreHolder.addConstraintMatch(kcontext);");
+        final String actionText = "scoreHolder.addConstraintMatch(kcontext);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalEmptyArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addConstraintMatch( , );";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalMissingArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addConstraintMatch();";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstArgument() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addConstraintMatch(context, 1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
+    }
+
+    @Test
+    public void unmarshalWrongFirstAndTooMuchArguments() throws RuleModelDRLPersistenceException {
+        final String actionText = "scoreHolder.addConstraintMatch(context, 1, -1);";
+        assertThatThrownBy(() -> extension.unmarshal(actionText))
+                .isInstanceOf(RuleModelDRLPersistenceException.class)
+                .hasMessageContaining(PersistenceExtensionUtils.EXCEPTION_MESSAGE_BASE)
+                .hasMessageEndingWith(actionText);
     }
 }
