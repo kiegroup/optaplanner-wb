@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.guidedrule.backend.server.plugin;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.drools.workbench.models.commons.backend.rule.exception.RuleModelDRLPersistenceException;
 import org.drools.workbench.models.datamodel.rule.IAction;
@@ -101,19 +102,20 @@ public class MultiConstraintMatchPersistenceExtensionTest {
 
     @Test
     public void unmarshalActionMultiConstraintBendableMatchDifferentLength() throws RuleModelDRLPersistenceException {
-        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1}, new int[] {2, -3});";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1}, new int[] {2, -3});";
 
-        IAction action = extension.unmarshal(actionString);
+        final IAction action = extension.unmarshal(actionString);
 
-        ActionMultiConstraintBendableMatch expectedAction = new ActionMultiConstraintBendableMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
-                                                                                                                                                       "-1")),
-                                                                                                   Arrays.asList(new ActionBendableSoftConstraintMatch(0,
-                                                                                                                                                       "2"),
-                                                                                                                 new ActionBendableSoftConstraintMatch(1,
-                                                                                                                                                       "-3")));
+        final List<ActionBendableHardConstraintMatch> hardConstraintList =
+                Arrays.asList(new ActionBendableHardConstraintMatch(0, "-1"));
+        final List<ActionBendableSoftConstraintMatch> softConstraintList =
+                Arrays.asList(new ActionBendableSoftConstraintMatch(0, "2"),
+                              new ActionBendableSoftConstraintMatch(1, "-3"));
 
-        assertEquals(expectedAction,
-                     action);
+        final ActionMultiConstraintBendableMatch expectedAction =
+                new ActionMultiConstraintBendableMatch(hardConstraintList, softConstraintList);
+
+        assertEquals(expectedAction, action);
     }
 
     @Test
@@ -131,78 +133,79 @@ public class MultiConstraintMatchPersistenceExtensionTest {
 
     @Test
     public void unmarshalActionMultiConstraintBendableMatch() throws RuleModelDRLPersistenceException {
-        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1, -2}, new int[] {-3, -4});";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new int[] {-1, -2}, new int[] {-3, -4});";
 
-        IAction action = extension.unmarshal(actionString);
+        final IAction action = extension.unmarshal(actionString);
 
-        ActionMultiConstraintBendableMatch expectedAction = new ActionMultiConstraintBendableMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
-                                                                                                                                                       "-1"),
-                                                                                                                 new ActionBendableHardConstraintMatch(1,
-                                                                                                                                                       "-2")),
-                                                                                                   Arrays.asList(new ActionBendableSoftConstraintMatch(0,
-                                                                                                                                                       "-3"),
-                                                                                                                 new ActionBendableSoftConstraintMatch(1,
-                                                                                                                                                       "-4")));
+        final List<ActionBendableHardConstraintMatch> hardConstraintList =
+                Arrays.asList(new ActionBendableHardConstraintMatch(0, "-1"),
+                              new ActionBendableHardConstraintMatch(1, "-2"));
+        final List<ActionBendableSoftConstraintMatch> softConstraintList =
+                Arrays.asList(new ActionBendableSoftConstraintMatch(0, "-3"),
+                              new ActionBendableSoftConstraintMatch(1, "-4"));
+        final ActionMultiConstraintBendableMatch expectedAction =
+                new ActionMultiConstraintBendableMatch(hardConstraintList, softConstraintList);
 
-        assertEquals(expectedAction,
-                     action);
+        assertEquals(expectedAction, action);
     }
 
     @Test
     public void unmarshalActionMultiConstraintBendableLongMatch() throws RuleModelDRLPersistenceException {
-        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new long[] {-1l, -2l}, new long[] {-3l, -4l});";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new long[] {-1l, -2l}, new long[] {-3l, -4l});";
 
-        IAction action = extension.unmarshal(actionString);
+        final IAction action = extension.unmarshal(actionString);
 
-        ActionMultiConstraintBendableLongMatch expectedAction = new ActionMultiConstraintBendableLongMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
-                                                                                                                                                               "-1l"),
-                                                                                                                         new ActionBendableHardConstraintMatch(1,
-                                                                                                                                                               "-2l")),
-                                                                                                           Arrays.asList(new ActionBendableSoftConstraintMatch(0,
-                                                                                                                                                               "-3l"),
-                                                                                                                         new ActionBendableSoftConstraintMatch(1,
-                                                                                                                                                               "-4l")));
+        final List<ActionBendableHardConstraintMatch> hardConstraintList =
+                Arrays.asList(new ActionBendableHardConstraintMatch(0, "-1l"),
+                              new ActionBendableHardConstraintMatch(1, "-2l"));
+        final List<ActionBendableSoftConstraintMatch> softConstraintList =
+                Arrays.asList(new ActionBendableSoftConstraintMatch(0, "-3l"),
+                              new ActionBendableSoftConstraintMatch(1, "-4l"));
+        final ActionMultiConstraintBendableLongMatch expectedAction =
+                new ActionMultiConstraintBendableLongMatch(hardConstraintList, softConstraintList);
 
-        assertEquals(expectedAction,
-                     action);
+        assertEquals(expectedAction, action);
     }
 
     @Test
     public void unmarshalActionMultiConstraintBendableBigDecimalMatch() throws RuleModelDRLPersistenceException {
-        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new java.math.BigDecimal[] {new java.math.BigDecimal(-1), new java.math.BigDecimal(-2)}, new java.math.BigDecimal[] {new java.math.BigDecimal(-3), new java.math.BigDecimal(-4)});";
+        final String hard = "new java.math.BigDecimal[] {new java.math.BigDecimal(-1), new java.math.BigDecimal(-2)}";
+        final String soft = "new java.math.BigDecimal[] {new java.math.BigDecimal(-3), new java.math.BigDecimal(-4)}";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, " + hard + ", " + soft + ");";
 
-        IAction action = extension.unmarshal(actionString);
+        final IAction action = extension.unmarshal(actionString);
 
-        ActionMultiConstraintBendableBigDecimalMatch expectedAction = new ActionMultiConstraintBendableBigDecimalMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
-                                                                                                                                                                           "new java.math.BigDecimal(-1)"),
-                                                                                                                                     new ActionBendableHardConstraintMatch(1,
-                                                                                                                                                                           "new java.math.BigDecimal(-2)")),
-                                                                                                                       Arrays.asList(new ActionBendableSoftConstraintMatch(0,
-                                                                                                                                                                           "new java.math.BigDecimal(-3)"),
-                                                                                                                                     new ActionBendableSoftConstraintMatch(1,
-                                                                                                                                                                           "new java.math.BigDecimal(-4)")));
+        final List<ActionBendableHardConstraintMatch> hardConstraintList =
+                Arrays.asList(new ActionBendableHardConstraintMatch(0, "new java.math.BigDecimal(-1)"),
+                              new ActionBendableHardConstraintMatch(1, "new java.math.BigDecimal(-2)"));
+        final List<ActionBendableSoftConstraintMatch> softConstraintList =
+                Arrays.asList(new ActionBendableSoftConstraintMatch(0, "new java.math.BigDecimal(-3)"),
+                              new ActionBendableSoftConstraintMatch(1, "new java.math.BigDecimal(-4)"));
+        final ActionMultiConstraintBendableBigDecimalMatch expectedAction =
+                new ActionMultiConstraintBendableBigDecimalMatch(hardConstraintList, softConstraintList);
 
-        assertEquals(expectedAction,
-                     action);
+        assertEquals(expectedAction, action);
     }
 
     @Test
     public void unmarshalActionMultiConstraintBendableBigDecimalMatch2() throws RuleModelDRLPersistenceException {
-        String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, new BigDecimal[] {new BigDecimal(-1), new BigDecimal(-2)}, new BigDecimal[] {new BigDecimal(-3), new BigDecimal(-4)});";
+        final String hardConstraint = "new BigDecimal[] {new BigDecimal(-1), new BigDecimal(-2)}";
+        final String softConstraint = "new BigDecimal[] {new BigDecimal(-3), new BigDecimal(-4)}";
+        final String actionString = "scoreHolder.addMultiConstraintMatch(kcontext, " + hardConstraint + ", " + softConstraint + ");";
 
-        IAction action = extension.unmarshal(actionString);
+        final IAction action = extension.unmarshal(actionString);
 
-        ActionMultiConstraintBendableBigDecimalMatch expectedAction = new ActionMultiConstraintBendableBigDecimalMatch(Arrays.asList(new ActionBendableHardConstraintMatch(0,
-                                                                                                                                                                           "new BigDecimal(-1)"),
-                                                                                                                                     new ActionBendableHardConstraintMatch(1,
-                                                                                                                                                                           "new BigDecimal(-2)")),
-                                                                                                                       Arrays.asList(new ActionBendableSoftConstraintMatch(0,
-                                                                                                                                                                           "new BigDecimal(-3)"),
-                                                                                                                                     new ActionBendableSoftConstraintMatch(1,
-                                                                                                                                                                           "new BigDecimal(-4)")));
+        final List<ActionBendableHardConstraintMatch> hardConstraintList =
+                Arrays.asList(new ActionBendableHardConstraintMatch(0, "new BigDecimal(-1)"),
+                              new ActionBendableHardConstraintMatch(1, "new BigDecimal(-2)"));
+        final List<ActionBendableSoftConstraintMatch> softConstraintList =
+                Arrays.asList(new ActionBendableSoftConstraintMatch(0, "new BigDecimal(-3)"),
+                              new ActionBendableSoftConstraintMatch(1, "new BigDecimal(-4)"));
 
-        assertEquals(expectedAction,
-                     action);
+        final ActionMultiConstraintBendableBigDecimalMatch expectedAction =
+                new ActionMultiConstraintBendableBigDecimalMatch(hardConstraintList, softConstraintList);
+
+        assertEquals(expectedAction, action);
     }
 
     @Test
