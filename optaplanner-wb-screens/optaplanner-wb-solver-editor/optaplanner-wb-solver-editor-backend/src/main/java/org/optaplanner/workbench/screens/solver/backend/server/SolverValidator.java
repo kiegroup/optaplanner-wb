@@ -16,7 +16,6 @@
 
 package org.optaplanner.workbench.screens.solver.backend.server;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Charsets;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
@@ -106,10 +104,6 @@ public class SolverValidator {
         }
     }
 
-    private ByteArrayInputStream inputStream(final String content) {
-        return new ByteArrayInputStream(content.getBytes(Charsets.UTF_8));
-    }
-
     private List<ValidationMessage> buildSolver(final Path resourcePath,
                                                 final KieModule kieModule,
                                                 final boolean runSolver) {
@@ -188,7 +182,8 @@ public class SolverValidator {
 
     private String getSolverConfigResource(final Path resourcePath,
                                            final KieModule kieWorkbenchModule) {
-        return Paths.convert(Paths.convert(resourcePath)).toURI().substring(Paths.convert(Paths.convert(kieWorkbenchModule.getRootPath())).toURI().length() + "/src/main/resources/".length());
+        return Paths.removePrefix(resourcePath,
+                                  kieWorkbenchModule.getRootPath()).substring("src/main/resources/".length());
     }
 
     private ValidationMessage make(final Exception e,
