@@ -125,7 +125,8 @@ public class SolverEditorPresenter
                     .addValidate(onValidate())
                     .addCommand(translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSmokeTest),
                                 onSmokeTest())
-                    .addNewTopLevelMenu(versionRecordManager.buildMenu());
+                    .addNewTopLevelMenu(versionRecordManager.buildMenu())
+                    .addNewTopLevelMenu(alertsButtonMenuItemBuilder.build());
         } else {
             super.makeMenuBar();
         }

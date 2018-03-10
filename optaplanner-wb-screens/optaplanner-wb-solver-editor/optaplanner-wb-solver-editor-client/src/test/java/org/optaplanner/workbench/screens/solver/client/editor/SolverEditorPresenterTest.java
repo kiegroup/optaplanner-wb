@@ -27,6 +27,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.metadata.model.Overview;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
+import org.guvnor.messageconsole.client.console.widget.button.AlertsButtonMenuItemBuilder;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -80,6 +81,9 @@ public class SolverEditorPresenterTest {
     VersionRecordManager versionRecordManager;
 
     @Mock
+    AlertsButtonMenuItemBuilder alertsButtonMenuItemBuilder;
+
+    @Mock
     private SolverEditorView view;
 
     private SolverEditorPresenter presenter;
@@ -118,6 +122,7 @@ public class SolverEditorPresenterTest {
             {
                 kieView = mock(KieEditorWrapperView.class);
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
+                alertsButtonMenuItemBuilder = SolverEditorPresenterTest.this.alertsButtonMenuItemBuilder;
                 overviewWidget = mock(OverviewWidgetPresenter.class);
             }
 
