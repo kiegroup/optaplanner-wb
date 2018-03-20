@@ -27,7 +27,7 @@ import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.kie.workbench.common.screens.datamodeller.backend.server.indexing.JavaFileIndexerExtension;
 import org.kie.workbench.common.services.refactoring.ResourceReference;
-import org.kie.workbench.common.services.refactoring.backend.server.indexing.DefaultIndexBuilder;
+import org.kie.workbench.common.services.refactoring.backend.server.indexing.IndexBuilder;
 import org.kie.workbench.common.services.refactoring.service.PartType;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
@@ -41,7 +41,7 @@ public class ComparatorDefinitionIndexerExtension implements JavaFileIndexerExte
     private static final Logger logger = LoggerFactory.getLogger(ComparatorDefinitionIndexerExtension.class);
 
     @Override
-    public void process(DefaultIndexBuilder builder,
+    public void process(IndexBuilder builder,
                         JavaType javaType) {
         try {
             final List<Annotation> comparatorDefinitions;
