@@ -1364,9 +1364,40 @@
             <arg>-strict</arg>
             <arg>-logLevel</arg>
             <arg>INFO</arg>
+            <arg>-saveSource</arg>
+            <arg>-saveSourceOutput</arg>
+            <arg>extra</arg>
           </compilerArgs>
+          <!--<deploy>${project.build.directory}/${project.build.finalName}</deploy>-->
+          <style>PRETTY</style>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-sources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}/sourcemaps</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/gwt/deploy/org.optaplanner.workbench.OptaPlannerWorkbench/symbolMaps</directory>
+                  <filtering>false</filtering>
+                </resource>
+                <resource>
+                  <directory>${project.build.directory}/extra/org.optaplanner.workbench.OptaPlannerWorkbench/src</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Tests are skipped by default because they require additional GWT dependencies. Run mvn with
       -Pintegration-test to enable testing. -->
       <plugin>
