@@ -1,0 +1,16 @@
+/target
+/local
+/repositories
+/src/main/gwt-unitCache/
+/src/main/webapp/WEB-INF/classes/
+/src/main/webapp/WEB-INF/lib/
+/src/main/webapp/org.optaplanner.workbench.OptaPlannerWorkbench/
+
+# Eclipse, Netbeans and IntelliJ files
+/.*
+/**/.*
+!.gitignore
+/nbproject
+/*.ipr
+/*.iws
+/*.iml
