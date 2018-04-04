@@ -1,10 +1,9 @@
 /target
 /local
 /repositories
-/src/main/gwt-unitCache/
-/src/main/webapp/WEB-INF/classes/
-/src/main/webapp/WEB-INF/lib/
-/src/main/webapp/org.optaplanner.workbench.OptaPlannerWorkbench/
+
+#https://intellij-support.jetbrains.com/hc/en-us/community/posts/206975205-Where-does-the-overlays-directory-come-from-
+/overlays
 
 # Eclipse, Netbeans and IntelliJ files
 /.*
