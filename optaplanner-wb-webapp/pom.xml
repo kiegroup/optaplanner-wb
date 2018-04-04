@@ -602,6 +602,11 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-wb-test-scenario-editor-backend</artifactId>
     </dependency>
+    <!-- Needed by test scenarios -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.drools</groupId>
@@ -713,7 +718,7 @@
     </dependency>
 
     <!-- Rouge imports to avoid OSGi errors -->
-<!--    <dependency>
+    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
     </dependency>
@@ -728,7 +733,7 @@
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-xjc</artifactId>
       <scope>provided</scope>
-    </dependency>-->
+    </dependency>
 
     <!-- Dashbuilder -->
     <dependency>
@@ -752,24 +757,6 @@
       <artifactId>dashbuilder-server-all</artifactId>
     </dependency>
 
-    <!-- Test dependencies -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <!-- Needed by test scenarios -->
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt.gwtmockito</groupId>
-      <artifactId>gwtmockito</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-testing-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <!-- hack to disable sisu annotation processing (that scans client side types) -->
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
@@ -780,7 +767,7 @@
 
   <build>
     <finalName>${project.artifactId}</finalName>
-    <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 
     <plugins>
       <plugin>
@@ -793,15 +780,6 @@
         </configuration>
       </plugin>
 
-      <!-- Tests are skipped by default because they require additional GWT dependencies. Run mvn with
-        -Pintegration-test to enable testing. -->
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skipTests>true</skipTests>
-        </configuration>
-      </plugin>
-
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
@@ -809,10 +787,6 @@
             <fileset>
               <directory>${basedir}</directory>
               <includes>
-                <include>src/main/webapp/org.optaplanner.workbench.OptaPlannerWorkbench/</include>
-                <include>src/main/webapp/WEB-INF/deploy/</include>
-                <include>src/main/webapp/WEB-INF/classes/</include>
-                <include>src/main/webapp/WEB-INF/lib/</include>
                 <include>.errai/</include>
                 <include>.niogit/**</include>
               </includes>
