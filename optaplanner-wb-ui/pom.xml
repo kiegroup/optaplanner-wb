@@ -28,13 +28,8 @@
   <artifactId>optaplanner-wb-ui</artifactId>
   <packaging>gwt-app</packaging>
 
-  <name>OptaPlanner Workbench - WebApp</name>
-  <description>OptaPlanner Workbench - WebApp</description>
-
-  <properties>
-    <!-- Add the absolute path for $JBOSS_HOME below to manage another instance -->
-    <errai.jboss.home>${project.build.directory}/wildfly-${version.org.jboss.errai.wildfly}</errai.jboss.home>
-  </properties>
+  <name>OptaPlanner Workbench - UI</name>
+  <description>OptaPlanner Workbench - UI</description>
 
   <dependencies>
 
@@ -72,13 +67,6 @@
     <dependency>
       <groupId>org.gwtbootstrap3</groupId>
       <artifactId>gwtbootstrap3</artifactId>
-    </dependency>
-
-    <!-- Disables WF logging subsystem in SDM -->
-    <dependency>
-      <groupId>org.kie.workbench</groupId>
-      <artifactId>kie-wb-common-wf-sdm-extensions</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- dependencies added because of new illegal transitive dependency check -->
@@ -1207,10 +1195,6 @@
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-cdi-shared</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.jboss.errai</groupId>
-      <artifactId>errai-cdi-server</artifactId>
-    </dependency>
 
     <!-- GWT/Errai Bean Validation - JSR303 -->
     <dependency>
@@ -1233,24 +1217,6 @@
     <dependency>
       <groupId>org.owasp.encoder</groupId>
       <artifactId>encoder</artifactId>
-    </dependency>
-
-    <!-- Rouge imports to avoid OSGi errors -->
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-xjc</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- Uberfire Security Management -->
@@ -1368,7 +1334,6 @@
             <arg>-saveSourceOutput</arg>
             <arg>extra</arg>
           </compilerArgs>
-          <!--<deploy>${project.build.directory}/${project.build.finalName}</deploy>-->
           <style>PRETTY</style>
         </configuration>
       </plugin>
@@ -1398,34 +1363,7 @@
         </executions>
       </plugin>
 
-      <!-- Tests are skipped by default because they require additional GWT dependencies. Run mvn with
-      -Pintegration-test to enable testing. -->
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skipTests>true</skipTests>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}</directory>
-              <includes>
-                <include>src/main/webapp/org.optaplanner.workbench.OptaPlannerWorkbench/</include>
-                <include>src/main/webapp/WEB-INF/deploy/</include>
-                <include>src/main/webapp/WEB-INF/classes/</include>
-                <include>src/main/webapp/WEB-INF/lib/</include>
-                <include>.errai/</include>
-                <include>.niogit/**</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <!-- The optaplanner-wb-webapp is used just for development/testing, we don't want to publish it into remote repos. -->
+      <!-- The optaplanner-wb-ui is used just for development/testing, we don't want to publish it into remote repos. -->
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <executions>
@@ -1433,31 +1371,6 @@
             <id>default-deploy</id>
             <configuration>
               <skip>true</skip>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.jboss.errai</groupId>
-                  <artifactId>wildfly-dist</artifactId>
-                  <version>${version.org.jboss.errai.wildfly}</version>
-                  <type>zip</type>
-                  <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                </artifactItem>
-              </artifactItems>
             </configuration>
           </execution>
         </executions>
