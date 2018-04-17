@@ -52,7 +52,6 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-ui</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- GWT and GWT Extensions -->
@@ -366,7 +365,8 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>provided</scope>
+      <!-- used during GWT compilation and CodeServer runtime -->
+      <scope>compile</scope>
     </dependency>
 
     <!-- Models held within AppFormer -->
@@ -1160,7 +1160,6 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-workbench-processors</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -1178,13 +1177,11 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-cdi-client</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-javax-enterprise</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -1196,17 +1193,14 @@
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <scope>provided</scope>
       <classifier>sources</classifier>
     </dependency>
 
