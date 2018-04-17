@@ -843,6 +843,29 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>1.2.0.Final</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>start</goal>
+              <goal>deploy-only</goal>
+            </goals>
+            <configuration>
+              <jbossHome>${project.build.directory}/wildfly-${version.org.jboss.errai.wildfly}</jbossHome>
+              <filename>optaplanner-wb-webapp</filename>
+              <name>optaplanner-wb.war</name>
+              <force>true</force>
+              <checkPackaging>false</checkPackaging>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
   </build>
