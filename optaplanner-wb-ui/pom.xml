@@ -1299,7 +1299,7 @@
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
-      <scope>runtime</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -1309,23 +1309,6 @@
       <plugin>
         <groupId>net.ltgt.gwt.maven</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <configuration>
-          <moduleName>org.optaplanner.workbench.OptaPlannerWorkbench</moduleName>
-          <jvmArgs>
-            <!-- Write org/jboss/errai/ServerMarshallingFactoryImpl$Marshaller_*_Impl.class files
-            to the WAR's WEB-INF/classes-->
-            <arg>-Derrai.server.classOutput=${project.build.finalName}/WEB-INF/classes</arg>
-          </jvmArgs>
-          <compilerArgs>
-            <arg>-strict</arg>
-            <arg>-logLevel</arg>
-            <arg>INFO</arg>
-            <arg>-saveSource</arg>
-            <arg>-saveSourceOutput</arg>
-            <arg>extra</arg>
-          </compilerArgs>
-          <style>PRETTY</style>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
