@@ -159,9 +159,6 @@
           <!-- GWT Super Dev Mode: point codeserver to backend to overwrite *.nocache.js -->
           <launcherDir>optaplanner-wb-webapp/target/optaplanner-wb-webapp</launcherDir>
           <systemProperties>
-            <!-- Make IDE war run config and GWT Super Dev Mode use same
-              deployment context to avoid duplicate, conflicting deployment -->
-            <errai.dev.context>optaplanner-wb</errai.dev.context>
             <!-- Write org/jboss/errai/ServerMarshallingFactoryImpl$Marshaller_*_Impl.class files
             to the WAR's WEB-INF/classes (needed during compilation) -->
             <errai.server.classOutput>${project.build.finalName}/WEB-INF/classes</errai.server.classOutput>
