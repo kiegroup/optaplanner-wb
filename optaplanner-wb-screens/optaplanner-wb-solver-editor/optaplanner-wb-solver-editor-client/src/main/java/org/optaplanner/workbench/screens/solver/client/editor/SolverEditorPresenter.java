@@ -27,7 +27,6 @@ import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.kie.workbench.common.widgets.client.popups.validation.ValidationPopup;
-import org.kie.workbench.common.widgets.client.resources.i18n.CommonConstants;
 import org.kie.workbench.common.widgets.metadata.client.KieEditor;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.client.type.SolverResourceType;
@@ -42,6 +41,7 @@ import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartTitleDecoration;
 import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.views.pfly.multipage.PageImpl;
+import org.uberfire.ext.widgets.common.client.callbacks.CommandErrorCallback;
 import org.uberfire.ext.widgets.common.client.callbacks.HasBusyIndicatorDefaultErrorCallback;
 import org.uberfire.lifecycle.OnClose;
 import org.uberfire.lifecycle.OnMayClose;
@@ -106,18 +106,13 @@ public class SolverEditorPresenter
         SuperDevModeFlag superDevModeFlag = GWT.create(SuperDevModeFlag.class);
         if (superDevModeFlag.isSuperDevModeUsed()) {
             fileMenuBuilder
-                    .addSave(versionRecordManager.newSaveMenuItem(new Command() {
-                        @Override
-                        public void execute() {
-                            onSave();
-                        }
-                    }))
+                    .addSave(versionRecordManager.newSaveMenuItem(this::onSave))
                     .addCopy(versionRecordManager.getCurrentPath(),
-                             fileNameValidator)
+                             getCopyValidator())
                     .addRename(versionRecordManager.getPathToLatest(),
                                fileNameValidator)
                     .addDelete(versionRecordManager.getPathToLatest())
-                    .addValidate(onValidate())
+                    .addValidate(getValidateCommand())
                     .addCommand(translationService.getTranslation(SolverEditorConstants.SolverEditorPresenterSmokeTest),
                                 onSmokeTest())
                     .addNewTopLevelMenu(versionRecordManager.buildMenu());
@@ -180,15 +175,12 @@ public class SolverEditorPresenter
         };
     }
 
-    protected Command onValidate() {
-        return new Command() {
-            @Override
-            public void execute() {
-                solverService.call(getRemoteCallback(CommonConstants.INSTANCE.ItemValidatedSuccessfully()))
-                        .validate(versionRecordManager.getCurrentPath(),
-                                  model);
-            }
-        };
+    @Override
+    protected void onValidate(final Command finished) {
+        solverService.call(validationPopup.getValidationCallback(finished),
+                           new CommandErrorCallback(finished)
+        ).validate(versionRecordManager.getCurrentPath(),
+                   model);
     }
 
     private RemoteCallback<List<ValidationMessage>> getRemoteCallback(String message) {

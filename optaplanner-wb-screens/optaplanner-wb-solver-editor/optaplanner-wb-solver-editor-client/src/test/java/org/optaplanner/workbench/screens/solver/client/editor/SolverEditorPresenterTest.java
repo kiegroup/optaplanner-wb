@@ -15,9 +15,7 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.enterprise.event.Event;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMock;
@@ -48,7 +46,6 @@ import org.uberfire.backend.vfs.ObservablePath;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
 import org.uberfire.mvp.PlaceRequest;
-import org.uberfire.workbench.events.NotificationEvent;
 
 import static org.mockito.Mockito.*;
 
@@ -123,26 +120,6 @@ public class SolverEditorPresenterTest {
         verify(view).setTerminationConfigModel(terminationConfigModel);
         verify(view).setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig,
                                                    path);
-    }
-
-    private class NotificationEventMock
-            implements Event<NotificationEvent> {
-
-        @Override
-        public void fire(NotificationEvent notificationEvent) {
-
-        }
-
-        @Override
-        public Event<NotificationEvent> select(Annotation... annotations) {
-            return null;
-        }
-
-        @Override
-        public <U extends NotificationEvent> Event<U> select(Class<U> aClass,
-                                                             Annotation... annotations) {
-            return null;
-        }
     }
 
     private class ServiceMock
