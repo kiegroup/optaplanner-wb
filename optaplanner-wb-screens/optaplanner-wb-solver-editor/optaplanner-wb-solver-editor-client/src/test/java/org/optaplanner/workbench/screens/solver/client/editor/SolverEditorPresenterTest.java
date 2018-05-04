@@ -15,11 +15,8 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.function.Supplier;
-
-import javax.enterprise.event.Event;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMock;
@@ -53,7 +50,6 @@ import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
 import org.uberfire.ext.editor.commons.service.support.SupportsSaveAndRename;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.PlaceRequest;
-import org.uberfire.workbench.events.NotificationEvent;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -167,26 +163,6 @@ public class SolverEditorPresenterTest {
         final Caller<? extends SupportsSaveAndRename<SolverConfigModel, Metadata>> serviceCaller = presenter.getSaveAndRenameServiceCaller();
 
         assertEquals(this.solverService, serviceCaller);
-    }
-
-    private class NotificationEventMock
-            implements Event<NotificationEvent> {
-
-        @Override
-        public void fire(NotificationEvent notificationEvent) {
-
-        }
-
-        @Override
-        public Event<NotificationEvent> select(Annotation... annotations) {
-            return null;
-        }
-
-        @Override
-        public <U extends NotificationEvent> Event<U> select(Class<U> aClass,
-                                                             Annotation... annotations) {
-            return null;
-        }
     }
 
     private class ServiceMock
