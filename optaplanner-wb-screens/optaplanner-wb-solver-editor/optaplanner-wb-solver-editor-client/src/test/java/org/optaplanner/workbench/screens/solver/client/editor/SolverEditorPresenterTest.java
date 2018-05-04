@@ -15,9 +15,7 @@
  */
 package org.optaplanner.workbench.screens.solver.client.editor;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.enterprise.event.Event;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMock;
@@ -46,9 +44,10 @@ import org.uberfire.backend.vfs.ObservablePath;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
 import org.uberfire.mvp.PlaceRequest;
-import org.uberfire.workbench.events.NotificationEvent;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SolverEditorPresenterTest {
@@ -82,25 +81,25 @@ public class SolverEditorPresenterTest {
     @Before
     public void setUp() throws Exception {
         model = new SolverConfigModel();
-        model.setTerminationConfig( terminationConfigModel );
-        model.setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig );
-        resourceType = GWT.create( SolverResourceType.class );
+        model.setTerminationConfig(terminationConfigModel);
+        model.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig);
+        resourceType = GWT.create(SolverResourceType.class);
 
-        when( resourceType.getSuffix() ).thenReturn( "solver.xml" );
-        when( resourceType.accept( path ) ).thenReturn( true );
-        when( resourceType.accept( path ) ).thenReturn( false );
+        when(resourceType.getSuffix()).thenReturn("solver.xml");
+        when(resourceType.accept(path)).thenReturn(true);
+        when(resourceType.accept(path)).thenReturn(false);
 
-        when( versionRecordManager.getCurrentPath() ).thenReturn( path );
+        when(versionRecordManager.getCurrentPath()).thenReturn(path);
 
-        presenter = new SolverEditorPresenter( view,
-                                               resourceType,
-                                               mock( XMLViewer.class ),
-                                               new NotificationEventMock(),
-                                               new ServiceMock() ) {
+        presenter = new SolverEditorPresenter(view,
+                                              resourceType,
+                                              mock(XMLViewer.class),
+                                              new NotificationEventMock(),
+                                              new ServiceMock()) {
             {
-                kieView = mock( KieEditorWrapperView.class );
+                kieView = mock(KieEditorWrapperView.class);
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
-                overviewWidget = mock( OverviewWidgetPresenter.class );
+                overviewWidget = mock(OverviewWidgetPresenter.class);
             }
 
             protected void makeMenuBar() {
@@ -113,28 +112,12 @@ public class SolverEditorPresenterTest {
 
     @Test
     public void testLoad() throws Exception {
-        presenter.onStartup( path,
-                             mock( PlaceRequest.class ) );
+        presenter.onStartup(path,
+                            mock(PlaceRequest.class));
 
-        verify( view ).setTerminationConfigModel( terminationConfigModel );
-        verify( view ).setScoreDirectorFactoryConfig( scoreDirectorFactoryConfig,
-                                                      path );
-    }
-
-    private class NotificationEventMock
-            implements Event<NotificationEvent> {
-
-        @Override public void fire( NotificationEvent notificationEvent ) {
-
-        }
-
-        @Override public Event<NotificationEvent> select( Annotation... annotations ) {
-            return null;
-        }
-
-        @Override public <U extends NotificationEvent> Event<U> select( Class<U> aClass, Annotation... annotations ) {
-            return null;
-        }
+        verify(view).setTerminationConfigModel(terminationConfigModel);
+        verify(view).setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig,
+                                                   path);
     }
 
     private class ServiceMock
@@ -143,59 +126,71 @@ public class SolverEditorPresenterTest {
         private SolverEditorService service = new SolverEditorServiceMock();
         RemoteCallback remoteCallback;
 
-        @Override public SolverEditorService call() {
+        @Override
+        public SolverEditorService call() {
             return service;
         }
 
-        @Override public SolverEditorService call( RemoteCallback<?> remoteCallback ) {
-            return call( remoteCallback, null );
+        @Override
+        public SolverEditorService call(RemoteCallback<?> remoteCallback) {
+            return call(remoteCallback, null);
         }
 
-        @Override public SolverEditorService call( RemoteCallback<?> remoteCallback, ErrorCallback<?> errorCallback ) {
+        @Override
+        public SolverEditorService call(RemoteCallback<?> remoteCallback, ErrorCallback<?> errorCallback) {
             this.remoteCallback = remoteCallback;
             return call();
         }
 
         private class SolverEditorServiceMock implements SolverEditorService {
 
-            @Override public SolverModelContent loadContent( Path path ) {
+            @Override
+            public SolverModelContent loadContent(Path path) {
 
-                SolverModelContent content = new SolverModelContent( model,
-                                                                     new Overview() );
-                remoteCallback.callback( content );
+                SolverModelContent content = new SolverModelContent(model,
+                                                                    new Overview());
+                remoteCallback.callback(content);
 
                 return null;
             }
 
-            @Override public Path copy( Path path, String newName, String comment ) {
+            @Override
+            public Path copy(Path path, String newName, String comment) {
                 return null;
             }
 
-            @Override public Path create( Path context, String fileName, SolverConfigModel content, String comment ) {
+            @Override
+            public Path create(Path context, String fileName, SolverConfigModel content, String comment) {
                 return null;
             }
 
-            @Override public void delete( Path path, String comment ) {
+            @Override
+            public void delete(Path path, String comment) {
 
             }
 
-            @Override public SolverConfigModel load( Path path ) {
+            @Override
+            public SolverConfigModel load(Path path) {
                 return null;
             }
 
-            @Override public Path rename( Path path, String newName, String comment ) {
+            @Override
+            public Path rename(Path path, String newName, String comment) {
                 return null;
             }
 
-            @Override public Path save( Path path, SolverConfigModel content, Metadata metadata, String comment ) {
+            @Override
+            public Path save(Path path, SolverConfigModel content, Metadata metadata, String comment) {
                 return null;
             }
 
-            @Override public List<ValidationMessage> validate( Path path, SolverConfigModel content ) {
+            @Override
+            public List<ValidationMessage> validate(Path path, SolverConfigModel content) {
                 return null;
             }
 
-            @Override public String toSource( Path path, SolverConfigModel model ) {
+            @Override
+            public String toSource(Path path, SolverConfigModel model) {
                 return null;
             }
         }
