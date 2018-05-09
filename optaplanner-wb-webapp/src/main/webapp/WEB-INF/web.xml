@@ -4,8 +4,6 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-  <distributable/>
-
   <listener>
     <listener-class>org.uberfire.backend.server.io.DisposableShutdownService</listener-class>
   </listener>
