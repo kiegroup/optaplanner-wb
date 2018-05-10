@@ -1,0 +1,1362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015 Red Hat, Inc. and/or its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.optaplanner</groupId>
+    <artifactId>optaplanner-wb</artifactId>
+    <version>7.8.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>optaplanner-wb-ui</artifactId>
+  <packaging>gwt-app</packaging>
+
+  <name>OptaPlanner Workbench - UI</name>
+  <description>OptaPlanner Workbench - UI</description>
+
+  <dependencies>
+
+    <!-- errai-cdi-jboss provides gwt-dev with the proper dependency exclusions and should be first on the classpath -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-cdi-jboss</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-ui</artifactId>
+    </dependency>
+
+    <!-- GWT and GWT Extensions -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.gwtbootstrap3</groupId>
+      <artifactId>gwtbootstrap3</artifactId>
+    </dependency>
+
+    <!-- dependencies added because of new illegal transitive dependency check -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-bus</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-navigation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-data-binding</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-ioc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-security-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-marshalling</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-metadata-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.widgets</groupId>
+      <artifactId>kie-wb-common-ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.widgets</groupId>
+      <artifactId>kie-wb-common-ui</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.widgets</groupId>
+      <artifactId>kie-wb-config-resource-widget</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.widgets</groupId>
+      <artifactId>kie-wb-metadata-widget</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.widgets</groupId>
+      <artifactId>kie-wb-decorated-grid-widget</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.picketlink</groupId>
+      <artifactId>picketlink-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.picketlink</groupId>
+      <artifactId>picketlink-idm-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-client-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-client-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-maven-support</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-commons</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-nio2-model</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-properties-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-properties-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-properties-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-service-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-service-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-backend-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-commons-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-commons</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-core-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-table</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-client-views-patternfly</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-simple-docks-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-simple-docks-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- UberFire Preferences Extension -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-processors</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-ui-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-preferences-ui-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-wires-core-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-wires-core-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-wires-core-grids</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-wires-core-trees</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-ci</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.server</groupId>
+      <artifactId>kie-server-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.server</groupId>
+      <artifactId>kie-server-controller-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!--Logs-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Models held within AppFormer -->
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-project-datamodel-api</artifactId>
+    </dependency>
+
+    <!-- Models held within Drools -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-datamodel-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-commons</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-dtable</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-dtree</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-scorecard</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-guided-template</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-workbench-models-test-scenarios</artifactId>
+    </dependency>
+
+    <!-- Guvnor -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-structure-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-structure-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-structure-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-structure-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-services-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-services-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-m2repo-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-m2repo-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-m2repo-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-m2repo-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-project-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-project-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-project-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workingset-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workingset-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workingset-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workingset-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-project-builder</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-message-console-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-message-console-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-message-console-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- Common -->
+
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-services-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-services-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-refactoring-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-refactoring-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-refactoring-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-imports-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-imports-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-explorer-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-project-explorer-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-data-modeller-core</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-data-modeller-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-data-modeller-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-data-modeller-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-data-modeller-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.services</groupId>
+      <artifactId>kie-wb-common-datamodel-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-home-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-home-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-home-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-java-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-java-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-java-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-default-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-default-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-default-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-server-ui-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-server-ui-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-social-activities-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-social-activities-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-social-activities-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-social-home-page-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-social-home-page-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-social-home-page-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-workbench-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-workbench-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <!-- org.kie.workbench.screens.workbench.backend.BaseAppSetup -->
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-workbench-backend</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-library-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-library-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-library-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-contributors-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-contributors-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-examples-screen-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-examples-screen-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-examples-screen-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- KIE Workbench Playground Repository -->
+    <dependency>
+      <groupId>org.kie.workbench.playground</groupId>
+      <artifactId>kie-decision-playground</artifactId>
+    </dependency>
+
+    <!-- Uberfire Apps -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-apps-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-apps-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-apps-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- Uberfire Layout Editor API -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-layout-editor-api</artifactId>
+    </dependency>
+
+    <!-- Drools Verifier Web Worker -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-verifier-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-verifier-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-verifier-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- Drools Workbench Screens -->
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-rule-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-rule-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-rule-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-rule-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-template-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-template-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-template-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-template-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtable-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtable-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtable-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtable-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtree-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtree-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtree-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-dtree-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-scorecard-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-scorecard-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-scorecard-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-guided-scorecard-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-drl-text-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-drl-text-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-drl-text-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-drl-text-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-enum-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-enum-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-enum-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-enum-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-factmodel-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-factmodel-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dsl-text-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dsl-text-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dsl-text-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dsl-text-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dtable-xls-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dtable-xls-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dtable-xls-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-dtable-xls-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-scorecard-xls-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-scorecard-xls-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-scorecard-xls-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-scorecard-xls-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-globals-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-globals-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-globals-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-globals-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-test-scenario-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-test-scenario-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-test-scenario-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-test-scenario-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-workitems-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-workitems-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-workitems-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wb-workitems-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- OptaPlanner Workbench Screens -->
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-solver-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-solver-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-solver-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-solver-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-guided-rule-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-guided-rule-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-guided-rule-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-guided-rule-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-domain-editor-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-workbench-models-datamodel-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- UberFire PlugIn Extension -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-runtime-plugins-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-runtime-plugins-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-runtime-plugins-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-runtime-plugins-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- UberFire Extension -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-metadata-commons-io</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-js</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+
+    <!-- UberFire -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-all</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-processors</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-security-picketlink</artifactId>
+    </dependency>
+
+    <!-- Errai AS -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-jboss-as-support</artifactId>
+    </dependency>
+
+    <!-- CDI Integration Modules -->
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-cdi-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-javax-enterprise</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-cdi-shared</artifactId>
+    </dependency>
+
+    <!-- GWT/Errai Bean Validation - JSR303 -->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.owasp.encoder</groupId>
+      <artifactId>encoder</artifactId>
+    </dependency>
+
+    <!-- Uberfire Security Management -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-management-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-management-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-management-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-security-management-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-security-management</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-widgets-security-management</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <!-- Dashbuilder -->
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-json</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-navigation-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.soup</groupId>
+      <artifactId>kie-soup-dataset-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-displayer-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-services-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-client-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-renderer-google</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.dashbuilder</groupId>
+      <artifactId>dashbuilder-server-all</artifactId>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt.gwtmockito</groupId>
+      <artifactId>gwtmockito</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-testing-utils</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- hack to disable sisu annotation processing (that scans client side types) -->
+    <dependency>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>net.ltgt.gwt.maven</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-sources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}/sourcemaps</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/gwt/deploy/org.optaplanner.workbench.OptaPlannerWorkbench/symbolMaps</directory>
+                  <filtering>false</filtering>
+                </resource>
+                <resource>
+                  <directory>${project.build.directory}/extra/org.optaplanner.workbench.OptaPlannerWorkbench/src</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- The optaplanner-wb-ui is used just for development/testing, we don't want to publish it into remote repos. -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

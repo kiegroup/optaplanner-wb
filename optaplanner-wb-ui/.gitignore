@@ -1,0 +1,12 @@
+/target
+/local
+/src/main/gwt-unitCache/
+
+# Eclipse, Netbeans and IntelliJ files
+/.*
+/**/.*
+!.gitignore
+/nbproject
+/*.ipr
+/*.iws
+/*.iml
