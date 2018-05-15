@@ -145,6 +145,9 @@
           <moduleName>org.optaplanner.workbench.OptaPlannerWorkbench</moduleName>
           <style>PRETTY</style>
           <logLevel>INFO</logLevel>
+          <jvmArgs>
+            <arg>-Xmx4g</arg>
+          </jvmArgs>
           <!-- compile goal configuration, see https://tbroyer.github.io/gwt-maven-plugin/compile-mojo.html -->
           <compilerArgs>
             <arg>-strict</arg>
