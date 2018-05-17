@@ -13,7 +13,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
--->
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -31,12 +31,14 @@
   <name>OptaPlanner Workbench - WebApp</name>
   <description>OptaPlanner Workbench - WebApp</description>
 
-  <properties>
-    <!-- Add the absolute path for $JBOSS_HOME below to manage another instance -->
-    <errai.jboss.home>${project.build.directory}/wildfly-${version.org.jboss.errai.wildfly}</errai.jboss.home>
-  </properties>
-
   <dependencies>
+    <dependency>
+      <groupId>org.optaplanner</groupId>
+      <artifactId>optaplanner-wb-ui</artifactId>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
+
     <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.apache.lucene</groupId>
@@ -53,10 +55,6 @@
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.errai</groupId>
-      <artifactId>errai-ioc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.errai</groupId>
@@ -168,20 +166,10 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-ext</artifactId>
-    </dependency>
-
     <!-- This is a war file, so logback is not in scope test, but in scope compile -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>log4j-over-slf4j</artifactId>
     </dependency>
 
     <!-- Models held within AppFormer -->
@@ -202,32 +190,26 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-datamodel-api</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-commons</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-guided-dtable</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-guided-dtree</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-guided-scorecard</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-guided-template</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-test-scenarios</artifactId>
@@ -590,13 +572,6 @@
     <!-- OptaPlanner Workbench Screens -->
     <dependency>
       <groupId>org.optaplanner</groupId>
-      <artifactId>optaplanner-wb-ui</artifactId>
-      <type>war</type>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-api</artifactId>
     </dependency>
     <dependency>
@@ -658,12 +633,6 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-server-all</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -677,6 +646,7 @@
       <artifactId>errai-jboss-as-support</artifactId>
     </dependency>
 
+    <!-- CDI Integration Modules -->
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-cdi-server</artifactId>
@@ -743,27 +713,12 @@
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <packagingExcludes>**/*.symbolMap</packagingExcludes>
           <archive>
             <addMavenDescriptor>false</addMavenDescriptor>
           </archive>
         </configuration>
       </plugin>
 
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}</directory>
-              <includes>
-                <include>.errai/</include>
-                <include>.niogit/**</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
       <!-- The optaplanner-wb-webapp is used just for development/testing, we don't want to publish it into remote repos. -->
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
@@ -808,10 +763,6 @@
         <executions>
           <execution>
             <id>default-cli</id>
-            <goals>
-              <goal>start</goal>
-              <goal>deploy-only</goal>
-            </goals>
             <configuration>
               <jbossHome>${project.build.directory}/wildfly-${version.org.jboss.errai.wildfly}</jbossHome>
               <filename>optaplanner-wb-webapp</filename>
