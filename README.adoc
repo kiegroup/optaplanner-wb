@@ -31,13 +31,27 @@ $ mvn gwt:codeserver -pl optaplanner-wb-ui -am
 
 The process will keep running in the foreground and thus will occupy the terminal window.
 
-==== 3. Start backend
+==== 3. Launch backend
 
 It's recommended to do this in a different terminal window.
 
 ```bash
 $ cd optaplanner-wb-webapp
 $ mvn wildfly:start wildfly:deploy-only
+```
+
+==== 4. Open the WebApp
+
+Open http://localhost:8080/optaplanner-wb-webapp/ in your web browser.
+Enter `admin:admin` credentials.
+Users, their passwords and roles are configured by the `PicketLinkDefaultUsers` server bean.
+
+==== 5. Shut down
+Shut down CodeServer with `SIGTERM` (`Ctrl+Z`).
+
+Shut down WildFly by running
+```
+$ mvn wildfly:shutdown
 ```
 
 === Running SuperDevMode from IntelliJ IDEA
@@ -75,27 +89,29 @@ IMPORTANT: After adding the deployment, remove all build steps that were added t
 It is necessary to skip the build to avoid overwriting the index page "injected" by CodeServer.
 
 7. On the *Server* tab, select *Update classes and resources* for both *On 'Update' action* and *On frame deactivation*.
++
+Update action is triggered by clicking a blue arrow button next to the server output window.
++
+Frame deactivation happens when you switch from IDEA window to the web browser.
 
-8. Optionally, check *After launch*, select *Chrome* and enter `http://localhost:8080/optaplanner-wb-webapp`.
+8. Enable client code debugging:
+  * Check *After launch* and select *Chrome*.
+  * Check *with JavaScript debugger*. This will allow you to debug client code from IDEA.
+  * Enter `http://localhost:8080/optaplanner-wb-webapp` as the start URL.
 
 ==== Run SuperDevMode
 
-The recommended procedure is to first start the CodeServer and then deploy the webapp.
+1. Run the CodeServer configuration.
+2. Run or Debug the AppServer configuration.
 
-=== Debugging
+Running the AppServer configuration in Debug mode will allow you to set breakpoints and step through
+both backend and client code.
 
-==== Debugging the client code
-
-Launch SuperDevMode either from command line of from an IDE. Open the application in Chrome.
-Open the Developer tools (`Ctrl + Shift + I`).
-You can undock the Dev tools window, which is useful if you have two monitors.
+If for some reason you can't run SuperDevMode in IDEA,
+it is possible to debug client code using Chrome's Developer tools (`Ctrl + Shift + I`).
+You can undock the Developer tools window, which is useful if you have two monitors.
 Now you can open any client-side Java source file with `Ctrl + P` and debug with breakpoints.
 
-==== Debugging the backend code
-
-1. Launch CodeServer (from IDEA or from command line).
-
-2. Select the AppServer Run configuration in IDEA and run it in Debug mode.
 
 == Advanced development instructions
 
