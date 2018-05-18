@@ -744,9 +744,9 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.jboss.errai</groupId>
+                  <groupId>org.wildfly</groupId>
                   <artifactId>wildfly-dist</artifactId>
-                  <version>${version.org.jboss.errai.wildfly}</version>
+                  <version>${version.org.wildfly.gwt.sdm}</version>
                   <type>zip</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>${project.build.directory}</outputDirectory>
@@ -764,7 +764,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <jbossHome>${project.build.directory}/wildfly-${version.org.jboss.errai.wildfly}</jbossHome>
+              <jbossHome>${project.build.directory}/wildfly-${version.org.wildfly.gwt.sdm}</jbossHome>
               <filename>optaplanner-wb-webapp</filename>
               <name>optaplanner-wb.war</name>
               <force>true</force>
