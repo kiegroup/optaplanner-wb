@@ -35,8 +35,20 @@
   </properties>
 
   <dependencies>
+    <!-- Java EE APIs -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-javax-enterprise</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+    </dependency>
 
-    <!-- Regular dependencies -->
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-guided-rule-editor-api</artifactId>
@@ -57,7 +69,6 @@
       <artifactId>errai-ioc</artifactId>
     </dependency>
 
-    <!-- Transitive dependencies -->
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-workbench-models-datamodel-api</artifactId>
@@ -117,7 +128,5 @@
         </exclusion>
       </exclusions>
     </dependency>
-
   </dependencies>
-
 </project>

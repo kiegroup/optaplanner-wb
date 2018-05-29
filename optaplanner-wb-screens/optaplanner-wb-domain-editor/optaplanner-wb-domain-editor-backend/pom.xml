@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright 2015 Red Hat, Inc. and/or its affiliates.
   ~
@@ -28,16 +27,36 @@
   <artifactId>optaplanner-wb-domain-editor-backend</artifactId>
   <packaging>jar</packaging>
 
-  <name>OptaPlanner Workbench - Domain Editor Backend</name>
-  <description>OptaPlanner Workbench - Domain Editor Backend</description>
+  <name>OptaPlanner Workbench - Domain Editor - Backend</name>
+  <description>OptaPlanner Workbench - Domain Editor - Backend</description>
 
   <properties>
     <java.module.name>org.optaplanner.wb.domain.editor.backend</java.module.name>
   </properties>
 
   <dependencies>
+    <!-- Java EE APIs -->
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.xml.bind</groupId>
+      <artifactId>jboss-jaxb-api_2.2_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
-    <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-project-api</artifactId>
@@ -84,11 +103,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.kie.workbench.services</groupId>
-      <artifactId>kie-wb-common-services-backend</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-api</artifactId>
     </dependency>
@@ -118,20 +132,9 @@
       <artifactId>uberfire-io</artifactId>
     </dependency>
 
-    <!-- Regular dependencies -->
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-wb-drl-text-editor-api</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-wb-globals-editor-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-services-backend</artifactId>
     </dependency>
 
     <dependency>
@@ -153,7 +156,5 @@
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-domain-editor-api</artifactId>
     </dependency>
-
   </dependencies>
-
 </project>

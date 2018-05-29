@@ -35,8 +35,20 @@
   </properties>
 
   <dependencies>
+    <!-- Java EE APIs -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-javax-enterprise</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+    </dependency>
 
-    <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.gwtbootstrap3</groupId>
       <artifactId>gwtbootstrap3</artifactId>
@@ -86,10 +98,6 @@
       <artifactId>uberfire-commons</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.kie.soup</groupId>
-      <artifactId>kie-soup-commons</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-security-api</artifactId>
     </dependency>
@@ -118,7 +126,6 @@
       <artifactId>uberfire-message-console-client</artifactId>
     </dependency>
 
-    <!-- Regular dependencies -->
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-wb-solver-editor-api</artifactId>
@@ -184,7 +191,5 @@
       <artifactId>uberfire-testing-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
-
 </project>

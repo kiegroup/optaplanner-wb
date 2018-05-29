@@ -37,7 +37,6 @@ import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
-import org.uberfire.java.nio.IOException;
 import org.uberfire.mocks.CallerMock;
 import org.uberfire.mvp.Command;
 
@@ -92,7 +91,7 @@ public class SolverEditorPresenterValidationTest {
 
     @Test
     public void callFailsAndCommandIsCalled() {
-        doThrow(new IOException()).when(solverEditorService).validate(any(Path.class),
+        doThrow(new RuntimeException()).when(solverEditorService).validate(any(Path.class),
                                                                       any(SolverConfigModel.class));
 
         presenter.onValidate(afterValidation);
