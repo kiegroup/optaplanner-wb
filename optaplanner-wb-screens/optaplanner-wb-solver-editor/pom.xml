@@ -35,5 +35,4 @@
     <module>optaplanner-wb-solver-editor-client</module>
     <module>optaplanner-wb-solver-editor-backend</module>
   </modules>
-
 </project>

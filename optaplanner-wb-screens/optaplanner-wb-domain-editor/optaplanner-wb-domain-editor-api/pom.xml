@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright 2015 Red Hat, Inc. and/or its affiliates.
   ~
@@ -15,7 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -29,16 +27,14 @@
   <artifactId>optaplanner-wb-domain-editor-api</artifactId>
   <packaging>jar</packaging>
 
-  <name>OptaPlanner Workbench - Domain Editor API</name>
-  <description>OptaPlanner Workbench - Domain API</description>
+  <name>OptaPlanner Workbench - Domain Editor - API</name>
+  <description>OptaPlanner Workbench - Domain Editor - API</description>
 
   <properties>
     <java.module.name>org.optaplanner.wb.domain.editor.api</java.module.name>
   </properties>
 
   <dependencies>
-
-    <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-services-api</artifactId>
@@ -54,7 +50,6 @@
       <artifactId>errai-common</artifactId>
     </dependency>
 
-    <!-- Regular dependencies -->
     <dependency>
       <groupId>org.kie.workbench.services</groupId>
       <artifactId>kie-wb-common-data-modeller-core</artifactId>
@@ -64,12 +59,5 @@
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-core</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-api</artifactId>
-    </dependency>
-
   </dependencies>
-
 </project>

@@ -35,8 +35,18 @@
   </properties>
 
   <dependencies>
+    <!-- Java EE APIs -->
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
-    <!-- dependencies added because of new illegal transitive dependency check -->
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-bus</artifactId>
@@ -50,10 +60,6 @@
       <artifactId>optaplanner-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-commons</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.kie.soup</groupId>
       <artifactId>kie-soup-commons</artifactId>
     </dependency>
@@ -62,7 +68,6 @@
       <artifactId>kie-wb-common-services-api</artifactId>
     </dependency>
 
-    <!-- Regular dependencies -->
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-api</artifactId>
@@ -78,17 +83,10 @@
       <artifactId>uberfire-commons-editor-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.optaplanner</groupId>
-      <artifactId>optaplanner-workbench-models-core</artifactId>
-    </dependency>
-
     <!-- XML -->
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
     </dependency>
-
   </dependencies>
-
 </project>

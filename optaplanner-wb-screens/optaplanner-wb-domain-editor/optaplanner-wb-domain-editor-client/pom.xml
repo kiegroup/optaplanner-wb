@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright 2015 Red Hat, Inc. and/or its affiliates.
   ~
@@ -28,15 +27,28 @@
   <artifactId>optaplanner-wb-domain-editor-client</artifactId>
   <packaging>jar</packaging>
 
-  <name>OptaPlanner Workbench - Domain Editor Client</name>
-  <description>OptaPlanner Workbench - Domain Editor Client</description>
+  <name>OptaPlanner Workbench - Domain Editor - Client</name>
+  <description>OptaPlanner Workbench - Domain Editor - Client</description>
 
   <properties>
     <java.module.name>org.optaplanner.wb.domain.editor.client</java.module.name>
   </properties>
 
   <dependencies>
-    <!-- dependencies added because of new illegal transitive dependency check -->
+    <!-- Java EE APIs -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.errai</groupId>
+      <artifactId>errai-javax-enterprise</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.gwtbootstrap3</groupId>
       <artifactId>gwtbootstrap3</artifactId>
@@ -51,15 +63,7 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.errai</groupId>
-      <artifactId>errai-bus</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.errai</groupId>
       <artifactId>errai-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.errai</groupId>
-      <artifactId>errai-security-server</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.errai</groupId>
@@ -90,16 +94,8 @@
       <artifactId>uberfire-commons</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.kie.soup</groupId>
-      <artifactId>kie-soup-commons</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-workbench-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-commons-editor-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.uberfire</groupId>
@@ -190,7 +186,5 @@
       <artifactId>uberfire-testing-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
-
 </project>
