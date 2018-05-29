@@ -35,5 +35,4 @@
     <module>optaplanner-wb-guided-rule-editor-client</module>
     <module>optaplanner-wb-guided-rule-editor-backend</module>
   </modules>
-
 </project>
