@@ -42,7 +42,7 @@ $ mvn wildfly:start wildfly:deploy-only
 
 ==== 4. Open the WebApp
 
-Open http://localhost:8080/optaplanner-wb-webapp/ in your web browser.
+Open http://localhost:8080/optaplanner-wb/ in your web browser.
 Enter `admin:admin` credentials.
 Users, their passwords and roles are configured by the `PicketLinkDefaultUsers` server bean.
 
