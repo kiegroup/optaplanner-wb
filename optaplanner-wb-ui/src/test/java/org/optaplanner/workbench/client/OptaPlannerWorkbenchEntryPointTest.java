@@ -26,6 +26,7 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.workbench.common.workbench.client.error.DefaultWorkbenchErrorCallback;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -73,6 +74,9 @@ public class OptaPlannerWorkbenchEntryPointTest {
     @Mock
     private TranslationService translationService;
 
+    @Mock
+    private DefaultWorkbenchErrorCallback defaultWorkbenchErrorCallback;
+
     private OptaPlannerWorkbenchEntryPoint optaPlannerWorkbenchEntryPoint;
 
     @Before
@@ -85,7 +89,8 @@ public class OptaPlannerWorkbenchEntryPointTest {
                                                                                 menuBar,
                                                                                 userMenu,
                                                                                 adminPage,
-                                                                                translationService, null));
+                                                                                translationService,
+                                                                                defaultWorkbenchErrorCallback));
         mockMenuHelper();
     }
 
