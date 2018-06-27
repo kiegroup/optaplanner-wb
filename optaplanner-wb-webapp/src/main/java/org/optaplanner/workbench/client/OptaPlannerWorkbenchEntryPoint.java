@@ -26,6 +26,7 @@ import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
+import org.kie.workbench.common.workbench.client.error.DefaultWorkbenchErrorCallback;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.ActivityBeansCache;
@@ -57,9 +58,11 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
                                           final WorkbenchMegaMenuPresenter menuBar,
                                           final UserMenu userMenu,
                                           final AdminPage adminPage,
-                                          final TranslationService translationService) {
+                                          final TranslationService translationService,
+                                          final DefaultWorkbenchErrorCallback defaultWorkbenchErrorCallback) {
         super(appConfigService,
-              activityBeansCache);
+              activityBeansCache,
+              defaultWorkbenchErrorCallback);
         this.menusHelper = menusHelper;
         this.menuBar = menuBar;
         this.userMenu = userMenu;
