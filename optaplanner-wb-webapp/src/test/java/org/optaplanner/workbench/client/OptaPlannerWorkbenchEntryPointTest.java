@@ -85,7 +85,7 @@ public class OptaPlannerWorkbenchEntryPointTest {
                                                                                 menuBar,
                                                                                 userMenu,
                                                                                 adminPage,
-                                                                                translationService));
+                                                                                translationService, null));
         mockMenuHelper();
     }
 
