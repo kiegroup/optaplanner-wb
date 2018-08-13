@@ -19,10 +19,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
+import org.guvnor.common.services.project.categories.Optimization;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.workbench.annotations.VisibleAsset;
 import org.uberfire.workbench.category.Category;
-import org.uberfire.workbench.category.Others;
 import org.uberfire.workbench.type.ResourceTypeDefinition;
 
 @Default
@@ -37,7 +37,7 @@ public class SolverResourceTypeDefinition
     }
 
     @Inject
-    public SolverResourceTypeDefinition(Others category) {
+    public SolverResourceTypeDefinition(Optimization category) {
         this.category = category;
     }
 

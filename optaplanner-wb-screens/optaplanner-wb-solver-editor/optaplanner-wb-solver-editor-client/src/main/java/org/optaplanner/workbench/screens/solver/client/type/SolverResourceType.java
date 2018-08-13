@@ -20,13 +20,12 @@ import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
+import org.guvnor.common.services.project.categories.Optimization;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.optaplanner.workbench.screens.solver.client.resources.SolverEditorResources;
 import org.optaplanner.workbench.screens.solver.client.resources.i18n.SolverEditorConstants;
 import org.optaplanner.workbench.screens.solver.type.SolverResourceTypeDefinition;
 import org.uberfire.client.workbench.type.ClientResourceType;
-import org.uberfire.workbench.category.Category;
-import org.uberfire.workbench.category.Others;
 
 @ApplicationScoped
 public class SolverResourceType
@@ -41,7 +40,7 @@ public class SolverResourceType
     }
 
     @Inject
-    public SolverResourceType(Others category,
+    public SolverResourceType(Optimization category,
                               TranslationService translationService) {
         super(category);
         this.translationService = translationService;
