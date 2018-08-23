@@ -22,6 +22,6 @@ public interface SolverEditorImageResources
         extends
         ClientBundle {
 
-    @Source("typeSolver.gif")
+    @Source("BPM_FileIcons_config.png")
     ImageResource typeSolver();
 }
