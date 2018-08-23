@@ -27,14 +27,12 @@ import javax.inject.Inject;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
-import org.guvnor.common.services.backend.validation.GenericValidator;
 import org.guvnor.common.services.shared.message.Level;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.workbench.common.services.backend.builder.service.BuildInfoService;
 import org.kie.workbench.common.services.backend.validation.asset.DefaultGenericKieValidator;
-import org.kie.workbench.common.services.backend.validation.asset.NoModuleException;
 import org.kie.workbench.common.services.backend.validation.asset.ValidatorBuildService;
 import org.kie.workbench.common.services.shared.project.KieModule;
 import org.kie.workbench.common.services.shared.project.KieModuleService;
@@ -86,21 +84,17 @@ public class SolverValidator {
     private List<ValidationMessage> validate(final Path resourcePath,
                                              final String content,
                                              final boolean runSolver) {
-        try {
-            final KieModule kieModule = moduleService.resolveModule(resourcePath);
+        final KieModule kieModule = moduleService.resolveModule(resourcePath);
 
-            final List<ValidationMessage> validationMessages = validator().validate(resourcePath,
-                                                                                    content);
+        final List<ValidationMessage> validationMessages
+                = new SolverValidatorImpl(validatorBuildService).validate(resourcePath, content);
 
-            if (validationMessages.isEmpty()) {
-                return buildSolver(resourcePath,
-                                   kieModule,
-                                   runSolver);
-            } else {
-                return validationMessages;
-            }
-        } catch (NoModuleException e) {
-            return new ArrayList<ValidationMessage>();
+        if (validationMessages.isEmpty()) {
+            return buildSolver(resourcePath,
+                               kieModule,
+                               runSolver);
+        } else {
+            return validationMessages;
         }
     }
 
@@ -116,15 +110,6 @@ public class SolverValidator {
         }
 
         return validationMessages;
-    }
-
-    private GenericValidator validator() throws NoModuleException {
-        return new DefaultGenericKieValidator(validatorBuildService) {
-            @Override
-            protected Predicate<ValidationMessage> fromValidatedPath(final Path path) {
-                return message -> true;
-            }
-        };
     }
 
     private ValidationMessage createSolverFactory(final Path resourcePath,
@@ -196,5 +181,17 @@ public class SolverValidator {
         message.setText(e.getMessage());
 
         return message;
+    }
+
+    private static class SolverValidatorImpl extends DefaultGenericKieValidator {
+
+        SolverValidatorImpl(ValidatorBuildService validatorBuildService) {
+            super(validatorBuildService);
+        }
+
+        @Override
+        protected Predicate<ValidationMessage> fromValidatedPath(final Path path) {
+            return message -> true;
+        }
     }
 }
