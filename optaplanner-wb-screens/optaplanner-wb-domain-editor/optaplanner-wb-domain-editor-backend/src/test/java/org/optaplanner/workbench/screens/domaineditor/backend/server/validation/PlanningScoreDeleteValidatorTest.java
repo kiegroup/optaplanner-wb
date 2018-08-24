@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.backend;
+package org.optaplanner.workbench.screens.domaineditor.backend.server.validation;
 
 import java.util.Collection;
+
 import javax.annotation.Generated;
 
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
@@ -31,10 +32,10 @@ import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.PlanningScoreDeleteValidator;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningScoreToBeDeletedMessage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PlanningScoreDeleteValidatorTest {
 
@@ -77,5 +78,17 @@ public class PlanningScoreDeleteValidatorTest {
 
         assertEquals(0,
                      result.size());
+    }
+
+    @Test
+    public void validateNullObject() {
+        assertEquals(0, deleteValidator.validate(null, null).size());
+    }
+
+    @Test
+    public void validateNullProperty() {
+        DataObject dataObject = new DataObjectImpl("test", "PlanningSolution");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
+        assertEquals(0, deleteValidator.validate(dataObject, null).size());
     }
 }

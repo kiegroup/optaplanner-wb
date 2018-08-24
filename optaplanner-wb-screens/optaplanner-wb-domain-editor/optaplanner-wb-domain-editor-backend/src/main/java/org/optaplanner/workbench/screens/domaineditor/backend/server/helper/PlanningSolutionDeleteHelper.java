@@ -75,7 +75,7 @@ public class PlanningSolutionDeleteHelper implements DeleteHelper {
             LOGGER.warn("Path " + path + " parsing as a data object has failed. Score holder global generation will be skipped.");
         } else {
             DataObject dataObject = generationResult.getDataObject();
-            if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+            if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
                 org.uberfire.java.nio.file.Path source = Paths.convert(kieModuleService.resolvePackage(path).getPackageMainResourcesPath());
                 org.uberfire.java.nio.file.Path sourcePackage = Files.isDirectory(source) ? source : source.getParent();
 

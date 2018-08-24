@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.backend;
+package org.optaplanner.workbench.screens.domaineditor.backend.server.validation;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.junit.Before;
@@ -32,12 +33,17 @@ import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
-import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.PlanningSolutionSaveValidator;
 import org.optaplanner.workbench.screens.domaineditor.validation.PlanningSolutionToBeDuplicatedMessage;
 import org.uberfire.backend.vfs.Path;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PlanningSolutionSaveValidatorTest {
@@ -53,6 +59,24 @@ public class PlanningSolutionSaveValidatorTest {
     }
 
     @Test
+    public void accept() {
+        Path dataObjectPath = mock(Path.class);
+        when(dataObjectPath.toURI()).thenReturn("file:///project/Test.java");
+        when(dataObjectPath.getFileName()).thenReturn("Test.java");
+        assertTrue(saveValidator.accept(dataObjectPath));
+        Path propertiesPath = mock(Path.class);
+        when(propertiesPath.getFileName()).thenReturn("Test.properties");
+        assertFalse(saveValidator.accept(propertiesPath));
+    }
+
+    @Test
+    public void checkDataObjectIsNull() {
+        Collection<ValidationMessage> result = saveValidator.validate(mock(Path.class),
+                                                                      null);
+        assertEquals(0, result.size());
+    }
+
+    @Test
     public void checkNotAPlanningSolution() {
         DataObject dataObject = new DataObjectImpl("test",
                                                    "Test");
@@ -60,6 +84,7 @@ public class PlanningSolutionSaveValidatorTest {
         Collection<ValidationMessage> result = saveValidator.validate(mock(Path.class),
                                                                       dataObject);
         assertTrue(result.isEmpty());
+        verify(assetsUsageService, never()).getAssetUsages(any(), any(), any());
     }
 
     @Test
@@ -72,6 +97,22 @@ public class PlanningSolutionSaveValidatorTest {
         when(assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
                                                ResourceType.JAVA,
                                                dataObjectPath)).thenReturn(Arrays.asList(dataObjectPath));
+
+        Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
+                                                                      dataObject);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void checkPlanningSolutionNoOtherExistsFirstSave() {
+        DataObject dataObject = new DataObjectImpl("test",
+                                                   "Test");
+        dataObject.addAnnotation(new AnnotationImpl(DriverUtils.buildAnnotationDefinition(PlanningSolution.class)));
+
+        Path dataObjectPath = mock(Path.class);
+        when(assetsUsageService.getAssetUsages(PlanningSolution.class.getName(),
+                                               ResourceType.JAVA,
+                                               dataObjectPath)).thenReturn(Collections.emptyList());
 
         Collection<ValidationMessage> result = saveValidator.validate(dataObjectPath,
                                                                       dataObject);

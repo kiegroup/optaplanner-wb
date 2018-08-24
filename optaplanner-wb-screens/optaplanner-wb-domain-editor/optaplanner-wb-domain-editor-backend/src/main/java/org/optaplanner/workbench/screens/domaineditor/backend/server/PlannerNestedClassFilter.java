@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.backend.server;
 
 import java.util.Comparator;
+
 import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
 

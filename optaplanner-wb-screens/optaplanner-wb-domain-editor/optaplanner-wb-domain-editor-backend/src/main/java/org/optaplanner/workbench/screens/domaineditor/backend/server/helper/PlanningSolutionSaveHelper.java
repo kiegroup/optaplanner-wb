@@ -17,6 +17,7 @@
 package org.optaplanner.workbench.screens.domaineditor.backend.server.helper;
 
 import java.util.Arrays;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -98,7 +99,7 @@ public class PlanningSolutionSaveHelper implements DataModelerSaveHelper {
             LOGGER.warn("Path " + destinationPath + " parsing as a data object has failed. Score holder global generation will be skipped.");
         } else {
             DataObject dataObject = generationResult.getDataObject();
-            if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+            if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
                 String sourceScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(dataObject);
                 String scoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(sourceScoreTypeFqn);
 
