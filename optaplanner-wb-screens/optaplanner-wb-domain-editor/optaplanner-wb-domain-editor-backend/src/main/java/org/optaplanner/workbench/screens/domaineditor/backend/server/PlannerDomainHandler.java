@@ -19,6 +19,7 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.backend.helper;
+package org.optaplanner.workbench.screens.domaineditor.backend.server.helper;
 
 import org.drools.workbench.screens.globals.model.GlobalsModel;
 import org.drools.workbench.screens.globals.service.GlobalsEditorService;
@@ -36,7 +36,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
-import org.optaplanner.workbench.screens.domaineditor.backend.server.helper.PlanningSolutionSaveHelper;
 import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.ScoreHolderUtils;
 import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
@@ -45,7 +44,11 @@ import org.uberfire.io.IOService;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PlanningSolutionSaveHelperTest {
@@ -157,6 +160,32 @@ public class PlanningSolutionSaveHelperTest {
         } else {
             verify(ioService).deleteIfExists(any(org.uberfire.java.nio.file.Path.class));
         }
+    }
+
+    @Test
+    public void saveDataObjectIsNull() {
+        Path sourcePath = PathFactory.newPath("TestSource.java",
+                                              "file:///dataObjects");
+        Path destinationPath = PathFactory.newPath("TestSource.java",
+                                                   "file:///dataObjects");
+
+        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
+
+        GenerationResult generationResult = new GenerationResult();
+        generationResult.setDataObject(null);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
+
+        Package _package = mock(Package.class);
+        when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
+                                                                                    "file:///dataObjects"));
+        when(kieModuleService.resolvePackage(any(Path.class))).thenReturn(_package);
+
+        saveHelper.postProcess(sourcePath,
+                               destinationPath);
+
+        verify(scoreHolderUtils, never()).extractScoreTypeFqn(any());
     }
 
     @Test

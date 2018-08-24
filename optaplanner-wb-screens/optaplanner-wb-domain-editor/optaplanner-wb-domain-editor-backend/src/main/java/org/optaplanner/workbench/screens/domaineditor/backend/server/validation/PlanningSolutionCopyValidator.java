@@ -19,6 +19,7 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server.validation
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,12 +44,16 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
 @ApplicationScoped
 public class PlanningSolutionCopyValidator implements CopyValidator<DataObject> {
 
-    @Inject
     private DataModelerService dataModelerService;
 
-    @Inject
-    @Named("ioStrategy")
     private IOService ioService;
+
+    @Inject
+    public PlanningSolutionCopyValidator(final DataModelerService dataModelerService,
+                                         @Named("ioStrategy") final IOService ioService) {
+        this.dataModelerService = dataModelerService;
+        this.ioService = ioService;
+    }
 
     @Override
     public Collection<ValidationMessage> validate(final Path dataObjectPath,
@@ -71,7 +76,7 @@ public class PlanningSolutionCopyValidator implements CopyValidator<DataObject> 
                 return Collections.emptyList();
             } else {
                 DataObject dataObject = generationResult.getDataObject();
-                if (dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                if (dataObject != null && dataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
                     return Arrays.asList(new PlanningSolutionToBeDuplicatedMessage(Level.ERROR));
                 }
             }

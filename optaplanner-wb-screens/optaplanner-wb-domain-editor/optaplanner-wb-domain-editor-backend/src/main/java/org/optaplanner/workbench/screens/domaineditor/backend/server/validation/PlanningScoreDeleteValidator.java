@@ -19,6 +19,7 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server.validation
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
 import javax.annotation.Generated;
 import javax.enterprise.context.ApplicationScoped;
 

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,7 +46,7 @@ import static org.optaplanner.workbench.screens.domaineditor.model.PlannerDomain
  * Check whether data object to be saved:
  * <ol>
  * <li>Is a Planning Solution and score type has changed.</li>
- * <li>Changes from a Planning Solution to a different data object type</li>
+ * <li>Changes from a Planning Solution to a different data object type.</li>
  * </ol>
  * <p>
  * Display warning message as the type of 'scoreHolder' global variable associated with a score type defined in the Planning Solution
@@ -87,7 +88,7 @@ public class PlanningSolutionScoreHolderSaveValidator implements SaveValidator<D
             } else {
                 DataObject originalDataObject = generationResult.getDataObject();
 
-                if (originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                if (originalDataObject != null && originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
                     String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(originalDataObject);
 
                     String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(originalDataObjectScoreTypeFqn);

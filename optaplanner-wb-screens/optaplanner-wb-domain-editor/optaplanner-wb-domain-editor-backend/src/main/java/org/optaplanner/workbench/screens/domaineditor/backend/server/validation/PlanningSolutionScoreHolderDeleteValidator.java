@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -89,7 +90,7 @@ public class PlanningSolutionScoreHolderDeleteValidator implements DeleteValidat
             } else {
                 DataObject originalDataObject = generationResult.getDataObject();
 
-                if (originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
+                if (originalDataObject != null && originalDataObject.getAnnotation(PLANNING_SOLUTION_ANNOTATION) != null) {
                     String originalDataObjectScoreTypeFqn = scoreHolderUtils.extractScoreTypeFqn(originalDataObject);
 
                     String originalDataObjectScoreHolderTypeFqn = scoreHolderUtils.getScoreHolderTypeFqn(originalDataObjectScoreTypeFqn);

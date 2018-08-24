@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.backend;
+package org.optaplanner.workbench.screens.domaineditor.backend.server;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +32,12 @@ import org.kie.workbench.common.services.datamodeller.core.impl.MethodImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.ParameterImpl;
 import org.kie.workbench.common.services.datamodeller.core.impl.TypeImpl;
 import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
-import org.optaplanner.workbench.screens.domaineditor.backend.server.ComparatorDefinitionServiceImpl;
 import org.optaplanner.workbench.screens.domaineditor.model.ComparatorDefinition;
 import org.optaplanner.workbench.screens.domaineditor.service.ComparatorDefinitionService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ComparatorDefinitionServiceTest {
 

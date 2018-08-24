@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.optaplanner.workbench.screens.domaineditor.backend;
+package org.optaplanner.workbench.screens.domaineditor.backend.server.validation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +26,8 @@ import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
-import org.optaplanner.workbench.screens.domaineditor.backend.server.validation.ScoreHolderUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScoreHolderUtilsTest {
