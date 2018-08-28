@@ -45,15 +45,21 @@ public class PlannerDataModelerHelperUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(PlannerDataModelerHelperUtils.class);
 
-    @Inject
-    @Named("ioStrategy")
     private IOService ioService;
-
-    @Inject
     private ComparatorDefinitionService comparatorDefinitionService;
+    private DataModelerService dataModelerService;
+
+    public PlannerDataModelerHelperUtils() {
+    }
 
     @Inject
-    private DataModelerService dataModelerService;
+    public PlannerDataModelerHelperUtils(@Named("ioStrategy") IOService ioService,
+                                         ComparatorDefinitionService comparatorDefinitionService,
+                                         DataModelerService dataModelerService) {
+        this.ioService = ioService;
+        this.comparatorDefinitionService = comparatorDefinitionService;
+        this.dataModelerService = dataModelerService;
+    }
 
     public void updateDataObject(Path dataObjectPath) {
         String dataObjectString = ioService.readAllString(Paths.convert(dataObjectPath));
@@ -64,7 +70,7 @@ public class PlannerDataModelerHelperUtils {
 
         DataObject dataObject = generationResult.getDataObject();
 
-        if (dataObject != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty()) {
+        if (dataObject != null && (generationResult.getErrors() == null || generationResult.getErrors().isEmpty())) {
             JavaClass comparatorObject = getComparatorObject(dataObject);
             if (comparatorObject != null) {
                 JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject(dataObject,
