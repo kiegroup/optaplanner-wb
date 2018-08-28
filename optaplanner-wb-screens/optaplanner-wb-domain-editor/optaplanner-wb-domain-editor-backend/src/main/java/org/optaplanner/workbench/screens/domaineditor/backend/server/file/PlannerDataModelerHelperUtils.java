@@ -18,6 +18,7 @@ package org.optaplanner.workbench.screens.domaineditor.backend.server.file;
 
 import java.util.Comparator;
 import java.util.Optional;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -63,7 +64,7 @@ public class PlannerDataModelerHelperUtils {
 
         DataObject dataObject = generationResult.getDataObject();
 
-        if (dataObject != null && generationResult.getErrors() == null || generationResult.getErrors().isEmpty()) {
+        if (dataObject != null && (generationResult.getErrors() == null || generationResult.getErrors().isEmpty())) {
             JavaClass comparatorObject = getComparatorObject(dataObject);
             if (comparatorObject != null) {
                 JavaClass updatedComparatorObject = comparatorDefinitionService.updateComparatorObject(dataObject,
