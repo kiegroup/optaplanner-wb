@@ -425,27 +425,16 @@
     <!-- Drools Verifier Web Worker -->
     <dependency>
       <groupId>org.drools</groupId>
-      <artifactId>drools-verifier-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.drools</groupId>
       <artifactId>drools-verifier-core</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.drools</groupId>
-      <artifactId>drools-wb-verifier-guided-decision-table-adapter</artifactId>
-      <scope>provided</scope>
+      <artifactId>drools-wb-verifier-webworker</artifactId>
     </dependency>
     <dependency>
       <groupId>org.kie.workbench.services</groupId>
-      <artifactId>kie-wb-common-verifier-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.kie.workbench.services</groupId>
-      <artifactId>kie-wb-common-verifier-reporting</artifactId>
+      <artifactId>kie-wb-common-verifier-reporting-client</artifactId>
       <scope>provided</scope>
     </dependency>
 
