@@ -93,6 +93,9 @@ public interface AppConstants {
     String OptaPlannerWorkbenchEntryPoint_Admin = "OptaPlannerWorkbenchEntryPoint.Admin";
 
     @TranslationKey(defaultValue = "")
+    String OptaPlannerWorkbenchEntryPoint_SSHKeyStore = "OptaPlannerWorkbenchEntryPoint.SSHKeyStore";
+
+    @TranslationKey(defaultValue = "")
     String OptaPlannerWorkbenchEntryPoint_ExecutionServers = "OptaPlannerWorkbenchEntryPoint.ExecutionServers";
 
     @TranslationKey(defaultValue = "")

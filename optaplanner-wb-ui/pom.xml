@@ -1225,6 +1225,26 @@
       <artifactId>encoder</artifactId>
     </dependency>
 
+    <!-- Uberfire SSH -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
     <!-- Uberfire Security Management -->
     <dependency>
       <groupId>org.uberfire</groupId>

@@ -31,9 +31,11 @@ import org.kie.workbench.common.workbench.client.error.DefaultWorkbenchErrorCall
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.ActivityBeansCache;
+import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
+import org.uberfire.mvp.Command;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuItem;
 import org.uberfire.workbench.model.menu.Menus;
@@ -52,6 +54,8 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     protected TranslationService translationService;
 
+    protected PlaceManager placeManager;
+
     @Inject
     public OptaPlannerWorkbenchEntryPoint(final Caller<AppConfigService> appConfigService,
                                           final ActivityBeansCache activityBeansCache,
@@ -60,7 +64,8 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
                                           final UserMenu userMenu,
                                           final AdminPage adminPage,
                                           final TranslationService translationService,
-                                          final DefaultWorkbenchErrorCallback defaultWorkbenchErrorCallback) {
+                                          final DefaultWorkbenchErrorCallback defaultWorkbenchErrorCallback,
+                                          final PlaceManager placeManager) {
         super(appConfigService,
               activityBeansCache,
               defaultWorkbenchErrorCallback);
@@ -69,6 +74,7 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
         this.userMenu = userMenu;
         this.adminPage = adminPage;
         this.translationService = translationService;
+        this.placeManager = placeManager;
     }
 
     @Override
@@ -88,6 +94,15 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
                                 translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_ArtifactRepository),
                                 new Sets.Builder().add("fa").add("fa-archive").build(),
                                 "preferences");
+
+        adminPage.addTool("root",
+                          translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_SSHKeyStore),
+                          new Sets.Builder().add("fa").add("fa-key").build(),
+                          "general",
+                          () -> {
+                              final Command accessSSHKeysEditor = () -> placeManager.goTo(PerspectiveIds.SSH_KEYS_EDITOR);
+                              accessSSHKeysEditor.execute();
+                          });
 
         menusHelper.addRolesMenuItems();
         menusHelper.addUtilitiesMenuItems();
