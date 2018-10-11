@@ -130,6 +130,16 @@
       <artifactId>uberfire-backend-api</artifactId>
     </dependency>
 
+    <!-- Uberfire SSH -->
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-ssh-backend</artifactId>
+    </dependency>
+
     <!-- UberFire Preferences Extension -->
     <dependency>
       <groupId>org.uberfire</groupId>

@@ -37,6 +37,7 @@ import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
 import org.uberfire.mocks.CallerMock;
+import org.uberfire.mvp.Command;
 import org.uberfire.workbench.model.menu.MenuItem;
 import org.uberfire.workbench.model.menu.Menus;
 
@@ -45,6 +46,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class OptaPlannerWorkbenchEntryPointTest {
+
+    private static final String ROOT_CATEGORY = "root";
 
     @Mock
     private AppConfigService appConfigService;
@@ -90,7 +93,8 @@ public class OptaPlannerWorkbenchEntryPointTest {
                                                                                 userMenu,
                                                                                 adminPage,
                                                                                 translationService,
-                                                                                defaultWorkbenchErrorCallback));
+                                                                                defaultWorkbenchErrorCallback,
+                                                                                placeManager));
         mockMenuHelper();
     }
 
@@ -120,8 +124,26 @@ public class OptaPlannerWorkbenchEntryPointTest {
 
         verify(menusHelper).addRolesMenuItems();
         verify(menusHelper).addUtilitiesMenuItems();
+
+        verifyAdminPage();
     }
 
+    private void verifyAdminPage() {
+        verify(translationService).getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Settings);
+
+        verify(adminPage).addScreen(eq(ROOT_CATEGORY), any());
+
+        verify(adminPage).setDefaultScreen(eq(ROOT_CATEGORY));
+
+        verify(translationService).getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Library);
+        verify(translationService, atLeast(1)).getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_ArtifactRepository);
+
+        verify(adminPage, times(2)).addPreference(eq(ROOT_CATEGORY), anyString(), anyString(), any(), anyString());
+
+        verify(translationService).getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_SSHKeyStore);
+        verify(adminPage).addTool(eq(ROOT_CATEGORY), anyString(), any(), anyString(), any(Command.class));
+
+    }
     private void mockMenuHelper() {
         final ArrayList<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(mock(MenuItem.class));
