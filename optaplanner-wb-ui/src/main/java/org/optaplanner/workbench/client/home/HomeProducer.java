@@ -19,6 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.errai.ui.client.local.spi.TranslationService;
+import org.kie.workbench.common.profile.api.preferences.ProfilePreferences;
 import org.kie.workbench.common.screens.home.model.HomeModel;
 import org.kie.workbench.common.screens.home.model.HomeModelProvider;
 import org.kie.workbench.common.screens.home.model.ModelUtils;
@@ -38,7 +39,7 @@ public class HomeProducer implements HomeModelProvider {
     @Inject
     private TranslationService translationService;
 
-    public HomeModel get() {
+    public HomeModel get(ProfilePreferences profilePreferences) {
         final HomeModel model = new HomeModel(translationService.getTranslation(AppConstants.HomeProducer_Heading),
                                               translationService.getTranslation(AppConstants.HomeProducer_SubHeading),
                                               "images/home_bg.jpg");
