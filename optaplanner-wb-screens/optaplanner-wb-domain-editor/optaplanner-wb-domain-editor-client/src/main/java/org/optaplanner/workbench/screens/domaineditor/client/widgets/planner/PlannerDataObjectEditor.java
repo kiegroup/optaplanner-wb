@@ -195,14 +195,16 @@ public class PlannerDataObjectEditor
         return new RemoteCallback<List<Path>>() {
             @Override
             public void callback(List<Path> paths) {
-                // Remove current data object from the path list
-                List<Path> pathsCopy = new ArrayList<>(paths);
+                if (context != null) {
+                    // Remove current data object from the path list
+                    List<Path> pathsCopy = new ArrayList<>(paths);
 
-                Path currentDataObjectPath = context.getDataObjectPath(dataObject.getClassName());
-                pathsCopy.remove(currentDataObjectPath);
+                    Path currentDataObjectPath = context.getDataObjectPath(dataObject.getClassName());
+                    pathsCopy.remove(currentDataObjectPath);
 
-                view.enablePlanningSolutionCheckBox(pathsCopy.isEmpty());
-                view.showPlanningSolutionHelpIcon(!pathsCopy.isEmpty());
+                    view.enablePlanningSolutionCheckBox(pathsCopy.isEmpty());
+                    view.showPlanningSolutionHelpIcon(!pathsCopy.isEmpty());
+                }
             }
         };
     }
