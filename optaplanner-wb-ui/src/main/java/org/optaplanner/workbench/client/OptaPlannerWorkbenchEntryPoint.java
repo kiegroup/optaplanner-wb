@@ -24,6 +24,7 @@ import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
+import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.workbench.client.PerspectiveIds;
 import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
 import org.kie.workbench.common.workbench.client.error.DefaultWorkbenchErrorCallback;
@@ -79,13 +80,13 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
         adminPage.addPreference("root",
                                 "LibraryPreferences",
                                 translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_Library),
-                                "fa-cubes",
+                                new Sets.Builder().add("fa").add("fa-cubes").build(),
                                 "preferences");
 
         adminPage.addPreference("root",
                                 "ArtifactRepositoryPreference",
                                 translationService.getTranslation(AppConstants.OptaPlannerWorkbenchEntryPoint_ArtifactRepository),
-                                "fa-archive",
+                                new Sets.Builder().add("fa").add("fa-archive").build(),
                                 "preferences");
 
         menusHelper.addRolesMenuItems();
