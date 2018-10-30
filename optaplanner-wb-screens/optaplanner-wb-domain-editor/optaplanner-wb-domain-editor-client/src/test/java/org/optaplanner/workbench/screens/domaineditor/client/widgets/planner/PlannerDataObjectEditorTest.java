@@ -539,4 +539,15 @@ public class PlannerDataObjectEditorTest
         verify(view,
                times(1)).showPlanningSolutionHelpIcon(true);
     }
+
+    @Test
+    public void getFindClassUsagesCallbackObjectWithoutContext() {
+        PlannerDataObjectEditor objectEditor = createObjectEditor();
+        objectEditor.onContextChange(null);
+
+        objectEditor.getFindClassUsagesCallback().callback(Collections.emptyList());
+
+        verify(view, never()).enablePlanningSolutionCheckBox(anyBoolean());
+        verify(view, never()).showPlanningSolutionHelpIcon(anyBoolean());
+    }
 }
