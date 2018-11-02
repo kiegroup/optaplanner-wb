@@ -80,7 +80,7 @@ You need to create two separate Run configurations for CodeServer and webapp dep
 4. Click *Configure...* to create a new Application server.
 
 5. Click `+` and set *JBoss Home* to point to
-   `/absolute/path/optaplanner-wb/optaplanner-wb-webapp/target/wildfly-11.0.0.Final`
+   `/absolute/path/optaplanner-wb/optaplanner-wb-webapp/target/wildfly-14.0.1.Final`
 
 6. Click the *Fix...* button next to the "No artifacts marked for deployment" warning
    and select `optaplanner-wb-webapp exploded`.
