@@ -128,14 +128,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <configuration>
-            <maxRank>14</maxRank>
-            <includeTests>true</includeTests>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>net.ltgt.gwt.maven</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
           <configuration>
