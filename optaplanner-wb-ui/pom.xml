@@ -1347,6 +1347,12 @@
       <classifier>sources</classifier>
     </dependency>
 
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>appformer-js-bridge</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
