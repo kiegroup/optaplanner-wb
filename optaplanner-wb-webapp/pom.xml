@@ -233,6 +233,12 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-structure-backend</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.uberfire</groupId>
+          <artifactId>uberfire-servlet-security</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
