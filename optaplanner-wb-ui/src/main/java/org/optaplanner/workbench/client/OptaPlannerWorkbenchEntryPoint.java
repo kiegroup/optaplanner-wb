@@ -86,7 +86,7 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     @PostConstruct
     protected void setup() {
-        this.appFormerJsBridge.init("org.optaplanner.workbench.OptaPlannerWorkbench");
+        this.appFormerJsBridge.init("optaplanner-wb/org.optaplanner.workbench.OptaPlannerWorkbench");
     }
 
     @Override
