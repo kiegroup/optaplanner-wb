@@ -17,6 +17,8 @@ package org.optaplanner.workbench.client;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.guvnor.common.services.shared.config.AppConfigService;
@@ -35,6 +37,7 @@ import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
+import org.uberfire.jsbridge.client.AppFormerJsBridge;
 import org.uberfire.mvp.Command;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.MenuItem;
@@ -56,6 +59,8 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
 
     protected PlaceManager placeManager;
 
+    protected AppFormerJsBridge appFormerJsBridge;
+
     @Inject
     public OptaPlannerWorkbenchEntryPoint(final Caller<AppConfigService> appConfigService,
                                           final ActivityBeansCache activityBeansCache,
@@ -65,7 +70,8 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
                                           final AdminPage adminPage,
                                           final TranslationService translationService,
                                           final DefaultWorkbenchErrorCallback defaultWorkbenchErrorCallback,
-                                          final PlaceManager placeManager) {
+                                          final PlaceManager placeManager,
+                                          final AppFormerJsBridge appFormerJsBridge) {
         super(appConfigService,
               activityBeansCache,
               defaultWorkbenchErrorCallback);
@@ -75,6 +81,12 @@ public class OptaPlannerWorkbenchEntryPoint extends DefaultWorkbenchEntryPoint {
         this.adminPage = adminPage;
         this.translationService = translationService;
         this.placeManager = placeManager;
+        this.appFormerJsBridge = appFormerJsBridge;
+    }
+
+    @PostConstruct
+    protected void setup() {
+        this.appFormerJsBridge.init("org.optaplanner.workbench.OptaPlannerWorkbench");
     }
 
     @Override
