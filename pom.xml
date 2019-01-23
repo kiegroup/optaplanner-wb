@@ -70,14 +70,6 @@
     <module>optaplanner-wb-webapp</module>
   </modules>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.appformer</groupId>
-      <artifactId>ts-exporter</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
-
   <dependencyManagement>
     <dependencies>
       <dependency>

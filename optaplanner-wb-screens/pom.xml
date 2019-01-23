@@ -34,7 +34,6 @@
     <module>optaplanner-wb-domain-editor</module>
     <module>optaplanner-wb-guided-rule-editor</module>
     <module>optaplanner-wb-solver-editor</module>
-    <module>optaplanner-wb-home-screen</module>
   </modules>
 
 </project>
