@@ -94,7 +94,8 @@ public class OptaPlannerWorkbenchEntryPointTest {
                                                                                 adminPage,
                                                                                 translationService,
                                                                                 defaultWorkbenchErrorCallback,
-                                                                                placeManager));
+                                                                                placeManager,
+                                                                                null));
         mockMenuHelper();
     }
 

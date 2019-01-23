@@ -233,6 +233,12 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-structure-backend</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.uberfire</groupId>
+          <artifactId>uberfire-servlet-security</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -396,6 +402,15 @@
     <dependency>
       <groupId>org.kie.workbench.screens</groupId>
       <artifactId>kie-wb-common-examples-screen-backend</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.profile</groupId>
+      <artifactId>kie-wb-common-profile-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.profile</groupId>
+      <artifactId>kie-wb-common-profile-backend</artifactId>
     </dependency>
 
     <!-- KIE Workbench Playground Repository -->
