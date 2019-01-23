@@ -27,7 +27,7 @@ export class OptaplannerWbHomeScreenProvider implements HomeApi.HomeScreenProvid
 
     private devOpsCard() {
         const cssClasses = ["fa", "fa-gears"];
-        const title = AppFormer.translate("HomeProducer.DevOps", [])
+        const title = AppFormer.translate("HomeProducer.DevOps", []);
 
         const descriptionTextMask = AppFormer.translate("HomeProducer.DevOpsDescription", []);
         const description = new HomeApi.CardDescriptionBuilder(descriptionTextMask).build();
