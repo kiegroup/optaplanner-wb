@@ -34,6 +34,7 @@
 
   <properties>
     <findbugs.failOnViolation>true</findbugs.failOnViolation>
+    <needs-errai-1101-workaround>true</needs-errai-1101-workaround>
   </properties>
 
   <repositories>
