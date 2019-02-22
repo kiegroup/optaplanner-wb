@@ -36,6 +36,7 @@ import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.views.pfly.menu.UserMenu;
 import org.uberfire.client.workbench.widgets.menu.megamenu.WorkbenchMegaMenuPresenter;
 import org.uberfire.ext.preferences.client.admin.page.AdminPage;
+import org.uberfire.jsbridge.client.AppFormerJsBridge;
 import org.uberfire.mocks.CallerMock;
 import org.uberfire.mvp.Command;
 import org.uberfire.workbench.model.menu.MenuItem;
@@ -95,7 +96,7 @@ public class OptaPlannerWorkbenchEntryPointTest {
                                                                                 translationService,
                                                                                 defaultWorkbenchErrorCallback,
                                                                                 placeManager,
-                                                                                null));
+                                                                                mock(AppFormerJsBridge.class)));
         mockMenuHelper();
     }
 
