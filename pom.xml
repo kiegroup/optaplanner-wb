@@ -33,8 +33,8 @@
   <url>http://www.optaplanner.org</url>
 
   <properties>
-    <findbugs.failOnViolation>true</findbugs.failOnViolation>
     <needs-errai-1101-workaround>true</needs-errai-1101-workaround>
+    <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
   </properties>
 
   <repositories>
