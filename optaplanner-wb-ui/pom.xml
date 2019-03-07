@@ -628,7 +628,12 @@
 
     <dependency>
       <groupId>org.kie.workbench.screens</groupId>
-      <artifactId>kie-wb-common-home-client</artifactId>
+      <artifactId>kie-wb-common-home-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-home-api</artifactId>
+      <classifier>sources</classifier>
     </dependency>
     <dependency>
       <groupId>org.kie.workbench.screens</groupId>
@@ -1482,8 +1487,6 @@
                     <resource>
                       <directory>${project.build.directory}/appformer-js-workbench-screens/META-INF/resources/webjars/appformer-js-workbench-screens/${project.version}</directory>
                       <includes>
-                        <include>home-perspective-bundle.js</include>
-                        <include>optaplanner-wb-home-screen-bundle.js</include>
                         <include>spaces-screen-bundle.js</include>
                       </includes>
                     </resource>
