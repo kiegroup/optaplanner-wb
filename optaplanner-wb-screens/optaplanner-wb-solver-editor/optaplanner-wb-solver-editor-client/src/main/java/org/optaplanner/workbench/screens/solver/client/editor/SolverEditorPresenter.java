@@ -60,9 +60,11 @@ import org.uberfire.workbench.model.menu.Menus;
  * Uberfire Editor for OptaPlanner Solver Configuration
  */
 @Dependent
-@WorkbenchEditor(identifier = "OptaPlannerSolverEditor", supportedTypes = {SolverResourceType.class}, priority = 10)
+@WorkbenchEditor(identifier = SolverEditorPresenter.EDITOR_ID, supportedTypes = {SolverResourceType.class}, priority = 10)
 public class SolverEditorPresenter
         extends KieEditor<SolverConfigModel> {
+
+    public static final String EDITOR_ID = "OptaPlannerSolverEditor";
 
     private Caller<SolverEditorService> solverService;
 
@@ -235,9 +237,16 @@ public class SolverEditorPresenter
                                                                                 commitMessage);
     }
 
+    @Override
+    protected String getEditorIdentifier() {
+        return EDITOR_ID;
+    }
+
     @OnClose
+    @Override
     public void onClose() {
         versionRecordManager.clear();
+        super.onClose();
     }
 
     @OnMayClose
