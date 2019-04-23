@@ -16,6 +16,7 @@
 package org.optaplanner.workbench.screens.solver.client.editor;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.enterprise.context.Dependent;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
+import elemental2.promise.Promise;
 import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
 import org.jboss.errai.common.client.api.Caller;
@@ -110,7 +112,7 @@ public class SolverEditorPresenter
     }
 
     @Override
-    protected void makeMenuBar() {
+    protected Promise<Void> makeMenuBar() {
         SuperDevModeFlag superDevModeFlag = GWT.create(SuperDevModeFlag.class);
         if (superDevModeFlag.isSuperDevModeUsed()) {
             fileMenuBuilder
@@ -124,8 +126,10 @@ public class SolverEditorPresenter
                                 onSmokeTest())
                     .addNewTopLevelMenu(versionRecordManager.buildMenu())
                     .addNewTopLevelMenu(alertsButtonMenuItemBuilder.build());
+
+            return promises.resolve();
         } else {
-            super.makeMenuBar();
+            return super.makeMenuBar();
         }
     }
 
@@ -270,8 +274,8 @@ public class SolverEditorPresenter
     }
 
     @WorkbenchMenu
-    public Menus getMenus() {
-        return menus;
+    public void getMenus(final Consumer<Menus> menusConsumer) {
+        super.getMenus(menusConsumer);
     }
 
     SolverConfigModel getModel() {

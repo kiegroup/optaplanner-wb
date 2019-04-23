@@ -15,6 +15,7 @@
  */
 package org.optaplanner.workbench.client.perspectives;
 
+import java.util.function.Consumer;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -56,16 +57,16 @@ public class M2RepoPerspective implements IsElement {
     Div m2RepoEditor;
 
     @WorkbenchMenu
-    public Menus getMenus() {
-        return MenuFactory.newTopLevelMenu(translationService.getTranslation(AppConstants.M2RepoPerspective_Upload))
-                .respondsWith(() -> {
-                    UploadFormPresenter uploadFormPresenter = uploadFormPresenterProvider.get();
-                    uploadFormPresenter.showView();
-                })
-                .endMenu()
-                .newTopLevelMenu(translationService.getTranslation(AppConstants.M2RepoPerspective_Refresh))
-                .respondsWith(() -> refreshEvents.fire(new M2RepoRefreshEvent()))
-                .endMenu()
-                .build();
+    public void getMenus(final Consumer<Menus> menusConsumer) {
+        menusConsumer.accept(MenuFactory.newTopLevelMenu(translationService.getTranslation(AppConstants.M2RepoPerspective_Upload))
+                                     .respondsWith(() -> {
+                                         UploadFormPresenter uploadFormPresenter = uploadFormPresenterProvider.get();
+                                         uploadFormPresenter.showView();
+                                     })
+                                     .endMenu()
+                                     .newTopLevelMenu(translationService.getTranslation(AppConstants.M2RepoPerspective_Refresh))
+                                     .respondsWith(() -> refreshEvents.fire(new M2RepoRefreshEvent()))
+                                     .endMenu()
+                                     .build());
     }
 }
