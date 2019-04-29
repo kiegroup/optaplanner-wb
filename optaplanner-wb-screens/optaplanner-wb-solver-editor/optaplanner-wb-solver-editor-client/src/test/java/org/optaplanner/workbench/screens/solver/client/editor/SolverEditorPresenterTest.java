@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import com.google.gwt.core.client.GWT;
 import com.google.gwtmockito.GwtMock;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import elemental2.promise.Promise;
 import org.guvnor.common.services.shared.metadata.model.Metadata;
 import org.guvnor.common.services.shared.metadata.model.Overview;
 import org.guvnor.common.services.shared.validation.model.ValidationMessage;
@@ -46,10 +47,12 @@ import org.optaplanner.workbench.screens.solver.model.TerminationConfigModel;
 import org.optaplanner.workbench.screens.solver.service.SolverEditorService;
 import org.uberfire.backend.vfs.ObservablePath;
 import org.uberfire.backend.vfs.Path;
+import org.uberfire.client.promise.Promises;
 import org.uberfire.ext.editor.commons.client.history.VersionRecordManager;
 import org.uberfire.ext.editor.commons.service.support.SupportsSaveAndRename;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.PlaceRequest;
+import org.uberfire.promise.SyncPromises;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -94,8 +97,11 @@ public class SolverEditorPresenterTest {
 
     private ServiceMock solverService;
 
+    private Promises promises;
+
     @Before
     public void setUp() throws Exception {
+        promises = new SyncPromises();
         model = new SolverConfigModel();
         model.setTerminationConfig(terminationConfigModel);
         model.setScoreDirectorFactoryConfig(scoreDirectorFactoryConfig);
@@ -120,6 +126,7 @@ public class SolverEditorPresenterTest {
                 versionRecordManager = SolverEditorPresenterTest.this.versionRecordManager;
                 alertsButtonMenuItemBuilder = SolverEditorPresenterTest.this.alertsButtonMenuItemBuilder;
                 overviewWidget = mock(OverviewWidgetPresenter.class);
+                promises = SolverEditorPresenterTest.this.promises;
             }
 
             @Override
@@ -127,7 +134,8 @@ public class SolverEditorPresenterTest {
                 return mock(Command.class);
             }
 
-            protected void makeMenuBar() {
+            protected Promise<Void> makeMenuBar() {
+                return promises.resolve();
             }
 
             protected void addSourcePage() {
