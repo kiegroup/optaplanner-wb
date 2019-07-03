@@ -23,6 +23,7 @@ import org.guvnor.common.services.project.categories.Optimization;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.workbench.annotations.VisibleAsset;
 import org.uberfire.workbench.category.Category;
+import org.uberfire.workbench.diff.DiffMode;
 import org.uberfire.workbench.type.ResourceTypeDefinition;
 
 @Default
@@ -79,5 +80,10 @@ public class SolverResourceTypeDefinition
     @Override
     public Category getCategory() {
         return this.category;
+    }
+
+    @Override
+    public DiffMode getDiffMode() {
+        return DiffMode.VISUAL;
     }
 }
