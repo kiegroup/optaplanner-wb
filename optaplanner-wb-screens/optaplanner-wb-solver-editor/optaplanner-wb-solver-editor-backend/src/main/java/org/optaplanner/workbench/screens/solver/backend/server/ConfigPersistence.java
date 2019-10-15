@@ -21,7 +21,7 @@ import javax.inject.Named;
 
 import com.thoughtworks.xstream.XStream;
 import org.optaplanner.core.config.solver.SolverConfig;
-import org.optaplanner.core.impl.solver.XStreamXmlSolverFactory;
+import org.optaplanner.core.impl.solver.io.XStreamConfigReader;
 import org.optaplanner.workbench.screens.solver.model.SolverConfigModel;
 import org.uberfire.io.IOService;
 
@@ -34,7 +34,7 @@ public class ConfigPersistence {
     private final XStream xStream;
 
     public ConfigPersistence() {
-        xStream = XStreamXmlSolverFactory.buildXStream();
+        xStream = XStreamConfigReader.buildXStream();
         String[] voidDeny = {"void.class", "Void.class"};
         xStream.denyTypes(voidDeny);
     }
