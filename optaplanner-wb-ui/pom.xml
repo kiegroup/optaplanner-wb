@@ -785,11 +785,6 @@
       <artifactId>kie-wb-common-examples-screen-api</artifactId>
       <classifier>sources</classifier>
     </dependency>
-    <dependency>
-      <groupId>org.kie.workbench.screens</groupId>
-      <artifactId>kie-wb-common-examples-screen-client</artifactId>
-      <classifier>sources</classifier>
-    </dependency>
 
     <!-- KIE Workbench Playground Repository -->
     <dependency>
