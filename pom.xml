@@ -70,7 +70,6 @@
     <module>optaplanner-wb-screens</module>
     <module>optaplanner-wb-ui</module>
     <module>optaplanner-wb-webapp</module>
-    <module>optaplanner-workbench-models</module>
   </modules>
 
   <dependencyManagement>
