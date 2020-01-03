@@ -778,6 +778,25 @@
 
     <dependency>
       <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-archetype-mgmt-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-archetype-mgmt-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-archetype-mgmt-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-archetype-mgmt-client</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
       <artifactId>kie-wb-common-examples-screen-api</artifactId>
     </dependency>
     <dependency>
