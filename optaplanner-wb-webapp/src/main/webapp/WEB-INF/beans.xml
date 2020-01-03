@@ -35,6 +35,7 @@
     <exclude name="org.guvnor.structure.client.**"/>
 
     <exclude name="org.kie.workbench.common.screens.contributors.client.**"/>
+    <exclude name="org.kie.workbench.common.screens.archetype.mgmt.client.**"/>
     <exclude name="org.kie.workbench.common.screens.datamodeller.client.**"/>
     <exclude name="org.kie.workbench.common.screens.defaulteditor.client.**"/>
     <exclude name="org.kie.workbench.common.screens.examples.client.**"/>
