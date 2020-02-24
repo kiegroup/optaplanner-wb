@@ -48,6 +48,8 @@ public interface SolverEditorLookupConstants extends ConstantsWithLookup {
 
     String DECREASING_DIFFICULTY_IF_AVAILABLE();
 
+    String GREAT_DELUGE();
+
     String HILL_CLIMBING();
 
     String TABU_SEARCH();
