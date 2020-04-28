@@ -22,7 +22,7 @@ import java.io.Reader;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
-import org.kie.soup.commons.xstream.XStreamUtils;
+import org.kie.soup.xstream.XStreamUtils;
 
 /**
  * TODO Remove once org.optaplanner.persistence.xstream.impl.domain.solution.XStreamSolutionFileIO
