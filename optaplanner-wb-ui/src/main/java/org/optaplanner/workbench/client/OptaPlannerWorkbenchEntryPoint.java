@@ -27,7 +27,7 @@ import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.Bundle;
 import org.kie.soup.commons.util.Sets;
-import org.kie.workbench.common.workbench.client.PerspectiveIds;
+import org.kie.workbench.common.services.shared.resources.PerspectiveIds;
 import org.kie.workbench.common.workbench.client.entrypoint.DefaultWorkbenchEntryPoint;
 import org.kie.workbench.common.workbench.client.error.DefaultWorkbenchErrorCallback;
 import org.kie.workbench.common.workbench.client.menu.DefaultWorkbenchFeaturesMenusHelper;

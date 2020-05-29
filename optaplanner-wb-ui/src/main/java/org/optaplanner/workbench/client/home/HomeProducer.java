@@ -26,8 +26,8 @@ import org.kie.workbench.common.screens.home.model.ModelUtils;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.mvp.PlaceManager;
 
-import static org.kie.workbench.common.workbench.client.PerspectiveIds.LIBRARY;
-import static org.kie.workbench.common.workbench.client.PerspectiveIds.SERVER_MANAGEMENT;
+import static org.kie.workbench.common.services.shared.resources.PerspectiveIds.LIBRARY;
+import static org.kie.workbench.common.services.shared.resources.PerspectiveIds.SERVER_MANAGEMENT;
 import static org.uberfire.workbench.model.ActivityResourceType.PERSPECTIVE;
 
 @ApplicationScoped
