@@ -27,7 +27,7 @@ import org.jboss.errai.ui.client.local.api.IsElement;
 import org.jboss.errai.ui.client.local.spi.TranslationService;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.kie.workbench.common.workbench.client.PerspectiveIds;
+import org.kie.workbench.common.services.shared.resources.PerspectiveIds;
 import org.optaplanner.workbench.client.resources.i18n.AppConstants;
 import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPanel;
