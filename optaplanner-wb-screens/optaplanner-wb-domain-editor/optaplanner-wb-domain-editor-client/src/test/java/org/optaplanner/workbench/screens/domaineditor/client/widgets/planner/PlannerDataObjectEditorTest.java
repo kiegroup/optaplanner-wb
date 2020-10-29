@@ -129,7 +129,7 @@ public class PlannerDataObjectEditorTest
         verify(assetsUsageService,
                times(1)).getAssetUsages(anyString(),
                                         any(),
-                                        any(Path.class));
+                                        any());
     }
 
     @Test

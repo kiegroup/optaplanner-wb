@@ -63,8 +63,6 @@ public class PlannerDataModelerHelperUtilsTest {
 
         when(dataObjectPath.toURI())
                 .thenReturn("file:///dataObjects/Test.java");
-        when(dataObjectPath.getFileName())
-                .thenReturn("Test.java");
         when(ioService.readAllString(Paths.convert(dataObjectPath)))
                 .thenReturn(pathString);
         when(dataModelerService.loadDataObject(dataObjectPath, pathString, dataObjectPath))

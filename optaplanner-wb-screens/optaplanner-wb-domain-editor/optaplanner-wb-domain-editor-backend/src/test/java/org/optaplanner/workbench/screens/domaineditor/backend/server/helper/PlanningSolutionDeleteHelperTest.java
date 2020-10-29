@@ -65,9 +65,8 @@ public class PlanningSolutionDeleteHelperTest {
         deleteHelper = new PlanningSolutionDeleteHelper(ioService,
                                                         dataModelerService,
                                                         kieModuleService);
-        when(ioService.readAllString(Paths.convert(sourcePath))).thenReturn("test source");
         when(dataModelerService.loadDataObject(any(),
-                                               anyString(),
+                                               any(),
                                                any())).thenReturn(generationResult);
         sourcePath = PathFactory.newPath("TestSource.java", "file:///dataObjects");
     }
@@ -83,8 +82,6 @@ public class PlanningSolutionDeleteHelperTest {
         when(_package.getPackageMainResourcesPath()).thenReturn(PathFactory.newPath("dataObjects",
                                                                                     "file:///dataObjects"));
         when(kieModuleService.resolvePackage(sourcePath)).thenReturn(_package);
-
-        when(ioService.exists(any())).thenReturn(true);
 
         deleteHelper.postProcess(sourcePath);
 

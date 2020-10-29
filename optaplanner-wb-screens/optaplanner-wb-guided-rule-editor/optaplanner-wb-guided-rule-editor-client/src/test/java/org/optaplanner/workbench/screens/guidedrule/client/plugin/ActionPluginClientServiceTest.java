@@ -71,7 +71,7 @@ public class ActionPluginClientServiceTest {
                                                       });
 
         verify(scoreHolderService,
-               times(1)).getProjectScoreInformation(any(Path.class));
+               times(1)).getProjectScoreInformation(any());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ActionPluginClientServiceTest {
                                            Arrays.asList(HardSoftScoreHolder.class.getName()));
 
         verify(scoreHolderGlobalAware,
-               times(1)).scoreHolderGlobalIssueDetected(anyString());
+               times(1)).scoreHolderGlobalIssueDetected(any());
     }
 
     @Test

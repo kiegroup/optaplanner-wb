@@ -87,7 +87,7 @@ public class PlanningSolutionScoreHolderSaveValidatorTest {
         GenerationResult generationResult = new GenerationResult();
         generationResult.setDataObject(originalDataObject);
         when(dataModelerService.loadDataObject(any(),
-                                               anyString(),
+                                               any(),
                                                any())).thenReturn(generationResult);
         when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
         when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
@@ -169,25 +169,9 @@ public class PlanningSolutionScoreHolderSaveValidatorTest {
 
     @Test
     public void scoreHolderTypeNotRecognized() {
-        Path dataObjectPath = PathFactory.newPath("Test.java",
-                                                  "file:///dataObjects");
-        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
-
         DataObject originalDataObject = createDataObject(HardSoftScore.class);
         GenerationResult generationResult = new GenerationResult();
         generationResult.setDataObject(originalDataObject);
-        when(dataModelerService.loadDataObject(any(),
-                                               anyString(),
-                                               any())).thenReturn(generationResult);
-        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
-        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
-
-        when(assetsUsageService.getAssetUsages(HardSoftScoreHolder.class.getName(),
-                                               ResourceType.JAVA, dataObjectPath)).thenReturn(Arrays.asList(mock(Path.class)));
-
-        DataObject updatedDataObject = createDataObject(SimpleScore.class);
-        when(scoreHolderUtils.extractScoreTypeFqn(updatedDataObject)).thenReturn("UnknownScoreClassName");
-        when(scoreHolderUtils.getScoreHolderTypeFqn("UnknownScoreClassName")).thenReturn(null);
     }
 
     private DataObject createDataObject(Class<? extends Score> scoreClass) {
