@@ -32,13 +32,14 @@ import org.kie.workbench.common.services.datamodeller.util.DriverUtils;
 import org.kie.workbench.common.services.refactoring.service.AssetsUsageService;
 import org.kie.workbench.common.services.refactoring.service.ResourceType;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScoreHolder;
+import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeNotRecognizedMessage;
 import org.optaplanner.workbench.screens.domaineditor.validation.ScoreHolderGlobalTypeToBeChangedMessage;
 import org.uberfire.backend.server.util.Paths;
 import org.uberfire.backend.vfs.Path;
@@ -169,9 +170,33 @@ public class PlanningSolutionScoreHolderSaveValidatorTest {
 
     @Test
     public void scoreHolderTypeNotRecognized() {
+        Path dataObjectPath = PathFactory.newPath("Test.java",
+                                                  "file:///dataObjects");
+        when(ioService.readAllString(Paths.convert(dataObjectPath))).thenReturn("testResult");
+
         DataObject originalDataObject = createDataObject(HardSoftScore.class);
         GenerationResult generationResult = new GenerationResult();
         generationResult.setDataObject(originalDataObject);
+        when(dataModelerService.loadDataObject(any(),
+                                               anyString(),
+                                               any())).thenReturn(generationResult);
+        when(scoreHolderUtils.extractScoreTypeFqn(originalDataObject)).thenReturn(HardSoftScore.class.getName());
+        when(scoreHolderUtils.getScoreHolderTypeFqn(HardSoftScore.class.getName())).thenReturn(HardSoftScoreHolder.class.getName());
+
+        when(assetsUsageService.getAssetUsages(HardSoftScoreHolder.class.getName(),
+                                               ResourceType.JAVA, dataObjectPath)).thenReturn(Arrays.asList(mock(Path.class)));
+
+        DataObject updatedDataObject = createDataObject(SimpleScore.class);
+        when(scoreHolderUtils.extractScoreTypeFqn(updatedDataObject)).thenReturn("UnknownScoreClassName");
+        when(scoreHolderUtils.getScoreHolderTypeFqn("UnknownScoreClassName")).thenReturn(null);
+
+        Collection<ValidationMessage> result = validator.validate(dataObjectPath,
+                                                                  updatedDataObject);
+        assertEquals(1,
+                     result.size());
+
+        ValidationMessage message = result.iterator().next();
+        assertTrue(message instanceof ScoreHolderGlobalTypeNotRecognizedMessage);
     }
 
     private DataObject createDataObject(Class<? extends Score> scoreClass) {
