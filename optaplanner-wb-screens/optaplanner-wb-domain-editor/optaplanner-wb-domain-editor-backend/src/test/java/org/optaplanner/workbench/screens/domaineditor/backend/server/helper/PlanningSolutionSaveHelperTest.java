@@ -127,7 +127,7 @@ public class PlanningSolutionSaveHelperTest {
         GenerationResult generationResult = new GenerationResult();
         generationResult.setDataObject(dataObject);
         when(dataModelerService.loadDataObject(any(),
-                                               anyString(),
+                                               any(),
                                                any())).thenReturn(generationResult);
 
         Package _package = mock(Package.class);
@@ -148,7 +148,7 @@ public class PlanningSolutionSaveHelperTest {
                 verify(globalsEditorService,
                        times(1)).save(any(Path.class),
                                       any(GlobalsModel.class),
-                                      any(Metadata.class),
+                                      any(),
                                       anyString());
             } else {
                 verify(globalsEditorService,

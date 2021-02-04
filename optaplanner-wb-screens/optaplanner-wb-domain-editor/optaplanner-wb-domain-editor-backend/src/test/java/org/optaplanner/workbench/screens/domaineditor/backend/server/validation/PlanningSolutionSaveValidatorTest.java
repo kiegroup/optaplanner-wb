@@ -61,7 +61,6 @@ public class PlanningSolutionSaveValidatorTest {
     @Test
     public void accept() {
         Path dataObjectPath = mock(Path.class);
-        when(dataObjectPath.toURI()).thenReturn("file:///project/Test.java");
         when(dataObjectPath.getFileName()).thenReturn("Test.java");
         assertTrue(saveValidator.accept(dataObjectPath));
         Path propertiesPath = mock(Path.class);
