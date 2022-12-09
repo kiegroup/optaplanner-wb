@@ -770,6 +770,19 @@
       <groupId>org.kie.workbench.screens</groupId>
       <artifactId>kie-wb-common-contributors-api</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-contributors-api</artifactId>
+      <classifier>sources</classifier>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.kie.workbench.screens</groupId>
+      <artifactId>kie-wb-common-contributors-client</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.kie.workbench.screens</groupId>
       <artifactId>kie-wb-common-contributors-client</artifactId>
